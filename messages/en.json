@@ -1,0 +1,317 @@
+{
+  "common": {
+    "appName": "VoiceForLater",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "next": "Next",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save",
+    "confirm": "Confirm",
+    "getStarted": "Create your first message",
+    "seeHow": "See how it works",
+    "edit": "Edit",
+    "view": "View Message",
+    "delete": "Delete",
+    "price": "{amount}/year",
+    "sentAt": "Sent on "
+  },
+  "landing": {
+    "hero": {
+      "title": "Leave a message for when it truly matters.",
+      "subtitle": "VoiceForLater lets you leave text, audio, or video messages that will be delivered in the future, or when you are no longer here."
+    },
+    "emotional": {
+      "title": "Your presence, at the right moment.",
+      "items": [
+        "A message for your family.",
+        "A note for someone important.",
+        "Your voice and image, even when you can no longer be there."
+      ]
+    },
+    "uses": {
+      "title": "Moments worth saying",
+      "subtitle": "Not all messages are for now. Some need time, context, or distance.",
+      "items": [
+        {
+          "title": "For your children",
+          "description": "A message for them to receive when they are older."
+        },
+        {
+          "title": "For the right moment",
+          "description": "An audio for someone special, arriving exactly when needed."
+        },
+        {
+          "title": "To leave something unsaid",
+          "description": "Words you don't know how to say today, but want heard tomorrow."
+        },
+        {
+          "title": "So your words remain",
+          "description": "A memory, a story, or advice you want to keep."
+        }
+      ]
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "step1": {
+        "title": "Create your message",
+        "description": "Write a text, record your voice, or film a video."
+      },
+      "step2": {
+        "title": "You choose the moment",
+        "description": "Decide when and to whom your message will arrive. We handle the rest."
+      },
+      "step3": {
+        "title": "When the time comes",
+        "description": "Your messages will be sent to those you chose, exactly as you decided."
+      }
+    },
+    "delivery": {
+      "title": "Delivery, your way",
+      "date": {
+        "title": "On a specific date",
+        "description": "Birthdays, anniversaries, or any moment you choose."
+      },
+      "checkin": {
+        "title": "When you are no longer present",
+        "description": "When you are gone, we follow your instructions. Your messages arrive at the moments and to the people you chose, respecting your will and your time."
+      }
+    },
+    "audio": {
+      "title": "Your voice and image",
+      "description": "Sometimes words aren't enough. Record audio or video messages so your loved ones can see and hear you."
+    },
+    "trust": {
+      "title": "Private. Secure. Respectful.",
+      "reassurance": "Your messages are encrypted and only released when you decide.",
+      "item1": "Your messages are private.",
+      "item2": "Only delivered when conditions are met.",
+      "item3": "You stay in control at all times."
+    },
+    "notWhat": {
+      "title": "What VoiceForLater is NOT",
+      "items": [
+        "Not a will or testament",
+        "Not legal advice",
+        "Not a replacement for a person",
+        "Not making decisions for you"
+      ],
+      "clarification": "VoiceForLater only delivers messages you left, exactly as you recorded them."
+    },
+    "pricing": {
+      "title": "Simple Pricing",
+      "justification": "Less than a coffee a month, for peace of mind.",
+      "recommended": "RECOMMENDED",
+      "free": {
+        "title": "Free",
+        "features": [
+          "1 message",
+          "Text only"
+        ]
+      },
+      "pro": {
+        "title": "Pro",
+        "features": [
+          "Unlimited messages",
+          "Text + Audio + Video",
+          "Choose exactly when each message is sent",
+          "Designate a trusted person to ensure delivery"
+        ],
+        "cta": "Switch to PRO plan"
+      }
+    },
+    "closing": "",
+    "final_thought": "Because some words aren't for now. They are for when they are needed most.",
+    "cta_final": "Start with one message",
+    "footer": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "contact": "Contact",
+      "cancel": "Cancel"
+    }
+  },
+  "auth": {
+    "login": "Sign In",
+    "logout": "Sign Out",
+    "magicLink": {
+      "title": "Voice for later",
+      "subtitle": "Enter your email to securely access your messages",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you@example.com",
+      "submit": "Get Access Link",
+      "sending": "Sending...",
+      "success": {
+        "title": "Check your email",
+        "message": "We've sent a magic link to {email}. Click the link to sign in."
+      },
+      "error": "Could not send magic link. Please try again."
+    }
+  },
+  "dashboard": {
+    "title": "Your Messages",
+    "subtitle": "Messages you've created for your loved ones",
+    "empty": {
+      "title": "No messages yet",
+      "description": "Create your first message to leave for someone special.",
+      "cta": "Create Your First Message"
+    },
+    "limitReached": {
+      "title": "Message limit reached",
+      "description": "Your current plan only allows 1 message. To create unlimited messages and access premium features, upgrade to Pro.",
+      "subtitle": "For just USD 10/year you can:",
+      "features": [
+        "Send unlimited messages",
+        "Send text, audio, and video messages!",
+        "Choose exactly when each message is sent",
+        "Designate a trusted person to ensure delivery"
+      ],
+      "cancel": "Cancel"
+    },
+    "createMessage": "Create Message",
+    "messageCard": {
+      "recipient": "To: {name}",
+      "status": {
+        "draft": "Draft",
+        "scheduled": "Scheduled",
+        "delivered": "Sent"
+      },
+      "type": {
+        "text": "Text Message",
+        "audio": "Audio Message"
+      },
+      "checkinModeStatus": "message is set to send automatically if you stop confirming your activity"
+    }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "upgrade": "Upgrade to Pro"
+  },
+  "wizard": {
+    "title": "Create Message",
+    "steps": {
+      "type": "Type",
+      "content": "Content",
+      "recipient": "Recipient",
+      "delivery": "Delivery",
+      "review": "Review"
+    },
+    "step1": {
+      "title": "Choose message type",
+      "subtitle": "How would you like to leave your message?",
+      "text": {
+        "title": "Text Message",
+        "description": "Write a heartfelt message"
+      },
+      "audio": {
+        "title": "Audio Message",
+        "description": "Record your voice"
+      },
+      "video": {
+        "title": "Video Message",
+        "description": "Leave a video message",
+        "upgradeToPro": "Upgrade to PRO"
+      }
+    },
+    "step2": {
+      "title": "Write your message",
+      "titleAudio": "Record your message",
+      "subtitle": "Take your time. This message is for someone special.",
+      "textPlaceholder": "Write your message here...",
+      "charLimit": "{count} / {max} characters",
+      "recording": {
+        "start": "Start Recording",
+        "stop": "Stop Recording",
+        "preview": "Preview",
+        "delete": "Delete",
+        "timeLimit": "Max {seconds} seconds",
+        "timer": "{time}"
+      }
+    },
+    "step3": {
+      "title": "Who is this message for?",
+      "subtitle": "Enter the recipient's information",
+      "nameLabel": "Recipient's name",
+      "namePlaceholder": "John Doe",
+      "emailLabel": "Recipient's email",
+      "emailPlaceholder": "john@example.com"
+    },
+    "step4": {
+      "title": "When should this message be delivered?",
+      "subtitle": "Choose when your message will reach its destination",
+      "date": {
+        "title": "On a specific date",
+        "description": "Birthday, anniversary, graduation...",
+        "label": "Delivery date"
+      },
+      "checkin": {
+        "title": "After I stop checking in",
+        "description": "We'll ask you to confirm periodically",
+        "interval": "Check-in interval",
+        "days7": "Every 7 days",
+        "days30": "Every 30 days (Pro)",
+        "days60": "Every 60 days (Pro)",
+        "days90": "Every 90 days (Pro)",
+        "note": "If you miss 3 check-ins, we'll contact your trusted person before delivering.",
+        "freeNote": "Free plan: 7-day interval with 1 reminder. Upgrade to Pro for longer intervals and trusted contact."
+      },
+      "test": {
+        "title": "In 5 minutes (Test Mode)",
+        "description": "Only to verify that the message arrives correctly.",
+        "note": "We will deliver this message in 5 minutes using the real delivery flow."
+      }
+    },
+    "step5": {
+      "title": "Review your message",
+      "subtitle": "Make sure everything is correct",
+      "messageType": "Type",
+      "content": "Content",
+      "recipient": "Recipient",
+      "deliveryRule": "Delivery",
+      "deliveryDate": "On {date}",
+      "deliveryCheckin": "If inactive for {days} days",
+      "submit": "Confirm Message",
+      "submitting": "Creating..."
+    }
+  },
+  "checkin": {
+    "title": "Check-in Status",
+    "nextCheckin": "Next check-in",
+    "daysRemaining": "days remaining",
+    "overdue": "Your check-in is overdue! Please confirm you're active.",
+    "confirmButton": "I'm Active",
+    "confirming": "Confirming...",
+    "confirmed": "Check-in confirmed! ✓"
+  },
+  "trustedContact": {
+    "title": "Trusted Contact",
+    "description": "This person will be contacted if you stop checking in.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Jane Doe",
+    "emailLabel": "Email",
+    "emailPlaceholder": "jane@example.com",
+    "confirmEmailLabel": "Confirm email address",
+    "confirmEmailPlaceholder": "jane@example.com",
+    "emailMismatch": "Email addresses do not match",
+    "save": "Save Contact",
+    "saving": "Saving...",
+    "saved": "Contact saved!",
+    "remove": "Remove",
+    "addContact": "Add Contact",
+    "noContact": "No trusted contact set",
+    "proRequired": "Trusted contact requires Pro plan"
+  },
+  "stripe": {
+    "upgrade": "Upgrade to PRO",
+    "upgradeModal": "Upgrade to PRO for only USD 10",
+    "upgrading": "Redirecting...",
+    "manageSub": "Manage Subscription",
+    "proBadge": "PRO",
+    "freeBadge": "FREE",
+    "proPrice": "$10/year",
+    "proFeatures": "Unlimited messages, full control of sending and priority delivery",
+    "upgradeSuccess": "Welcome to Pro! 🎉",
+    "upgradeCancelled": "Upgrade cancelled"
+  }
+}

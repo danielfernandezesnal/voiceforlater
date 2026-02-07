@@ -1,0 +1,309 @@
+{
+  "common": {
+    "appName": "VoiceForLater",
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "retry": "Intentar de nuevo",
+    "next": "Siguiente",
+    "back": "Volver atrás",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "view": "Ver mensaje",
+    "delete": "Eliminar",
+    "confirm": "Confirmar",
+    "getStarted": "Crear mi primer mensaje",
+    "seeHow": "Cómo funciona",
+    "price": "{amount}/año",
+    "sentAt": "Enviado el "
+  },
+  "landing": {
+    "hero": {
+      "title": "Hay cosas que merecen ser dichas.\nDecilas en el momento correcto.",
+      "subtitle": "VoiceForLater te permite grabar mensajes hoy para que lleguen a las personas correctas cuando vos elijas."
+    },
+    "emotional": {
+      "title": "Tu presencia, en el momento correcto.",
+      "items": [
+        "Un mensaje para tu familia.",
+        "Una nota para alguien importante.",
+        "Tu voz y tu imagen, incluso cuando ya no puedas estar."
+      ]
+    },
+    "uses": {
+      "title": "¿En qué momentos se usa?",
+      "subtitle": "VoiceForLater se usa cuando el momento importa tanto como el mensaje.",
+      "items": [
+        "Un mensaje para tu hijo o hija cuando sea mayor",
+        "Algo que querés decir, pero no ahora",
+        "Palabras para una fecha importante",
+        "Un mensaje de apoyo para alguien que sabés que lo va a necesitar más adelante",
+        "Algo que te cuesta decir en persona",
+        "Un mensaje para alguien con quien hoy no podés hablar",
+        "Un mensaje que solo debería enviarse si vos no respondés más",
+        "Un mensaje para vos mismo en el futuro",
+        "Algo que no querés olvidar decir"
+      ]
+    },
+    "howItWorks": {
+      "title": "Cómo funciona",
+      "step1": {
+        "title": "Grabás un mensaje",
+        "description": ""
+      },
+      "step2": {
+        "title": "Elegís a quién va dirigido",
+        "description": ""
+      },
+      "step3": {
+        "title": "Se entrega cuando vos definís",
+        "description": ""
+      }
+    },
+    "delivery": {
+      "title": "Entrega a tu manera",
+      "date": {
+        "title": "En una fecha específica",
+        "description": "Cumpleaños, aniversarios o cualquier momento importante."
+      },
+      "checkin": {
+        "title": "Cuando ya no estés presente",
+        "description": "Cuando ya no estés, seguimos tus indicaciones. Tus mensajes llegan en los momentos y a las personas que tú elegiste, respetando tu voluntad y tu tiempo."
+      }
+    },
+    "audio": {
+      "title": "Tu voz y tu imagen",
+      "description": "A veces las palabras no alcanzan. Graba mensajes de audio o video para que tus seres queridos te vean y te escuchen."
+    },
+    "trust": {
+      "title": "Tranquilidad y control",
+      "reassurance": "",
+      "item1": "Vos decidís qué se envía, a quién y cuándo",
+      "item2": "Podés modificar o borrar tus mensajes mientras estés activo",
+      "item3": "Nada se envía sin que vos lo hayas definido antes"
+    },
+    "notWhat": {
+      "title": "Lo que VoiceForLater no es",
+      "items": [
+        "No es un testamento",
+        "No es asesoramiento legal",
+        "No reemplaza a una persona",
+        "No toma decisiones por vos"
+      ],
+      "clarification": "VoiceForLater solo entrega mensajes que vos dejaste, exactamente como los grabaste."
+    },
+    "pricing": {
+      "title": "Precios Simples",
+      "justification": "Menos que un café al mes, para algo que realmente importa.",
+      "recommended": "RECOMENDADO",
+      "free": {
+        "title": "Gratis",
+        "features": [
+          "1 mensaje",
+          "Solo texto"
+        ]
+      },
+      "pro": {
+        "title": "Pro",
+        "features": [
+          "Mensajes ilimitados",
+          "Texto + Audio + Video",
+          "Elige exactamente cuándo se envía cada mensaje",
+          "Designa a una persona de confianza para garantizar la entrega"
+        ],
+        "cta": "Pasar a plan PRO"
+      }
+    },
+    "closing": "",
+    "final_thought": "El momento importa.\nLas palabras también.",
+    "cta_final": "Crear mi primer mensaje",
+    "footer": {
+      "privacy": "Privacidad",
+      "terms": "Términos",
+      "contact": "Contacto"
+    }
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "magicLink": {
+      "title": "Voice for later",
+      "subtitle": "Ingresa tu email para acceder de forma segura a tus mensajes",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "submit": "Recibir Enlace de Acceso",
+      "sending": "Enviando...",
+      "success": {
+        "title": "Revisa tu email",
+        "message": "Enviamos un enlace a {email}. Haz clic en el enlace para iniciar sesión."
+      },
+      "error": "No pudimos enviar el enlace. Por favor, intenta de nuevo."
+    }
+  },
+  "dashboard": {
+    "title": "Tus mensajes",
+    "subtitle": "Acá podés crear, editar o eliminar los mensajes que dejaste grabados.",
+    "empty": {
+      "title": "Todavía no creaste ningún mensaje.",
+      "description": "Cuando lo hagas, aparecerán acá.",
+      "cta": "Crear Tu Primer Mensaje"
+    },
+    "createMessage": "Nuevo mensaje",
+    "messageCard": {
+      "recipient": "Para: {name}",
+      "status": {
+        "draft": "Borrador",
+        "scheduled": "Programado",
+        "delivered": "Enviado"
+      },
+      "type": {
+        "text": "Mensaje de Texto",
+        "audio": "Mensaje de Audio"
+      },
+      "checkinModeStatus": "el mensaje está configurado para enviarse automáticamente si dejas de confirmar tu actividad"
+    },
+    "limitReached": {
+      "title": "Límite de mensajes alcanzado",
+      "description": "Tu plan actual permite crear solo 1 mensaje. Para crear mensajes ilimitados y acceder a funciones premium, actualiza a Pro.",
+      "subtitle": "Por solo USD 10 al año podrás:",
+      "features": [
+        "Enviar mensajes ilimitados",
+        "Enviar mensajes de texto, audio y tambien Video!",
+        "Elegir exactamente cuándo se envía cada mensaje",
+        "Designar a una persona de confianza para garantizar la entrega"
+      ],
+      "cancel": "Cancelar"
+    }
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "settings": "Configuración",
+    "upgrade": "Actualizar a Pro"
+  },
+  "wizard": {
+    "title": "Crear Mensaje",
+    "steps": {
+      "type": "Tipo",
+      "content": "Contenido",
+      "recipient": "Destinatario",
+      "delivery": "Entrega",
+      "review": "Revisar"
+    },
+    "step1": {
+      "title": "¿Qué querés grabar?",
+      "subtitle": "Podés grabar un mensaje en audio, video o escribirlo.\nNo tiene que ser perfecto. Podés editarlo o borrarlo más adelante.",
+      "text": {
+        "title": "Escribir mensaje",
+        "description": "Escribe un mensaje desde el corazón"
+      },
+      "audio": {
+        "title": "Grabar audio",
+        "description": "Graba tu voz"
+      },
+      "video": {
+        "title": "Grabar video",
+        "description": "Deja un mensaje en video",
+        "upgradeToPro": "Actualizar a PRO"
+      }
+    },
+    "step2": {
+      "title": "Escribe tu mensaje",
+      "titleAudio": "Graba tu mensaje",
+      "subtitle": "Tómate tu tiempo. Este mensaje es para alguien especial.",
+      "textPlaceholder": "Escribe aquí tu mensaje…",
+      "charLimit": "{count} / {max} caracteres",
+      "recording": {
+        "start": "Iniciar Grabación",
+        "stop": "Detener Grabación",
+        "preview": "Previsualizar",
+        "delete": "Eliminar",
+        "timeLimit": "Máx. {seconds} segundos",
+        "timer": "{time}"
+      }
+    },
+    "step3": {
+      "title": "¿A quién va dirigido este mensaje?",
+      "subtitle": "Agregá una o más personas que deberían recibirlo.\nSolo se va a enviar cuando se cumpla la condición que definas.",
+      "nameLabel": "Nombre del destinatario",
+      "namePlaceholder": "Juan Pérez",
+      "emailLabel": "Email del destinatario",
+      "emailPlaceholder": "juan@ejemplo.com"
+    },
+    "step4": {
+      "title": "¿Cuándo querés que se entregue?",
+      "subtitle": "Elegí cuándo o bajo qué condición querés que este mensaje se envíe.",
+      "date": {
+        "title": "En una fecha específica",
+        "description": "Cumpleaños, aniversario, graduación...",
+        "label": "Fecha de entrega"
+      },
+      "checkin": {
+        "title": "Cuando ya no estés",
+        "description": "Si dejas de confirmar periódicamente, enviaremos tus mensajes.",
+        "interval": "Intervalo de confirmación",
+        "days7": "Cada 7 días",
+        "days30": "Cada 30 días (Pro)",
+        "days60": "Cada 60 días (Pro)",
+        "days90": "Cada 90 días (Pro)",
+        "note": "Si no confirmas 3 veces, contactaremos a tu persona de confianza antes de entregar.",
+        "freeNote": "Plan Free: intervalo de 7 días con 1 recordatorio. Actualiza a Pro para intervalos más largos y contacto de confianza."
+      },
+      "test": {
+        "title": "En 5 minutos (Modo Prueba)",
+        "description": "Solo para probar que el mensaje llega correctamente.",
+        "note": "Entregaremos este mensaje en 5 minutos usando el flujo real."
+      }
+    },
+    "step5": {
+      "title": "Revisá tu mensaje",
+      "subtitle": "Antes de guardar, asegurate de que todo esté como querés.\nPodés modificarlo o eliminarlo mientras estés activo.",
+      "messageType": "Tipo",
+      "content": "Contenido",
+      "recipient": "Destinatario",
+      "deliveryRule": "Entrega",
+      "deliveryDate": "El {date}",
+      "deliveryCheckin": "Si no hay actividad por {days} días",
+      "submit": "Guardar mensaje",
+      "submitting": "Creando..."
+    }
+  },
+  "checkin": {
+    "title": "Estado de Confirmación",
+    "nextCheckin": "Próxima confirmación",
+    "daysRemaining": "días restantes",
+    "overdue": "¡Tu confirmación está vencida! Por favor confirma que estás activo.",
+    "confirmButton": "Estoy Activo",
+    "confirming": "Confirmando...",
+    "confirmed": "¡Confirmación exitosa! ✓"
+  },
+  "trustedContact": {
+    "title": "Contacto de Confianza",
+    "description": "Esta persona será contactada si dejas de confirmar.",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "María García",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "maria@ejemplo.com",
+    "confirmEmailLabel": "Confirmar correo electrónico",
+    "confirmEmailPlaceholder": "maria@ejemplo.com",
+    "emailMismatch": "Los correos electrónicos no coinciden",
+    "save": "Guardar Contacto",
+    "saving": "Guardando...",
+    "saved": "¡Contacto guardado!",
+    "remove": "Eliminar",
+    "addContact": "Agregar Contacto",
+    "noContact": "Sin contacto de confianza",
+    "proRequired": "Contacto de confianza requiere plan Pro"
+  },
+  "stripe": {
+    "upgrade": "Mejorar a PRO",
+    "upgradeModal": "Mejorar a PRO a solo USD 10",
+    "upgrading": "Redirigiendo...",
+    "manageSub": "Gestionar Suscripción",
+    "proBadge": "PRO",
+    "freeBadge": "GRATIS",
+    "proPrice": "$10/año",
+    "proFeatures": "Mensajes ilimitados, control total del envío y entrega prioritaria",
+    "upgradeSuccess": "¡Bienvenido a Pro! 🎉",
+    "upgradeCancelled": "Mejora cancelada"
+  }
+}

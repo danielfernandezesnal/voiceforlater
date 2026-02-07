@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #d4dde2;
+  /* User Light Blue Background */
+  --foreground: #1e293b;
+  /* Dark Slate for high contrast text */
+  --card: #ffffff;
+  /* White cards from palette */
+  --card-foreground: #1e293b;
+  --primary: #3A6F73;
+  /* Deep Teal */
+  --primary-foreground: #ffffff;
+  --secondary: #e2e8f0;
+  /* Lighter slate for secondary backgrounds */
+  --secondary-foreground: #1e293b;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  /* Slate-500 */
+  --accent: #3A6F73;
+  --accent-foreground: #ffffff;
+  --border: #cbd5e1;
+  /* Slate-300 */
+  --input: #ffffff;
+  --ring: #3A6F73;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --radius: 0.5rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* Focus ring */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+@layer utilities {
+  .btn-enhanced {
+    @apply shadow-md hover:shadow-lg active:shadow-sm transition-all duration-200 active:scale-[0.98];
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground btn-enhanced hover:bg-primary/90;
+  }
+}
