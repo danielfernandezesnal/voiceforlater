@@ -97,11 +97,13 @@ export async function POST(request: NextRequest) {
         }
 
         let audioPath: string | null = null;
+        let fileSizeBytes: number | null = null;
 
         // Upload audio file
         if (type === "audio" && audioFile) {
             const fileExt = audioFile.name.split(".").pop() || "webm";
             const fileName = `${user.id}/${uuidv4()}.${fileExt}`;
+            fileSizeBytes = audioFile.size;
 
             const { error: uploadError } = await supabase.storage
                 .from("audio")
@@ -125,6 +127,7 @@ export async function POST(request: NextRequest) {
         if (type === "video" && videoFile) {
             const fileExt = videoFile.name.split(".").pop() || "webm";
             const fileName = `${user.id}/${uuidv4()}.${fileExt}`;
+            fileSizeBytes = videoFile.size;
 
             const { error: uploadError } = await supabase.storage
                 .from("audio")
@@ -153,6 +156,7 @@ export async function POST(request: NextRequest) {
                 status: "scheduled",
                 text_content: textContent || null,
                 audio_path: audioPath,
+                file_size_bytes: fileSizeBytes,
             })
             .select()
             .single();
@@ -308,10 +312,12 @@ export async function PUT(request: NextRequest) {
 
             if (uploadError) throw new Error("Audio upload failed");
             updates.audio_path = fileName;
+            updates.file_size_bytes = audioFile.size;
         } else if (type === 'text' && existingMessage.audio_path) {
             // Clean up audio if switching to text
             await supabase.storage.from("audio").remove([existingMessage.audio_path]);
             updates.audio_path = null;
+            updates.file_size_bytes = null;
         }
 
         // Update Message
