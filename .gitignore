@@ -30,24 +30,28 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
+# vercel
 .vercel
-# secrets
+
+# environment variables and secrets
 .env
 .env.*
+!.env.local.example
 *.txt
+!README.txt
+
+# sensitive scripts
 scripts/write-keys.js
 
-# next/vercel
-.next/
-node_modules/
-.vercel/
+# logs and temporary files
+logs.txt
+production_logs.txt
+build_log.txt
+full_build_log.txt
+lint_errors.txt
+full_lint_report.txt
+temp_env.txt
