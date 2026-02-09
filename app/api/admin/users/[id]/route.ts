@@ -6,13 +6,13 @@ export const dynamic = 'force-dynamic';
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         // Verify admin access
         await requireAdmin();
 
-        const { id: userId } = params;
+        const { id: userId } = await params;
 
         if (!userId) {
             return NextResponse.json({ error: 'User ID is required' }, { status: 400 });

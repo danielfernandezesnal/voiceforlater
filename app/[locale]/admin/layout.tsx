@@ -6,13 +6,14 @@ export default async function AdminLayout({
     params,
 }: {
     children: React.ReactNode;
-    params: { locale: string };
+    params: Promise<{ locale: string }>;
 }) {
     const adminStatus = await isAdmin();
+    const { locale } = await params;
 
     if (!adminStatus) {
         // Redirect non-admin users to dashboard
-        redirect(`/${params.locale}/dashboard`);
+        redirect(`/${locale}/dashboard`);
     }
 
     return (
@@ -24,7 +25,7 @@ export default async function AdminLayout({
                             Admin Dashboard
                         </h1>
                         <a
-                            href={`/${params.locale}/dashboard`}
+                            href={`/${locale}/dashboard`}
                             className="text-sm text-primary hover:underline"
                         >
                             Back to User Dashboard
