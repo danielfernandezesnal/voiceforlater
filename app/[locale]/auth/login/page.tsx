@@ -3,6 +3,7 @@ import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/
 import { LoginForm } from "@/components/auth/login-form";
 
 // Force dynamic rendering - this page uses client-side auth
+// Rebuild trigger: 2026-02-09 v3
 export const dynamic = 'force-dynamic'
 
 export default async function LoginPage({
