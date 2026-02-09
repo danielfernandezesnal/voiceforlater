@@ -8,11 +8,13 @@ import { createAdminClient } from '@/lib/supabase/admin';
 export async function isAdmin(): Promise<boolean> {
     try {
         const supabase = await createClient();
+        const adminClient = createAdminClient();
 
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return false;
 
-        const { data: profile } = await supabase
+        // Use adminClient to bypass RLS recursion
+        const { data: profile } = await adminClient
             .from('profiles')
             .select('is_admin')
             .eq('id', user.id)
@@ -31,11 +33,13 @@ export async function isAdmin(): Promise<boolean> {
 export async function getAdminUserId(): Promise<string | null> {
     try {
         const supabase = await createClient();
+        const adminClient = createAdminClient();
 
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return null;
 
-        const { data: profile } = await supabase
+        // Use adminClient to bypass RLS recursion
+        const { data: profile } = await adminClient
             .from('profiles')
             .select('is_admin')
             .eq('id', user.id)
