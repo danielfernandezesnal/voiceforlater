@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
-import { MagicLinkForm } from "@/components/auth/magic-link-form";
+import { LoginForm } from "@/components/auth/login-form";
 
 // Force dynamic rendering - this page uses client-side auth
-// Rebuild trigger
 export const dynamic = 'force-dynamic'
 
 export default async function LoginPage({
@@ -31,14 +30,7 @@ export default async function LoginPage({
 
                 {/* Login Card */}
                 <div className="bg-card border border-border rounded-2xl p-8 shadow-xl">
-                    <div className="text-center mb-8">
-                        <h1 className="text-2xl font-bold">{dict.auth.magicLink.title}</h1>
-                        <p className="mt-2 text-muted-foreground">
-                            {dict.auth.magicLink.subtitle}
-                        </p>
-                    </div>
-
-                    <MagicLinkForm dictionary={dict.auth.magicLink} locale={locale} />
+                    <LoginForm dictionary={dict.auth} locale={locale} />
                 </div>
 
                 {/* Language Switcher */}

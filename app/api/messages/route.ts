@@ -56,6 +56,7 @@ export async function POST(request: NextRequest) {
         const videoFile = formData.get("video") as File | null;
         const deliverAt = formData.get("deliverAt") as string | null;
         const checkinIntervalDays = formData.get("checkinIntervalDays") as string | null;
+        const trustedContactIds = formData.getAll("trustedContactIds") as string[];
 
         // Validate required fields
         if (!type || !recipientName || !recipientEmail || !deliveryMode) {
@@ -234,6 +235,22 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Failed to create delivery rule" }, { status: 500 });
         }
 
+        // Link Trusted Contacts
+        if (trustedContactIds.length > 0) {
+            const tcRows = trustedContactIds.map(id => ({
+                message_id: message.id,
+                trusted_contact_id: id
+            }));
+
+            const { error: tcError } = await supabase
+                .from('message_trusted_contacts')
+                .insert(tcRows);
+
+            if (tcError) {
+                console.error("Error linking trusted contacts:", tcError);
+            }
+        }
+
         return NextResponse.json({ success: true, messageId: message.id });
     } catch (error) {
         console.error("API error:", error);
@@ -284,6 +301,7 @@ export async function PUT(request: NextRequest) {
         const audioFile = formData.get("audio") as File | null;
         const deliverAt = formData.get("deliverAt") as string | null;
         const checkinIntervalDays = formData.get("checkinIntervalDays") as string | null;
+        const trustedContactIds = formData.getAll("trustedContactIds") as string[];
 
         // Validation (simplified vs POST, assuming valid input mostly)
         if (!type || !recipientName || !recipientEmail || !deliveryMode) {
@@ -371,6 +389,26 @@ export async function PUT(request: NextRequest) {
             .upsert(deliveryRuleData, { onConflict: 'message_id' });
 
         if (deliveryError) throw deliveryError;
+
+        // Update Trusted Contacts
+        if (deliveryMode === 'checkin') {
+            // Remove existing
+            await supabase.from('message_trusted_contacts').delete().eq('message_id', messageId);
+
+            // Add new
+            if (trustedContactIds.length > 0) {
+                const tcRows = trustedContactIds.map(id => ({
+                    message_id: messageId,
+                    trusted_contact_id: id
+                }));
+
+                const { error: tcError } = await supabase
+                    .from('message_trusted_contacts')
+                    .insert(tcRows);
+
+                if (tcError) throw tcError;
+            }
+        }
 
         return NextResponse.json({ success: true, messageId });
     } catch (error) {

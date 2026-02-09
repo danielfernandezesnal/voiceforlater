@@ -14,7 +14,7 @@
     "confirm": "Confirmar",
     "getStarted": "Crear mi primer mensaje",
     "seeHow": "Cómo funciona",
-    "price": "{amount}/año",
+    "price": "USD {amount}",
     "sentAt": "Enviado el "
   },
   "landing": {
@@ -41,7 +41,7 @@
         "Algo que te cuesta decir en persona",
         "Un mensaje para alguien con quien hoy no podés hablar",
         "Un mensaje que solo debería enviarse si vos no respondés más",
-        "Un mensaje para vos mismo en el futuro",
+        "Un mensaje para vos mismo en el futuro (cápsula del tiempo)",
         "Algo que no querés olvidar decir"
       ]
     },
@@ -100,7 +100,8 @@
         "title": "Gratis",
         "features": [
           "1 mensaje",
-          "Solo texto"
+          "Solo texto",
+          "Elige fecha exacta de envío"
         ]
       },
       "pro": {
@@ -108,7 +109,7 @@
         "features": [
           "Mensajes ilimitados",
           "Texto + Audio + Video",
-          "Elige exactamente cuándo se envía cada mensaje",
+          "Elige fecha exacta de envío",
           "Designa a una persona de confianza para garantizar la entrega"
         ],
         "cta": "Pasar a plan PRO"
@@ -126,9 +127,16 @@
   "auth": {
     "login": "Iniciar Sesión",
     "logout": "Cerrar Sesión",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "submit": "Ingresar",
+    "submitMagic": "Ingresar con enlace mágico",
+    "createAccount": "Nueva cuenta",
+    "forgotPassword": "Olvidé mi contraseña",
     "magicLink": {
       "title": "Voice for later",
-      "subtitle": "Ingresa tu email para acceder de forma segura a tus mensajes",
+      "subtitle": "Ingresa tu email para acceder",
       "emailLabel": "Correo electrónico",
       "emailPlaceholder": "tu@ejemplo.com",
       "submit": "Recibir Enlace de Acceso",
@@ -138,6 +146,19 @@
         "message": "Enviamos un enlace a {email}. Haz clic en el enlace para iniciar sesión."
       },
       "error": "No pudimos enviar el enlace. Por favor, intenta de nuevo."
+    },
+    "setPassword": {
+      "title": "Crear contraseña",
+      "subtitle": "Para mayor seguridad, definí una contraseña para tu cuenta.",
+      "label": "Contraseña",
+      "submit": "Guardar contraseña",
+      "success": "Contraseña guardada"
+    },
+    "resetPassword": {
+      "title": "Restablecer contraseña",
+      "subtitle": "Ingresa tu email para recibir una nueva contraseña provisoria.",
+      "submit": "Resetear contraseña",
+      "success": "Te enviamos una nueva contraseña a tu email."
     }
   },
   "dashboard": {

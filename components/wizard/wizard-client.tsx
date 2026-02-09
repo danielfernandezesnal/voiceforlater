@@ -126,6 +126,13 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                 formData.append('deliverAt', data.deliverAt)
             } else {
                 formData.append('checkinIntervalDays', String(data.checkinIntervalDays))
+
+                // Add trusted contacts
+                if (data.trustedContactIds && data.trustedContactIds.length > 0) {
+                    data.trustedContactIds.forEach(id => {
+                        formData.append('trustedContactIds', id)
+                    })
+                }
             }
 
             // Log payload for debugging

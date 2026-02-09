@@ -27,6 +27,17 @@ export default async function DashboardLayout({
         redirect(`/${locale}/auth/login`);
     }
 
+    const supabase = await createClient();
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('auth_password_set')
+        .eq('id', user.id)
+        .single();
+
+    if (profile && profile.auth_password_set === false) {
+        redirect(`/${locale}/auth/set-password`);
+    }
+
     const dict = await getDictionary(locale);
 
     return (
@@ -49,6 +60,12 @@ export default async function DashboardLayout({
                                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                             >
                                 {dict.nav.dashboard}
+                            </Link>
+                            <Link
+                                href={`/${locale}/dashboard/contacts`}
+                                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                                Contactos
                             </Link>
                             <div className="flex items-center gap-4">
                                 {/* Language Switcher */}

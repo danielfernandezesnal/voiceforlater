@@ -139,31 +139,74 @@ export async function GET(request: NextRequest) {
                         metadata: { attempt: attempts + 1 },
                     });
                 } else {
-                    // 3 attempts exhausted - notify trusted contact
-                    const { data: trustedContact } = await supabase
-                        .from("trusted_contacts")
-                        .select("*")
-                        .eq("user_id", userId)
-                        .single();
+                    // 3 attempts exhausted - notify trusted contacts linked to check-in messages
+
+                    // 1. Fetch messages with check-in mode and their contacts
+                    const { data: userMessages } = await supabase
+                        .from('messages')
+                        .select(`
+                            id,
+                            delivery_rules!inner (mode),
+                            message_trusted_contacts (
+                                trusted_contacts (name, email)
+                            )
+                        `)
+                        .eq('owner_id', userId)
+                        .eq('delivery_rules.mode', 'checkin');
+
+                    // 2. Aggregate unique contacts
+                    const contactsToNotify = new Map<string, { name: string, email: string }>();
+
+                    if (userMessages) {
+                        userMessages.forEach(msg => {
+                            // Supabase returns array for HasMany
+                            const links = msg.message_trusted_contacts as any[];
+                            if (Array.isArray(links)) {
+                                links.forEach(link => {
+                                    const contact = link.trusted_contacts;
+                                    if (contact && contact.email) {
+                                        contactsToNotify.set(contact.email, contact);
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    // Fallback: If no message-specific contacts, try to find any trusted contact for the user
+                    if (contactsToNotify.size === 0) {
+                        const { data: fallbackContact } = await supabase
+                            .from("trusted_contacts")
+                            .select("name, email")
+                            .eq("user_id", userId)
+                            .limit(1)
+                            .maybeSingle();
+
+                        if (fallbackContact) {
+                            contactsToNotify.set(fallbackContact.email, fallbackContact);
+                        }
+                    }
 
                     const resendClientForTrusted = getResendClient();
-                    if (trustedContact && resendClientForTrusted) {
-                        await resendClientForTrusted.emails.send({
-                            from: "VoiceForLater <noreply@voiceforlater.com>",
-                            to: trustedContact.email,
-                            subject: "Important: We need to reach you about a loved one",
-                            html: `
-                <h2>Hello ${trustedContact.name},</h2>
-                <p>You've been designated as a trusted contact by someone using VoiceForLater.</p>
-                <p>They have not responded to our check-in reminders for the past 3 days.</p>
-                <p>Before we deliver any messages they've prepared, we wanted to confirm the situation with you.</p>
-                <p><strong>Please reply to this email or contact us to let us know what's happening.</strong></p>
-                <p style="color:#666;font-size:12px;margin-top:20px;">
-                  This is an automated message from VoiceForLater.
-                </p>
-              `,
-                        });
-                        results.trusted_contact_notified++;
+                    if (resendClientForTrusted && contactsToNotify.size > 0) {
+                        // Send email to each unique contact
+                        for (const contact of contactsToNotify.values()) {
+                            await resendClientForTrusted.emails.send({
+                                from: "VoiceForLater <noreply@voiceforlater.com>",
+                                to: contact.email,
+                                subject: "Important: We need to reach you about a loved one",
+                                html: `
+                                    <h2>Hello ${contact.name},</h2>
+                                    <p>You've been designated as a trusted contact by someone using VoiceForLater.</p>
+                                    <p>They have not responded to our check-in reminders for the past 3 days.</p>
+                                    <p>Before we deliver any messages they've prepared, we wanted to confirm the situation with you.</p>
+                                    <p><strong>Please reply to this email or contact us to let us know what's happening.</strong></p>
+                                    <p style="color:#666;font-size:12px;margin-top:20px;">
+                                      This is an automated message from VoiceForLater.
+                                    </p>
+                                `,
+                            });
+                            results.trusted_contact_notified++;
+                        }
                     }
 
                     // Update checkin status
@@ -176,7 +219,10 @@ export async function GET(request: NextRequest) {
                     await supabase.from("events").insert({
                         type: "trusted_contact_notified",
                         user_id: userId,
-                        metadata: { trusted_contact_email: trustedContact?.email },
+                        metadata: {
+                            contact_count: contactsToNotify.size,
+                            contacts: Array.from(contactsToNotify.keys())
+                        },
                     });
 
                     // Note: Actual message delivery would be done after trusted contact confirms

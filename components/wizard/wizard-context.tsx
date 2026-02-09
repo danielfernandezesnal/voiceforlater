@@ -24,6 +24,7 @@ export interface WizardData {
     deliveryMode: DeliveryMode | null
     deliverAt: string // ISO date string
     checkinIntervalDays: 7 | 30 | 60 | 90
+    trustedContactIds: string[]
 }
 
 interface WizardContextType {
@@ -48,6 +49,7 @@ const initialData: WizardData = {
     deliveryMode: null,
     deliverAt: '',
     checkinIntervalDays: 30, // Default to 30 to match DB constraint
+    trustedContactIds: [],
 }
 
 const STORAGE_KEY = 'voiceforlater_wizard_draft'

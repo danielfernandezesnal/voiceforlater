@@ -14,7 +14,7 @@
     "edit": "Edit",
     "view": "View Message",
     "delete": "Delete",
-    "price": "{amount}/year",
+    "price": "USD {amount}",
     "sentAt": "Sent on "
   },
   "landing": {
@@ -49,6 +49,10 @@
         {
           "title": "So your words remain",
           "description": "A memory, a story, or advice you want to keep."
+        },
+        {
+          "title": "For yourself in the future",
+          "description": "A message for your future self (time capsule)."
         }
       ]
     },
@@ -107,7 +111,8 @@
         "title": "Free",
         "features": [
           "1 message",
-          "Text only"
+          "Text only",
+          "Choose exact delivery date"
         ]
       },
       "pro": {
@@ -115,7 +120,7 @@
         "features": [
           "Unlimited messages",
           "Text + Audio + Video",
-          "Choose exactly when each message is sent",
+          "Choose exact delivery date",
           "Designate a trusted person to ensure delivery"
         ],
         "cta": "Switch to PRO plan"
@@ -134,9 +139,16 @@
   "auth": {
     "login": "Sign In",
     "logout": "Sign Out",
+    "emailLabel": "Email address",
+    "passwordLabel": "Password",
+    "emailPlaceholder": "you@example.com",
+    "submit": "Sign In",
+    "submitMagic": "Sign in with Magic Link",
+    "createAccount": "New Account",
+    "forgotPassword": "Forgot password?",
     "magicLink": {
       "title": "Voice for later",
-      "subtitle": "Enter your email to securely access your messages",
+      "subtitle": "Enter your email to access",
       "emailLabel": "Email address",
       "emailPlaceholder": "you@example.com",
       "submit": "Get Access Link",
@@ -146,6 +158,19 @@
         "message": "We've sent a magic link to {email}. Click the link to sign in."
       },
       "error": "Could not send magic link. Please try again."
+    },
+    "setPassword": {
+      "title": "Create password",
+      "subtitle": "For better security, define a password for your account.",
+      "label": "Password",
+      "submit": "Save password",
+      "success": "Password saved"
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "subtitle": "Enter your email to receive a new temporary password.",
+      "submit": "Reset password",
+      "success": "We've sent a new password to your email."
     }
   },
   "dashboard": {
@@ -159,7 +184,7 @@
     "limitReached": {
       "title": "Message limit reached",
       "description": "Your current plan only allows 1 message. To create unlimited messages and access premium features, upgrade to Pro.",
-      "subtitle": "For just USD 10/year you can:",
+      "subtitle": "For just USD 10 you can:",
       "features": [
         "Send unlimited messages",
         "Send text, audio, and video messages!",
@@ -186,6 +211,7 @@
   "nav": {
     "dashboard": "Dashboard",
     "settings": "Settings",
+    "contacts": "Contacts",
     "upgrade": "Upgrade to Pro"
   },
   "wizard": {
