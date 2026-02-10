@@ -315,6 +315,7 @@ export default async function LocaleHomePage({
                                 href={`/${locale}/auth/login`}
                                 className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors"
                             >
+                                {/* Force redeploy trigger */}
                                 {dict.landing.pricing.pro.cta}
                             </Link>
                         </div>
