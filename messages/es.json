@@ -101,16 +101,19 @@
         "features": [
           "1 mensaje",
           "Solo texto",
-          "Elige fecha exacta de envío"
+          "Elige fecha exacta de envío",
+          "1 persona de confianza (cómplice)"
         ]
       },
       "pro": {
         "title": "Pro",
         "features": [
           "Mensajes ilimitados",
-          "Texto + Audio + Video",
+          "Texto",
+          "Audio",
+          "Video",
           "Elige fecha exacta de envío",
-          "Designa a una persona de confianza para garantizar la entrega"
+          "Hasta 3 personas de confianza para garantizar la entrega"
         ],
         "cta": "Pasar a plan PRO"
       }

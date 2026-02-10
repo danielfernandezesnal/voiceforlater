@@ -112,16 +112,19 @@
         "features": [
           "1 message",
           "Text only",
-          "Choose exact delivery date"
+          "Choose the exact delivery date",
+          "1 trusted person (companion)"
         ]
       },
       "pro": {
         "title": "Pro",
         "features": [
           "Unlimited messages",
-          "Text + Audio + Video",
-          "Choose exact delivery date",
-          "Designate a trusted person to ensure delivery"
+          "Text",
+          "Audio",
+          "Video",
+          "Choose the exact delivery date",
+          "Up to 3 trusted people to ensure delivery"
         ],
         "cta": "Switch to PRO plan"
       }

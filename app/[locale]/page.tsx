@@ -303,7 +303,7 @@ export default async function LocaleHomePage({
                                 {dict.landing.pricing.recommended}
                             </div>
                             <h3 className="text-xl font-bold mb-2 text-primary">{dict.landing.pricing.pro.title}</h3>
-                            <div className="text-3xl font-bold mb-6">USD {dict.common.price.replace('{amount}', '10')}</div>
+                            <div className="text-3xl font-bold mb-6">{dict.common.price.replace('{amount}', '10')}</div>
                             <ul className="space-y-4 mb-8 text-left flex-1">
                                 {dict.landing.pricing.pro.features.map((f, i) => (
                                     <li key={i} className="flex items-center gap-2 text-sm">
