@@ -311,7 +311,16 @@
     "overdue": "Your check-in is overdue! Please confirm you're active.",
     "confirmButton": "I'm Active",
     "confirming": "Confirming...",
-    "confirmed": "Check-in confirmed! ✓"
+    "confirmed": "Check-in confirmed! ✓",
+    "contactNotification": {
+      "subject": "You’ve been chosen as a trusted contact",
+      "title": "You’ve been chosen as a trusted contact",
+      "intro": "{name} has chosen you as a trusted contact on Carry my Words.",
+      "explanation": "This means that if this person does not confirm their activity within the defined period, you may receive a notification related to the messages they have scheduled.",
+      "noAction": "No action is required from you at this time. We just wanted to inform you and thank you for being part of {name}’s circle of trust.",
+      "signature": "Carry my Words",
+      "tagline": "So your words arrive when they’re meant to."
+    }
   },
   "trustedContact": {
     "title": "Trusted Contact",

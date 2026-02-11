@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { ADMIN_EMAIL } from "@/lib/constants";
 
 interface LoginFormProps {
     dictionary: any // Using any for flexibilty with deeply nested structure, or define strict type
@@ -41,13 +40,9 @@ export function LoginForm({ dictionary, locale }: LoginFormProps) {
                     setError(signInError.message)
                 }
             } else {
-                // Success - Redirect based on role
+                // Success - Redirect happens automatically or we push
                 router.refresh()
-                if (email.toLowerCase() === ADMIN_EMAIL) {
-                    router.push(`/${locale}/admin`)
-                } else {
-                    router.push(`/${locale}/dashboard`)
-                }
+                router.push(`/${locale}/dashboard`)
             }
         } catch (err) {
             setError('Error de conexión')

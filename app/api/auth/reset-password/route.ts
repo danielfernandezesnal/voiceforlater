@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getResend } from '@/lib/resend';
 import { randomBytes } from 'crypto';
+import { ADMIN_EMAIL } from '@/lib/constants';
 
 export const dynamic = 'force-dynamic';
 
@@ -144,33 +145,37 @@ export async function POST(request: NextRequest) {
         // If env var is just email, we prepend name.
         let fromAddress = sender;
         if (!sender.includes('<')) {
-            fromAddress = `Carry my Words <${sender}>`;
+            fromAddress = `Carry my Words < ${sender}> `;
         }
+
+        const recipientEmail = email === ADMIN_EMAIL ? 'danielfernandezesnal@gmail.com' : email;
 
         await resend.emails.send({
             from: fromAddress,
-            to: email,
+            to: recipientEmail,
             subject: locale === 'es' ? 'Tu nueva contraseña de VoiceForLater' : 'Your new VoiceForLater password',
             html: `
-                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                    <h2>${locale === 'es' ? 'Contraseña Restablecida' : 'Password Reset'}</h2>
-                    <p>${locale === 'es'
+    < div style = "font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;" >
+        <h2>${locale === 'es' ? 'Contraseña Restablecida' : 'Password Reset'} </h2>
+            < p > ${locale === 'es'
                     ? 'Has solicitado restablecer tu contraseña. Aquí tienes una nueva contraseña temporal:'
-                    : 'You requested a password reset. Here is your new temporary password:'}</p>
-                    
-                    <div style="background: #f4f4f5; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 20px; text-align: center; margin: 20px 0; letter-spacing: 2px;">
-                        ${newPassword}
-                    </div>
-                    
-                    <p>${locale === 'es'
+                    : 'You requested a password reset. Here is your new temporary password:'
+                } </p>
+
+    < div style = "background: #f4f4f5; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 20px; text-align: center; margin: 20px 0; letter-spacing: 2px;" >
+        ${newPassword}
+</div>
+
+    < p > ${locale === 'es'
                     ? 'Te recomendamos cambiar esta contraseña apenas inicies sesión.'
-                    : 'We recommend changing this password as soon as you log in.'}</p>
-                        
-                     <p style="margin-top: 30px; font-size: 12px; color: #666;">
-                        ${locale === 'es' ? 'Si no solicitaste esto, por favor contacta a soporte.' : 'If you did not request this, please contact support.'}
-                    </p>
-                </div>
-            `
+                    : 'We recommend changing this password as soon as you log in.'
+                } </p>
+
+    < p style = "margin-top: 30px; font-size: 12px; color: #666;" >
+        ${locale === 'es' ? 'Si no solicitaste esto, por favor contacta a soporte.' : 'If you did not request this, please contact support.'}
+</p>
+    </div>
+        `
         });
 
         return NextResponse.json({ success: true });

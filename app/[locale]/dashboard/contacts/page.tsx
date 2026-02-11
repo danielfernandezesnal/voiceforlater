@@ -33,7 +33,7 @@ export default async function ContactsPage({
     return (
         <div className="max-w-4xl mx-auto space-y-8">
             <div className="bg-card border border-border rounded-xl p-8 shadow-sm">
-                <h1 className="text-3xl font-bold mb-6">{dict.nav?.contacts || 'Contactos'}</h1>
+                <h1 className="text-3xl font-bold mb-6">{(dict.nav as any)?.contacts || 'Contactos'}</h1>
                 <p className="text-muted-foreground mb-8">
                     {dict.trustedContact?.description || 'Gestiona las personas en las que confías para que reciban tus mensajes si tú no puedes.'}
                 </p>

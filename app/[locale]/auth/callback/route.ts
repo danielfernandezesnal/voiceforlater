@@ -1,35 +1,94 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+﻿import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
+import { type EmailOtpType } from "@supabase/supabase-js";
 
-export async function GET(request: NextRequest) {
-    const { searchParams } = new URL(request.url)
-    const code = searchParams.get('code')
-    const token_hash = searchParams.get('token_hash')
-    const type = searchParams.get('type') as 'magiclink' | 'signup' | 'invite' | 'recovery' | 'email_change' | null
-    const locale = request.nextUrl.pathname.split('/')[1] || 'en'
+function normalizePath(p: string) {
+  try {
+    const u = new URL(p);
+    return null;
+  } catch { }
+  if (!p.startsWith("/")) return null;
+  if (p.startsWith("//")) return null;
+  return p;
+}
 
-    // Determine the origin for redirection
-    const origin = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
-    const cleanOrigin = origin.replace(/\/$/, '');
+export async function GET(request: Request) {
+  const requestUrl = new URL(request.url);
+  const locale = requestUrl.pathname.split("/")[1] || "en";
+  const code = requestUrl.searchParams.get("code");
+  const token_hash = requestUrl.searchParams.get("token_hash");
+  const type = requestUrl.searchParams.get("type") as EmailOtpType | null;
+  const nextParam = requestUrl.searchParams.get("next");
 
-    const supabase = await createClient()
+  const supabase = await createClient();
+  const fallbackUserRedirect = `/${locale}/dashboard`;
 
-    let errorDetails = '';
+  let user = null;
+  let sessionError = null;
 
-    if (token_hash && type) {
-        const { error } = await supabase.auth.verifyOtp({ token_hash, type })
-        if (!error) {
-            return NextResponse.redirect(`${cleanOrigin}/${locale}/dashboard`)
-        }
-        errorDetails = error.message;
-    } else if (code) {
-        const { error } = await supabase.auth.exchangeCodeForSession(code)
-        if (!error) {
-            return NextResponse.redirect(`${cleanOrigin}/${locale}/dashboard`)
-        }
-        errorDetails = error.message;
+  // Flow A: Magic Link / OTP / Recovery (uses token_hash + type)
+  if (token_hash && type) {
+    const { data, error } = await supabase.auth.verifyOtp({
+      token_hash,
+      type,
+    });
+    if (error) {
+      sessionError = error;
+    } else {
+      user = data.user;
     }
+  }
+  // Flow B: OAuth / PKCE (uses code)
+  else if (code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+      sessionError = error;
+    } else {
+      const { data } = await supabase.auth.getUser();
+      user = data.user;
+    }
+  }
+  // Flow C: Neither (Invalid link)
+  else {
+    return NextResponse.redirect(new URL(`/${locale}/login`, requestUrl.origin));
+  }
 
-    // Return to login page on error
-    return NextResponse.redirect(`${cleanOrigin}/${locale}/auth/login?error=auth&message=${encodeURIComponent(errorDetails)}`)
+  // Handle Errors
+  if (sessionError) {
+    return NextResponse.redirect(
+      new URL(`/${locale}/login?error=auth_callback_failed&details=${encodeURIComponent(sessionError.message)}`, requestUrl.origin)
+    );
+  }
+
+  // Handle Success - Admin Check
+  const email = (user?.email || "").toLowerCase();
+
+  let isPrivileged = false;
+
+  if (user) {
+    const { data: roleData } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single();
+
+    if (roleData && (roleData.role === 'owner' || roleData.role === 'admin')) {
+      isPrivileged = true;
+    }
+  }
+
+  if (isPrivileged) {
+    return NextResponse.redirect(new URL(`/${locale}/admin`, requestUrl.origin));
+  }
+
+  const safeNext = nextParam ? normalizePath(nextParam) : null;
+
+  // Handle password recovery redirect
+  if (type === 'recovery') {
+    return NextResponse.redirect(new URL(`/${locale}/auth/set-password`, requestUrl.origin));
+  }
+
+  return NextResponse.redirect(
+    new URL(safeNext ?? fallbackUserRedirect, requestUrl.origin)
+  );
 }

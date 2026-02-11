@@ -298,7 +298,16 @@
     "overdue": "¡Tu confirmación está vencida! Por favor confirma que estás activo.",
     "confirmButton": "Estoy Activo",
     "confirming": "Confirmando...",
-    "confirmed": "¡Confirmación exitosa! ✓"
+    "confirmed": "¡Confirmación exitosa! ✓",
+    "contactNotification": {
+      "subject": "Fuiste elegido como contacto de confianza",
+      "title": "Fuiste elegido como contacto de confianza",
+      "intro": "{name} te eligió como contacto de confianza en Carry my Words.",
+      "explanation": "Esto significa que, si esa persona no confirma su actividad dentro del período establecido, podrías recibir una notificación relacionada con los mensajes que dejó programados.",
+      "noAction": "No se requiere ninguna acción de tu parte por ahora. Solo queríamos informarte y agradecerte por acompañar a {name} en este rol de confianza.",
+      "signature": "Carry my Words",
+      "tagline": "Para que tus palabras lleguen cuando tengan que llegar."
+    }
   },
   "trustedContact": {
     "title": "Contacto de Confianza",

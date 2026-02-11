@@ -28,7 +28,30 @@ export async function updateSession(request: NextRequest) {
     )
 
     // Refresh session if expired - important for Server Components
-    await supabase.auth.getUser()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    // PROTECT ADMIN ROUTES
+    const path = request.nextUrl.pathname;
+    const segments = path.split('/');
+    // segments: ['', 'locale', 'admin', ...]
+    const isAdminRoute = segments[2] === 'admin';
+
+    if (isAdminRoute) {
+        const locale = segments[1] || 'en';
+
+        if (!user) {
+            const url = request.nextUrl.clone()
+            url.pathname = `/${locale}/auth/login`
+            return NextResponse.redirect(url)
+        }
+
+        const { isAdminEmail } = await import('@/lib/admin');
+        if (!isAdminEmail(user)) {
+            const url = request.nextUrl.clone()
+            url.pathname = `/${locale}/dashboard`
+            return NextResponse.redirect(url)
+        }
+    }
 
     return supabaseResponse
 }

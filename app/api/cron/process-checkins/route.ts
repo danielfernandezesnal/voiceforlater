@@ -191,18 +191,19 @@ export async function GET(request: NextRequest) {
                         // Send email to each unique contact
                         for (const contact of contactsToNotify.values()) {
                             await resendClientForTrusted.emails.send({
-                                from: "VoiceForLater <noreply@voiceforlater.com>",
+                                from: "Carry my Words <noreply@voiceforlater.com>",
                                 to: contact.email,
-                                subject: "Important: We need to reach you about a loved one",
+                                subject: "You’ve been chosen as a trusted contact",
                                 html: `
-                                    <h2>Hello ${contact.name},</h2>
-                                    <p>You've been designated as a trusted contact by someone using VoiceForLater.</p>
-                                    <p>They have not responded to our check-in reminders for the past 3 days.</p>
-                                    <p>Before we deliver any messages they've prepared, we wanted to confirm the situation with you.</p>
-                                    <p><strong>Please reply to this email or contact us to let us know what's happening.</strong></p>
-                                    <p style="color:#666;font-size:12px;margin-top:20px;">
-                                      This is an automated message from VoiceForLater.
-                                    </p>
+                                    <h2>${contact.name ? `Hello ${contact.name},` : 'Hello,'}</h2>
+                                    <h3 style="color: #6366f1;">You’ve been chosen as a trusted contact</h3>
+                                    <p>${userEmail} has chosen you as a trusted contact on Carry my Words.</p>
+                                    <p>This means that if this person does not confirm their activity within the defined period, you may receive a notification related to the messages they have scheduled.</p>
+                                    <p>No action is required from you at this time. We just wanted to inform you and thank you for being part of ${userEmail}’s circle of trust.</p>
+                                    <br/>
+                                    <p>—<br/>
+                                    <strong>Carry my Words</strong><br/>
+                                    <span style="color: #666; font-style: italic;">So your words arrive when they’re meant to.</span></p>
                                 `,
                             });
                             results.trusted_contact_notified++;

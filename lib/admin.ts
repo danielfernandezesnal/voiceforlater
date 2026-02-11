@@ -1,5 +1,21 @@
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { User } from '@supabase/supabase-js';
+import { ADMIN_EMAIL } from '@/lib/constants';
+
+const ADMIN_EMAILS = [
+    ADMIN_EMAIL
+];
+
+/**
+ * Check if user is admin by email (hardcoded list)
+ * Synchronous, useful for middleware
+ */
+export function isAdminEmail(user: User | null | undefined): boolean {
+    if (!user || !user.email) return false;
+    const email = user.email.toLowerCase().trim();
+    return ADMIN_EMAILS.includes(email);
+}
 
 /**
  * Check if the current authenticated user is an admin
@@ -8,11 +24,13 @@ import { createAdminClient } from '@/lib/supabase/admin';
 export async function isAdmin(): Promise<boolean> {
     try {
         const supabase = await createClient();
-        const adminClient = createAdminClient();
-
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return false;
 
+        // Check email list first (fast)
+        if (isAdminEmail(user)) return true;
+
+        const adminClient = createAdminClient();
         // Use adminClient to bypass RLS recursion
         const { data: profile } = await adminClient
             .from('profiles')
@@ -33,12 +51,13 @@ export async function isAdmin(): Promise<boolean> {
 export async function getAdminUserId(): Promise<string | null> {
     try {
         const supabase = await createClient();
-        const adminClient = createAdminClient();
-
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return null;
 
-        // Use adminClient to bypass RLS recursion
+        // Check email list
+        if (isAdminEmail(user)) return user.id;
+
+        const adminClient = createAdminClient();
         const { data: profile } = await adminClient
             .from('profiles')
             .select('is_admin')

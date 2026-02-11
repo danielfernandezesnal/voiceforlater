@@ -5,7 +5,7 @@ import { trackEmail } from '@/lib/email-tracking';
 
 export const dynamic = 'force-dynamic';
 
-const ADMIN_EMAIL = 'admin@carrymywords.com';
+import { ADMIN_EMAIL } from "@/lib/constants";
 const ADMIN_OWNER_EMAIL = 'danielfernandezesnal@gmail.com';
 
 export async function POST(request: NextRequest) {
