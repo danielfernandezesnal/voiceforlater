@@ -15,10 +15,10 @@ export async function GET() {
         );
     }
 
-    const { data: roleData } = await supabase
-        .from("user_roles")
+    // Use the secure view 'my_role' which automatically filters by auth.uid()
+    const { data: roleData, error: viewError } = await supabase
+        .from("my_role")
         .select("role")
-        .eq("user_id", user.id)
         .single();
 
     const role = roleData?.role || null;
@@ -28,6 +28,7 @@ export async function GET() {
         userId: user.id,
         email: user.email,
         role: role,
+        viewError: viewError ? viewError.message : null,
         isOwner: role === "owner",
         isAdmin: role === "admin" || role === "owner",
     });
