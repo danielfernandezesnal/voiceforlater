@@ -13,6 +13,7 @@ interface Step5Props {
         deliveryDate: string
         deliveryCheckin: string
         submit: string
+        editMessage: string
         submitting: string
     }
     typeDictionary: {
@@ -88,7 +89,7 @@ export function Step5Review({ dictionary, typeDictionary, onSubmit, isSubmitting
                         {!isReadOnly && (
                             <button
                                 onClick={() => setStep(item.step)}
-                                className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-full transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-full transition-colors"
                                 aria-label="Edit"
                             >
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,7 +103,14 @@ export function Step5Review({ dictionary, typeDictionary, onSubmit, isSubmitting
 
             {
                 !isReadOnly && (
-                    <div className="flex justify-center">
+                    <div className="flex flex-col sm:flex-row justify-center gap-3">
+                        <button
+                            onClick={() => setStep(2)} // Go to Content step
+                            disabled={isSubmitting}
+                            className="px-8 py-3 bg-card border border-border text-foreground rounded-lg font-medium hover:bg-secondary/50 disabled:opacity-50 transition-all"
+                        >
+                            {dictionary.editMessage}
+                        </button>
                         <button
                             onClick={onSubmit}
                             disabled={isSubmitting}

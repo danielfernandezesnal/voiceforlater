@@ -279,9 +279,9 @@
         "description": "We'll ask you to confirm periodically",
         "interval": "Check-in interval",
         "days7": "Every 7 days",
-        "days30": "Every 30 days (Pro)",
-        "days60": "Every 60 days (Pro)",
-        "days90": "Every 90 days (Pro)",
+        "days30": "Every 30 days",
+        "days60": "Every 60 days",
+        "days90": "Every 90 days",
         "note": "If you miss 3 check-ins, we'll contact your trusted person before delivering.",
         "freeNote": "Free plan: 7-day interval with 1 reminder. Upgrade to Pro for longer intervals and trusted contact."
       },
@@ -301,6 +301,7 @@
       "deliveryDate": "On {date}",
       "deliveryCheckin": "If inactive for {days} days",
       "submit": "Confirm Message",
+      "editMessage": "Edit message",
       "submitting": "Creating..."
     }
   },
@@ -347,8 +348,8 @@
     "manageSub": "Manage Subscription",
     "proBadge": "PRO",
     "freeBadge": "FREE",
-    "proPrice": "$10/year",
-    "proFeatures": "Unlimited messages, full control of sending and priority delivery",
+    "proPrice": "Only $10/year!",
+    "proFeatures": "Unlimited messages, video recording, up to 3 trusted contacts (companions).",
     "upgradeSuccess": "Welcome to Pro! 🎉",
     "upgradeCancelled": "Upgrade cancelled"
   }

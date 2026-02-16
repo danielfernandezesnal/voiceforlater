@@ -102,7 +102,7 @@
           "1 mensaje",
           "Solo texto",
           "Elige fecha exacta de envío",
-          "1 persona de confianza (cómplice)"
+          "1 persona de confianza (cómplice) para garantizar la entrega"
         ]
       },
       "pro": {
@@ -113,7 +113,7 @@
           "Audio",
           "Video",
           "Elige fecha exacta de envío",
-          "Hasta 3 personas de confianza para garantizar la entrega"
+          "Hasta 3 personas de confianza (cómplices) para garantizar la entrega"
         ],
         "cta": "Pasar a plan PRO"
       }
@@ -194,7 +194,7 @@
         "Enviar mensajes ilimitados",
         "Enviar mensajes de texto, audio y tambien Video!",
         "Elegir exactamente cuándo se envía cada mensaje",
-        "Designar a una persona de confianza para garantizar la entrega"
+        "Designar a una persona de confianza (cómplice) para garantizar la entrega"
       ],
       "cancel": "Cancelar"
     }
@@ -266,9 +266,9 @@
         "description": "Si dejas de confirmar periódicamente, enviaremos tus mensajes.",
         "interval": "Intervalo de confirmación",
         "days7": "Cada 7 días",
-        "days30": "Cada 30 días (Pro)",
-        "days60": "Cada 60 días (Pro)",
-        "days90": "Cada 90 días (Pro)",
+        "days30": "Cada 30 días",
+        "days60": "Cada 60 días",
+        "days90": "Cada 90 días",
         "note": "Si no confirmas 3 veces, contactaremos a tu persona de confianza antes de entregar.",
         "freeNote": "Plan Free: intervalo de 7 días con 1 recordatorio. Actualiza a Pro para intervalos más largos y contacto de confianza."
       },
@@ -288,6 +288,7 @@
       "deliveryDate": "El {date}",
       "deliveryCheckin": "Si no hay actividad por {days} días",
       "submit": "Guardar mensaje",
+      "editMessage": "Editar mensaje",
       "submitting": "Creando..."
     }
   },
@@ -334,8 +335,8 @@
     "manageSub": "Gestionar Suscripción",
     "proBadge": "PRO",
     "freeBadge": "GRATIS",
-    "proPrice": "$10/año",
-    "proFeatures": "Mensajes ilimitados, control total del envío y entrega prioritaria",
+    "proPrice": "Solo $10/año!",
+    "proFeatures": "Mensajes ilimitados, grabación de video, hasta 3 contactos de confianza (cómplices).",
     "upgradeSuccess": "¡Bienvenido a Pro! 🎉",
     "upgradeCancelled": "Mejora cancelada"
   }

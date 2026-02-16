@@ -4,6 +4,7 @@ import { useWizard, DeliveryMode } from './wizard-context'
 import { useState, useEffect, useCallback, useMemo, type ChangeEvent } from 'react'
 import Link from 'next/link'
 import { type Plan, getPlanLimits } from '@/lib/plans'
+import { CreateContactForm } from './create-contact-form'
 
 interface Step4Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,25 +26,33 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
     // Trusted Contacts State
     const [contacts, setContacts] = useState<Contact[]>([])
     const [loadingContacts, setLoadingContacts] = useState(false)
+    const [isCreating, setIsCreating] = useState(false)
 
     // Sync local tab with data on mount
     useEffect(() => {
         if (data.deliveryMode) {
             setSelectedTab(data.deliveryMode)
+        } else {
+            // Default to 'checkin' if nothing selected
+            updateData({ deliveryMode: 'checkin' })
+            setSelectedTab('checkin')
         }
-    }, [data.deliveryMode])
+    }, [data.deliveryMode, updateData])
 
     const fetchContacts = useCallback(() => {
         setLoadingContacts(true)
+        console.log('Fetching trusted contacts...')
         fetch('/api/trusted-contacts')
             .then(res => {
                 if (res.ok) return res.json()
+                console.error('Failed to fetch contacts:', res.status, res.statusText)
                 return []
             })
             .then(data => {
+                console.log('Fetched contacts:', data)
                 if (Array.isArray(data)) setContacts(data)
             })
-            .catch(console.error)
+            .catch(err => console.error('Error fetching contacts:', err))
             .finally(() => setLoadingContacts(false))
     }, [])
 
@@ -55,14 +64,7 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // Validate and auto-correct interval if needed
-    useEffect(() => {
-        if (data.deliveryMode === 'checkin' && !limits.allowedCheckinIntervals.includes(data.checkinIntervalDays)) {
-            const validInterval = limits.allowedCheckinIntervals[0] || 30
-            // Find explicit interval from allowed list closest to intention? Or just default.
-            updateData({ checkinIntervalDays: validInterval as 7 | 30 | 60 | 90 }) // Valid interval from plan limits
-        }
-    }, [data.deliveryMode, data.checkinIntervalDays, limits.allowedCheckinIntervals, updateData])
+    // REMOVED: Auto-correct interval useEffect (Free plan interval restriction removed)
 
     const handleSelect = useCallback((mode: DeliveryMode | 'test') => {
         setSelectedTab(mode)
@@ -82,13 +84,41 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
         }
     }, [updateData, fetchContacts])
 
-    const toggleContact = (contactId: string) => {
-        const current = data.trustedContactIds || []
-        if (current.includes(contactId)) {
-            updateData({ trustedContactIds: current.filter(id => id !== contactId) })
+    const handleContactChange = (index: number, contactId: string) => {
+        if (contactId === 'new') {
+            setIsCreating(true)
+            return
+        }
+
+        const current = [...(data.trustedContactIds || [])]
+
+        if (contactId === '') {
+            // If clearing a slot, remove it if it exists
+            // But wait, if we have [A, B] and we clear A (index 0), do we want [B]? 
+            // Or do we represent it as [empty, B]?
+            // UI maps `currentContacts` directly.
+            // If I remove index 0, B becomes index 0. User sees B moves up.
+            // That's acceptable behavior for now.
+            if (index < current.length) {
+                current.splice(index, 1)
+            }
         } else {
-            if (current.length >= 3) return // Max 3
-            updateData({ trustedContactIds: [...current, contactId] })
+            // Assign at index
+            current[index] = contactId
+        }
+
+        // Filter out any potential empty strings just in case
+        const cleaned = current.filter(id => id && id !== '')
+        updateData({ trustedContactIds: cleaned })
+    }
+
+    const handleContactCreated = (newContact: Contact) => {
+        setContacts(prev => [...prev, newContact])
+        setIsCreating(false)
+        // Auto-select the new contact
+        const current = data.trustedContactIds || []
+        if (current.length < (userPlan === 'free' ? 1 : 3)) {
+            updateData({ trustedContactIds: [...current, newContact.id] })
         }
     }
 
@@ -135,6 +165,9 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         updateData({ checkinIntervalDays: Number(e.target.value) as any, deliveryMode: 'checkin' })
     }
+
+    const maxContacts = userPlan === 'free' ? 1 : 3
+    const currentContacts = data.trustedContactIds || []
 
     return (
         <div className="space-y-6">
@@ -193,82 +226,64 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                                                 onChange={handleIntervalChange}
                                                 className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
                                             >
-                                                {/* Free Options */}
-                                                <option value={7}>{dictionary.checkin.days7 || '7 days'}</option>
-
-                                                {/* Pro Options */}
-                                                {[30, 60, 90].map(days => (
-                                                    <option
-                                                        key={days}
-                                                        value={days}
-                                                        disabled={userPlan === 'free'}
-                                                    >
-                                                        {days === 30 ? dictionary.checkin.days30 : days === 60 ? dictionary.checkin.days60 : dictionary.checkin.days90}
-                                                        {userPlan === 'free' ? ' (Pro)' : ''}
-                                                    </option>
-                                                ))}
+                                                {/* All Options Available for All Plans */}
+                                                {/* <option value={7}>{dictionary.checkin.days7 || '7 days'}</option> Removed per request */}
+                                                <option value={30}>{String(dictionary.checkin.days30).replace('(Pro)', '').trim()}</option>
+                                                <option value={60}>{String(dictionary.checkin.days60).replace('(Pro)', '').trim()}</option>
+                                                <option value={90}>{String(dictionary.checkin.days90).replace('(Pro)', '').trim()}</option>
                                             </select>
-                                            {userPlan === 'free' && (
-                                                <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
-                                                    <span className="text-amber-500">🔒</span>
-                                                    {dictionary.checkin.freeNote}
-                                                </p>
-                                            )}
                                         </div>
 
                                         {/* Trusted Contacts Selector */}
                                         <div>
                                             <label className="block text-sm font-medium mb-3 flex justify-between items-center">
                                                 <span>Trusted Contacts</span>
-                                                {userPlan === 'free' && <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">PRO</span>}
+                                                {userPlan === 'free' && <span className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">Free Limit: 1</span>}
                                             </label>
 
-                                            {userPlan === 'free' ? (
-                                                <div className="p-4 bg-secondary/50 rounded-lg text-center border border-border border-dashed">
-                                                    <p className="text-sm text-muted-foreground mb-2">Upgrade to Pro to assign a trusted contact to this message.</p>
-                                                    <Link href="/dashboard?upgrade=true" className="text-primary text-sm font-medium hover:underline">
-                                                        Unlock Pro Features
-                                                    </Link>
-                                                </div>
-                                            ) : (
-                                                <div className="space-y-3">
-                                                    {loadingContacts ? (
-                                                        <div className="text-sm text-muted-foreground">Loading contacts...</div>
-                                                    ) : contacts.length === 0 ? (
-                                                        <div className="text-center p-4 border border-dashed border-border rounded-lg">
-                                                            <p className="text-sm text-muted-foreground mb-2">You haven&apos;t added any trusted contacts yet.</p>
-                                                            <Link href="/dashboard/contacts" target="_blank" className="text-primary text-sm hover:underline flex items-center justify-center gap-1">
-                                                                Manage Contacts
-                                                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                                                </svg>
-                                                            </Link>
-                                                        </div>
-                                                    ) : (
-                                                        <div className="grid gap-2">
-                                                            {contacts.map(contact => (
-                                                                <label key={contact.id} className="flex items-center p-3 border border-border rounded-lg hover:bg-secondary/20 cursor-pointer transition-colors">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        checked={(data.trustedContactIds || []).includes(contact.id)}
-                                                                        onChange={() => toggleContact(contact.id)}
-                                                                        className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
-                                                                    />
-                                                                    <div className="ml-3">
-                                                                        <span className="block text-sm font-medium text-foreground">{contact.name || contact.email}</span>
-                                                                        {contact.name && <span className="block text-xs text-muted-foreground">{contact.email}</span>}
-                                                                    </div>
+                                            <div className="space-y-3">
+                                                {isCreating ? (
+                                                    <CreateContactForm
+                                                        onCancel={() => setIsCreating(false)}
+                                                        onSuccess={handleContactCreated}
+                                                    />
+                                                ) : (
+                                                    <>
+                                                        {/* Always show at least one selector, even if contacts list is empty */}
+                                                        {Array.from({ length: Math.min(Math.max(currentContacts.length + 1, 1), maxContacts) }).map((_, index) => (
+                                                            <div key={index} className="flex flex-col gap-1">
+                                                                <label className="text-xs font-medium text-muted-foreground">
+                                                                    {userPlan === 'free' ? 'Contacto de confianza' : `Contacto de confianza ${index + 1}`}
                                                                 </label>
-                                                            ))}
-                                                            <div className="text-right">
-                                                                <Link href="/dashboard/contacts" target="_blank" className="text-xs text-muted-foreground hover:text-primary transition-colors">
-                                                                    Manage contacts
-                                                                </Link>
+                                                                <select
+                                                                    value={currentContacts[index] || ''}
+                                                                    onChange={(e) => handleContactChange(index, e.target.value)}
+                                                                    className="w-full px-4 py-2.5 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                                                    required={index === 0} // First one is mandatory
+                                                                >
+                                                                    <option value="">-- Seleccionar --</option>
+                                                                    {contacts.map(c => (
+                                                                        <option
+                                                                            key={c.id}
+                                                                            value={c.id}
+                                                                            disabled={currentContacts.includes(c.id) && currentContacts[index] !== c.id} // Disable if selected elsewhere
+                                                                        >
+                                                                            {c.name} ({c.email})
+                                                                        </option>
+                                                                    ))}
+                                                                    <option value="new" className="font-semibold text-primary">+ Agregar nuevo contacto...</option>
+                                                                </select>
                                                             </div>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )}
+                                                        ))}
+                                                    </>
+                                                )}
+
+                                                {contacts.length === 0 && !isCreating && !loadingContacts && (
+                                                    <p className="text-xs text-amber-600">
+                                                        ⚠ Debes seleccionar un contacto de confianza para continuar.
+                                                    </p>
+                                                )}
+                                            </div>
                                         </div>
 
                                         <p className="text-xs text-muted-foreground pt-2 border-t border-border">
@@ -296,3 +311,5 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
         </div>
     )
 }
+
+

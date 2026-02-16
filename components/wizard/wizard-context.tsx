@@ -23,7 +23,7 @@ export interface WizardData {
     // Step 4: Delivery
     deliveryMode: DeliveryMode | null
     deliverAt: string // ISO date string
-    checkinIntervalDays: 7 | 30 | 60 | 90
+    checkinIntervalDays: 30 | 60 | 90
     trustedContactIds: string[]
 }
 
@@ -48,7 +48,7 @@ const initialData: WizardData = {
     recipientEmail: '',
     deliveryMode: null,
     deliverAt: '',
-    checkinIntervalDays: 30, // Default to 30 to match DB constraint
+    checkinIntervalDays: 30, // Default to 30
     trustedContactIds: [],
 }
 
@@ -176,7 +176,7 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                 if (data.deliveryMode === 'date') {
                     return data.deliverAt !== ''
                 }
-                return data.deliveryMode === 'checkin'
+                return data.deliveryMode === 'checkin' && data.trustedContactIds.length > 0
             case 5:
                 return true // Review step
             default:

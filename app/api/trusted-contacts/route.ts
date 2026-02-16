@@ -5,24 +5,30 @@ import { getResend } from '@/lib/resend';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    try {
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (!user) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const { data, error } = await supabase
+            .from('trusted_contacts')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('name', { ascending: true });
+
+        if (error) {
+            console.error('Error fetching trusted contacts:', error);
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        return NextResponse.json(data);
+    } catch (e: any) {
+        console.error('Unexpected error in GET /api/trusted-contacts:', e);
+        return NextResponse.json({ error: e.message || 'Internal Server Error' }, { status: 500 });
     }
-
-    const { data, error } = await supabase
-        .from('trusted_contacts')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json(data);
 }
 
 export async function POST(request: NextRequest) {
