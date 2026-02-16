@@ -3,28 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --background: #d4dde2;
-  /* User Light Blue Background */
+  --background: #FBFAF7;
+  /* Warm Chalk White */
   --foreground: #1e293b;
   /* Dark Slate for high contrast text */
   --card: #ffffff;
   /* White cards from palette */
   --card-foreground: #1e293b;
-  --primary: #3A6F73;
-  /* Deep Teal */
+  --primary: #5E6F64;
+  /* Editorial Green */
   --primary-foreground: #ffffff;
-  --secondary: #e2e8f0;
-  /* Lighter slate for secondary backgrounds */
+  --secondary: #F2EFEA;
+  /* Warm secondary background */
   --secondary-foreground: #1e293b;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
   /* Slate-500 */
-  --accent: #3A6F73;
+  --accent: #7F9489;
+  /* Light Editorial Green */
   --accent-foreground: #ffffff;
   --border: #cbd5e1;
   /* Slate-300 */
   --input: #ffffff;
-  --ring: #3A6F73;
+  --ring: #5E6F64;
   --success: #10b981;
   --warning: #f59e0b;
   --error: #ef4444;
