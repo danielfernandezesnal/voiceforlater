@@ -13,9 +13,10 @@ interface TrustedContactListProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     locale: string
+    plan: string
 }
 
-export function TrustedContactList({ dictionary, locale }: TrustedContactListProps) {
+export function TrustedContactList({ dictionary, locale, plan }: TrustedContactListProps) {
     const [contacts, setContacts] = useState<Contact[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [isSaving, setIsSaving] = useState(false)
@@ -28,6 +29,10 @@ export function TrustedContactList({ dictionary, locale }: TrustedContactListPro
     const [newEmail, setNewEmail] = useState('')
 
     const router = useRouter()
+
+    // Plan-aware limits
+    const maxContacts = plan === 'pro' ? 3 : 1
+    const canAdd = contacts.length < maxContacts
 
     useEffect(() => {
         fetchContacts()
@@ -62,6 +67,10 @@ export function TrustedContactList({ dictionary, locale }: TrustedContactListPro
             const data = await res.json()
 
             if (!res.ok) {
+                // Show plan limit message if 403
+                if (res.status === 403 && data.limitReached) {
+                    throw new Error(data.error)
+                }
                 throw new Error(data.error || 'Failed to add contact')
             }
 
@@ -109,13 +118,24 @@ export function TrustedContactList({ dictionary, locale }: TrustedContactListPro
                     <p className="text-muted-foreground text-sm mt-1">{dictionary.trustedContact.description}</p>
                 </div>
 
-                {!isAddingMode && contacts.length < 3 && (
-                    <button
-                        onClick={() => setIsAddingMode(true)}
-                        className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm"
-                    >
-                        {dictionary.trustedContact.addContact}
-                    </button>
+                {!isAddingMode && (
+                    <div className="flex flex-col items-end gap-1.5">
+                        <button
+                            onClick={() => setIsAddingMode(true)}
+                            disabled={!canAdd}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm ${canAdd
+                                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                                    : 'bg-muted text-muted-foreground cursor-not-allowed opacity-60'
+                                }`}
+                        >
+                            {dictionary.trustedContact.addContact}
+                        </button>
+                        {!canAdd && plan === 'free' && (
+                            <span className="text-xs text-amber-600">
+                                Límite del plan Free (1). Pasate a Pro para agregar hasta 3.
+                            </span>
+                        )}
+                    </div>
                 )}
             </div>
 
@@ -216,12 +236,25 @@ export function TrustedContactList({ dictionary, locale }: TrustedContactListPro
                 )}
             </div>
 
-            {/* Info Note */}
-            <div className="bg-blue-50/50 p-4 rounded-lg border border-blue-100 text-sm text-blue-800">
-                <p>
-                    <strong>Nota:</strong> Puedes agregar hasta 3 contactos de confianza. Estos contactos formarán tu &quot;grupo de confianza&quot; y podrás asignar cualquiera de ellos a tus mensajes individuales más adelante.
-                    Al agregar un contacto, le enviaremos un correo para notificarle.
-                </p>
+            {/* Info Note — plan-aware */}
+            <div className="bg-amber-50/50 p-4 rounded-lg border border-amber-100 text-sm text-amber-900">
+                {plan === 'free' ? (
+                    <p>
+                        Puedes agregar hasta <strong>1 contacto</strong> de confianza.
+                        Este contacto formará tu &quot;grupo de confianza&quot; y podrás asignarlo a tus mensajes individuales más adelante.
+                        Al agregar un contacto, le enviaremos un correo para notificarle.
+                        <br /><br />
+                        <span className="text-amber-700">
+                            ✨ La función de agregar más contactos de confianza se encuentra en la opción <strong>Pro</strong>.
+                        </span>
+                    </p>
+                ) : (
+                    <p>
+                        <strong>Nota:</strong> Puedes agregar hasta <strong>3 contactos</strong> de confianza.
+                        Estos contactos formarán tu &quot;grupo de confianza&quot; y podrás asignar cualquiera de ellos a tus mensajes individuales más adelante.
+                        Al agregar un contacto, le enviaremos un correo para notificarle.
+                    </p>
+                )}
             </div>
         </div>
     )

@@ -5,24 +5,34 @@ import { getResend } from '@/lib/resend';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    try {
+        const supabase = await createClient();
 
-    if (!user) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        // Must call getSession() first to hydrate the auth session from cookies.
+        // Without this, getUser() fails with 'Auth session missing!' in Route Handlers.
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (!session) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const user = session.user;
+
+        const { data, error } = await supabase
+            .from('trusted_contacts')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        return NextResponse.json(data);
+    } catch (e: any) {
+        console.error('[GET /api/trusted-contacts] Error:', e);
+        return NextResponse.json({ error: e.message || 'Internal Server Error' }, { status: 500 });
     }
-
-    const { data, error } = await supabase
-        .from('trusted_contacts')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json(data);
 }
 
 export async function POST(request: NextRequest) {
@@ -40,7 +50,16 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Email is required' }, { status: 400 });
         }
 
-        // 1. Check limit (3 max)
+        // 1. Get user plan and check limit
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('plan')
+            .eq('id', user.id)
+            .single();
+
+        const userPlan = profile?.plan || 'free';
+        const maxContacts = userPlan === 'pro' ? 3 : 1;
+
         const { count, error: countError } = await supabase
             .from('trusted_contacts')
             .select('*', { count: 'exact', head: true })
@@ -48,8 +67,13 @@ export async function POST(request: NextRequest) {
 
         if (countError) throw countError;
 
-        if (count !== null && count >= 3) {
-            return NextResponse.json({ error: 'Maximum of 3 trusted contacts allowed.' }, { status: 400 });
+        if (count !== null && count >= maxContacts) {
+            return NextResponse.json({
+                error: userPlan === 'free'
+                    ? 'Límite del plan Free alcanzado (1 contacto). Pasate a Pro para agregar hasta 3.'
+                    : 'Máximo de 3 contactos de confianza permitidos.',
+                limitReached: true
+            }, { status: 403 });
         }
 
         // 2. Insert Contact

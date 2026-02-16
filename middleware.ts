@@ -109,6 +109,11 @@ export async function middleware(request: NextRequest) {
     const locales = ['en', 'es'];
     const defaultLocale = 'en';
 
+    // API routes: only needed session refresh (done above), skip locale logic
+    if (pathname.startsWith('/api/')) {
+        return response;
+    }
+
     const pathnameHasLocale = locales.some(
         (loc) => pathname.startsWith(`/${loc}/`) || pathname === `/${loc}`
     )
@@ -134,7 +139,10 @@ export const config = {
          * - favicon.ico (favicon file)
          * - public folder (assets, etc)
          * - api (api routes should not be localized typically)
+         *   EXCEPT /api/trusted-contact(s) which need session refresh
          */
         '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|api/).*)',
+        '/api/trusted-contact',
+        '/api/trusted-contacts',
     ],
 };
