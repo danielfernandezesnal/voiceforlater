@@ -61,6 +61,7 @@ export default async function EditMessagePage({
         existingAudioUrl = signedUrlData?.signedUrl || null;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const initialData: any = {
         messageType: message.type,
         // If type is text, use text_content. If audio/video, textContent might be empty or transcript?

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 interface KPIs {
     totalUsers: number
@@ -38,7 +38,7 @@ export default function AdminDashboardClient() {
     const [deletingUserId, setDeletingUserId] = useState<string | null>(null)
 
     // Load KPIs
-    const loadKPIs = async () => {
+    const loadKPIs = useCallback(async () => {
         try {
             const params = new URLSearchParams()
             if (dateFrom) params.set('from', dateFrom)
@@ -52,10 +52,10 @@ export default function AdminDashboardClient() {
         } catch (error) {
             console.error('Failed to load KPIs:', error)
         }
-    }
+    }, [dateFrom, dateTo])
 
     // Load users
-    const loadUsers = async () => {
+    const loadUsers = useCallback(async () => {
         try {
             setLoading(true)
             const params = new URLSearchParams()
@@ -76,7 +76,7 @@ export default function AdminDashboardClient() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [search, dateFrom, dateTo, page])
 
     // Delete user
     const handleDeleteUser = async (userId: string) => {
@@ -138,7 +138,7 @@ export default function AdminDashboardClient() {
     useEffect(() => {
         loadKPIs()
         loadUsers()
-    }, [dateFrom, dateTo, search, page])
+    }, [loadKPIs, loadUsers])
 
     return (
         <div className="container mx-auto px-4 py-8 space-y-8">

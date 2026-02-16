@@ -105,6 +105,7 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
         }
 
         loadDrafts()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // Save text/meta to LocalStorage whenever it changes

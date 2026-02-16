@@ -16,6 +16,7 @@ export async function GET(request: NextRequest) {
         const supabase = createAdminClient();
 
         // Build date filter for queries
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const dateFilter = (query: any, field: string) => {
             if (from) {
                 query = query.gte(field, from);

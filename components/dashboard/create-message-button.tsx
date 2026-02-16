@@ -58,6 +58,7 @@ export function CreateMessageButton({ isLimitReached, dictionary, locale, classN
 
                             <div className="w-full text-left space-y-3 py-2">
                                 <p className="font-semibold text-base">
+                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                     {(dictionary.dashboard.limitReached as any).subtitle || 'Podrás:'}
                                 </p>
                                 <ul className="space-y-2">

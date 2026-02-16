@@ -4,7 +4,7 @@ import { getResend } from '@/lib/resend';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(contact);
 
-    } catch (error: any) {
+    } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
         console.error('Error creating contact:', error);
         return NextResponse.json({ error: error.message || 'Internal Error' }, { status: 500 });
     }
@@ -165,7 +165,7 @@ export async function DELETE(request: NextRequest) {
         if (error) throw error;
 
         return NextResponse.json({ success: true });
-    } catch (error: any) {
+    } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

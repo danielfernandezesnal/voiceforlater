@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
                     },
                 },
             });
-        } catch (sessionError: any) {
+        } catch (sessionError: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
             // Handle invalid customer ID (e.g. deleted in Stripe or env mismatch)
             if (sessionError?.code === 'resource_missing' && sessionError?.param === 'customer') {
                 console.log("Customer missing in Stripe, creating new one...");

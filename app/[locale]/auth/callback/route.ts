@@ -4,7 +4,7 @@ import { type EmailOtpType } from "@supabase/supabase-js";
 
 function normalizePath(p: string) {
   try {
-    const u = new URL(p);
+    new URL(p);
     return null;
   } catch { }
   if (!p.startsWith("/")) return null;
@@ -61,7 +61,7 @@ export async function GET(request: Request) {
   }
 
   // Handle Success - Admin Check
-  const email = (user?.email || "").toLowerCase();
+
 
   let isPrivileged = false;
 

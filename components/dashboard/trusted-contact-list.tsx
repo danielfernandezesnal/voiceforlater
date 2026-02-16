@@ -10,6 +10,7 @@ interface Contact {
 }
 
 interface TrustedContactListProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     locale: string
 }
@@ -70,8 +71,8 @@ export function TrustedContactList({ dictionary, locale }: TrustedContactListPro
             setNewEmail('')
             setIsAddingMode(false)
             router.refresh()
-        } catch (err: any) {
-            setError(err.message)
+        } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+            setError(err.message || 'Error occurred')
         } finally {
             setIsSaving(false)
         }
@@ -90,7 +91,7 @@ export function TrustedContactList({ dictionary, locale }: TrustedContactListPro
 
             setContacts(contacts.filter(c => c.id !== id))
             router.refresh()
-        } catch (err) {
+        } catch {
             alert('Error deleting contact')
         } finally {
             setIsDeleting(null)
@@ -218,7 +219,7 @@ export function TrustedContactList({ dictionary, locale }: TrustedContactListPro
             {/* Info Note */}
             <div className="bg-blue-50/50 p-4 rounded-lg border border-blue-100 text-sm text-blue-800">
                 <p>
-                    <strong>Nota:</strong> Puedes agregar hasta 3 contactos de confianza. Estos contactos formarán tu "grupo de confianza" y podrás asignar cualquiera de ellos a tus mensajes individuales más adelante.
+                    <strong>Nota:</strong> Puedes agregar hasta 3 contactos de confianza. Estos contactos formarán tu &quot;grupo de confianza&quot; y podrás asignar cualquiera de ellos a tus mensajes individuales más adelante.
                     Al agregar un contacto, le enviaremos un correo para notificarle.
                 </p>
             </div>

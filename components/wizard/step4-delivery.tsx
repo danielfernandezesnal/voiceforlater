@@ -1,13 +1,20 @@
 'use client'
 
 import { useWizard, DeliveryMode } from './wizard-context'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo, type ChangeEvent } from 'react'
 import Link from 'next/link'
 import { type Plan, getPlanLimits } from '@/lib/plans'
 
 interface Step4Props {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any // Using specific type earlier, but simplifying for flexibility with new structure
     userPlan: Plan
+}
+
+interface Contact {
+    id: string
+    name: string
+    email: string
 }
 
 export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
@@ -16,7 +23,7 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
     const [selectedTab, setSelectedTab] = useState<DeliveryMode | 'test'>(data.deliveryMode || 'checkin')
 
     // Trusted Contacts State
-    const [contacts, setContacts] = useState<any[]>([])
+    const [contacts, setContacts] = useState<Contact[]>([])
     const [loadingContacts, setLoadingContacts] = useState(false)
 
     // Sync local tab with data on mount
@@ -26,34 +33,43 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
         }
     }, [data.deliveryMode])
 
-    // Load contacts when in checkin mode
+    const fetchContacts = useCallback(() => {
+        setLoadingContacts(true)
+        fetch('/api/trusted-contacts')
+            .then(res => {
+                if (res.ok) return res.json()
+                return []
+            })
+            .then(data => {
+                if (Array.isArray(data)) setContacts(data)
+            })
+            .catch(console.error)
+            .finally(() => setLoadingContacts(false))
+    }, [])
+
+    // Load contacts on mount if initially checkin
     useEffect(() => {
         if (selectedTab === 'checkin') {
-            setLoadingContacts(true)
-            fetch('/api/trusted-contacts')
-                .then(res => {
-                    if (res.ok) return res.json()
-                    return []
-                })
-                .then(data => {
-                    if (Array.isArray(data)) setContacts(data)
-                })
-                .catch(console.error)
-                .finally(() => setLoadingContacts(false))
+            fetchContacts()
         }
-    }, [selectedTab])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     // Validate and auto-correct interval if needed
     useEffect(() => {
         if (data.deliveryMode === 'checkin' && !limits.allowedCheckinIntervals.includes(data.checkinIntervalDays)) {
             const validInterval = limits.allowedCheckinIntervals[0] || 30
             // Find explicit interval from allowed list closest to intention? Or just default.
-            updateData({ checkinIntervalDays: validInterval as any })
+            updateData({ checkinIntervalDays: validInterval as 7 | 30 | 60 | 90 }) // Valid interval from plan limits
         }
     }, [data.deliveryMode, data.checkinIntervalDays, limits.allowedCheckinIntervals, updateData])
 
-    const handleSelect = (mode: DeliveryMode | 'test') => {
+    const handleSelect = useCallback((mode: DeliveryMode | 'test') => {
         setSelectedTab(mode)
+
+        if (mode === 'checkin') {
+            fetchContacts()
+        }
 
         if (mode === 'test') {
             const testDate = new Date(Date.now() + 5 * 60 * 1000)
@@ -64,7 +80,7 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
         } else {
             updateData({ deliveryMode: mode as DeliveryMode })
         }
-    }
+    }, [updateData, fetchContacts])
 
     const toggleContact = (contactId: string) => {
         const current = data.trustedContactIds || []
@@ -76,7 +92,7 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
         }
     }
 
-    const options = [
+    const options = useMemo(() => [
         {
             mode: 'date',
             title: dictionary.date.title,
@@ -107,11 +123,18 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                 </svg>
             ),
         },
-    ]
+    ], [dictionary])
 
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    const minDate = tomorrow.toISOString().split('T')[0]
+    const [minDate] = useState(() => {
+        const tomorrow = new Date()
+        tomorrow.setDate(tomorrow.getDate() + 1)
+        return tomorrow.toISOString().split('T')[0]
+    })
+
+    const handleIntervalChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        updateData({ checkinIntervalDays: Number(e.target.value) as any, deliveryMode: 'checkin' })
+    }
 
     return (
         <div className="space-y-6">
@@ -121,10 +144,10 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
             </div>
 
             <div className="max-w-xl mx-auto space-y-4">
-                {options.map((option: any) => (
+                {options.map((option) => (
                     <div key={option.mode}>
                         <button
-                            onClick={() => handleSelect(option.mode)}
+                            onClick={() => handleSelect(option.mode as DeliveryMode | 'test')}
                             className={`w-full p-4 rounded-xl border-2 text-left transition-all ${selectedTab === option.mode
                                 ? 'border-primary bg-primary/5 shadow-sm shadow-primary/5'
                                 : 'border-border hover:border-primary/30'
@@ -167,7 +190,7 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                                             <label className="block text-sm font-medium mb-2">{dictionary.checkin.interval}</label>
                                             <select
                                                 value={data.checkinIntervalDays}
-                                                onChange={(e) => updateData({ checkinIntervalDays: Number(e.target.value) as any, deliveryMode: 'checkin' })}
+                                                onChange={handleIntervalChange}
                                                 className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
                                             >
                                                 {/* Free Options */}
@@ -213,7 +236,7 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                                                         <div className="text-sm text-muted-foreground">Loading contacts...</div>
                                                     ) : contacts.length === 0 ? (
                                                         <div className="text-center p-4 border border-dashed border-border rounded-lg">
-                                                            <p className="text-sm text-muted-foreground mb-2">You haven't added any trusted contacts yet.</p>
+                                                            <p className="text-sm text-muted-foreground mb-2">You haven&apos;t added any trusted contacts yet.</p>
                                                             <Link href="/dashboard/contacts" target="_blank" className="text-primary text-sm hover:underline flex items-center justify-center gap-1">
                                                                 Manage Contacts
                                                                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

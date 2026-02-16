@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
 interface SetPasswordFormProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     locale: string
 }
@@ -73,7 +74,7 @@ export function SetPasswordForm({ dictionary, locale }: SetPasswordFormProps) {
             router.refresh()
             router.push(`/${locale}/dashboard`)
 
-        } catch (err: any) {
+        } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
             setError(err.message || 'Error al actualizar contraseña')
         } finally {
             setIsLoading(false)

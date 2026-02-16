@@ -45,13 +45,15 @@ export async function GET(request: NextRequest) {
 
     const supabase = getAdminClient();
     const now = new Date();
-    const results = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const initialData: any = {
         processed: 0,
         reminders_sent: 0,
         trusted_contact_notified: 0,
         messages_delivered: 0,
         errors: [] as string[],
     };
+    const results = initialData;
 
     try {
         // Get all overdue checkins that are not yet confirmed_absent
@@ -160,6 +162,7 @@ export async function GET(request: NextRequest) {
                     if (userMessages) {
                         userMessages.forEach(msg => {
                             // Supabase returns array for HasMany
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             const links = msg.message_trusted_contacts as any[];
                             if (Array.isArray(links)) {
                                 links.forEach(link => {

@@ -308,6 +308,7 @@ export async function PUT(request: NextRequest) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const updates: any = {
             type,
             text_content: type === 'text' ? textContent : null,
@@ -357,6 +358,7 @@ export async function PUT(request: NextRequest) {
 
         // Update Delivery Rule
         // Use upsert to handle both insert and update, avoiding unique constraint violations
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const deliveryRuleData: any = {
             message_id: messageId,
             mode: deliveryMode,

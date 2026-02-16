@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { ADMIN_EMAIL } from "@/lib/constants";
 
 interface LoginFormProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any // Using any for flexibilty with deeply nested structure, or define strict type
     locale: string
 }
@@ -49,7 +50,7 @@ export function LoginForm({ dictionary, locale }: LoginFormProps) {
                     router.push(`/${locale}/dashboard`)
                 }
             }
-        } catch (err) {
+        } catch {
             setError('Error de conexión')
         } finally {
             setIsLoading(false)
