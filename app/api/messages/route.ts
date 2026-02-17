@@ -17,12 +17,28 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        // Get user profile for plan limits
+        // Get user profile for plan limits and validation
         const { data: profile } = await supabase
             .from("profiles")
-            .select("plan")
+            .select("plan, first_name, last_name, country")
             .eq("id", user.id)
             .single();
+
+        // Validate profile completeness
+        const isProfileComplete =
+            profile?.first_name?.trim() &&
+            profile?.last_name?.trim() &&
+            profile?.country?.trim();
+
+        if (!isProfileComplete) {
+            return NextResponse.json(
+                {
+                    error: "Complete your profile before creating messages.",
+                    code: "PROFILE_INCOMPLETE"
+                },
+                { status: 403 }
+            );
+        }
 
         const plan = (profile?.plan as Plan) || "free";
         const limits = getPlanLimits(plan);
