@@ -21,12 +21,22 @@ export default async function CreateMessagePage({
         redirect(`/${locale}/auth/login`);
     }
 
-    // Get user plan
+    // Get user plan and check profile completeness
     const { data: profile } = await supabase
         .from('profiles')
-        .select('plan')
+        .select('plan, first_name, last_name, country')
         .eq('id', user.id)
         .single();
+
+    // Check required fields (Gate)
+    const isProfileComplete =
+        profile?.first_name?.trim() &&
+        profile?.last_name?.trim() &&
+        profile?.country?.trim();
+
+    if (!isProfileComplete) {
+        redirect(`/${locale}/dashboard/profile?onboarding=1`);
+    }
 
     const userPlan = (profile?.plan as 'free' | 'pro') || 'free';
     const dict = await getDictionary(locale);

@@ -6,10 +6,14 @@ export const dynamic = 'force-dynamic';
 
 export default async function ProfilePage({
     params,
+    searchParams,
 }: {
     params: Promise<{ locale: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
     const { locale } = await params;
+    const query = await searchParams;
+    const showOnboarding = query.onboarding === '1';
 
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -21,9 +25,11 @@ export default async function ProfilePage({
     // Fetch profile data
     const { data: profile } = await supabase
         .from('profiles')
-        .select('first_name, last_name, country, city, phone, plan')
+        .select('first_name, last_name, country, city, phone')
         .eq('id', user.id)
         .single();
+
+    // ... initialData logic ...
 
     const initialData = {
         first_name: profile?.first_name || '',
@@ -42,6 +48,18 @@ export default async function ProfilePage({
                     Configuración de tu cuenta y datos personales.
                 </p>
             </div>
+
+            {showOnboarding && (
+                <div className="bg-primary/5 border border-primary/20 text-primary-800 p-4 rounded-lg flex items-start gap-3 animate-in fade-in slide-in-from-top-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 text-primary"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+                    <div>
+                        <p className="font-medium text-primary-900">Completá tu perfil para comenzar</p>
+                        <p className="text-sm mt-1 text-primary-700/80">
+                            Para crear tu primer mensaje, necesitamos conocerte un poco mejor. Por favor, completá los campos obligatorios.
+                        </p>
+                    </div>
+                </div>
+            )}
 
             <ProfileForm initialData={initialData} />
         </div>
