@@ -69,15 +69,15 @@ export function PlanCompare({ currentPlan }: PlanCompareProps) {
     return (
         <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
             {/* Column Headers */}
-            <div className="grid grid-cols-[1fr_100px_100px] sm:grid-cols-[1fr_120px_120px] border-b border-border bg-muted/30">
-                <div className="p-4 sm:p-5">
-                    <span className="text-sm font-medium text-muted-foreground">Funcionalidad</span>
+            <div className="grid grid-cols-[1fr_100px_100px] sm:grid-cols-[1fr_120px_120px] border-b-2 border-stone-200 bg-stone-100 rounded-t-xl">
+                <div className="py-5 px-4 sm:px-5">
+                    <span className="text-sm font-semibold text-stone-500 uppercase tracking-wide">Funcionalidad</span>
                 </div>
-                <div className={`p-4 sm:p-5 text-center ${isFree ? 'bg-primary/5' : ''}`}>
-                    <span className="text-sm font-semibold">Free</span>
+                <div className={`py-5 px-4 sm:px-5 text-center ${isFree ? 'bg-stone-200/40' : ''}`}>
+                    <span className="text-sm font-bold text-stone-700">Free</span>
                 </div>
-                <div className={`p-4 sm:p-5 text-center ${!isFree ? 'bg-primary/5' : ''}`}>
-                    <span className="text-sm font-semibold">✨ Pro</span>
+                <div className="py-5 px-4 sm:px-5 text-center bg-primary rounded-tr-xl">
+                    <span className="text-sm font-bold text-white uppercase tracking-wider">✨ PRO</span>
                 </div>
             </div>
 
@@ -103,7 +103,7 @@ export function PlanCompare({ currentPlan }: PlanCompareProps) {
                             <DashIcon />
                         )}
                     </div>
-                    <div className={`p-4 sm:p-5 flex flex-col items-center justify-center ${!isFree ? 'bg-primary/[0.02]' : ''}`}>
+                    <div className="p-4 sm:p-5 flex flex-col items-center justify-center bg-emerald-50/60">
                         {feature.pro ? (
                             <>
                                 <CheckIcon />
