@@ -4,9 +4,10 @@ import { useState } from 'react'
 
 interface PlanCTAProps {
     planName: string
+    locale: string
 }
 
-export function PlanCTA({ planName }: PlanCTAProps) {
+export function PlanCTA({ planName, locale }: PlanCTAProps) {
     const isFree = planName.toLowerCase() !== 'pro'
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -19,7 +20,7 @@ export function PlanCTA({ planName }: PlanCTAProps) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({ redirectPath: '/es/dashboard/plan?upgrade=success' }),
+                body: JSON.stringify({ redirectPath: `/${locale}/dashboard/plan?upgrade=success` }),
             })
             const data = await res.json()
             if (!res.ok) throw new Error(data.error || 'Error al iniciar checkout')

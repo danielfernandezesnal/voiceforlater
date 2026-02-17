@@ -2,7 +2,12 @@ import { PlanCurrentCard } from "@/components/dashboard/plan/plan-current-card";
 import { PlanCompare } from "@/components/dashboard/plan/plan-compare";
 import { PlanCTA } from "@/components/dashboard/plan/plan-cta";
 
-export default function PlanPage() {
+export default async function PlanPage({
+    params,
+}: {
+    params: Promise<{ locale: string }>;
+}) {
+    const { locale } = await params;
     // TODO: reemplazar con plan real desde Supabase (viene del layout via props o server fetch)
     const mockPlan = { name: "Free", status: "Activo" };
 
@@ -19,11 +24,11 @@ export default function PlanPage() {
             {/* B) Current Plan Card */}
             <PlanCurrentCard planName={mockPlan.name} status={mockPlan.status} />
 
-            {/* C) Feature Comparison */}
-            <PlanCompare currentPlan={mockPlan.name} />
+            {/* C) CTA */}
+            <PlanCTA planName={mockPlan.name} locale={locale} />
 
-            {/* D) CTA */}
-            <PlanCTA planName={mockPlan.name} />
+            {/* D) Feature Comparison */}
+            <PlanCompare currentPlan={mockPlan.name} />
         </div>
     );
 }
