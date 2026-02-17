@@ -73,9 +73,9 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
                 <button
                     onClick={handleUpgrade}
                     disabled={isLoading}
-                    className="inline-flex items-center justify-center px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-sm text-sm disabled:opacity-50"
+                    className="inline-flex items-center justify-center px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-sm text-sm disabled:opacity-50 disabled:cursor-wait"
                 >
-                    {isLoading ? 'Redirigiendo...' : 'Pasar a Pro'}
+                    {isLoading ? 'Abriendo pago...' : 'Pasar a Pro'}
                 </button>
 
                 <p className="text-xs text-muted-foreground">
@@ -103,9 +103,9 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
             <button
                 onClick={handleManage}
                 disabled={isLoading}
-                className="inline-flex items-center justify-center px-6 py-2.5 border border-border text-foreground font-medium rounded-lg hover:bg-muted/50 transition-colors text-sm disabled:opacity-50"
+                className="inline-flex items-center justify-center px-6 py-2.5 border border-border text-foreground font-medium rounded-lg hover:bg-muted/50 transition-colors text-sm disabled:opacity-50 disabled:cursor-wait"
             >
-                {isLoading ? 'Redirigiendo...' : 'Administrar suscripción'}
+                {isLoading ? 'Abriendo portal...' : 'Administrar suscripción'}
             </button>
         </div>
     )
