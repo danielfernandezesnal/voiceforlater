@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(request: NextRequest) {
+    // PROACTIVE LOGGING FOR DEBUGGING
+    if (request.nextUrl.pathname === '/messages' || request.nextUrl.pathname === '/profile') {
+        console.warn(`[MIDDLEWARE WARNING: DEPRECATED ENDPOINT] usage detected: ${request.nextUrl.pathname}`);
+        console.warn('Frontend must call /api/messages or /api/profile directly.');
+        console.log(`Method: ${request.method}`);
+        console.log(`Referer: ${request.headers.get('referer') || 'None'}`);
+        console.log(`User-Agent: ${request.headers.get('user-agent') || 'None'}`);
+    }
+
     let response = NextResponse.next({
         request: {
             headers: request.headers,

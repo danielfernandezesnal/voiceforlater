@@ -5,6 +5,8 @@ import { type Plan, getPlanLimits, canCreateMessage, isCheckinIntervalAllowed } 
 
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET() {
     try {
@@ -30,7 +32,11 @@ export async function GET() {
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
 
-        return NextResponse.json(messages || []);
+        return NextResponse.json(messages || [], {
+            headers: {
+                'Cache-Control': 'no-store, max-age=0',
+            }
+        });
     } catch (e) {
         console.error("GET /api/messages error:", e);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -235,7 +241,7 @@ export async function POST(request: NextRequest) {
 
         if (messageError) {
             console.error("Message insert error:", JSON.stringify(messageError, null, 2));
-
+            // ... (error handling remains same)
             // Extract constraint name if it's a constraint violation
             const errorDetails = messageError.message || messageError.code || "Unknown database error";
             const constraintMatch = messageError.message?.match(/constraint "([^"]+)"/);
