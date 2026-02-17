@@ -145,17 +145,11 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                 {/* Trusted Contacts Logic */}
                                 <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1.5" title="Contactos de confianza asignados">
                                     {(() => {
-                                        // Refined logic for trusted contacts based on definitive API shape:
-                                        // message_trusted_contacts: [{ trusted_contacts: { id, name, email } }]
+                                        const mtc = message.message_trusted_contacts || [];
+                                        const trustedList = mtc.map(item => item?.trusted_contacts).filter(Boolean);
+                                        const hasTrusted = trustedList.length > 0;
 
-                                        const mtc = message.message_trusted_contacts;
-                                        const hasTrusted = Array.isArray(mtc) && mtc.some(item => item?.trusted_contacts?.id);
-
-                                        const trustedList = hasTrusted
-                                            ? mtc.map(item => item.trusted_contacts).filter(Boolean)
-                                            : [];
-
-                                        if (!hasTrusted || trustedList.length === 0) {
+                                        if (!hasTrusted) {
                                             return (
                                                 <div className="flex flex-col gap-1 mt-1">
                                                     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200 w-fit">
@@ -164,6 +158,8 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                                     <span className="text-xs text-muted-foreground italic">
                                                         {locale === 'es' ? 'No se enviará automáticamente hasta que agregues uno.' : 'Will not send automatically until you add one.'}
                                                     </span>
+                                                    {/* Temporary debug indicator */}
+                                                    <span className="text-[10px] text-gray-400">tc_count: {trustedList.length}</span>
                                                 </div>
                                             );
                                         }
@@ -179,6 +175,8 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                                         {locale === 'es' ? 'Contacto de confianza: ' : 'Trusted Contact: '}
                                                         <span className="font-normal text-muted-foreground">{tc.name || tc.email}</span>
                                                     </span>
+                                                    {/* Temporary debug indicator */}
+                                                    <span className="ml-1 text-[10px] text-gray-400">tc_count: {trustedList.length}</span>
                                                 </>
                                             );
                                         }
@@ -195,6 +193,8 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                                         {trustedList.map(t => t!.name || t!.email).join(' · ')}
                                                     </span>
                                                 </span>
+                                                {/* Temporary debug indicator */}
+                                                <span className="ml-1 text-[10px] text-gray-400">tc_count: {trustedList.length}</span>
                                             </>
                                         );
                                     })()}
