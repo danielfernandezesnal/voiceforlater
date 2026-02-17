@@ -7,9 +7,14 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
     try {
         const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
 
-        if (!user) {
+        // Hydrate session from cookies first
+        await supabase.auth.getSession();
+
+        // Then validate securely with getUser()
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+        if (authError || !user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
@@ -17,22 +22,23 @@ export async function GET() {
             .from('trusted_contacts')
             .select('*')
             .eq('user_id', user.id)
-            .order('name', { ascending: true });
+            .order('name', { ascending: true }); // Mantener order
 
         if (error) {
-            console.error('Error fetching trusted contacts:', error);
+            console.error('[GET /api/trusted-contacts] DB error:', error);
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
 
         return NextResponse.json(data);
     } catch (e: any) {
-        console.error('Unexpected error in GET /api/trusted-contacts:', e);
+        console.error('[GET /api/trusted-contacts] Error:', e);
         return NextResponse.json({ error: e.message || 'Internal Server Error' }, { status: 500 });
     }
 }
 
 export async function POST(request: NextRequest) {
     const supabase = await createClient();
+    await supabase.auth.getSession();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
@@ -46,7 +52,18 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Email is required' }, { status: 400 });
         }
 
-        // 1. Check limit (3 max)
+        const normalizedEmail = email.trim().toLowerCase();
+
+        // 1. Get user plan and check limit
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('plan')
+            .eq('id', user.id)
+            .single();
+
+        const userPlan = profile?.plan || 'free';
+        const maxContacts = userPlan === 'pro' ? 3 : 1;
+
         const { count, error: countError } = await supabase
             .from('trusted_contacts')
             .select('*', { count: 'exact', head: true })
@@ -54,8 +71,28 @@ export async function POST(request: NextRequest) {
 
         if (countError) throw countError;
 
-        if (count !== null && count >= 3) {
-            return NextResponse.json({ error: 'Maximum of 3 trusted contacts allowed.' }, { status: 400 });
+        if (count !== null && count >= maxContacts) {
+            return NextResponse.json({
+                error: userPlan === 'free'
+                    ? 'Límite del plan Free alcanzado (1). Pasate a Pro para agregar más.'
+                    : 'Máximo de 3 contactos de confianza permitidos.',
+                limitReached: true
+            }, { status: 403 });
+        }
+
+        // Check for duplicates (case-insensitive)
+        const { data: existing } = await supabase
+            .from('trusted_contacts')
+            .select('id')
+            .eq('user_id', user.id)
+            .ilike('email', normalizedEmail)
+            .maybeSingle();
+
+        if (existing) {
+            return NextResponse.json({
+                error: 'Este contacto ya existe.',
+                code: 'CONTACT_EXISTS'
+            }, { status: 409 });
         }
 
         // 2. Insert Contact
@@ -64,15 +101,12 @@ export async function POST(request: NextRequest) {
             .insert({
                 user_id: user.id,
                 name: name || '',
-                email: email
+                email: normalizedEmail
             })
             .select()
             .single();
 
         if (insertError) {
-            if (insertError.code === '23505') { // Unique violation
-                return NextResponse.json({ error: 'This contact is already in your list.' }, { status: 409 });
-            }
             throw insertError;
         }
 
@@ -148,6 +182,7 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
     const supabase = await createClient();
+    await supabase.auth.getSession();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {

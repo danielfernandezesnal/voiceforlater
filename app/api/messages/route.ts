@@ -17,12 +17,28 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        // Get user profile for plan limits
+        // Get user profile for plan limits and validation
         const { data: profile } = await supabase
             .from("profiles")
-            .select("plan")
+            .select("plan, first_name, last_name, country")
             .eq("id", user.id)
             .single();
+
+        // Validate profile completeness
+        const isProfileComplete =
+            profile?.first_name?.trim() &&
+            profile?.last_name?.trim() &&
+            profile?.country?.trim();
+
+        if (!isProfileComplete) {
+            return NextResponse.json(
+                {
+                    error: "Complete your profile before creating messages.",
+                    code: "PROFILE_INCOMPLETE"
+                },
+                { status: 403 }
+            );
+        }
 
         const plan = (profile?.plan as Plan) || "free";
         const limits = getPlanLimits(plan);
@@ -61,6 +77,28 @@ export async function POST(request: NextRequest) {
         // Validate required fields
         if (!type || !recipientName || !recipientEmail || !deliveryMode) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+        }
+
+        // Validate delivery date
+        if (deliveryMode === "date") {
+            if (!deliverAt) {
+                return NextResponse.json({ error: "Delivery date is required for date mode" }, { status: 400 });
+            }
+
+            const scheduleDate = new Date(deliverAt);
+            if (isNaN(scheduleDate.getTime())) {
+                return NextResponse.json({ error: "Invalid date format" }, { status: 400 });
+            }
+
+            const now = new Date();
+            const minDate = new Date(now.getTime() + 5 * 60 * 1000); // Now + 5m
+
+            if (scheduleDate < minDate) {
+                return NextResponse.json({
+                    error: "Delivery date must be at least 5 minutes in the future.",
+                    code: "INVALID_SCHEDULE"
+                }, { status: 400 });
+            }
         }
 
         // Validate content based on type

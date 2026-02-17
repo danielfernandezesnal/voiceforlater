@@ -13,7 +13,7 @@ function getStripe() {
  * POST /api/stripe/portal
  * Creates a Stripe Billing Portal session for subscription management
  */
-export async function POST() {
+export async function POST(request: Request) {
     try {
         const supabase = await createClient();
 
@@ -42,9 +42,18 @@ export async function POST() {
         const stripe = getStripe();
         const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
+        // Parse body for dynamic return URL
+        const body = await request.json().catch(() => ({}));
+        const { returnUrl } = body;
+
+        // Validate returnUrl is relative to avoid open redirect vulnerabilities
+        const finalReturnUrl = returnUrl && returnUrl.startsWith('/')
+            ? `${appUrl}${returnUrl}`
+            : `${appUrl}/en/dashboard/plan`;
+
         const session = await stripe.billingPortal.sessions.create({
             customer: profile.stripe_customer_id,
-            return_url: `${appUrl}/en/dashboard`,
+            return_url: finalReturnUrl,
         });
 
         return NextResponse.json({ url: session.url });
