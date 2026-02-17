@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { COUNTRIES } from '@/lib/countries'
+import { CALLING_CODES, parsePhone } from '@/lib/callingCodes'
 
 interface ProfileData {
     first_name: string
@@ -20,9 +22,20 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
     const [isSaving, setIsSaving] = useState(false)
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
+    // Parse phone into dial code + local number
+    const parsedPhone = useMemo(() => parsePhone(initialData.phone), [initialData.phone])
+    const [dialCode, setDialCode] = useState(parsedPhone.dialCode)
+    const [localNumber, setLocalNumber] = useState(parsedPhone.localNumber)
+
     function handleChange(field: keyof ProfileData, value: string) {
         setForm(prev => ({ ...prev, [field]: value }))
-        // Clear message on edit
+        if (message) setMessage(null)
+    }
+
+    function handleLocalNumberChange(value: string) {
+        // Allow only digits and spaces
+        const cleaned = value.replace(/[^\d\s]/g, '')
+        setLocalNumber(cleaned)
         if (message) setMessage(null)
     }
 
@@ -36,6 +49,10 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
             return
         }
 
+        // Build phone string for storage
+        const trimmedNumber = localNumber.replace(/\s+/g, ' ').trim()
+        const phoneToSave = trimmedNumber ? `${dialCode} ${trimmedNumber}` : ''
+
         setIsSaving(true)
 
         try {
@@ -43,7 +60,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify(form),
+                body: JSON.stringify({ ...form, phone: phoneToSave }),
             })
 
             const data = await res.json()
@@ -138,21 +155,26 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
             <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-5">
                 <h2 className="text-lg font-semibold mb-1">Ubicación y contacto</h2>
 
-                {/* Country + City */}
+                {/* Country (dropdown) + City */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium mb-1.5" htmlFor="country">
                             País <span className="text-red-400">*</span>
                         </label>
-                        <input
+                        <select
                             id="country"
-                            type="text"
                             value={form.country}
                             onChange={e => handleChange('country', e.target.value)}
-                            placeholder="Ej: Argentina"
                             required
-                            className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
-                        />
+                            className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all appearance-none"
+                        >
+                            <option value="">Seleccionar país</option>
+                            {COUNTRIES.map(c => (
+                                <option key={c.code} value={c.name}>
+                                    {c.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div>
                         <label className="block text-sm font-medium mb-1.5" htmlFor="city">
@@ -169,19 +191,33 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                     </div>
                 </div>
 
-                {/* Phone */}
+                {/* Phone: dial code select + local number input */}
                 <div>
-                    <label className="block text-sm font-medium mb-1.5" htmlFor="phone">
+                    <label className="block text-sm font-medium mb-1.5">
                         Teléfono <span className="text-muted-foreground text-xs">(opcional)</span>
                     </label>
-                    <input
-                        id="phone"
-                        type="tel"
-                        value={form.phone}
-                        onChange={e => handleChange('phone', e.target.value)}
-                        placeholder="Ej: +54 11 1234 5678"
-                        className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
-                    />
+                    <div className="grid grid-cols-[130px_1fr] sm:grid-cols-[140px_1fr] gap-2">
+                        <select
+                            id="phone_dial"
+                            value={dialCode}
+                            onChange={e => { setDialCode(e.target.value); if (message) setMessage(null) }}
+                            className="w-full px-2 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all text-sm appearance-none"
+                        >
+                            {CALLING_CODES.map(c => (
+                                <option key={c.iso} value={c.dial}>
+                                    {c.dial} {c.country}
+                                </option>
+                            ))}
+                        </select>
+                        <input
+                            id="phone_number"
+                            type="tel"
+                            value={localNumber}
+                            onChange={e => handleLocalNumberChange(e.target.value)}
+                            placeholder="Ej: 99 123 456"
+                            className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
+                        />
+                    </div>
                 </div>
             </div>
 
