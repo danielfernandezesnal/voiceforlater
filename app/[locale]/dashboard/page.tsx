@@ -16,6 +16,13 @@ interface MessageWithRecipient {
     created_at: string;
     recipients: { name: string; email: string }[];
     delivery_rules: { mode: 'date' | 'checkin'; deliver_at: string | null } | { mode: 'date' | 'checkin'; deliver_at: string | null }[] | null;
+    message_contacts: {
+        trusted_contacts: {
+            id: string;
+            name: string;
+            email: string;
+        } | null
+    }[];
 }
 
 export default async function DashboardPage({
@@ -54,7 +61,14 @@ export default async function DashboardPage({
                 text_content,
                 created_at,
                 recipients (name, email),
-                delivery_rules (mode, deliver_at)
+                delivery_rules (mode, deliver_at),
+                message_contacts (
+                    trusted_contacts (
+                        id,
+                        name,
+                        email
+                    )
+                )
             `)
             .eq('owner_id', user.id)
             .order('created_at', { ascending: false });
@@ -183,7 +197,6 @@ export default async function DashboardPage({
                                             }
                                         </div>
 
-                                        {/* Type and Status badges */}
                                         <MessageStatus
                                             status={message.status}
                                             deliverAt={deliverAt || null}
@@ -192,6 +205,54 @@ export default async function DashboardPage({
                                             locale={locale}
                                             dict={dict}
                                         />
+
+                                        {/* Reference to Trusted Contacts */}
+                                        <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1.5" title="Contactos de confianza asignados">
+                                            {(() => {
+                                                const trusted = message.message_contacts?.map(mc => mc.trusted_contacts).filter(Boolean) || [];
+
+                                                if (trusted.length === 0) {
+                                                    return (
+                                                        <>
+                                                            <svg className="w-3.5 h-3.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                            </svg>
+                                                            <span className="opacity-60 italic">Sin contacto de confianza asignado</span>
+                                                        </>
+                                                    );
+                                                }
+
+                                                if (trusted.length === 1) {
+                                                    const tc = trusted[0]!;
+                                                    return (
+                                                        <>
+                                                            <svg className="w-3.5 h-3.5 text-primary/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                            </svg>
+                                                            <span className="font-medium text-foreground/80">
+                                                                {locale === 'es' ? 'Contacto de confianza: ' : 'Trusted Contact: '}
+                                                                <span className="font-normal text-muted-foreground">{tc.name || tc.email}</span>
+                                                            </span>
+                                                        </>
+                                                    );
+                                                }
+
+                                                // Multiple
+                                                return (
+                                                    <>
+                                                        <svg className="w-3.5 h-3.5 text-primary/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                        </svg>
+                                                        <span className="font-medium text-foreground/80">
+                                                            {locale === 'es' ? `Contactos de confianza (${trusted.length}): ` : `Trusted Contacts (${trusted.length}): `}
+                                                            <span className="font-normal text-muted-foreground">
+                                                                {trusted.map(t => t!.name || t!.email).join(' · ')}
+                                                            </span>
+                                                        </span>
+                                                    </>
+                                                );
+                                            })()}
+                                        </div>
                                     </div>
 
                                     {/* Date */}
