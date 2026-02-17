@@ -38,9 +38,7 @@ export default async function PlanPage({
             {/* B) Header */}
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">Mi Plan</h1>
-                <p className="text-muted-foreground mt-2">
-                    Revisá tu plan actual y las funcionalidades disponibles.
-                </p>
+
             </div>
 
             {/* C) Current Plan Card */}

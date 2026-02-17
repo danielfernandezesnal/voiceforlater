@@ -22,11 +22,7 @@ export function PlanCurrentCard({ planName, status }: PlanCurrentCardProps) {
                         </span>
                     </div>
                 </div>
-                {isPro && (
-                    <div className="hidden sm:block text-right">
-                        <p className="text-xs text-muted-foreground">Gracias por apoyar VoiceForLater</p>
-                    </div>
-                )}
+
             </div>
         </div>
     )

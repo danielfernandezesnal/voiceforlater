@@ -50,13 +50,7 @@ const features = [
         freeNote: null,
         proNote: null,
     },
-    {
-        name: 'Soporte prioritario',
-        free: false,
-        pro: true,
-        freeNote: null,
-        proNote: null,
-    },
+
 ]
 
 interface PlanCompareProps {

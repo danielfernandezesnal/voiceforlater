@@ -62,7 +62,7 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
                         Llevá tu legado al siguiente nivel
                     </h3>
                     <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                        Con Pro tenés video, más contactos de confianza, mensajes sellados y soporte prioritario.
+                        Con Pro tenés video, más contactos de confianza y mensajes sellados.
                     </p>
                 </div>
 
@@ -92,7 +92,7 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
                     ✨ Estás en el plan Pro
                 </h3>
                 <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                    Gracias por confiar en VoiceForLater. Tenés acceso completo a todas las funcionalidades.
+                    Tenés acceso completo a todas las funcionalidades.
                 </p>
             </div>
 
