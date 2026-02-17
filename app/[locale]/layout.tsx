@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Barlow } from "next/font/google";
 import "../globals.css";
 import { locales, type Locale, getDictionary, isValidLocale, defaultLocale } from "@/lib/i18n";
+import { SyncProfileLocale } from "@/components/SyncProfileLocale";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -51,6 +52,7 @@ export default async function LocaleLayout({
     return (
         <html lang={locale}>
             <body className={`${inter.variable} ${barlow.variable} font-sans antialiased bg-background text-foreground`}>
+                <SyncProfileLocale locale={locale} />
                 {children}
             </body>
         </html>

@@ -1,6 +1,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
+import { getEmailTemplate } from "@/lib/email-templates";
 
 // Helper to get admin client
 function getAdminClient() {
@@ -27,6 +28,15 @@ function getResendClient() {
 export async function releaseCheckinMessages(userId: string) {
     const supabase = getAdminClient();
     const resend = getResendClient();
+
+    // 1. Get user locale
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("locale")
+        .eq("id", userId)
+        .single();
+
+    const locale = profile?.locale || 'es';
 
     const results = {
         processed: 0,
@@ -99,16 +109,12 @@ export async function releaseCheckinMessages(userId: string) {
             }
 
             try {
-                // ... (Email generation logic same as before) ...
-                let emailHtml = `
-                    <h2>You have a message from VoiceForLater</h2>
-                    <p>A message scheduled for you has been released.</p>
-                `;
+                let contentHtml = "";
 
                 if (message.type === 'text' && message.text_content) {
-                    emailHtml += `
+                    contentHtml += `
                         <div style="padding: 20px; background-color: #f3f4f6; border-radius: 8px; margin: 20px 0;">
-                            <p style="white-space: pre-wrap;">${message.text_content}</p>
+                            <p style="white-space: pre-wrap; font-family: sans-serif;">${message.text_content}</p>
                         </div>
                     `;
                 } else if (message.type === 'audio' || message.type === 'video') {
@@ -119,31 +125,35 @@ export async function releaseCheckinMessages(userId: string) {
                             .createSignedUrl(message.audio_path, 60 * 60 * 24 * 7); // 7 days
 
                         if (signedUrl?.signedUrl) {
-                            emailHtml += `
+                            const label = locale === 'es'
+                                ? (message.type === 'video' ? 'Ver Video' : 'Escuchar Audio')
+                                : (message.type === 'video' ? 'View Video' : 'Listen to Audio');
+
+                            contentHtml += `
                                 <div style="margin: 20px 0;">
                                     <a href="${signedUrl.signedUrl}" style="display: inline-block; padding: 12px 24px; background-color: #000; color: #fff; text-decoration: none; border-radius: 6px;">
-                                        View ${message.type === 'video' ? 'Video' : 'Audio'} Message
+                                        ${label}
                                     </a>
                                 </div>
-                                <p style="font-size: 12px; color: #666;">This link is valid for 7 days.</p>
+                                <p style="font-size: 12px; color: #666;">
+                                    ${locale === 'es' ? 'Link válido por 7 días.' : 'Link valid for 7 days.'}
+                                </p>
                             `;
                         } else {
-                            emailHtml += `<p>Error generating media link.</p>`;
+                            contentHtml += `<p>${locale === 'es' ? 'Error generando link.' : 'Error generating link.'}</p>`;
                         }
                     }
                 }
 
-                emailHtml += `
-                    <p style="margin-top: 30px; font-size: 12px; color: #888;">
-                        VoiceForLater - Messages for when it matters.
-                    </p>
-                `;
+                // Use template
+                // Cast to any to avoid complex TS union
+                const template = getEmailTemplate('message_delivery', locale) as any;
 
                 await resend.emails.send({
                     from: "VoiceForLater <noreply@voiceforlater.com>",
                     to: recipient.email,
-                    subject: "You have a message via VoiceForLater",
-                    html: emailHtml
+                    subject: template.subject,
+                    html: template.html({ contentHtml })
                 });
 
                 // Update status to delivered

@@ -3,6 +3,7 @@ import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
 import crypto from 'crypto';
+import { getEmailTemplate } from "@/lib/email-templates";
 
 // Generate secure token (helper function inline for now to avoid large diffs if util not available in easy import path)
 function generateToken() {
@@ -100,14 +101,15 @@ export async function GET(request: NextRequest) {
             const attempts = checkin.attempts || 0;
 
             try {
-                // Get user profile and plan
+                // Get user profile and plan (and locale!)
                 const { data: profile } = await supabase
                     .from("profiles")
-                    .select("plan")
+                    .select("plan, locale")
                     .eq("id", userId)
                     .single();
 
                 const plan = (profile?.plan as Plan) || "free";
+                const locale = profile?.locale || 'es'; // Default ES or project default
                 const maxReminders = getMaxReminders(plan);
 
                 // Get user email from auth
@@ -118,22 +120,14 @@ export async function GET(request: NextRequest) {
                     // Send reminder to user
                     const resendClient = getResendClient();
                     if (userEmail && resendClient) {
+                        const template = getEmailTemplate('checkin_reminder', locale) as any;
+                        const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/checkin/confirm`;
+
                         await resendClient.emails.send({
                             from: "VoiceForLater <noreply@voiceforlater.com>",
                             to: userEmail,
-                            subject: "⏰ Check-in reminder - VoiceForLater",
-                            html: `
-                <h2>Time to check in!</h2>
-                <p>Your scheduled check-in is overdue. Please confirm you're still active.</p>
-                <p>Attempt ${attempts + 1} of 3</p>
-                <a href="${process.env.NEXT_PUBLIC_APP_URL}/api/checkin/confirm" 
-                   style="display:inline-block;padding:12px 24px;background:#8b5cf6;color:white;text-decoration:none;border-radius:8px;">
-                  Confirm I'm Active
-                </a>
-                <p style="color:#666;font-size:12px;margin-top:20px;">
-                  If you don't respond after 3 attempts, we'll contact your trusted contact.
-                </p>
-              `,
+                            subject: template.subject,
+                            html: template.html({ attempts: attempts + 1, confirmUrl })
                         });
                         results.reminders_sent++;
                     }
@@ -234,40 +228,27 @@ export async function GET(request: NextRequest) {
                             }
 
                             // 3. Send actionable email
-                            const verificationLink = `${process.env.NEXT_PUBLIC_APP_URL}/verify-status?token=${rawToken}`;
+                            // Use User's locale for creating urgency and clarity on behalf of user
+                            const template = getEmailTemplate('trusted_contact_verify', locale) as any;
+                            const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify-status?token=${rawToken}`;
+
+                            // Determine subject (can be function or string)
+                            const subject = typeof template.subject === 'function' ? template.subject({ userEmail: userEmail || '' }) : template.subject;
 
                             await resendClientForTrusted.emails.send({
-                                from: "Carry my Words <noreply@voiceforlater.com>",
+                                from: "VoiceForLater <noreply@voiceforlater.com>",
                                 to: contact.email,
-                                subject: "ACTION REQUIRED: Confirm status for " + userEmail,
-                                html: `
-                                    <h2>${contact.name ? `Hello ${contact.name},` : 'Hello,'}</h2>
-                                    <h3 style="color: #6366f1;">Action Required: Verify Status</h3>
-                                    <p>${userEmail} has missed their scheduled check-ins on Carry my Words.</p>
-                                    <p>As a trusted contact, we need you to verify if they are unable to access their account.</p>
-                                    
-                                    <div style="margin: 24px 0; padding: 16px; background-color: #fff1f2; border-left: 4px solid #e11d48; border-radius: 4px;">
-                                        <p style="margin: 0; font-weight: bold; color: #9f1239;">Is ${userEmail} unavailable?</p>
-                                        <p style="margin: 8px 0 0 0; color: #be123c;">If you confirm, their scheduled messages will be released to recipients.</p>
-                                    </div>
-
-                                    <a href="${verificationLink}" 
-                                       style="display:inline-block;padding:12px 24px;background:#e11d48;color:white;text-decoration:none;border-radius:8px;font-weight:bold;">
-                                      Verify Status Now
-                                    </a>
-                                    
-                                    <p style="margin-top:24px; font-size:14px; color:#666;">
-                                        If this is a false alarm or you know they are fine, please use the link above to report it secure and stop further notifications.
-                                    </p>
-                                    <p style="font-size:12px; color:#999;">Link expires in 48 hours.</p>
-                                    <br/>
-                                    <p>—<br/>
-                                    <strong>Carry my Words</strong></p>
-                                `,
+                                subject: subject,
+                                html: template.html({
+                                    name: contact.name,
+                                    userEmail: userEmail || '',
+                                    verifyUrl
+                                })
                             });
                             results.trusted_contact_notified++;
                         }
                     }
+
 
                     // Update checkin status
                     await supabase
