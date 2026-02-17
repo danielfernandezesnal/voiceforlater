@@ -15,7 +15,7 @@ interface MessageWithRecipient {
     created_at: string;
     recipients: { name: string; email: string }[];
     delivery_rules: { mode: 'date' | 'checkin'; deliver_at: string | null } | { mode: 'date' | 'checkin'; deliver_at: string | null }[] | null;
-    message_contacts: {
+    message_trusted_contacts: {
         trusted_contacts: {
             id: string;
             name: string;
@@ -130,10 +130,17 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                 {/* Trusted Contacts Logic */}
                                 <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1.5" title="Contactos de confianza asignados">
                                     {(() => {
-                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                        const trusted = (message as any).message_trusted_contacts?.map((mc: any) => mc.trusted_contacts).filter(Boolean) || [];
+                                        // Refined logic for trusted contacts based on definitive API shape:
+                                        // message_trusted_contacts: [{ trusted_contacts: { id, name, email } }]
 
-                                        if (trusted.length === 0) {
+                                        const mtc = message.message_trusted_contacts;
+                                        const hasTrusted = Array.isArray(mtc) && mtc.some(item => item?.trusted_contacts?.id);
+
+                                        const trustedList = hasTrusted
+                                            ? mtc.map(item => item.trusted_contacts).filter(Boolean)
+                                            : [];
+
+                                        if (!hasTrusted || trustedList.length === 0) {
                                             return (
                                                 <div className="flex flex-col gap-1 mt-1">
                                                     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200 w-fit">
@@ -146,8 +153,8 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                             );
                                         }
 
-                                        if (trusted.length === 1) {
-                                            const tc = trusted[0]!;
+                                        if (trustedList.length === 1) {
+                                            const tc = trustedList[0]!;
                                             return (
                                                 <>
                                                     <svg className="w-3.5 h-3.5 text-primary/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,12 +172,12 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                         return (
                                             <>
                                                 <svg className="w-3.5 h-3.5 text-primary/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 11-8 0 4 4 0 018 0z" />
                                                 </svg>
                                                 <span className="font-medium text-foreground/80">
-                                                    {locale === 'es' ? `Contactos de confianza (${trusted.length}): ` : `Trusted Contacts (${trusted.length}): `}
+                                                    {locale === 'es' ? `Contactos de confianza (${trustedList.length}): ` : `Trusted Contacts (${trustedList.length}): `}
                                                     <span className="font-normal text-muted-foreground">
-                                                        {trusted.map(t => t!.name || t!.email).join(' · ')}
+                                                        {trustedList.map(t => t!.name || t!.email).join(' · ')}
                                                     </span>
                                                 </span>
                                             </>
