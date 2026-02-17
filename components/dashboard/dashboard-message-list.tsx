@@ -61,20 +61,7 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
         return () => controller.abort();
     }, []);
 
-    useEffect(() => {
-        if (process.env.NODE_ENV !== 'production') {
-            const first = messages?.[0];
-            const initFirst = initialMessages?.[0];
-            console.log('[DBG] Dashboard Message List:', {
-                messagesLength: messages.length,
-                initialLength: initialMessages.length,
-                messagesMTC: (first as any)?.message_trusted_contacts,
-                initialMTC: (initFirst as any)?.message_trusted_contacts,
-                // Check if old property exists just in case
-                messagesOld: (first as any)?.message_contacts
-            });
-        }
-    }, [messages, initialMessages]);
+
 
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
 
@@ -158,8 +145,6 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                                     <span className="text-xs text-muted-foreground italic">
                                                         {locale === 'es' ? 'No se enviará automáticamente hasta que agregues uno.' : 'Will not send automatically until you add one.'}
                                                     </span>
-                                                    {/* Temporary debug indicator */}
-                                                    <span className="text-[10px] text-gray-400">tc_count: {trustedList.length}</span>
                                                 </div>
                                             );
                                         }
@@ -175,8 +160,6 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                                         {locale === 'es' ? 'Contacto de confianza: ' : 'Trusted Contact: '}
                                                         <span className="font-normal text-muted-foreground">{tc.name || tc.email}</span>
                                                     </span>
-                                                    {/* Temporary debug indicator */}
-                                                    <span className="ml-1 text-[10px] text-gray-400">tc_count: {trustedList.length}</span>
                                                 </>
                                             );
                                         }
@@ -193,8 +176,6 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                                         {trustedList.map(t => t!.name || t!.email).join(' · ')}
                                                     </span>
                                                 </span>
-                                                {/* Temporary debug indicator */}
-                                                <span className="ml-1 text-[10px] text-gray-400">tc_count: {trustedList.length}</span>
                                             </>
                                         );
                                     })()}
