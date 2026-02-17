@@ -130,7 +130,8 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                 {/* Trusted Contacts Logic */}
                                 <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1.5" title="Contactos de confianza asignados">
                                     {(() => {
-                                        const trusted = message.message_contacts?.map(mc => mc.trusted_contacts).filter(Boolean) || [];
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                        const trusted = (message as any).message_trusted_contacts?.map((mc: any) => mc.trusted_contacts).filter(Boolean) || [];
 
                                         if (trusted.length === 0) {
                                             return (

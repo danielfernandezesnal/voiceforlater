@@ -474,8 +474,11 @@ export async function PUT(request: NextRequest) {
 
         // Update Trusted Contacts
         if (deliveryMode === 'checkin') {
+            console.log(`[DEBUG PUT] Updating trusted contacts. IDs received: ${JSON.stringify(trustedContactIds)}`);
+
             // Remove existing
-            await supabase.from('message_trusted_contacts').delete().eq('message_id', messageId);
+            const { error: delError } = await supabase.from('message_trusted_contacts').delete().eq('message_id', messageId);
+            if (delError) console.error('[DEBUG PUT] Delete TC error:', delError);
 
             // Add new
             if (trustedContactIds.length > 0) {
@@ -488,7 +491,10 @@ export async function PUT(request: NextRequest) {
                     .from('message_trusted_contacts')
                     .insert(tcRows);
 
-                if (tcError) throw tcError;
+                if (tcError) {
+                    console.error('[DEBUG PUT] Insert TC error:', tcError);
+                    throw tcError;
+                }
             }
         }
 
