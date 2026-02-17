@@ -259,29 +259,29 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                                                                     value={currentContacts[index] || ''}
                                                                     onChange={(e) => handleContactChange(index, e.target.value)}
                                                                     className="w-full px-4 py-2.5 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary text-sm"
-                                                                    required={index === 0} // First one is mandatory
                                                                 >
-                                                                    <option value="">-- Seleccionar --</option>
+                                                                    <option value="">-- {dictionary.create?.select || 'Seleccionar'} --</option>
                                                                     {contacts.map(c => (
                                                                         <option
                                                                             key={c.id}
                                                                             value={c.id}
-                                                                            disabled={currentContacts.includes(c.id) && currentContacts[index] !== c.id} // Disable if selected elsewhere
+                                                                            disabled={currentContacts.includes(c.id) && currentContacts[index] !== c.id}
                                                                         >
                                                                             {c.name} ({c.email})
                                                                         </option>
                                                                     ))}
-                                                                    <option value="new" className="font-semibold text-primary">+ Agregar nuevo contacto...</option>
+                                                                    <option value="new" className="font-semibold text-primary font-medium">+ Agregar nuevo contacto...</option>
                                                                 </select>
                                                             </div>
                                                         ))}
                                                     </>
                                                 )}
 
-                                                {contacts.length === 0 && !isCreating && !loadingContacts && (
-                                                    <p className="text-xs text-amber-600">
-                                                        ⚠ Debes seleccionar un contacto de confianza para continuar.
-                                                    </p>
+                                                {currentContacts.length === 0 && !isCreating && !loadingContacts && (
+                                                    <div className="mt-2 flex gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-xs leading-relaxed animate-in fade-in">
+                                                        <span className="text-base">⚠️</span>
+                                                        <span>Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza. Puedes continuar y asignarlo luego desde el dashboard.</span>
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>

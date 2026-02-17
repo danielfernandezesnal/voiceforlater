@@ -176,7 +176,7 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                 if (data.deliveryMode === 'date') {
                     return data.deliverAt !== ''
                 }
-                return data.deliveryMode === 'checkin' && data.trustedContactIds.length > 0
+                return data.deliveryMode === 'checkin'
             case 5:
                 return true // Review step
             default:

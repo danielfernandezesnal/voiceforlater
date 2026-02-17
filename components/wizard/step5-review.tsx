@@ -99,6 +99,12 @@ export function Step5Review({ dictionary, typeDictionary, onSubmit, isSubmitting
                         )}
                     </div>
                 ))}
+                {data.deliveryMode === 'checkin' && data.trustedContactIds.length === 0 && (
+                    <div className="max-w-md mx-auto mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-sm flex gap-2 animate-in fade-in">
+                        <span className="text-base">⚠️</span>
+                        <span>Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza.</span>
+                    </div>
+                )}
             </div>
 
             {
