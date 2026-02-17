@@ -39,7 +39,9 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
         try {
             const res = await fetch('/api/stripe/portal', {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
+                body: JSON.stringify({ returnUrl: `/${locale}/dashboard/plan` }),
             })
             const data = await res.json()
             if (!res.ok) throw new Error(data.error || 'Error al abrir portal')
