@@ -3,7 +3,40 @@ import { createClient } from "@/lib/supabase/server";
 import { v4 as uuidv4 } from "uuid";
 import { type Plan, getPlanLimits, canCreateMessage, isCheckinIntervalAllowed } from "@/lib/plans";
 
+
 export const runtime = "nodejs";
+
+export async function GET() {
+    try {
+        const supabase = await createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const { data: messages, error } = await supabase
+            .from("messages")
+            .select(`
+                *,
+                recipients (*),
+                delivery_rules (*)
+            `)
+            .eq("owner_id", user.id)
+            .order("created_at", { ascending: false });
+
+        if (error) {
+            console.error("Error fetching messages:", error);
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        return NextResponse.json(messages || []);
+    } catch (e) {
+        console.error("GET /api/messages error:", e);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+}
+
 
 export async function POST(request: NextRequest) {
     try {
