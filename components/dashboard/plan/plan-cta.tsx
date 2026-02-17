@@ -1,11 +1,55 @@
 'use client'
 
+import { useState } from 'react'
+
 interface PlanCTAProps {
     planName: string
 }
 
 export function PlanCTA({ planName }: PlanCTAProps) {
     const isFree = planName.toLowerCase() !== 'pro'
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+
+    async function handleUpgrade() {
+        setIsLoading(true)
+        setError(null)
+        try {
+            const res = await fetch('/api/stripe/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ redirectPath: '/es/dashboard/plan?upgrade=success' }),
+            })
+            const data = await res.json()
+            if (!res.ok) throw new Error(data.error || 'Error al iniciar checkout')
+            if (data.url) {
+                window.location.href = data.url
+            }
+        } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+            setError(err.message || 'No se pudo iniciar el checkout.')
+            setIsLoading(false)
+        }
+    }
+
+    async function handleManage() {
+        setIsLoading(true)
+        setError(null)
+        try {
+            const res = await fetch('/api/stripe/portal', {
+                method: 'POST',
+                credentials: 'include',
+            })
+            const data = await res.json()
+            if (!res.ok) throw new Error(data.error || 'Error al abrir portal')
+            if (data.url) {
+                window.location.href = data.url
+            }
+        } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+            setError(err.message || 'No se pudo abrir el portal.')
+            setIsLoading(false)
+        }
+    }
 
     if (isFree) {
         return (
@@ -19,12 +63,16 @@ export function PlanCTA({ planName }: PlanCTAProps) {
                     </p>
                 </div>
 
-                {/* TODO: conectar con Stripe checkout en el próximo paso */}
+                {error && (
+                    <p className="text-sm text-red-600">{error}</p>
+                )}
+
                 <button
-                    onClick={() => {/* TODO: Stripe checkout */ }}
-                    className="inline-flex items-center justify-center px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-sm text-sm"
+                    onClick={handleUpgrade}
+                    disabled={isLoading}
+                    className="inline-flex items-center justify-center px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-sm text-sm disabled:opacity-50"
                 >
-                    Pasar a Pro
+                    {isLoading ? 'Redirigiendo...' : 'Pasar a Pro'}
                 </button>
 
                 <p className="text-xs text-muted-foreground">
@@ -45,12 +93,16 @@ export function PlanCTA({ planName }: PlanCTAProps) {
                 </p>
             </div>
 
-            {/* TODO: conectar con Stripe portal en el próximo paso */}
+            {error && (
+                <p className="text-sm text-red-600">{error}</p>
+            )}
+
             <button
-                onClick={() => {/* TODO: Stripe portal */ }}
-                className="inline-flex items-center justify-center px-6 py-2.5 border border-border text-foreground font-medium rounded-lg hover:bg-muted/50 transition-colors text-sm"
+                onClick={handleManage}
+                disabled={isLoading}
+                className="inline-flex items-center justify-center px-6 py-2.5 border border-border text-foreground font-medium rounded-lg hover:bg-muted/50 transition-colors text-sm disabled:opacity-50"
             >
-                Administrar suscripción
+                {isLoading ? 'Redirigiendo...' : 'Administrar suscripción'}
             </button>
         </div>
     )
