@@ -61,6 +61,21 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
         return () => controller.abort();
     }, []);
 
+    useEffect(() => {
+        if (process.env.NODE_ENV !== 'production') {
+            const first = messages?.[0];
+            const initFirst = initialMessages?.[0];
+            console.log('[DBG] Dashboard Message List:', {
+                messagesLength: messages.length,
+                initialLength: initialMessages.length,
+                messagesMTC: (first as any)?.message_trusted_contacts,
+                initialMTC: (initFirst as any)?.message_trusted_contacts,
+                // Check if old property exists just in case
+                messagesOld: (first as any)?.message_contacts
+            });
+        }
+    }, [messages, initialMessages]);
+
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
 
     if (messages.length === 0) {
