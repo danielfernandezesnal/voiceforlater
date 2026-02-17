@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
+import crypto from 'crypto';
+
+// Generate secure token (helper function inline for now to avoid large diffs if util not available in easy import path)
+function generateToken() {
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
+    return { rawToken, tokenHash };
+}
 
 // This endpoint is called by Vercel Cron
 // It processes overdue check-ins and sends notifications
@@ -191,22 +199,61 @@ export async function GET(request: NextRequest) {
 
                     const resendClientForTrusted = getResendClient();
                     if (resendClientForTrusted && contactsToNotify.size > 0) {
-                        // Send email to each unique contact
+                        // Send email to each unique contact with SECURE TOKEN
                         for (const contact of contactsToNotify.values()) {
+
+                            // 1. Generate secure token
+                            const { rawToken, tokenHash } = generateToken();
+                            const expiresAt = new Date();
+                            expiresAt.setHours(expiresAt.getHours() + 48); // 48h expiration
+
+                            // 2. Store token hash in DB
+                            const { error: tokenError } = await supabase
+                                .from('verification_tokens')
+                                .insert({
+                                    user_id: userId,
+                                    contact_email: contact.email,
+                                    token_hash: tokenHash,
+                                    expires_at: expiresAt.toISOString(),
+                                    action: 'verify-status'
+                                });
+
+                            if (tokenError) {
+                                console.error(`Error storing token for ${contact.email}:`, tokenError);
+                                results.errors.push(`Token error for ${contact.email}: ${tokenError.message}`);
+                                continue;
+                            }
+
+                            // 3. Send actionable email
+                            const verificationLink = `${process.env.NEXT_PUBLIC_APP_URL}/verify-status?token=${rawToken}`;
+
                             await resendClientForTrusted.emails.send({
                                 from: "Carry my Words <noreply@voiceforlater.com>",
                                 to: contact.email,
-                                subject: "You’ve been chosen as a trusted contact",
+                                subject: "ACTION REQUIRED: Confirm status for " + userEmail,
                                 html: `
                                     <h2>${contact.name ? `Hello ${contact.name},` : 'Hello,'}</h2>
-                                    <h3 style="color: #6366f1;">You’ve been chosen as a trusted contact</h3>
-                                    <p>${userEmail} has chosen you as a trusted contact on Carry my Words.</p>
-                                    <p>This means that if this person does not confirm their activity within the defined period, you may receive a notification related to the messages they have scheduled.</p>
-                                    <p>No action is required from you at this time. We just wanted to inform you and thank you for being part of ${userEmail}’s circle of trust.</p>
+                                    <h3 style="color: #6366f1;">Action Required: Verify Status</h3>
+                                    <p>${userEmail} has missed their scheduled check-ins on Carry my Words.</p>
+                                    <p>As a trusted contact, we need you to verify if they are unable to access their account.</p>
+                                    
+                                    <div style="margin: 24px 0; padding: 16px; background-color: #fff1f2; border-left: 4px solid #e11d48; border-radius: 4px;">
+                                        <p style="margin: 0; font-weight: bold; color: #9f1239;">Is ${userEmail} unavailable?</p>
+                                        <p style="margin: 8px 0 0 0; color: #be123c;">If you confirm, their scheduled messages will be released to recipients.</p>
+                                    </div>
+
+                                    <a href="${verificationLink}" 
+                                       style="display:inline-block;padding:12px 24px;background:#e11d48;color:white;text-decoration:none;border-radius:8px;font-weight:bold;">
+                                      Verify Status Now
+                                    </a>
+                                    
+                                    <p style="margin-top:24px; font-size:14px; color:#666;">
+                                        If this is a false alarm or you know they are fine, please use the link above to report it secure and stop further notifications.
+                                    </p>
+                                    <p style="font-size:12px; color:#999;">Link expires in 48 hours.</p>
                                     <br/>
                                     <p>—<br/>
-                                    <strong>Carry my Words</strong><br/>
-                                    <span style="color: #666; font-style: italic;">So your words arrive when they’re meant to.</span></p>
+                                    <strong>Carry my Words</strong></p>
                                 `,
                             });
                             results.trusted_contact_notified++;
