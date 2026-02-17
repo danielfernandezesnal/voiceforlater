@@ -79,6 +79,28 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
+        // Validate delivery date
+        if (deliveryMode === "date") {
+            if (!deliverAt) {
+                return NextResponse.json({ error: "Delivery date is required for date mode" }, { status: 400 });
+            }
+
+            const scheduleDate = new Date(deliverAt);
+            if (isNaN(scheduleDate.getTime())) {
+                return NextResponse.json({ error: "Invalid date format" }, { status: 400 });
+            }
+
+            const now = new Date();
+            const minDate = new Date(now.getTime() + 5 * 60 * 1000); // Now + 5m
+
+            if (scheduleDate < minDate) {
+                return NextResponse.json({
+                    error: "Delivery date must be at least 5 minutes in the future.",
+                    code: "INVALID_SCHEDULE"
+                }, { status: 400 });
+            }
+        }
+
         // Validate content based on type
         if (type === "text" && (!textContent || textContent.trim().length === 0)) {
             return NextResponse.json({ error: "Text content is required" }, { status: 400 });
