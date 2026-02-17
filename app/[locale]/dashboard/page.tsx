@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { CheckinStatusWidget } from "@/components/dashboard/checkin-status";
-import { TrustedContactForm } from "@/components/dashboard/trusted-contact-form";
+
 import { CreateMessageButton } from "@/components/dashboard/create-message-button";
 import { MessageStatus } from "@/components/dashboard/message-status";
 import { MessageActions } from "@/components/dashboard/message-actions";
@@ -115,17 +115,18 @@ export default async function DashboardPage({
                         <span className="px-3 py-1 text-sm font-semibold rounded-full bg-success/10 text-success">
                             {dict.stripe.proBadge}
                         </span>
-                        <span className="text-muted-foreground text-sm">All features unlocked</span>
+                        <span className="text-muted-foreground text-sm">
+                            {locale === 'es' ? 'Tu plan Pro te permite enviar mensajes ilimitados.' : 'Your Pro plan allows unlimited messages.'}
+                        </span>
                     </div>
-                    <UpgradeButton dictionary={dict.stripe} isPro={true} className="!py-2 !px-4 text-sm" />
+                    {/* Manage subscription moved to /dashboard/plan */}
                 </div>
             )}
 
-            {/* Check-in and Trusted Contact widgets (only show if user has check-in messages AND is Pro) */}
+            {/* Check-in status widget (only show if user has check-in messages AND is Pro) */}
             {hasCheckinMessages && userPlan === 'pro' && (
-                <div className="grid gap-4 md:grid-cols-2 mb-8">
+                <div className="mb-8">
                     <CheckinStatusWidget dictionary={dict.checkin} />
-                    <TrustedContactForm dictionary={dict.trustedContact} />
                 </div>
             )}
 
