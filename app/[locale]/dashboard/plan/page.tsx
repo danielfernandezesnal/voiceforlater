@@ -2,14 +2,33 @@ import { PlanCurrentCard } from "@/components/dashboard/plan/plan-current-card";
 import { PlanCompare } from "@/components/dashboard/plan/plan-compare";
 import { PlanCTA } from "@/components/dashboard/plan/plan-cta";
 
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+
 export default async function PlanPage({
     params,
 }: {
     params: Promise<{ locale: string }>;
 }) {
     const { locale } = await params;
-    // TODO: reemplazar con plan real desde Supabase (viene del layout via props o server fetch)
-    const mockPlan = { name: "Free", status: "Activo" };
+
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        redirect(`/${locale}/auth/login`);
+    }
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('plan')
+        .eq('id', user.id)
+        .single();
+
+    // Default to 'free' if null, and Capitalize for display (free -> Free, pro -> Pro)
+    const rawPlan = profile?.plan || 'free';
+    const planName = rawPlan.charAt(0).toUpperCase() + rawPlan.slice(1);
+    const status = "Activo"; // TODO: obtener estado real de suscripción (active, trialing, past_due)
 
     return (
         <div className="max-w-3xl mx-auto space-y-8">
@@ -22,13 +41,13 @@ export default async function PlanPage({
             </div>
 
             {/* B) Current Plan Card */}
-            <PlanCurrentCard planName={mockPlan.name} status={mockPlan.status} />
+            <PlanCurrentCard planName={planName} status={status} />
 
             {/* C) CTA */}
-            <PlanCTA planName={mockPlan.name} locale={locale} />
+            <PlanCTA planName={planName} locale={locale} />
 
             {/* D) Feature Comparison */}
-            <PlanCompare currentPlan={mockPlan.name} />
+            <PlanCompare currentPlan={planName} />
         </div>
     );
 }
