@@ -27,7 +27,10 @@ export default async function EditMessagePage({
         .select(`
             *,
             recipients (*),
-            delivery_rules (*)
+            delivery_rules (*),
+            message_trusted_contacts (
+                trusted_contact_id
+            )
         `)
         .eq('id', id)
         .single();
@@ -49,6 +52,10 @@ export default async function EditMessagePage({
     // Construct initialData from message
     const recipient = message.recipients?.[0] || { name: '', email: '' };
     const deliveryRule = message.delivery_rules?.[0]; // Assuming 1 rule for now
+
+    // Extract trusted contacts
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const trustedContactIds = message.message_trusted_contacts?.map((tc: any) => tc.trusted_contact_id) || [];
 
     // Generate signed URL if audio/video exists
     let existingAudioUrl: string | null = null;
@@ -74,6 +81,7 @@ export default async function EditMessagePage({
         deliveryMode: deliveryRule?.mode || null,
         deliverAt: deliveryRule?.deliver_at || '',
         checkinIntervalDays: deliveryRule?.checkin_interval_days || 30,
+        trustedContactIds,
     };
 
     return (

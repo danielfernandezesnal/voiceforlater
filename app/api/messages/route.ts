@@ -22,7 +22,10 @@ export async function GET() {
             .select(`
                 *,
                 recipients (*),
-                delivery_rules (*)
+                delivery_rules (*),
+                message_trusted_contacts (
+                    trusted_contacts (id, name, email)
+                )
             `)
             .eq("owner_id", user.id)
             .order("created_at", { ascending: false });
