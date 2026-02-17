@@ -1,9 +1,9 @@
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { PlanUpgradeSuccess } from "@/components/dashboard/plan/plan-upgrade-success";
 import { PlanCurrentCard } from "@/components/dashboard/plan/plan-current-card";
 import { PlanCompare } from "@/components/dashboard/plan/plan-compare";
 import { PlanCTA } from "@/components/dashboard/plan/plan-cta";
-
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
 
 export default async function PlanPage({
     params,
@@ -32,7 +32,10 @@ export default async function PlanPage({
 
     return (
         <div className="max-w-3xl mx-auto space-y-8">
-            {/* A) Header */}
+            {/* A) Upgrade Success Banner (Client Component) */}
+            <PlanUpgradeSuccess currentPlan={planName} locale={locale} />
+
+            {/* B) Header */}
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">Mi Plan</h1>
                 <p className="text-muted-foreground mt-2">
@@ -40,13 +43,13 @@ export default async function PlanPage({
                 </p>
             </div>
 
-            {/* B) Current Plan Card */}
+            {/* C) Current Plan Card */}
             <PlanCurrentCard planName={planName} status={status} />
 
-            {/* C) CTA */}
+            {/* D) CTA */}
             <PlanCTA planName={planName} locale={locale} />
 
-            {/* D) Feature Comparison */}
+            {/* E) Feature Comparison */}
             <PlanCompare currentPlan={planName} />
         </div>
     );
