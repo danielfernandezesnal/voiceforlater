@@ -22,6 +22,8 @@ INSERT INTO verification_tokens (
 
 -- 3. Trigger Cron (via curl or browser)
 -- GET /api/cron/process-expired-tokens
+-- Header: x-cron-secret: YOUR_CRON_SECRET (Required in production)
+-- In Vercel, set CRON_SECRET env var.
 
 -- 4. Verify Results
 -- Token should be marked used_at = now

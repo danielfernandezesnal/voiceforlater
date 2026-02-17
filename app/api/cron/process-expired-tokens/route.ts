@@ -26,11 +26,17 @@ function getAdminClient() {
 
 export async function GET(request: NextRequest) {
     // Verify cron secret
-    const authHeader = request.headers.get("authorization");
     const cronSecret = process.env.CRON_SECRET;
+    const authHeader = request.headers.get("x-cron-secret");
 
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // In production, Require the secret. 
+    // In dev, allow if secret is not set (for manual testing), but if set, require it.
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    if (isProduction || cronSecret) {
+        if (authHeader !== cronSecret) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
     }
 
     const supabase = getAdminClient();

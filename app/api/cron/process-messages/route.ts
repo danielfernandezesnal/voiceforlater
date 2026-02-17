@@ -23,11 +23,15 @@ function getResendClient() {
  */
 export async function GET(request: NextRequest) {
     // Verify cron secret
-    const authHeader = request.headers.get("authorization");
     const cronSecret = process.env.CRON_SECRET;
+    const authHeader = request.headers.get("x-cron-secret");
 
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    if (isProduction || cronSecret) {
+        if (authHeader !== cronSecret) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
     }
 
     const supabase = getAdminClient();
