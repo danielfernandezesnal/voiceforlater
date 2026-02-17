@@ -51,6 +51,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Email is required' }, { status: 400 });
         }
 
+        const normalizedEmail = email.trim().toLowerCase();
+
         // 1. Get user plan and check limit
         const { data: profile } = await supabase
             .from('profiles')
@@ -71,10 +73,25 @@ export async function POST(request: NextRequest) {
         if (count !== null && count >= maxContacts) {
             return NextResponse.json({
                 error: userPlan === 'free'
-                    ? 'Límite del plan Free alcanzado (1 contacto). Pasate a Pro para agregar hasta 3.'
+                    ? 'Límite del plan Free alcanzado (1). Pasate a Pro para agregar más.'
                     : 'Máximo de 3 contactos de confianza permitidos.',
                 limitReached: true
             }, { status: 403 });
+        }
+
+        // Check for duplicates (case-insensitive)
+        const { data: existing } = await supabase
+            .from('trusted_contacts')
+            .select('id')
+            .eq('user_id', user.id)
+            .ilike('email', normalizedEmail)
+            .maybeSingle();
+
+        if (existing) {
+            return NextResponse.json({
+                error: 'Este contacto ya existe.',
+                code: 'CONTACT_EXISTS'
+            }, { status: 409 });
         }
 
         // 2. Insert Contact
@@ -83,15 +100,12 @@ export async function POST(request: NextRequest) {
             .insert({
                 user_id: user.id,
                 name: name || '',
-                email: email
+                email: normalizedEmail
             })
             .select()
             .single();
 
         if (insertError) {
-            if (insertError.code === '23505') { // Unique violation
-                return NextResponse.json({ error: 'This contact is already in your list.' }, { status: 409 });
-            }
             throw insertError;
         }
 

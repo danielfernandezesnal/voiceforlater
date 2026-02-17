@@ -53,6 +53,9 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts }
                 if (res.status === 403 && data.limitReached) {
                     throw new Error(data.error)
                 }
+                if (res.status === 409) {
+                    throw new Error(dictionary.trustedContact.duplicateError || 'Ese contacto ya existe.')
+                }
                 throw new Error(data.error || 'Failed to add contact')
             }
 
