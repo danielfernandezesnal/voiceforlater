@@ -18,7 +18,7 @@ interface MessageWithRecipient {
     created_at: string;
     recipients: { name: string; email: string }[];
     delivery_rules: { mode: 'date' | 'checkin'; deliver_at: string | null } | { mode: 'date' | 'checkin'; deliver_at: string | null }[] | null;
-    message_contacts: {
+    message_trusted_contacts: {
         trusted_contacts: {
             id: string;
             name: string;
@@ -64,7 +64,7 @@ export default async function DashboardPage({
                 created_at,
                 recipients (name, email),
                 delivery_rules (mode, deliver_at),
-                message_contacts (
+                message_trusted_contacts (
                     trusted_contacts (
                         id,
                         name,
