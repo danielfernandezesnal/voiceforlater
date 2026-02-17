@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
         // Canonical type normalization (decision_confirm / decision_deny)
         const eventType = `decision_${decision}`;
 
-        await supabase.from("confirmation_events").insert({
+        await supabase.from("confirmation_events").upsert({
             user_id: verification.user_id,
             contact_email: verification.contact_email,
             decision: decision, // Keep strictly for query convenience if needed, though type covers it
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
             type: eventType,
             ip_address: request.headers.get("x-forwarded-for") || "unknown",
             user_agent: request.headers.get("user-agent") || "unknown"
-        });
+        }, { onConflict: 'token_id, type', ignoreDuplicates: true });
 
         // 5. Execute Decision Logic
         if (decision === 'confirm') {

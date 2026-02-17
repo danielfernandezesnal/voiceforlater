@@ -92,14 +92,13 @@ export async function GET(request: NextRequest) {
             try {
                 // A. Log 'expired' event
                 // Decision is NULL because no one made a decision; it's a system event.
-                await supabase.from("confirmation_events").insert({
+                await supabase.from("confirmation_events").upsert({
                     user_id: token.user_id,
                     contact_email: token.contact_email,
                     token_id: token.id,
                     type: "token_expired",
                     decision: null
-                }); // Implicitly safe ON CONFLICT if index exists, but default insert throws on conflict.
-                // We rely on used_at claim for concurrency.
+                }, { onConflict: 'token_id, type', ignoreDuplicates: true });
 
                 // B. Release Messages
                 const releaseResult = await releaseCheckinMessages(token.user_id);
@@ -109,13 +108,13 @@ export async function GET(request: NextRequest) {
 
                     // C. Log 'released' event
                     // Distinct type for the release action itself
-                    await supabase.from("confirmation_events").insert({
+                    await supabase.from("confirmation_events").upsert({
                         user_id: token.user_id,
                         contact_email: token.contact_email,
                         token_id: token.id,
                         type: "messages_released_auto",
                         decision: null
-                    });
+                    }, { onConflict: 'token_id, type', ignoreDuplicates: true });
                 }
 
                 if (releaseResult.errors.length > 0) {
