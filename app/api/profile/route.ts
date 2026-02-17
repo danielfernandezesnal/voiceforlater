@@ -25,11 +25,27 @@ export async function PUT(request: NextRequest) {
         const { error: profileError } = await supabase
             .from('profiles')
             .update({
-                first_name: first_name?.trim() || null,
-                last_name: last_name?.trim() || null,
+                first_name: first_name && typeof first_name === 'string' ? first_name.trim() || null : null,
+                last_name: last_name && typeof last_name === 'string' ? last_name.trim() || null : null,
                 country: country.trim(),
-                city: city?.trim() || null,
-                phone: phone?.trim() || null,
+                city: city && typeof city === 'string' ? city.trim() || null : null,
+                phone: (() => {
+                    if (!phone || typeof phone !== 'string') return null;
+                    // Remove all non-dial characters (allow +, digits, spaces)
+                    const cleaned = phone.replace(/[^+\d\s]/g, '').replace(/\s+/g, ' ').trim();
+
+                    if (!cleaned) return null;
+
+                    // Enforce international format (start with +)
+                    if (!cleaned.startsWith('+')) {
+                        throw new Error('El teléfono debe incluir el código de país (ej: +598 ...).');
+                    }
+
+                    // Simple length check: +XX N... (min 6 chars to include dial and at least 1-2 digits)
+                    if (cleaned.length < 6) return null;
+
+                    return cleaned;
+                })(),
             })
             .eq('id', user.id);
 
