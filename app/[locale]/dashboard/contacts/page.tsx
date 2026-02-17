@@ -31,6 +31,16 @@ export default async function ContactsPage({
 
     const currentPlan = profile?.plan || 'free';
 
+    // Fetch contacts server-side (auth works here)
+    const { data: contacts, error: contactsError } = await supabase
+        .from('trusted_contacts')
+        .select('*')
+        .eq('user_id', user.id);
+
+    if (contactsError) {
+        console.error('[ContactsPage] Error fetching contacts:', contactsError.message);
+    }
+
     return (
         <div className="max-w-4xl mx-auto space-y-8">
             <div className="bg-card border border-border rounded-xl p-8 shadow-sm">
@@ -40,7 +50,12 @@ export default async function ContactsPage({
                     {dict.trustedContact?.description || 'Gestiona las personas en las que confías para que reciban tus mensajes si tú no puedes.'}
                 </p>
 
-                <TrustedContactList dictionary={dict} locale={locale} plan={currentPlan} />
+                <TrustedContactList
+                    dictionary={dict}
+                    locale={locale}
+                    plan={currentPlan}
+                    initialContacts={contacts || []}
+                />
             </div>
         </div>
     );

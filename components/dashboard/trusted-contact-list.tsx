@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface Contact {
@@ -14,11 +14,11 @@ interface TrustedContactListProps {
     dictionary: any
     locale: string
     plan: string
+    initialContacts: Contact[]
 }
 
-export function TrustedContactList({ dictionary, locale, plan }: TrustedContactListProps) {
-    const [contacts, setContacts] = useState<Contact[]>([])
-    const [isLoading, setIsLoading] = useState(true)
+export function TrustedContactList({ dictionary, locale, plan, initialContacts }: TrustedContactListProps) {
+    const [contacts, setContacts] = useState<Contact[]>(initialContacts)
     const [isSaving, setIsSaving] = useState(false)
     const [isDeleting, setIsDeleting] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
@@ -34,24 +34,6 @@ export function TrustedContactList({ dictionary, locale, plan }: TrustedContactL
     const maxContacts = plan === 'pro' ? 3 : 1
     const canAdd = contacts.length < maxContacts
 
-    useEffect(() => {
-        fetchContacts()
-    }, [])
-
-    async function fetchContacts() {
-        try {
-            const res = await fetch('/api/trusted-contacts')
-            if (!res.ok) throw new Error('Failed to load contacts')
-            const data = await res.json()
-            setContacts(data)
-        } catch (err) {
-            console.error(err)
-            setError('Error loading contacts')
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
     async function handleAdd(e: React.FormEvent) {
         e.preventDefault()
         setIsSaving(true)
@@ -61,21 +43,20 @@ export function TrustedContactList({ dictionary, locale, plan }: TrustedContactL
             const res = await fetch('/api/trusted-contacts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ name: newName, email: newEmail, locale })
             })
 
             const data = await res.json()
 
             if (!res.ok) {
-                // Show plan limit message if 403
                 if (res.status === 403 && data.limitReached) {
                     throw new Error(data.error)
                 }
                 throw new Error(data.error || 'Failed to add contact')
             }
 
-            // Success
-            setContacts([data, ...contacts])
+            // Success — refresh the page to get fresh server-side data
             setNewName('')
             setNewEmail('')
             setIsAddingMode(false)
@@ -93,12 +74,13 @@ export function TrustedContactList({ dictionary, locale, plan }: TrustedContactL
         setIsDeleting(id)
         try {
             const res = await fetch(`/api/trusted-contacts?id=${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                credentials: 'include',
             })
 
             if (!res.ok) throw new Error('Failed to delete')
 
-            setContacts(contacts.filter(c => c.id !== id))
+            // Refresh to get fresh server-side data
             router.refresh()
         } catch {
             alert('Error deleting contact')
@@ -106,8 +88,6 @@ export function TrustedContactList({ dictionary, locale, plan }: TrustedContactL
             setIsDeleting(null)
         }
     }
-
-    if (isLoading) return <div className="p-8 text-center text-muted-foreground">{dictionary.common?.loading || 'Cargando...'}</div>
 
     return (
         <div className="space-y-8">
@@ -124,8 +104,8 @@ export function TrustedContactList({ dictionary, locale, plan }: TrustedContactL
                             onClick={() => setIsAddingMode(true)}
                             disabled={!canAdd}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm ${canAdd
-                                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                                    : 'bg-muted text-muted-foreground cursor-not-allowed opacity-60'
+                                ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                                : 'bg-muted text-muted-foreground cursor-not-allowed opacity-60'
                                 }`}
                         >
                             {dictionary.trustedContact.addContact}
@@ -236,9 +216,9 @@ export function TrustedContactList({ dictionary, locale, plan }: TrustedContactL
                 )}
             </div>
 
-            {/* Info Note — plan-aware */}
-            <div className="bg-amber-50/50 p-4 rounded-lg border border-amber-100 text-sm text-amber-900">
-                {plan === 'free' ? (
+            {/* Info Note — plan + contact count aware */}
+            <div className="bg-amber-50/50 p-4 rounded-lg border border-amber-100 text-sm text-amber-900 leading-relaxed">
+                {plan === 'free' && contacts.length === 0 && (
                     <p>
                         Puedes agregar hasta <strong>1 contacto</strong> de confianza.
                         Este contacto formará tu &quot;grupo de confianza&quot; y podrás asignarlo a tus mensajes individuales más adelante.
@@ -248,11 +228,33 @@ export function TrustedContactList({ dictionary, locale, plan }: TrustedContactL
                             ✨ La función de agregar más contactos de confianza se encuentra en la opción <strong>Pro</strong>.
                         </span>
                     </p>
-                ) : (
+                )}
+                {plan === 'free' && contacts.length >= 1 && (
                     <p>
-                        <strong>Nota:</strong> Puedes agregar hasta <strong>3 contactos</strong> de confianza.
-                        Estos contactos formarán tu &quot;grupo de confianza&quot; y podrás asignar cualquiera de ellos a tus mensajes individuales más adelante.
-                        Al agregar un contacto, le enviaremos un correo para notificarle.
+                        Este contacto formará tu &quot;grupo de confianza&quot; y podrás asignarlo a tus mensajes individuales más adelante.
+                        <br />
+                        Cuando lo selecciones para alguno de tus mensajes, le enviaremos un correo para notificarle (no en este momento).
+                        <br /><br />
+                        <span className="text-amber-700">
+                            ✨ La función de agregar más contactos de confianza se encuentra en la opción <strong>Pro</strong>.
+                        </span>
+                    </p>
+                )}
+                {plan === 'pro' && contacts.length <= 1 && (
+                    <p>
+                        <span className="text-amber-700">
+                            ✨ Tu suscripción <strong>PRO</strong> te permite agregar hasta <strong>3 contactos</strong> de confianza.
+                        </span>
+                        {' '}Estos contactos formarán tu &quot;grupo de confianza&quot; y podrás asignarlos a tus mensajes individuales más adelante.
+                        <br />
+                        Cuando lo selecciones para alguno de tus mensajes, le enviaremos un correo para notificarle (no en este momento).
+                    </p>
+                )}
+                {plan === 'pro' && contacts.length >= 2 && (
+                    <p>
+                        Estos contactos formarán tu &quot;grupo de confianza&quot; y podrás asignarlos a tus mensajes individuales más adelante.
+                        <br />
+                        Cuando lo selecciones para alguno de tus mensajes, le enviaremos un correo para notificarle (no en este momento).
                     </p>
                 )}
             </div>

@@ -8,23 +8,23 @@ export async function GET() {
     try {
         const supabase = await createClient();
 
-        // Must call getSession() first to hydrate the auth session from cookies.
-        // Without this, getUser() fails with 'Auth session missing!' in Route Handlers.
-        const { data: { session } } = await supabase.auth.getSession();
+        // Hydrate session from cookies first
+        await supabase.auth.getSession();
 
-        if (!session) {
+        // Then validate securely with getUser()
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+        if (authError || !user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
-
-        const user = session.user;
 
         const { data, error } = await supabase
             .from('trusted_contacts')
             .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false });
+            .eq('user_id', user.id);
 
         if (error) {
+            console.error('[GET /api/trusted-contacts] DB error:', error);
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
 
@@ -37,6 +37,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
     const supabase = await createClient();
+    await supabase.auth.getSession();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
@@ -166,6 +167,7 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
     const supabase = await createClient();
+    await supabase.auth.getSession();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
