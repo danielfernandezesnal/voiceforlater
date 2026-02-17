@@ -89,8 +89,8 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
             {message && (
                 <div
                     className={`p-4 rounded-lg text-sm border ${message.type === 'success'
-                            ? 'bg-emerald-50 text-emerald-800 border-emerald-100'
-                            : 'bg-red-50 text-red-600 border-red-100'
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-100'
+                        : 'bg-red-50 text-red-600 border-red-100'
                         }`}
                 >
                     {message.text}
@@ -166,7 +166,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                             value={form.country}
                             onChange={e => handleChange('country', e.target.value)}
                             required
-                            className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all appearance-none"
+                            className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
                         >
                             <option value="">Seleccionar país</option>
                             {COUNTRIES.map(c => (
@@ -201,7 +201,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                             id="phone_dial"
                             value={dialCode}
                             onChange={e => { setDialCode(e.target.value); if (message) setMessage(null) }}
-                            className="w-full px-2 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all text-sm appearance-none"
+                            className="w-full px-2 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all text-sm"
                         >
                             {CALLING_CODES.map(c => (
                                 <option key={c.iso} value={c.dial}>
