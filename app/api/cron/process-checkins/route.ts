@@ -3,7 +3,8 @@ import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
 import crypto from 'crypto';
-import { getEmailTemplate } from "@/lib/email-templates";
+import { getDictionary, Locale } from '@/lib/i18n';
+import { getCheckinReminderTemplate, getTrustedContactVerifyTemplate } from '@/lib/email-templates';
 
 // Generate secure token (helper function inline for now to avoid large diffs if util not available in easy import path)
 function generateToken() {
@@ -109,7 +110,10 @@ export async function GET(request: NextRequest) {
                     .single();
 
                 const plan = (profile?.plan as Plan) || "free";
-                const locale = profile?.locale || 'es'; // Default ES or project default
+                const localeRaw = profile?.locale || 'en';
+                const locale = (['en', 'es'].includes(localeRaw) ? localeRaw : 'en') as Locale;
+                const dict = await getDictionary(locale); // Fetch once per user/loop iteration is acceptable for cron
+
                 const maxReminders = getMaxReminders(plan);
 
                 // Get user email from auth
@@ -120,14 +124,14 @@ export async function GET(request: NextRequest) {
                     // Send reminder to user
                     const resendClient = getResendClient();
                     if (userEmail && resendClient) {
-                        const template = getEmailTemplate('checkin_reminder', locale) as any;
                         const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/checkin/confirm`;
+                        const { subject, html } = getCheckinReminderTemplate(dict as any, { attempts: attempts + 1, confirmUrl });
 
                         await resendClient.emails.send({
                             from: "VoiceForLater <noreply@voiceforlater.com>",
                             to: userEmail,
-                            subject: template.subject,
-                            html: template.html({ attempts: attempts + 1, confirmUrl })
+                            subject: subject,
+                            html: html
                         });
                         results.reminders_sent++;
                     }
@@ -229,21 +233,18 @@ export async function GET(request: NextRequest) {
 
                             // 3. Send actionable email
                             // Use User's locale for creating urgency and clarity on behalf of user
-                            const template = getEmailTemplate('trusted_contact_verify', locale) as any;
                             const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify-status?token=${rawToken}`;
-
-                            // Determine subject (can be function or string)
-                            const subject = typeof template.subject === 'function' ? template.subject({ userEmail: userEmail || '' }) : template.subject;
+                            const { subject, html } = getTrustedContactVerifyTemplate(dict as any, {
+                                name: contact.name,
+                                userEmail: userEmail || '',
+                                verifyUrl
+                            });
 
                             await resendClientForTrusted.emails.send({
                                 from: "VoiceForLater <noreply@voiceforlater.com>",
                                 to: contact.email,
                                 subject: subject,
-                                html: template.html({
-                                    name: contact.name,
-                                    userEmail: userEmail || '',
-                                    verifyUrl
-                                })
+                                html: html
                             });
                             results.trusted_contact_notified++;
                         }

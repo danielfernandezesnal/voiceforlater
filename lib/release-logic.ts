@@ -1,7 +1,8 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-import { getEmailTemplate } from "@/lib/email-templates";
+import { getDictionary, Locale } from '@/lib/i18n';
+import { getMessageDeliveryTemplate } from "@/lib/email-templates";
 
 // Helper to get admin client
 function getAdminClient() {
@@ -36,7 +37,7 @@ export async function releaseCheckinMessages(userId: string) {
         .eq("id", userId)
         .single();
 
-    const locale = profile?.locale || 'es';
+    const locale = profile?.locale || 'en';
 
     const results = {
         processed: 0,
@@ -109,6 +110,12 @@ export async function releaseCheckinMessages(userId: string) {
             }
 
             try {
+                // Ensure locale string is valid
+                const localeRaw = locale || 'en';
+                const validLocale = (['en', 'es'].includes(localeRaw) ? localeRaw : 'en') as Locale;
+                const dict = await getDictionary(validLocale);
+                const t = dict.emails.messageDelivery;
+
                 let contentHtml = "";
 
                 if (message.type === 'text' && message.text_content) {
@@ -125,9 +132,7 @@ export async function releaseCheckinMessages(userId: string) {
                             .createSignedUrl(message.audio_path, 60 * 60 * 24 * 7); // 7 days
 
                         if (signedUrl?.signedUrl) {
-                            const label = locale === 'es'
-                                ? (message.type === 'video' ? 'Ver Video' : 'Escuchar Audio')
-                                : (message.type === 'video' ? 'View Video' : 'Listen to Audio');
+                            const label = message.type === 'video' ? t.viewVideo : t.listenAudio;
 
                             contentHtml += `
                                 <div style="margin: 20px 0;">
@@ -136,24 +141,23 @@ export async function releaseCheckinMessages(userId: string) {
                                     </a>
                                 </div>
                                 <p style="font-size: 12px; color: #666;">
-                                    ${locale === 'es' ? 'Link válido por 7 días.' : 'Link valid for 7 days.'}
+                                    ${t.linkValid}
                                 </p>
                             `;
                         } else {
-                            contentHtml += `<p>${locale === 'es' ? 'Error generando link.' : 'Error generating link.'}</p>`;
+                            contentHtml += `<p>${t.linkError}</p>`;
                         }
                     }
                 }
 
                 // Use template
-                // Cast to any to avoid complex TS union
-                const template = getEmailTemplate('message_delivery', locale) as any;
+                const template = getMessageDeliveryTemplate(dict as any, { contentHtml });
 
                 await resend.emails.send({
                     from: "VoiceForLater <noreply@voiceforlater.com>",
                     to: recipient.email,
                     subject: template.subject,
-                    html: template.html({ contentHtml })
+                    html: template.html
                 });
 
                 // Update status to delivered

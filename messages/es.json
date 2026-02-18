@@ -422,5 +422,50 @@
       "storage": "Almacenamiento",
       "emails": "Emails Enviados"
     }
+  },
+  "emails": {
+    "common": {
+      "footerSignature": "VoiceForLater"
+    },
+    "magicLink": {
+      "subject": "Tu enlace de acceso a VoiceForLater",
+      "subjectAdmin": "Acceso de administrador - VoiceForLater",
+      "title": "VoiceForLater",
+      "adminBadge": "Acceso de administrador",
+      "intro": "Hacé clic en el siguiente botón para entrar a tu cuenta:",
+      "button": "Entrar ahora",
+      "ignore": "Si no solicitaste este enlace, podés ignorar este correo."
+    },
+    "messageDelivery": {
+      "subject": "Tienes un mensaje vía VoiceForLater",
+      "title": "Tienes un mensaje de VoiceForLater",
+      "intro": "Ha llegado un mensaje programado para ti.",
+      "footer": "VoiceForLater - Mensajes para cuando realmente importa.",
+      "viewVideo": "Ver Video",
+      "listenAudio": "Escuchar Audio",
+      "linkValid": "Link válido por 7 días.",
+      "linkError": "Error generando link."
+    },
+    "checkinReminder": {
+      "subject": "⏰ Recordatorio de check-in - VoiceForLater",
+      "title": "¡Es hora de reportarse!",
+      "intro": "Tu check-in programado está vencido. Por favor confirma que estás activo.",
+      "attempt": "Intento {attempt} de 3",
+      "button": "Confirmar Actividad",
+      "warning": "Si no respondes después de 3 intentos, contactaremos a tu persona de confianza."
+    },
+    "trustedContactVerify": {
+      "subject": "ACCIÓN REQUERIDA: Confirmar estado de {email}",
+      "greeting": "Hola {name},",
+      "greetingUnknown": "Hola,",
+      "title": "Acción Requerida: Verificar Estado",
+      "intro": "{email} ha perdido sus check-ins programados en VoiceForLater.",
+      "explanation": "Como contacto de confianza, necesitamos que verifiques si no pueden acceder a su cuenta.",
+      "boxTitle": "¿{email} no está disponible?",
+      "boxText": "Si confirmas, sus mensajes programados serán liberados a los destinatarios.",
+      "button": "Verificar Estado Ahora",
+      "falseAlarm": "Si es una falsa alarma o sabes que están bien, por favor usa el enlace de arriba para reportarlo de forma segura.",
+      "expiry": "El enlace expira en 48 horas."
+    }
   }
 }
