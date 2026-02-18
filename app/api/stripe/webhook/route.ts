@@ -59,6 +59,24 @@ export async function POST(request: NextRequest) {
 
     const supabase = getAdminSupabase();
 
+    // Idempotency: Duplicate event protection
+    const { error: idempotencyError } = await supabase
+        .from('stripe_webhook_events')
+        .insert({
+            stripe_event_id: event.id,
+            event_type: event.type,
+        });
+
+    if (idempotencyError) {
+        // Postgres unique violation code
+        if (idempotencyError.code === '23505') {
+            console.warn("Stripe event already processed:", event.id);
+            return NextResponse.json({ received: true, status: "already_processed" });
+        }
+        console.error("Idempotency check failed:", idempotencyError);
+        return NextResponse.json({ error: "Database error during idempotency check" }, { status: 500 });
+    }
+
     try {
         switch (event.type) {
             case "checkout.session.completed": {
