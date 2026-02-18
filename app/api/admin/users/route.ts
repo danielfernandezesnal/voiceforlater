@@ -1,82 +1,117 @@
-import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-import { createClient as createAdminClient } from "@supabase/supabase-js";
+import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/server/requireAdmin";
+import { getAdminClient } from "@/lib/supabase/admin";
+import { checkRateLimit, logAdminAction } from "@/lib/admin/utils";
 
-export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+    const start = Date.now();
+    let status = 200;
+    let errorMsg = null;
+    let userId: string | null = null;
+    let resultCount = 0;
+
     try {
-        const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
+        const ip = request.headers.get('x-forwarded-for') || 'unknown';
 
-        if (!user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        if (!checkRateLimit(ip)) {
+            status = 429;
+            errorMsg = "Too many requests";
+            return NextResponse.json({ error: errorMsg }, { status });
         }
 
-        // 1. Check Owner/Admin permissions
-        const { data: requesterRole, error: roleError } = await supabase
-            .from("user_roles")
-            .select("role")
-            .eq("user_id", user.id)
-            .single();
+        const { adminClient, user } = await requireAdmin();
+        userId = user.id;
 
-        if (roleError || !requesterRole || requesterRole.role !== 'owner') {
-            return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-        }
+        const searchParams = request.nextUrl.searchParams;
+        const page = parseInt(searchParams.get('page') || '1', 10);
+        const limit = parseInt(searchParams.get('limit') || '20', 10);
+        const search = searchParams.get('search') || '';
 
-        // 2. Use Admin Client to fetch users directly (bypassing broken RPC)
-        const supabaseAdmin = createAdminClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.SUPABASE_SERVICE_ROLE_KEY!,
-            {
-                auth: {
-                    autoRefreshToken: false,
-                    persistSession: false
-                }
-            }
-        );
-
-        // Fetch all users from Auth (limit 1000 for now, pagination needed for large scale)
-        const { data: { users: authUsers }, error: authError } = await supabaseAdmin.auth.admin.listUsers({
-            perPage: 1000
+        // Fetch users from Auth Admin API
+        const { data: { users }, error: listError } = await adminClient.auth.admin.listUsers({
+            page: page,
+            perPage: limit,
         });
 
-        if (authError) {
-            console.error("Error fetching auth users:", authError);
-            throw authError;
+        if (listError) throw listError;
+
+        let userList = users;
+        // Basic search filter if API didn't support it (Supabase ListUsers has specific behavior)
+        if (search) {
+            const q = search.toLowerCase();
+            userList = users.filter(u => u.email?.toLowerCase().includes(q));
         }
 
-        // Fetch all roles
-        const { data: userRoles, error: rolesError } = await supabaseAdmin
-            .from("user_roles")
-            .select("user_id, role");
+        // Enrich with profile/subscription data
+        const enrichedUsers = await Promise.all(userList.map(async (u) => {
+            // Get Plan
+            const { data: sub } = await adminClient
+                .from('user_subscriptions')
+                .select('plan, status')
+                .eq('user_id', u.id)
+                .single();
 
-        if (rolesError) {
-            console.error("Error fetching roles:", rolesError);
-            throw rolesError;
-        }
+            // Get Messages Count
+            const { count: msgCount } = await adminClient
+                .from('messages')
+                .select('*', { count: 'exact', head: true })
+                .eq('owner_id', u.id);
 
-        // 3. Merge data
-        const rolesMap = new Map();
-        if (userRoles) {
-            userRoles.forEach((r: { user_id: string; role: string }) => rolesMap.set(r.user_id, r.role));
-        }
+            // Get Storage
+            const { data: msgs } = await adminClient
+                .from('messages')
+                .select('file_size_bytes')
+                .eq('owner_id', u.id);
+            const storage = msgs?.reduce((acc, m) => acc + (m.file_size_bytes || 0), 0) || 0;
 
-        const combinedUsers = authUsers.map(u => ({
-            id: u.id,
-            email: u.email,
-            role: rolesMap.get(u.id) || 'user',
-            created_at: u.created_at,
-            last_sign_in_at: u.last_sign_in_at
+            // Get Emails Sent
+            // Include failed ones if we updated schema, but sticking to existing pattern for now
+            const { count: emailCount } = await adminClient
+                .from('email_events')
+                .select('*', { count: 'exact', head: true })
+                .eq('user_id', u.id);
+
+            // Get Contacts Count (Requested in Step 3 drilldown)
+            const { count: contactsCount } = await adminClient
+                .from('trusted_contacts')
+                .select('*', { count: 'exact', head: true })
+                .eq('user_id', u.id);
+
+            return {
+                id: u.id,
+                email: u.email,
+                created_at: u.created_at,
+                plan: sub?.plan || 'free',
+                status: sub?.status || 'inactive',
+                messages_count: msgCount || 0,
+                storage_mb: Math.round((storage / 1024 / 1024) * 100) / 100,
+                emails_sent: emailCount || 0,
+                contacts_count: contactsCount || 0
+            };
         }));
 
-        // Sort by created_at DESC
-        combinedUsers.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        resultCount = enrichedUsers.length;
+        return NextResponse.json(enrichedUsers);
 
-        return NextResponse.json({ __fingerprint: "RBAC_USERS_V1", users: combinedUsers });
-
-    } catch (error) {
-        console.error("Unexpected error:", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    } catch (error: any) {
+        console.error("User List Error:", error);
+        status = error.message?.includes("Forbidden") ? 403 : 500;
+        errorMsg = error.message || "Internal Server Error";
+        return NextResponse.json(
+            { error: errorMsg },
+            { status }
+        );
+    } finally {
+        if (status !== 429) {
+            const duration = Date.now() - start;
+            await logAdminAction({
+                admin_user_id: userId,
+                action: 'admin.users',
+                meta: { status, error: errorMsg, duration_ms: duration, result_count: resultCount },
+                req: request
+            });
+        }
     }
 }

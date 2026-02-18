@@ -1,6 +1,7 @@
 ﻿import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { type EmailOtpType } from "@supabase/supabase-js";
+import { trackServerEvent } from "@/lib/analytics/trackEvent";
 
 function normalizePath(p: string) {
   try {
@@ -74,6 +75,37 @@ export async function GET(request: Request) {
 
     if (roleData && (roleData.role === 'owner' || roleData.role === 'admin')) {
       isPrivileged = true;
+    }
+
+    // --- Product Analytics (Signup Success) ---
+    // If verifyOtp type is 'signup', track it.
+    // Use try/catch to avoid blocking callback
+    try {
+      if (type === 'signup') {
+        // Check if already tracked to avoid dupes on refresh?
+        // Actually, trackServerEvent is fire and forget, but let's just fire it.
+        // Unique constraint or dupes OK?
+        // Analytics usually tolerates some dupes or we dedup in query.
+        // But let's simple track.
+        await trackServerEvent({
+          event: 'signup.success',
+          userId: user.id,
+          metadata: { method: 'email_otp' }
+        });
+      } else if (!type && code) {
+        // OAuth flow.
+        const createdAt = new Date(user.created_at).getTime();
+        const now = Date.now();
+        if (now - createdAt < 60000) { // Created within last minute
+          await trackServerEvent({
+            event: 'signup.success',
+            userId: user.id,
+            metadata: { method: 'oauth' }
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Callback analytics error:", err);
     }
   }
 

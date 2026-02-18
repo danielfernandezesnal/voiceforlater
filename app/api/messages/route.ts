@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { v4 as uuidv4 } from "uuid";
 import { type Plan, getPlanLimits, canCreateMessage, isCheckinIntervalAllowed } from "@/lib/plans";
+import { getEffectivePlan } from "@/lib/plan-resolver";
+import { trackServerEvent } from "@/lib/analytics/trackEvent";
 
 
 export const runtime = "nodejs";
@@ -59,10 +61,10 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        // Get user profile for plan limits and validation
+        // Get user profile for validation (completeness only)
         const { data: profile } = await supabase
             .from("profiles")
-            .select("plan, first_name, last_name, country")
+            .select("first_name, last_name, country")
             .eq("id", user.id)
             .single();
 
@@ -82,7 +84,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const plan = (profile?.plan as Plan) || "free";
+        const plan = await getEffectivePlan(supabase, user.id);
         const limits = getPlanLimits(plan);
 
         // Check message limit
@@ -95,9 +97,9 @@ export async function POST(request: NextRequest) {
         if (!canCreateMessage(plan, count || 0)) {
             return NextResponse.json(
                 {
-                    error: "Message limit reached.",
-                    upgradeRequired: true,
-                    limit: limits.maxActiveMessages
+                    error: "PLAN_LIMIT",
+                    reason: "MAX_MESSAGES",
+                    details: `You have reached the limit of ${limits.maxActiveMessages} active message(s) for your plan.`
                 },
                 { status: 403 }
             );
@@ -141,6 +143,18 @@ export async function POST(request: NextRequest) {
                     code: "INVALID_SCHEDULE"
                 }, { status: 400 });
             }
+        }
+
+        // Validate content type against plan
+        if (!limits.allowedTypes.includes(type)) {
+            return NextResponse.json(
+                {
+                    error: "PLAN_LIMIT",
+                    reason: "VIDEO_NOT_ALLOWED",
+                    details: `${type} messages are not allowed on the ${plan} plan.`
+                },
+                { status: 403 }
+            );
         }
 
         // Validate content based on type
@@ -331,6 +345,21 @@ export async function POST(request: NextRequest) {
             }
         }
 
+        // --- Product Analytics ---
+        if ((count || 0) === 0) {
+            await trackServerEvent({
+                event: 'milestone.first_message',
+                userId: user.id,
+                metadata: { type }
+            });
+        }
+
+        await trackServerEvent({
+            event: 'message.created',
+            userId: user.id,
+            metadata: { type, deliveryMode }
+        });
+
         return NextResponse.json({ success: true, messageId: message.id });
     } catch (error) {
         console.error("API error:", error);
@@ -372,6 +401,9 @@ export async function PUT(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
         }
 
+        const plan = await getEffectivePlan(supabase, user.id);
+        const limits = getPlanLimits(plan);
+
         // Extract update data
         const type = formData.get("type") as "text" | "audio" | "video";
         const recipientName = formData.get("recipientName") as string;
@@ -382,6 +414,18 @@ export async function PUT(request: NextRequest) {
         const deliverAt = formData.get("deliverAt") as string | null;
         const checkinIntervalDays = formData.get("checkinIntervalDays") as string | null;
         const trustedContactIds = formData.getAll("trustedContactIds") as string[];
+
+        // Validate type change for plan
+        if (type && !limits.allowedTypes.includes(type)) {
+            return NextResponse.json(
+                {
+                    error: "PLAN_LIMIT",
+                    reason: "VIDEO_NOT_ALLOWED",
+                    details: `${type} messages are not allowed on the ${plan} plan.`
+                },
+                { status: 403 }
+            );
+        }
 
         // Validation (simplified vs POST, assuming valid input mostly)
         if (!type || !recipientName || !recipientEmail || !deliveryMode) {

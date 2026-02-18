@@ -2,6 +2,7 @@
 
 import { useWizard, MessageType } from './wizard-context'
 import { useRouter } from 'next/navigation'
+import { trackEventClient } from '@/lib/analytics/client'
 
 interface Step1Props {
     dictionary: {
@@ -20,6 +21,7 @@ export function Step1TypeSelect({ dictionary, userPlan }: Step1Props) {
 
     const handleTypeSelect = async (type: MessageType) => {
         if (type === 'video' && userPlan !== 'pro') {
+            trackEventClient('conversion.video_attempt_free');
             // Redirect to upgrade with return path
             try {
                 const response = await fetch('/api/stripe/checkout', {

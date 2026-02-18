@@ -20,16 +20,18 @@ export type Plan = 'free' | 'pro';
 export interface PlanLimits {
     // Message limits
     maxActiveMessages: number;
+    allowedTypes: ('text' | 'audio' | 'video')[];
 
     // Check-in limits
     checkinEnabled: boolean;
     maxCheckinIntervalDays: number;
     allowedCheckinIntervals: number[];
     maxReminders: number;
-    trustedContactEnabled: boolean;
+    trustedContactEnabled: boolean; // Keep for now, but maxTrustedContacts controls actual limit
+    maxTrustedContacts: number;
     checkinHistoryEnabled: boolean;
 
-    // Audio limits
+    // Audio/Text limits
     maxAudioSeconds: number;
     maxTextChars: number;
 }
@@ -37,22 +39,26 @@ export interface PlanLimits {
 export const PLAN_LIMITS: Record<Plan, PlanLimits> = {
     free: {
         maxActiveMessages: 1,
+        allowedTypes: ['text', 'audio'],
         checkinEnabled: true,
         maxCheckinIntervalDays: 30,
         allowedCheckinIntervals: [30],
         maxReminders: 1,
-        trustedContactEnabled: false,
+        trustedContactEnabled: true,
+        maxTrustedContacts: 1,
         checkinHistoryEnabled: false,
         maxAudioSeconds: 15,
         maxTextChars: 1000,
     },
     pro: {
         maxActiveMessages: Infinity,
+        allowedTypes: ['text', 'audio', 'video'],
         checkinEnabled: true,
         maxCheckinIntervalDays: 90,
         allowedCheckinIntervals: [30, 60, 90],
         maxReminders: 3,
         trustedContactEnabled: true,
+        maxTrustedContacts: 3,
         checkinHistoryEnabled: true,
         maxAudioSeconds: 120,
         maxTextChars: 5000,

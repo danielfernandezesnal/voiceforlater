@@ -339,5 +339,85 @@
     "proFeatures": "Mensajes ilimitados, grabación de video, hasta 3 contactos de confianza (cómplices).",
     "upgradeSuccess": "¡Bienvenido a Pro! 🎉",
     "upgradeCancelled": "Mejora cancelada"
+  },
+  "admin": {
+    "title": "Panel de Administración",
+    "kpis": {
+      "totalUsers": "Usuarios Totales",
+      "paidUsers": "Usuarios Pagos",
+      "storageUsed": "Almacenamiento",
+      "emailsSent": "Emails Enviados",
+      "inRange": "En rango",
+      "active": "Activos",
+      "today": "Hoy"
+    },
+    "filters": {
+      "title": "Filtros",
+      "fromDate": "Desde",
+      "toDate": "Hasta",
+      "clear": "Limpiar"
+    },
+    "users": {
+      "title": "Gestión de Usuarios",
+      "searchPlaceholder": "Buscar por email...",
+      "noResults": "No se encontraron usuarios.",
+      "loading": "Cargando...",
+      "table": {
+        "email": "Email",
+        "joined": "Registro",
+        "plan": "Plan",
+        "messages": "Mensajes",
+        "storage": "Espacio",
+        "emails": "Emails"
+      }
+    },
+    "analytics": {
+      "title": "Analítica de Producto",
+      "funnel": "Embudo de Conversión",
+      "events": "Conteo de Eventos",
+      "steps": {
+        "signup": "Registros",
+        "activation": "Primer Mensaje",
+        "checkout": "Checkout Iniciado",
+        "conversion": "Convertido a Pro"
+      },
+      "rates": {
+        "activation": "Tasa de Activación",
+        "conversion": "Tasa de Conversión"
+      }
+    },
+    "accessDenied": {
+      "title": "Acceso Denegado",
+      "message": "No tienes permiso para ver este panel."
+    },
+    "rateLimited": "Demasiadas solicitudes. Por favor espera un momento.",
+    "actions": {
+      "export": "Exportar CSV",
+      "refresh": "Actualizar",
+      "reset": "Reiniciar",
+      "copy": "Copiar",
+      "copied": "¡Copiado!",
+      "close": "Cerrar"
+    },
+    "presets": {
+      "today": "Hoy",
+      "last7": "Últimos 7 días",
+      "last30": "Últimos 30 días",
+      "thisMonth": "Este Mes",
+      "lastMonth": "Mes Pasado"
+    },
+    "userDetail": {
+      "title": "Detalles del Usuario",
+      "id": "ID de Usuario",
+      "email": "Email",
+      "created": "Creado",
+      "plan": "Plan",
+      "status": "Estado",
+      "stats": "Estadísticas",
+      "messages": "Mensajes",
+      "contacts": "Contactos",
+      "storage": "Almacenamiento",
+      "emails": "Emails Enviados"
+    }
   }
 }

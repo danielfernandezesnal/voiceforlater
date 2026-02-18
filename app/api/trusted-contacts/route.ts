@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { getResend } from '@/lib/resend';
+import { getEffectivePlan } from '@/lib/plan-resolver';
+import { getPlanLimits } from '@/lib/plans';
+import { trackServerEvent } from '@/lib/analytics/trackEvent';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,14 +58,9 @@ export async function POST(request: NextRequest) {
         const normalizedEmail = email.trim().toLowerCase();
 
         // 1. Get user plan and check limit
-        const { data: profile } = await supabase
-            .from('profiles')
-            .select('plan')
-            .eq('id', user.id)
-            .single();
-
-        const userPlan = profile?.plan || 'free';
-        const maxContacts = userPlan === 'pro' ? 3 : 1;
+        const plan = await getEffectivePlan(supabase, user.id);
+        const limits = getPlanLimits(plan);
+        const maxContacts = limits.maxTrustedContacts;
 
         const { count, error: countError } = await supabase
             .from('trusted_contacts')
@@ -73,10 +71,11 @@ export async function POST(request: NextRequest) {
 
         if (count !== null && count >= maxContacts) {
             return NextResponse.json({
-                error: userPlan === 'free'
-                    ? 'Límite del plan Free alcanzado (1). Pasate a Pro para agregar más.'
-                    : 'Máximo de 3 contactos de confianza permitidos.',
-                limitReached: true
+                error: 'PLAN_LIMIT',
+                reason: 'MAX_TRUSTED_CONTACTS',
+                details: plan === 'free'
+                    ? 'Free plan is limited to 1 trusted contact. Upgrade to Pro for more.'
+                    : `You have reached the limit of ${maxContacts} trusted contacts.`
             }, { status: 403 });
         }
 
@@ -170,6 +169,12 @@ export async function POST(request: NextRequest) {
             to: email,
             subject: subject,
             html: html
+        });
+
+        // --- Product Analytics ---
+        await trackServerEvent({
+            event: 'contact.added',
+            userId: user.id
         });
 
         return NextResponse.json(contact);

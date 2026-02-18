@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import Stripe from "stripe";
+import { trackServerEvent } from "@/lib/analytics/trackEvent";
 
 // Lazy init to avoid build errors
 function getStripe() {
@@ -77,6 +78,11 @@ export async function POST(request: NextRequest) {
 
         let session;
         try {
+            await trackServerEvent({
+                event: 'checkout.started',
+                userId: user.id
+            });
+
             session = await stripe.checkout.sessions.create({
                 customer: customerId,
                 mode: "subscription",

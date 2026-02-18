@@ -352,5 +352,85 @@
     "proFeatures": "Unlimited messages, video recording, up to 3 trusted contacts (companions).",
     "upgradeSuccess": "Welcome to Pro! 🎉",
     "upgradeCancelled": "Upgrade cancelled"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "kpis": {
+      "totalUsers": "Total Users",
+      "paidUsers": "Paid Users",
+      "storageUsed": "Storage Used",
+      "emailsSent": "Emails Sent",
+      "inRange": "In Range",
+      "active": "Active",
+      "today": "Today"
+    },
+    "filters": {
+      "title": "Filters",
+      "fromDate": "From",
+      "toDate": "To",
+      "clear": "Clear"
+    },
+    "analytics": {
+      "title": "Product Analytics",
+      "funnel": "Conversion Funnel",
+      "events": "Event Counts",
+      "steps": {
+        "signup": "Signups",
+        "activation": "First Message",
+        "checkout": "Checkout Started",
+        "conversion": "Converted to Pro"
+      },
+      "rates": {
+        "activation": "Activation Rate",
+        "conversion": "Conversion Rate"
+      }
+    },
+    "users": {
+      "title": "User Management",
+      "searchPlaceholder": "Search by email...",
+      "noResults": "No users found matching criteria.",
+      "loading": "Loading...",
+      "table": {
+        "email": "Email",
+        "joined": "Joined",
+        "plan": "Plan",
+        "messages": "Messages",
+        "storage": "Storage",
+        "emails": "Emails"
+      }
+    },
+    "accessDenied": {
+      "title": "Access Denied",
+      "message": "You do not have permission to view this dashboard."
+    },
+    "rateLimited": "Too many requests. Please wait a moment.",
+    "actions": {
+      "export": "Export CSV",
+      "refresh": "Refresh",
+      "reset": "Reset Filters",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "close": "Close"
+    },
+    "presets": {
+      "today": "Today",
+      "last7": "Last 7 Days",
+      "last30": "Last 30 Days",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month"
+    },
+    "userDetail": {
+      "title": "User Details",
+      "id": "User ID",
+      "email": "Email",
+      "created": "Created At",
+      "plan": "Plan",
+      "status": "Status",
+      "stats": "Statistics",
+      "messages": "Messages",
+      "contacts": "Contacts",
+      "storage": "Storage",
+      "emails": "Emails Sent"
+    }
   }
 }
