@@ -1,7 +1,22 @@
 # Stage Plan: Stripe Synchronization & Hardening
 
 **Focus**: `stripe-sync`
-**Status**: DRAFT (Scaffold)
+**Status**: IN PROGRESS
+
+## Implemented (as of 2026-02-18)
+- **Source of Truth**: `user_subscriptions` is authoritative; `profiles` mirrors status for legacy support.
+- **Shared Logic**: `lib/stripe/utils.ts` contains reusable `getResourceId` and `mapSubscriptionToPlan`.
+- **Webhook Hardening**: `app/api/stripe/webhook/route.ts` is fully typed and uses normalized mapping.
+- **Event Coverage**:
+  - `checkout.session.completed`
+  - `customer.subscription.updated`
+  - `customer.subscription.deleted`
+  - `invoice.payment_failed`
+- **Reconciliation Tool**: `scripts/stripe-reconcile.ts`
+  - Command: `npm run script:stripe-reconcile`
+  - Requires: `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`
+- **Unit Tests**: `lib/stripe/utils.test.ts` covers mapping logic.
+  - Command: `npm test`
 
 ## Context
 Production build was recently broken due to TypeScript errors in the Stripe webhook handler (`app/api/stripe/webhook/route.ts`).
