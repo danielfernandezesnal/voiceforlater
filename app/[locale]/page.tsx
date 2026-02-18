@@ -148,7 +148,7 @@ export default async function LocaleHomePage({
                         <p className="text-xl text-primary italic font-medium mb-10 opacity-80">
                             &quot;{dict.landing.uses.subtitle}&quot;
                         </p>
-                        <p className="text-lg mb-6 font-medium">Ejemplos:</p>
+                        <p className="text-lg mb-6 font-medium">{dict.landing.uses.examples_label}</p>
                         <ul className="space-y-4">
                             {dict.landing.uses.items.map((item, i) => (
                                 <li key={i} className="flex items-start gap-3">
@@ -159,9 +159,8 @@ export default async function LocaleHomePage({
                                 </li>
                             ))}
                         </ul>
-                        <p className="text-lg mt-8 font-medium">
-                            No es solo para despedidas.<br />
-                            Es para momentos que todavía no llegaron.
+                        <p className="text-lg mt-8 font-medium whitespace-pre-line">
+                            {dict.landing.uses.closing}
                         </p>
                     </div>
                 </div>
@@ -288,7 +287,7 @@ export default async function LocaleHomePage({
                         {/* Free Plan */}
                         <div className="bg-card p-8 rounded-2xl border border-border shadow-sm flex flex-col">
                             <h3 className="text-xl font-bold mb-2">{dict.landing.pricing.free.title}</h3>
-                            <div className="text-3xl font-bold mb-6">USD 0</div>
+                            <div className="text-3xl font-bold mb-6">{dict.landing.pricing.free.price}</div>
                             <ul className="space-y-4 mb-8 text-left flex-1">
                                 {dict.landing.pricing.free.features.map((f, i) => (
                                     <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">

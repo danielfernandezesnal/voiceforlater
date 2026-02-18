@@ -43,7 +43,9 @@
         "Un mensaje que solo debería enviarse si vos no respondés más",
         "Un mensaje para vos mismo en el futuro (cápsula del tiempo)",
         "Algo que no querés olvidar decir"
-      ]
+      ],
+      "examples_label": "Ejemplos:",
+      "closing": "No es solo para despedidas.\nEs para momentos que todavía no llegaron."
     },
     "howItWorks": {
       "title": "Cómo funciona",
@@ -103,7 +105,8 @@
           "Solo texto",
           "Elige fecha exacta de envío",
           "1 persona de confianza (cómplice) para garantizar la entrega"
-        ]
+        ],
+        "price": "USD 0"
       },
       "pro": {
         "title": "Pro",
