@@ -120,10 +120,17 @@ export async function POST(request: NextRequest) {
                     });
 
                     // --- Product Analytics ---
+                    const subscriptionId =
+                        typeof session.subscription === "string"
+                            ? session.subscription
+                            : session.subscription && typeof session.subscription === "object" && "id" in session.subscription
+                                ? (session.subscription as { id: string }).id
+                                : null;
+
                     await trackServerEvent({
                         event: 'subscription.created',
                         userId: userId,
-                        metadata: { subscription_id: session.subscription }
+                        metadata: { subscription_id: subscriptionId }
                     });
                 } catch (e) {
                     console.error("Failed to log event:", e);
