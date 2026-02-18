@@ -3,9 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
 
   typescript: {
-    // Pre-existing type errors exist in the codebase; ignore during build.
-    // TODO: fix type errors and set this back to false.
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   async rewrites() {
     return [
