@@ -18,6 +18,13 @@ function getStripe() {
     return new Stripe(process.env.STRIPE_SECRET_KEY);
 }
 
+// Helper to safely get ID from string or object
+function getResourceId(resource: string | { id: string } | null | undefined): string | null {
+    if (!resource) return null;
+    if (typeof resource === 'string') return resource;
+    return resource.id;
+}
+
 /**
  * POST /api/stripe/webhook
  * Handles Stripe webhook events
@@ -62,13 +69,16 @@ export async function POST(request: NextRequest) {
                 }
 
                 // Update user_subscriptions (Authoritative)
+                const customerId = getResourceId(session.customer);
+                const subId = getResourceId(session.subscription);
+
                 const { error: subError } = await supabase
                     .from("user_subscriptions")
                     .upsert({
                         user_id: userId,
                         plan: "pro",
-                        stripe_customer_id: session.customer as string,
-                        stripe_subscription_id: session.subscription as string,
+                        stripe_customer_id: customerId,
+                        stripe_subscription_id: subId,
                         status: "active",
                         updated_at: new Date().toISOString()
                     });
@@ -83,8 +93,8 @@ export async function POST(request: NextRequest) {
                     .from("profiles")
                     .update({
                         plan: "pro",
-                        stripe_customer_id: session.customer as string,
-                        stripe_subscription_id: session.subscription as string,
+                        stripe_customer_id: customerId,
+                        stripe_subscription_id: subId,
                         plan_status: "active",
                     })
                     .eq("id", userId);
@@ -96,8 +106,8 @@ export async function POST(request: NextRequest) {
                         .from("profiles")
                         .update({
                             plan: "pro",
-                            stripe_customer_id: session.customer as string,
-                            stripe_subscription_id: session.subscription as string,
+                            stripe_customer_id: customerId,
+                            stripe_subscription_id: subId,
                         })
                         .eq("id", userId);
                     error = retryError;
@@ -114,23 +124,16 @@ export async function POST(request: NextRequest) {
                         type: "subscription_created",
                         user_id: userId,
                         metadata: {
-                            subscription_id: session.subscription,
-                            customer_id: session.customer,
+                            subscription_id: subId,
+                            customer_id: customerId,
                         },
                     });
 
                     // --- Product Analytics ---
-                    const subscriptionId =
-                        typeof session.subscription === "string"
-                            ? session.subscription
-                            : session.subscription && typeof session.subscription === "object" && "id" in session.subscription
-                                ? (session.subscription as { id: string }).id
-                                : null;
-
                     await trackServerEvent({
                         event: 'subscription.created',
                         userId: userId,
-                        metadata: { subscription_id: subscriptionId }
+                        metadata: { subscription_id: subId }
                     });
                 } catch (e) {
                     console.error("Failed to log event:", e);
@@ -145,17 +148,25 @@ export async function POST(request: NextRequest) {
                 const userId = subscription.metadata?.user_id;
 
                 const status = subscription.status;
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const currentPeriodEnd = new Date((subscription as any).current_period_end * 1000).toISOString();
+                // current_period_end is missing in some Stripe type definitions despite being present in API
+                const sub = subscription as Stripe.Subscription & { current_period_end: number };
+                const currentPeriodEnd = new Date(sub.current_period_end * 1000).toISOString();
+                const customerId = getResourceId(subscription.customer);
 
                 // Find user by subscription ID or customer ID if metadata missing
                 let targetUserId = userId;
                 if (!targetUserId) {
-                    const { data: sub } = await supabase
+                    let query = supabase
                         .from("user_subscriptions")
-                        .select("user_id")
-                        .or(`stripe_subscription_id.eq.${subscription.id},stripe_customer_id.eq.${subscription.customer as string}`)
-                        .single();
+                        .select("user_id");
+
+                    if (customerId) {
+                        query = query.or(`stripe_subscription_id.eq.${subscription.id},stripe_customer_id.eq.${customerId}`);
+                    } else {
+                        query = query.eq("stripe_subscription_id", subscription.id);
+                    }
+
+                    const { data: sub } = await query.single();
                     targetUserId = sub?.user_id;
                 }
 
@@ -186,6 +197,7 @@ export async function POST(request: NextRequest) {
             case "customer.subscription.deleted": {
                 const subscription = event.data.object as Stripe.Subscription;
                 const userId = subscription.metadata?.user_id;
+                const customerId = getResourceId(subscription.customer);
 
                 // Find user by subscription ID or customer ID
                 let targetUserId = userId;
@@ -199,11 +211,11 @@ export async function POST(request: NextRequest) {
                     targetUserId = sub?.user_id;
                 }
 
-                if (!targetUserId) {
+                if (!targetUserId && customerId) {
                     const { data: sub } = await supabase
                         .from("user_subscriptions")
                         .select("user_id")
-                        .eq("stripe_customer_id", subscription.customer as string)
+                        .eq("stripe_customer_id", customerId)
                         .single();
                     targetUserId = sub?.user_id;
                 }
@@ -251,7 +263,12 @@ export async function POST(request: NextRequest) {
 
             case "invoice.payment_failed": {
                 const invoice = event.data.object as Stripe.Invoice;
-                const customerId = invoice.customer as string;
+                const customerId = getResourceId(invoice.customer);
+
+                if (!customerId) {
+                    console.error("No customer ID in invoice");
+                    break;
+                }
 
                 const { data: profile } = await supabase
                     .from("profiles")
