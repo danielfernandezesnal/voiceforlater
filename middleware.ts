@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { resolveLocale } from "@/lib/i18n/locale";
 
 export async function middleware(request: NextRequest) {
     // PROACTIVE LOGGING FOR DEBUGGING
     if (request.nextUrl.pathname === '/messages' || request.nextUrl.pathname === '/profile') {
         console.warn(`[MIDDLEWARE WARNING: DEPRECATED ENDPOINT] usage detected: ${request.nextUrl.pathname}`);
         console.warn('Frontend must call /api/messages or /api/profile directly.');
-        console.log(`Method: ${request.method}`);
-        console.log(`Referer: ${request.headers.get('referer') || 'None'}`);
-        console.log(`User-Agent: ${request.headers.get('user-agent') || 'None'}`);
     }
 
     let response = NextResponse.next({
@@ -48,23 +46,35 @@ export async function middleware(request: NextRequest) {
 
     const pathname = request.nextUrl.pathname;
 
+    // API routes: only needed session refresh (done above), skip locale logic
+    if (pathname.startsWith('/api/') || pathname.startsWith('/_next/') || pathname.includes('.')) {
+        return response;
+    }
+
+    const locales = ['en', 'es'];
     const parts = pathname.split("/").filter(Boolean);
-    const locale = parts[0] || "en";
+    const firstPart = parts[0];
+
+    const pathnameHasLocale = locales.includes(firstPart);
+    const locale = pathnameHasLocale ? firstPart : resolveLocale(request);
+
+    // If missing locale in path, redirect
+    if (!pathnameHasLocale) {
+        request.nextUrl.pathname = `/${locale}${pathname}`;
+        return NextResponse.redirect(request.nextUrl);
+    }
+
+    // --- Admin / Dashboard Access Control Logic ---
 
     // Check if we are on dashboard (e.g. /en/dashboard)
-    // parts[0] is locale, parts[1] is dashboard
-    const isLocaleDashboard =
-        parts.length >= 2 && parts[1] === "dashboard";
+    const isLocaleDashboard = parts.length >= 2 && parts[1] === "dashboard";
 
     // Check if we are on admin (e.g. /en/admin)
-    // parts[0] is locale, parts[1] is admin
-    const isLocaleAdmin =
-        parts.length >= 2 && parts[1] === "admin";
+    const isLocaleAdmin = parts.length >= 2 && parts[1] === "admin";
 
     // Check Role
     let isPrivileged = false;
     if (user) {
-        // Check DB role only (Removed ADMIN_EMAIL fallback)
         const { data: roleData } = await supabase
             .from('user_roles')
             .select('role')
@@ -92,51 +102,7 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(url);
     }
 
-    // Localization logic needs to be preserved
-    // The previous middleware DID have localization logic.
-    // The user prompt middleware DID NOT.
-    // However, the prompt middleware expects to run on `/:locale/dashboard`.
-    // If I overwrite middleware completely, I lose the locale detection/redirection for root `/`.
-    // BUT the prompt said "Código completo a usar".
-    // AND "No romper nada del flujo actual".
-    // The previous middleware was ALL about locale redirection.
-    // If I remove it, `/` will not redirect to `/en`.
-
-    // I must MERGE the localization logic.
-    // Previous middleware structure:
-    // 1. Check if locale present. If so, updateSession (auth).
-    // 2. If not, redirect to default locale.
-
-    // My "updateSession" logic above IS the auth check.
-    // So I should:
-    // 1. Check locale.
-    // 2. If missing, redirect.
-    // 3. If present, do auth logic + admin checks.
-
-    // MERGED Implementation:
-
-    const locales = ['en', 'es'];
-    const defaultLocale = 'en';
-
-    // API routes: only needed session refresh (done above), skip locale logic
-    if (pathname.startsWith('/api/')) {
-        return response;
-    }
-
-    const pathnameHasLocale = locales.some(
-        (loc) => pathname.startsWith(`/${loc}/`) || pathname === `/${loc}`
-    )
-
-    if (pathnameHasLocale) {
-        // User is on a localized path.
-        // Already did auth check above.
-        // Did admin check above.
-        return response;
-    }
-
-    // Redirect if no locale (and not filtered by config matcher)
-    request.nextUrl.pathname = `/${defaultLocale}${pathname}`
-    return NextResponse.redirect(request.nextUrl)
+    return response;
 }
 
 export const config = {

@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { SideNav } from "@/components/dashboard/side-nav";
+import { LocaleSyncer } from "@/components/profile/sync-locale";
+import { LocaleSwitcher } from "@/components/profile/locale-switcher";
 
 // Force dynamic rendering - this layout checks auth on every request
 export const dynamic = 'force-dynamic'
@@ -31,12 +33,20 @@ export default async function DashboardLayout({
     const supabase = await createClient();
     const { data: profile } = await supabase
         .from('profiles')
-        .select('auth_password_set, plan')
+        .select('auth_password_set, plan, locale')
         .eq('id', user.id)
         .single();
 
     if (profile && profile.auth_password_set === false) {
         redirect(`/${locale}/auth/set-password`);
+    }
+
+    // --- New Locale Persistence Logic ---
+    const profileLocale: Locale = (profile?.locale && isValidLocale(profile.locale)) ? profile.locale : defaultLocale;
+
+    // 1. Enforce Profile Locale -> Redirect if mismatch
+    if (profileLocale !== localeParam) {
+        redirect(`/${profileLocale}/dashboard`);
     }
 
     const dict = await getDictionary(locale);
@@ -59,6 +69,9 @@ export default async function DashboardLayout({
 
     return (
         <div className="min-h-screen flex flex-col bg-background/50">
+            {/* Sync Cookie Client Side */}
+            <LocaleSyncer locale={profileLocale} />
+
             {/* Topbar */}
             <header className="h-16 border-b border-border/40 fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md transition-all">
                 <div className="flex items-center justify-between h-full px-4 sm:px-6">
@@ -69,7 +82,7 @@ export default async function DashboardLayout({
                         </Link>
                     </div>
 
-                    {/* Mobile Nav Links (Visible only on small screens) */}
+                    {/* Mobile Nav Links */}
                     <nav className="flex items-center gap-4 md:hidden">
                         <Link href={`/${locale}/dashboard`} className="text-sm font-medium text-muted-foreground hover:text-primary">
                             {labels.dashboard}
@@ -82,21 +95,7 @@ export default async function DashboardLayout({
                     {/* Right Actions */}
                     <div className="flex items-center gap-4">
                         {/* Language Switcher */}
-                        <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                            <Link
-                                href={`/en/dashboard`}
-                                className={`hover:text-foreground transition-colors ${locale === 'en' ? 'text-foreground font-bold' : ''}`}
-                            >
-                                EN
-                            </Link>
-                            <span className="opacity-30">/</span>
-                            <Link
-                                href={`/es/dashboard`}
-                                className={`hover:text-foreground transition-colors ${locale === 'es' ? 'text-foreground font-bold' : ''}`}
-                            >
-                                ES
-                            </Link>
-                        </div>
+                        <LocaleSwitcher currentLocale={locale} />
 
                         {/* Logout */}
                         <form action={`/${locale}/auth/signout`} method="POST">
