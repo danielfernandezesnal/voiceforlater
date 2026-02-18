@@ -26,6 +26,36 @@ function getResourceId(resource: string | { id: string } | null | undefined): st
 }
 
 /**
+ * Normalize Stripe subscription status to internal Plan
+ */
+function mapSubscriptionToPlan(
+    status: Stripe.Subscription.Status,
+    cancelAtPeriodEnd: boolean,
+    currentPeriodEnd: number | null
+): { plan: 'free' | 'pro', effectiveStatus: string, effectiveUntil: string | null } {
+    const isActive = ['active', 'trialing'].includes(status);
+    const periodEndIso = currentPeriodEnd ? new Date(currentPeriodEnd * 1000).toISOString() : null;
+
+    // Case 1: Active/Trialing
+    if (isActive) {
+        // Even if cancelling at period end, they are still PRO until then
+        return {
+            plan: 'pro' as const,
+            effectiveStatus: status,
+            effectiveUntil: cancelAtPeriodEnd ? periodEndIso : null
+        };
+    }
+
+    // Case 2: Past Due, Canceled, Unpaid, etc.
+    // Explicitly downgrade to FREE
+    return {
+        plan: 'free' as const,
+        effectiveStatus: status,
+        effectiveUntil: null
+    };
+}
+
+/**
  * POST /api/stripe/webhook
  * Handles Stripe webhook events
  */
@@ -147,11 +177,17 @@ export async function POST(request: NextRequest) {
                 const subscription = event.data.object as Stripe.Subscription;
                 const userId = subscription.metadata?.user_id;
 
-                const status = subscription.status;
                 // current_period_end is missing in some Stripe type definitions despite being present in API
                 const sub = subscription as Stripe.Subscription & { current_period_end: number };
-                const currentPeriodEnd = new Date(sub.current_period_end * 1000).toISOString();
+
+                const { plan, effectiveStatus, effectiveUntil } = mapSubscriptionToPlan(
+                    subscription.status,
+                    subscription.cancel_at_period_end,
+                    sub.current_period_end
+                );
+
                 const customerId = getResourceId(subscription.customer);
+                const currentPeriodEnd = new Date(sub.current_period_end * 1000).toISOString();
 
                 // Find user by subscription ID or customer ID if metadata missing
                 let targetUserId = userId;
@@ -171,25 +207,31 @@ export async function POST(request: NextRequest) {
                 }
 
                 if (targetUserId) {
+                    // Update User Subscriptions (Source of Truth)
                     await supabase
                         .from("user_subscriptions")
                         .update({
-                            status: status,
+                            plan: plan,
+                            status: effectiveStatus,
                             current_period_end: currentPeriodEnd,
+                            cancel_at_period_end: subscription.cancel_at_period_end,
                             updated_at: new Date().toISOString()
                         })
                         .eq("user_id", targetUserId);
 
-                    // Sync profile
+                    // Sync profile (Legacy Mirror)
                     await supabase
                         .from("profiles")
                         .update({
-                            plan_status: status,
-                            plan_ends_at: subscription.cancel_at
-                                ? new Date(subscription.cancel_at * 1000).toISOString()
-                                : null,
+                            plan: plan,
+                            plan_status: effectiveStatus,
+                            plan_ends_at: effectiveUntil,
                         })
                         .eq("id", targetUserId);
+
+                    console.log(`Updated subscription for user ${targetUserId}: ${plan} (${effectiveStatus})`);
+                } else {
+                    console.warn(`Could not find user for subscription update: ${subscription.id}`);
                 }
                 break;
             }
@@ -222,13 +264,15 @@ export async function POST(request: NextRequest) {
 
                 if (targetUserId) {
                     // Downgrade to FREE
+                    const now = new Date().toISOString();
+
                     await supabase
                         .from("user_subscriptions")
                         .update({
                             plan: "free",
                             status: "canceled",
                             stripe_subscription_id: null,
-                            updated_at: new Date().toISOString()
+                            updated_at: now
                         })
                         .eq("user_id", targetUserId);
 
@@ -256,14 +300,45 @@ export async function POST(request: NextRequest) {
                         metadata: { subscription_id: subscription.id }
                     });
 
-                    console.log(`User ${targetUserId} downgraded to FREE`);
+                    console.log(`User ${targetUserId} downgraded to FREE (Subscription Deleted)`);
                 }
                 break;
             }
 
             case "invoice.payment_failed": {
-                const invoice = event.data.object as Stripe.Invoice;
+                // Cast to any to avoid property missing error if types are outdated
+                const invoice = event.data.object as any;
+                const subId = getResourceId(invoice.subscription);
                 const customerId = getResourceId(invoice.customer);
+
+                // Attempt to fetch fresh subscription status to be authoritative
+                let mappedPlan: { plan: 'free' | 'pro', effectiveStatus: string, effectiveUntil: string | null } = {
+                    plan: 'free',
+                    effectiveStatus: 'past_due',
+                    effectiveUntil: null
+                };
+
+                let currentPeriodEndStr: string | null = null;
+                let cancelAtPeriodEndVal = false;
+
+                if (subId) {
+                    try {
+                        const freshSub = await stripe.subscriptions.retrieve(subId);
+                        const freshSubTyped = freshSub as unknown as Stripe.Subscription & { current_period_end: number };
+
+                        const mapped = mapSubscriptionToPlan(
+                            freshSub.status,
+                            freshSub.cancel_at_period_end,
+                            freshSubTyped.current_period_end
+                        );
+                        mappedPlan = mapped;
+                        currentPeriodEndStr = new Date(freshSubTyped.current_period_end * 1000).toISOString();
+                        cancelAtPeriodEndVal = freshSub.cancel_at_period_end;
+                    } catch (fetchErr) {
+                        console.error(`Failed to fetch subscription ${subId} in payment_failed`, fetchErr);
+                        // Fallback: stay on defaults (free/past_due)
+                    }
+                }
 
                 if (!customerId) {
                     console.error("No customer ID in invoice");
@@ -277,25 +352,35 @@ export async function POST(request: NextRequest) {
                     .single();
 
                 if (profile) {
+                    // Normalize: Update both tables
                     await supabase
                         .from("user_subscriptions")
                         .update({
-                            status: "past_due",
+                            plan: mappedPlan.plan,
+                            status: mappedPlan.effectiveStatus,
+                            ...(currentPeriodEndStr && { current_period_end: currentPeriodEndStr }),
+                            cancel_at_period_end: cancelAtPeriodEndVal,
                             updated_at: new Date().toISOString()
                         })
                         .eq("user_id", profile.id);
 
                     await supabase
                         .from("profiles")
-                        .update({ plan_status: "past_due" })
+                        .update({
+                            plan: mappedPlan.plan,
+                            plan_status: mappedPlan.effectiveStatus,
+                            plan_ends_at: mappedPlan.effectiveUntil
+                        })
                         .eq("id", profile.id);
 
                     // Log event
                     await supabase.from("events").insert({
                         type: "payment_failed",
                         user_id: profile.id,
-                        metadata: { invoice_id: invoice.id },
+                        metadata: { invoice_id: invoice.id, subscription_id: subId },
                     });
+
+                    console.log(`User ${profile.id} processed for payment_failed: ${mappedPlan.plan} (${mappedPlan.effectiveStatus})`);
                 }
                 break;
             }
