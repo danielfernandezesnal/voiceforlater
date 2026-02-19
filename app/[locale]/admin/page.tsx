@@ -1,48 +1,42 @@
-import { createClient } from "@/lib/supabase/server";
-import { requireAdmin } from "@/lib/server/requireAdmin";
 import { redirect } from "next/navigation";
-import AdminDashboardClient from "./admin-dashboard-client";
-import { getDictionary, type Locale } from "@/lib/i18n";
+import { requireOwner } from "@/lib/server/requireAdmin";
 
 export const runtime = 'nodejs';
 
 interface PageProps {
     params: Promise<{ locale: string }>;
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export default async function AdminDashboard({
     params,
-    searchParams,
 }: PageProps) {
     const { locale } = await params;
-    const sp = await searchParams;
-    const dict = await getDictionary(locale as Locale);
 
-    // Parse initial state from URL (if present) to pass to client
-    const initialFrom = typeof sp.from === 'string' ? sp.from : undefined;
-    const initialTo = typeof sp.to === 'string' ? sp.to : undefined;
-    const initialSearch = typeof sp.search === 'string' ? sp.search : undefined;
-
+    // Strict owner-only access
     try {
-        await requireAdmin();
+        await requireOwner();
     } catch (error) {
-        const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-            redirect(`/${locale}/auth/login`);
-        }
-        redirect(`/${locale}/dashboard`);
+        redirect(`/${locale}`);
     }
 
     return (
-        <div className="min-h-screen bg-background">
-            <AdminDashboardClient
-                initialFrom={initialFrom}
-                initialTo={initialTo}
-                initialSearch={initialSearch}
-                dict={dict}
-            />
+        <div className="min-h-screen bg-background flex items-center justify-center p-4">
+            <div className="max-w-md w-full text-center space-y-4">
+                <h1 className="text-3xl font-bold tracking-tight text-foreground">
+                    Admin Dashboard
+                </h1>
+                <p className="text-muted-foreground">
+                    Coming soon. This area is restricted to system owners.
+                </p>
+                <div className="pt-4">
+                    <a
+                        href={`/${locale}/dashboard`}
+                        className="text-primary hover:underline text-sm"
+                    >
+                        Back to User Dashboard
+                    </a>
+                </div>
+            </div>
         </div>
     );
 }

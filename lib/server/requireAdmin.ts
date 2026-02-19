@@ -28,14 +28,16 @@ export async function requireAdmin() {
         .eq('user_id', user.id)
         .single();
 
+    let profile: any = null;
     // Also check profiles.is_admin as fallback/legacy
     if (roleError && roleError.code === 'PGRST116') {
         // No row in user_roles. Try profiles.is_admin if table exists
-        const { data: profile, error: profileError } = await adminClient
+        const { data: profileData, error: profileError } = await adminClient
             .from('profiles')
             .select('is_admin')
             .eq('id', user.id)
             .single();
+        profile = profileData;
 
         if (profileError || !profile?.is_admin) {
             throw new Error("Forbidden: Admin privileges required");
@@ -50,5 +52,18 @@ export async function requireAdmin() {
         }
     }
 
-    return { user, supabase: supabaseUser, adminClient };
+    return { user, supabase: supabaseUser, adminClient, role: userRole?.role || (profile?.is_admin ? 'admin' : null) };
+}
+
+/**
+ * Stricter version of requireAdmin that only allows 'owner' role.
+ */
+export async function requireOwner() {
+    const { user, adminClient, supabase, role } = await requireAdmin();
+
+    if (role !== 'owner') {
+        throw new Error("Forbidden: Owner privileges required");
+    }
+
+    return { user, supabase, adminClient };
 }
