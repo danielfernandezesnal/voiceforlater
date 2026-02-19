@@ -223,7 +223,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                     />
                 )}
                 {!isReadOnly && step === 3 && <Step3Recipient dictionary={dictionary.wizard.step3} />}
-                {!isReadOnly && step === 4 && <Step4Delivery dictionary={dictionary.wizard.step4} userPlan={userPlan} />}
+                {!isReadOnly && step === 4 && <Step4Delivery dictionary={dictionary} userPlan={userPlan} />}
                 {/* Always show step 5 content if readonly or step 5 */}
                 {(step === 5 || isReadOnly) && (
                     <Step5Review

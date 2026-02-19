@@ -10,6 +10,7 @@ interface AudioRecorderProps {
         delete: string
         timeLimit: string
         timer: string
+        errorMicrophone: string
     }
     maxSeconds: number
     audioBlob: Blob | null
@@ -105,7 +106,7 @@ export function AudioRecorder({
             }, 1000)
         } catch (err) {
             console.error('Error accessing microphone:', err)
-            setError('Could not access microphone. Please check permissions.')
+            setError(dictionary.errorMicrophone)
         }
     }
 

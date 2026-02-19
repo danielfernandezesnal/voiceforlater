@@ -245,7 +245,11 @@
         "preview": "Previsualizar",
         "delete": "Eliminar",
         "timeLimit": "Máx. {seconds} segundos",
-        "timer": "{time}"
+        "timer": "{time}",
+        "errorMicrophone": "No se pudo acceder al micrófono. Por favor verifica los permisos.",
+        "errorCamera": "No se pudo acceder a la cámara o micrófono. Por favor verifica los permisos.",
+        "errorStart": "Error al iniciar la grabación.",
+        "loadingCamera": "Cargando cámara..."
       }
     },
     "step3": {
@@ -273,7 +277,14 @@
         "days60": "Cada 60 días",
         "days90": "Cada 90 días",
         "note": "Si no confirmas 3 veces, contactaremos a tu persona de confianza antes de entregar.",
-        "freeNote": "Plan Free: intervalo de 7 días con 1 recordatorio. Actualiza a Pro para intervalos más largos y contacto de confianza."
+        "freeNote": "Plan Free: intervalo de 7 días con 1 recordatorio. Actualiza a Pro para intervalos más largos y contacto de confianza.",
+        "trustedContacts": "Contactos de confianza",
+        "freeLimit": "Límite Free: 1",
+        "contactLabel": "Contacto de confianza",
+        "contactLabelNumbered": "Contacto de confianza {number}",
+        "selectPlaceholder": "Seleccionar",
+        "addNew": "+ Agregar nuevo contacto...",
+        "noContactWarning": "Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza. Puedes continuar y asignarlo luego desde el dashboard."
       },
       "test": {
         "title": "En 5 minutos (Modo Prueba)",
@@ -292,7 +303,10 @@
       "deliveryCheckin": "Si no hay actividad por {days} días",
       "submit": "Guardar mensaje",
       "editMessage": "Editar mensaje",
-      "submitting": "Creando..."
+      "submitting": "Creando...",
+      "audioContent": "🎤 {seconds}s audio",
+      "videoContent": "📹 {seconds}s video",
+      "noContactWarning": "Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza."
     }
   },
   "checkin": {
@@ -329,7 +343,9 @@
     "remove": "Eliminar",
     "addContact": "Agregar Contacto",
     "noContact": "Sin contacto de confianza",
-    "proRequired": "Contacto de confianza requiere plan Pro"
+    "proRequired": "Contacto de confianza requiere plan Pro",
+    "newContactTitle": "Nuevo Contacto de Confianza",
+    "errorCreating": "Error al guardar el contacto"
   },
   "stripe": {
     "upgrade": "Mejorar a PRO",

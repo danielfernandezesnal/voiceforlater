@@ -10,6 +10,9 @@ interface VideoRecorderProps {
         delete: string
         timeLimit: string
         timer: string
+        errorCamera: string
+        errorStart: string
+        loadingCamera: string
     }
     maxSeconds: number
     videoBlob: Blob | null
@@ -84,7 +87,7 @@ export function VideoRecorder({
                 setError(null)
             } catch (err) {
                 console.error('Error accessing camera/microphone:', err)
-                setError('No se pudo acceder a la cámara o micrófono. Por favor verifica los permisos.')
+                setError(dictionary.errorCamera)
                 setIsStreamReady(false)
             }
         }
@@ -192,7 +195,7 @@ export function VideoRecorder({
             }, 1000)
         } catch (err) {
             console.error('Error starting recording:', err)
-            setError('Error al iniciar la grabación.')
+            setError(dictionary.errorStart)
             setIsRecording(false)
         }
     }
@@ -256,7 +259,7 @@ export function VideoRecorder({
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
-                            <span>Cargando cámara...</span>
+                            <span>{dictionary.loadingCamera}</span>
                         </div>
                     </div>
                 )}

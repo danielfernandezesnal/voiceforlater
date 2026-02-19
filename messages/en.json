@@ -258,7 +258,11 @@
         "preview": "Preview",
         "delete": "Delete",
         "timeLimit": "Max {seconds} seconds",
-        "timer": "{time}"
+        "timer": "{time}",
+        "errorMicrophone": "Could not access microphone. Please check permissions.",
+        "errorCamera": "Could not access camera/microphone. Please check permissions.",
+        "errorStart": "Error starting recording.",
+        "loadingCamera": "Loading camera..."
       }
     },
     "step3": {
@@ -286,7 +290,14 @@
         "days60": "Every 60 days",
         "days90": "Every 90 days",
         "note": "If you miss 3 check-ins, we'll contact your trusted person before delivering.",
-        "freeNote": "Free plan: 7-day interval with 1 reminder. Upgrade to Pro for longer intervals and trusted contact."
+        "freeNote": "Free plan: 7-day interval with 1 reminder. Upgrade to Pro for longer intervals and trusted contact.",
+        "trustedContacts": "Trusted Contacts",
+        "freeLimit": "Free Limit: 1",
+        "contactLabel": "Trusted contact",
+        "contactLabelNumbered": "Trusted contact {number}",
+        "selectPlaceholder": "Select",
+        "addNew": "+ Add new contact...",
+        "noContactWarning": "This message will not be sent automatically until you assign a trusted contact. You can continue and assign it later from the dashboard."
       },
       "test": {
         "title": "In 5 minutes (Test Mode)",
@@ -305,7 +316,10 @@
       "deliveryCheckin": "If inactive for {days} days",
       "submit": "Confirm Message",
       "editMessage": "Edit message",
-      "submitting": "Creating..."
+      "submitting": "Creating...",
+      "audioContent": "🎤 {seconds}s audio",
+      "videoContent": "📹 {seconds}s video",
+      "noContactWarning": "This message will not be sent automatically until you assign a trusted contact."
     }
   },
   "checkin": {
@@ -342,7 +356,9 @@
     "remove": "Remove",
     "addContact": "Add Contact",
     "noContact": "No trusted contact set",
-    "proRequired": "Trusted contact requires Pro plan"
+    "proRequired": "Trusted contact requires Pro plan",
+    "newContactTitle": "New Trusted Contact",
+    "errorCreating": "Error creating contact"
   },
   "stripe": {
     "upgrade": "Upgrade to PRO",
