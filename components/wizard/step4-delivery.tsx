@@ -20,6 +20,7 @@ interface Contact {
 
 export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
     const { data, updateData } = useWizard()
+    const step4Dict = dictionary.wizard.step4
     const limits = getPlanLimits(userPlan)
     const [selectedTab, setSelectedTab] = useState<DeliveryMode | 'test'>(data.deliveryMode || 'checkin')
 
@@ -125,18 +126,18 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
     const options = useMemo(() => [
         {
             mode: 'date',
-            title: dictionary.date.title,
-            description: dictionary.date.description,
+            title: step4Dict.date.title,
+            description: step4Dict.date.description,
             icon: (
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
             ),
         },
         {
             mode: 'checkin',
-            title: dictionary.checkin.title,
-            description: dictionary.checkin.description,
+            title: step4Dict.checkin.title,
+            description: step4Dict.checkin.description,
             icon: (
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -145,15 +146,15 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
         },
         {
             mode: 'test',
-            title: dictionary.test.title,
-            description: dictionary.test.description,
+            title: step4Dict.test.title,
+            description: step4Dict.test.description,
             icon: (
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             ),
         },
-    ], [dictionary])
+    ], [step4Dict])
 
     const [minDate] = useState(() => {
         const tomorrow = new Date()
@@ -172,8 +173,8 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
     return (
         <div className="space-y-6">
             <div className="text-center">
-                <h2 className="text-2xl font-bold">{dictionary.title}</h2>
-                <p className="text-muted-foreground mt-2">{dictionary.subtitle}</p>
+                <h2 className="text-2xl font-bold">{step4Dict.title}</h2>
+                <p className="text-muted-foreground mt-2">{step4Dict.subtitle}</p>
             </div>
 
             <div className="max-w-xl mx-auto space-y-4">
@@ -201,7 +202,7 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                             <div className="mt-3 ml-10 p-4 bg-card rounded-lg border border-border animate-in slide-in-from-top-1">
                                 {option.mode === 'date' && (
                                     <div>
-                                        <label className="block text-sm font-medium mb-2">{dictionary.date.label}</label>
+                                        <label className="block text-sm font-medium mb-2">{step4Dict.date.label}</label>
                                         <input
                                             type="date"
                                             min={minDate}
@@ -220,30 +221,37 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                                     <div className="space-y-6">
                                         {/* Interval Selector */}
                                         <div>
-                                            <label className="block text-sm font-medium mb-2">{dictionary.checkin.interval}</label>
+                                            <label className="block text-sm font-medium mb-2">{step4Dict.checkin.interval}</label>
                                             <select
                                                 value={data.checkinIntervalDays}
                                                 onChange={handleIntervalChange}
                                                 className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
                                             >
                                                 {/* All Options Available for All Plans */}
-                                                {/* <option value={7}>{dictionary.checkin.days7 || '7 days'}</option> Removed per request */}
-                                                <option value={30}>{String(dictionary.checkin.days30).replace('(Pro)', '').trim()}</option>
-                                                <option value={60}>{String(dictionary.checkin.days60).replace('(Pro)', '').trim()}</option>
-                                                <option value={90}>{String(dictionary.checkin.days90).replace('(Pro)', '').trim()}</option>
+                                                {/* <option value={7}>{step4Dict.checkin.days7 || '7 days'}</option> Removed per request */}
+                                                <option value={30}>{String(step4Dict.checkin.days30).replace('(Pro)', '').trim()}</option>
+                                                <option value={60}>{String(step4Dict.checkin.days60).replace('(Pro)', '').trim()}</option>
+                                                <option value={90}>{String(step4Dict.checkin.days90).replace('(Pro)', '').trim()}</option>
                                             </select>
                                         </div>
 
                                         {/* Trusted Contacts Selector */}
                                         <div>
                                             <label className="block text-sm font-medium mb-3 flex justify-between items-center">
-                                                <span>Trusted Contacts</span>
-                                                {userPlan === 'free' && <span className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">Free Limit: 1</span>}
+                                                <span>{step4Dict.checkin.trustedContacts}</span>
+                                                {userPlan === 'free' && <span className="text-xs bg-secondary text-muted-foreground px-2 py-0.5 rounded-full">{step4Dict.checkin.freeLimit}</span>}
                                             </label>
 
                                             <div className="space-y-3">
                                                 {isCreating ? (
                                                     <CreateContactForm
+                                                        dictionary={{
+                                                            ...dictionary.trustedContact,
+                                                            cancel: dictionary.common.cancel,
+                                                            save: dictionary.trustedContact.save,
+                                                            saving: dictionary.trustedContact.saving,
+                                                            errorCreating: dictionary.trustedContact.errorCreating
+                                                        }}
                                                         onCancel={() => setIsCreating(false)}
                                                         onSuccess={handleContactCreated}
                                                     />
@@ -253,14 +261,14 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                                                         {Array.from({ length: Math.min(Math.max(currentContacts.length + 1, 1), maxContacts) }).map((_, index) => (
                                                             <div key={index} className="flex flex-col gap-1">
                                                                 <label className="text-xs font-medium text-muted-foreground">
-                                                                    {userPlan === 'free' ? 'Contacto de confianza' : `Contacto de confianza ${index + 1}`}
+                                                                    {userPlan === 'free' ? step4Dict.checkin.contactLabel : step4Dict.checkin.contactLabelNumbered.replace('{number}', String(index + 1))}
                                                                 </label>
                                                                 <select
                                                                     value={currentContacts[index] || ''}
                                                                     onChange={(e) => handleContactChange(index, e.target.value)}
                                                                     className="w-full px-4 py-2.5 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary text-sm"
                                                                 >
-                                                                    <option value="">-- {dictionary.create?.select || 'Seleccionar'} --</option>
+                                                                    <option value="">-- {step4Dict.checkin.selectPlaceholder} --</option>
                                                                     {contacts.map(c => (
                                                                         <option
                                                                             key={c.id}
@@ -270,7 +278,7 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                                                                             {c.name} ({c.email})
                                                                         </option>
                                                                     ))}
-                                                                    <option value="new" className="font-semibold text-primary font-medium">+ Agregar nuevo contacto...</option>
+                                                                    <option value="new" className="font-semibold text-primary font-medium">{step4Dict.checkin.addNew}</option>
                                                                 </select>
                                                             </div>
                                                         ))}
@@ -280,14 +288,14 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                                                 {currentContacts.length === 0 && !isCreating && !loadingContacts && (
                                                     <div className="mt-2 flex gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-xs leading-relaxed animate-in fade-in">
                                                         <span className="text-base">⚠️</span>
-                                                        <span>Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza. Puedes continuar y asignarlo luego desde el dashboard.</span>
+                                                        <span>{step4Dict.checkin.noContactWarning}</span>
                                                     </div>
                                                 )}
                                             </div>
                                         </div>
 
                                         <p className="text-xs text-muted-foreground pt-2 border-t border-border">
-                                            {dictionary.checkin.note}
+                                            {step4Dict.checkin.note}
                                         </p>
                                     </div>
                                 )}
@@ -299,7 +307,7 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                                                 <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
                                             </span>
-                                            {dictionary.test.note}
+                                            {step4Dict.test.note}
                                         </p>
                                     </div>
                                 )}

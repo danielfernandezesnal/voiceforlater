@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import Stripe from "stripe";
 import { trackServerEvent } from "@/lib/analytics/trackEvent";
+import { getResourceId, mapSubscriptionToPlan } from "@/lib/stripe/utils";
 
 // Use service role for webhook operations (bypasses RLS)
 function getAdminSupabase() {
@@ -17,6 +18,14 @@ function getStripe() {
     }
     return new Stripe(process.env.STRIPE_SECRET_KEY);
 }
+
+// Helper to safely get ID from string or object
+// Moved to @/lib/stripe/utils
+
+/**
+ * Normalize Stripe subscription status to internal Plan
+ * Moved to @/lib/stripe/utils
+ */
 
 /**
  * POST /api/stripe/webhook
@@ -50,6 +59,24 @@ export async function POST(request: NextRequest) {
 
     const supabase = getAdminSupabase();
 
+    // Idempotency: Duplicate event protection
+    const { error: idempotencyError } = await supabase
+        .from('stripe_webhook_events')
+        .insert({
+            stripe_event_id: event.id,
+            event_type: event.type,
+        });
+
+    if (idempotencyError) {
+        // Postgres unique violation code
+        if (idempotencyError.code === '23505') {
+            console.warn("Stripe event already processed:", event.id);
+            return NextResponse.json({ received: true, status: "already_processed" });
+        }
+        console.error("Idempotency check failed:", idempotencyError);
+        return NextResponse.json({ error: "Database error during idempotency check" }, { status: 500 });
+    }
+
     try {
         switch (event.type) {
             case "checkout.session.completed": {
@@ -62,13 +89,16 @@ export async function POST(request: NextRequest) {
                 }
 
                 // Update user_subscriptions (Authoritative)
+                const customerId = getResourceId(session.customer);
+                const subId = getResourceId(session.subscription);
+
                 const { error: subError } = await supabase
                     .from("user_subscriptions")
                     .upsert({
                         user_id: userId,
                         plan: "pro",
-                        stripe_customer_id: session.customer as string,
-                        stripe_subscription_id: session.subscription as string,
+                        stripe_customer_id: customerId,
+                        stripe_subscription_id: subId,
                         status: "active",
                         updated_at: new Date().toISOString()
                     });
@@ -83,8 +113,8 @@ export async function POST(request: NextRequest) {
                     .from("profiles")
                     .update({
                         plan: "pro",
-                        stripe_customer_id: session.customer as string,
-                        stripe_subscription_id: session.subscription as string,
+                        stripe_customer_id: customerId,
+                        stripe_subscription_id: subId,
                         plan_status: "active",
                     })
                     .eq("id", userId);
@@ -96,8 +126,8 @@ export async function POST(request: NextRequest) {
                         .from("profiles")
                         .update({
                             plan: "pro",
-                            stripe_customer_id: session.customer as string,
-                            stripe_subscription_id: session.subscription as string,
+                            stripe_customer_id: customerId,
+                            stripe_subscription_id: subId,
                         })
                         .eq("id", userId);
                     error = retryError;
@@ -114,23 +144,16 @@ export async function POST(request: NextRequest) {
                         type: "subscription_created",
                         user_id: userId,
                         metadata: {
-                            subscription_id: session.subscription,
-                            customer_id: session.customer,
+                            subscription_id: subId,
+                            customer_id: customerId,
                         },
                     });
 
                     // --- Product Analytics ---
-                    const subscriptionId =
-                        typeof session.subscription === "string"
-                            ? session.subscription
-                            : session.subscription && typeof session.subscription === "object" && "id" in session.subscription
-                                ? (session.subscription as { id: string }).id
-                                : null;
-
                     await trackServerEvent({
                         event: 'subscription.created',
                         userId: userId,
-                        metadata: { subscription_id: subscriptionId }
+                        metadata: { subscription_id: subId }
                     });
                 } catch (e) {
                     console.error("Failed to log event:", e);
@@ -144,41 +167,61 @@ export async function POST(request: NextRequest) {
                 const subscription = event.data.object as Stripe.Subscription;
                 const userId = subscription.metadata?.user_id;
 
-                const status = subscription.status;
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const currentPeriodEnd = new Date((subscription as any).current_period_end * 1000).toISOString();
+                // current_period_end is missing in some Stripe type definitions despite being present in API
+                const sub = subscription as Stripe.Subscription & { current_period_end: number };
+
+                const { plan, effectiveStatus, effectiveUntil } = mapSubscriptionToPlan(
+                    subscription.status,
+                    subscription.cancel_at_period_end,
+                    sub.current_period_end
+                );
+
+                const customerId = getResourceId(subscription.customer);
+                const currentPeriodEnd = new Date(sub.current_period_end * 1000).toISOString();
 
                 // Find user by subscription ID or customer ID if metadata missing
                 let targetUserId = userId;
                 if (!targetUserId) {
-                    const { data: sub } = await supabase
+                    let query = supabase
                         .from("user_subscriptions")
-                        .select("user_id")
-                        .or(`stripe_subscription_id.eq.${subscription.id},stripe_customer_id.eq.${subscription.customer as string}`)
-                        .single();
+                        .select("user_id");
+
+                    if (customerId) {
+                        query = query.or(`stripe_subscription_id.eq.${subscription.id},stripe_customer_id.eq.${customerId}`);
+                    } else {
+                        query = query.eq("stripe_subscription_id", subscription.id);
+                    }
+
+                    const { data: sub } = await query.single();
                     targetUserId = sub?.user_id;
                 }
 
                 if (targetUserId) {
+                    // Update User Subscriptions (Source of Truth)
                     await supabase
                         .from("user_subscriptions")
                         .update({
-                            status: status,
+                            plan: plan,
+                            status: effectiveStatus,
                             current_period_end: currentPeriodEnd,
+                            cancel_at_period_end: subscription.cancel_at_period_end,
                             updated_at: new Date().toISOString()
                         })
                         .eq("user_id", targetUserId);
 
-                    // Sync profile
+                    // Sync profile (Legacy Mirror)
                     await supabase
                         .from("profiles")
                         .update({
-                            plan_status: status,
-                            plan_ends_at: subscription.cancel_at
-                                ? new Date(subscription.cancel_at * 1000).toISOString()
-                                : null,
+                            plan: plan,
+                            plan_status: effectiveStatus,
+                            plan_ends_at: effectiveUntil,
                         })
                         .eq("id", targetUserId);
+
+                    console.log(`Updated subscription for user ${targetUserId}: ${plan} (${effectiveStatus})`);
+                } else {
+                    console.warn(`Could not find user for subscription update: ${subscription.id}`);
                 }
                 break;
             }
@@ -186,6 +229,7 @@ export async function POST(request: NextRequest) {
             case "customer.subscription.deleted": {
                 const subscription = event.data.object as Stripe.Subscription;
                 const userId = subscription.metadata?.user_id;
+                const customerId = getResourceId(subscription.customer);
 
                 // Find user by subscription ID or customer ID
                 let targetUserId = userId;
@@ -199,24 +243,26 @@ export async function POST(request: NextRequest) {
                     targetUserId = sub?.user_id;
                 }
 
-                if (!targetUserId) {
+                if (!targetUserId && customerId) {
                     const { data: sub } = await supabase
                         .from("user_subscriptions")
                         .select("user_id")
-                        .eq("stripe_customer_id", subscription.customer as string)
+                        .eq("stripe_customer_id", customerId)
                         .single();
                     targetUserId = sub?.user_id;
                 }
 
                 if (targetUserId) {
                     // Downgrade to FREE
+                    const now = new Date().toISOString();
+
                     await supabase
                         .from("user_subscriptions")
                         .update({
                             plan: "free",
                             status: "canceled",
                             stripe_subscription_id: null,
-                            updated_at: new Date().toISOString()
+                            updated_at: now
                         })
                         .eq("user_id", targetUserId);
 
@@ -244,14 +290,50 @@ export async function POST(request: NextRequest) {
                         metadata: { subscription_id: subscription.id }
                     });
 
-                    console.log(`User ${targetUserId} downgraded to FREE`);
+                    console.log(`User ${targetUserId} downgraded to FREE (Subscription Deleted)`);
                 }
                 break;
             }
 
             case "invoice.payment_failed": {
-                const invoice = event.data.object as Stripe.Invoice;
-                const customerId = invoice.customer as string;
+                // Cast to any to avoid property missing error if types are outdated
+                const invoice = event.data.object as any;
+                const subId = getResourceId(invoice.subscription);
+                const customerId = getResourceId(invoice.customer);
+
+                // Attempt to fetch fresh subscription status to be authoritative
+                let mappedPlan: { plan: 'free' | 'pro', effectiveStatus: string, effectiveUntil: string | null } = {
+                    plan: 'free',
+                    effectiveStatus: 'past_due',
+                    effectiveUntil: null
+                };
+
+                let currentPeriodEndStr: string | null = null;
+                let cancelAtPeriodEndVal = false;
+
+                if (subId) {
+                    try {
+                        const freshSub = await stripe.subscriptions.retrieve(subId);
+                        const freshSubTyped = freshSub as unknown as Stripe.Subscription & { current_period_end: number };
+
+                        const mapped = mapSubscriptionToPlan(
+                            freshSub.status,
+                            freshSub.cancel_at_period_end,
+                            freshSubTyped.current_period_end
+                        );
+                        mappedPlan = mapped;
+                        currentPeriodEndStr = new Date(freshSubTyped.current_period_end * 1000).toISOString();
+                        cancelAtPeriodEndVal = freshSub.cancel_at_period_end;
+                    } catch (fetchErr) {
+                        console.error(`Failed to fetch subscription ${subId} in payment_failed`, fetchErr);
+                        // Fallback: stay on defaults (free/past_due)
+                    }
+                }
+
+                if (!customerId) {
+                    console.error("No customer ID in invoice");
+                    break;
+                }
 
                 const { data: profile } = await supabase
                     .from("profiles")
@@ -260,25 +342,35 @@ export async function POST(request: NextRequest) {
                     .single();
 
                 if (profile) {
+                    // Normalize: Update both tables
                     await supabase
                         .from("user_subscriptions")
                         .update({
-                            status: "past_due",
+                            plan: mappedPlan.plan,
+                            status: mappedPlan.effectiveStatus,
+                            ...(currentPeriodEndStr && { current_period_end: currentPeriodEndStr }),
+                            cancel_at_period_end: cancelAtPeriodEndVal,
                             updated_at: new Date().toISOString()
                         })
                         .eq("user_id", profile.id);
 
                     await supabase
                         .from("profiles")
-                        .update({ plan_status: "past_due" })
+                        .update({
+                            plan: mappedPlan.plan,
+                            plan_status: mappedPlan.effectiveStatus,
+                            plan_ends_at: mappedPlan.effectiveUntil
+                        })
                         .eq("id", profile.id);
 
                     // Log event
                     await supabase.from("events").insert({
                         type: "payment_failed",
                         user_id: profile.id,
-                        metadata: { invoice_id: invoice.id },
+                        metadata: { invoice_id: invoice.id, subscription_id: subId },
                     });
+
+                    console.log(`User ${profile.id} processed for payment_failed: ${mappedPlan.plan} (${mappedPlan.effectiveStatus})`);
                 }
                 break;
             }

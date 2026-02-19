@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
-import { getEmailTemplate } from "@/lib/email-templates";
+import { getResend } from '@/lib/resend';
+import { trackEmail } from '@/lib/email-tracking';
+import { getDictionary, Locale } from '@/lib/i18n';
+import { getMessageDeliveryTemplate } from '@/lib/email-templates';
 
 // Use service role for admin operations (bypass RLS)
 function getAdminClient() {
@@ -9,13 +11,6 @@ function getAdminClient() {
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
-}
-
-function getResendClient() {
-    if (!process.env.RESEND_API_KEY) {
-        return null;
-    }
-    return new Resend(process.env.RESEND_API_KEY);
 }
 
 /**
@@ -41,7 +36,7 @@ export async function GET(request: NextRequest) {
     }
 
     const supabase = getAdminClient();
-    const resend = getResendClient();
+    const resend = getResend();
     const now = new Date().toISOString();
 
     const results = {
@@ -101,7 +96,11 @@ export async function GET(request: NextRequest) {
             }
 
             try {
-                const locale = (message.profiles as any)?.locale || 'es';
+                const localeRaw = (message.profiles as any)?.locale || 'en';
+                const locale = (['en', 'es'].includes(localeRaw) ? localeRaw : 'en') as Locale;
+                const dict = await getDictionary(locale);
+                const t = dict.emails.messageDelivery;
+
                 let contentHtml = "";
 
                 if (message.type === 'text' && message.text_content) {
@@ -118,9 +117,7 @@ export async function GET(request: NextRequest) {
                             .createSignedUrl(message.audio_path, 60 * 60 * 24 * 7); // 7 days
 
                         if (signedUrl?.signedUrl) {
-                            const label = locale === 'es'
-                                ? (message.type === 'video' ? 'Ver Video' : 'Escuchar Audio')
-                                : (message.type === 'video' ? 'View Video' : 'Listen to Audio');
+                            const label = message.type === 'video' ? t.viewVideo : t.listenAudio;
 
                             contentHtml += `
                                 <div style="margin: 20px 0;">
@@ -129,23 +126,23 @@ export async function GET(request: NextRequest) {
                                     </a>
                                 </div>
                                 <p style="font-size: 12px; color: #666;">
-                                    ${locale === 'es' ? 'Link válido por 7 días.' : 'Link valid for 7 days.'}
+                                    ${t.linkValid}
                                 </p>
                             `;
                         } else {
-                            contentHtml += `<p>${locale === 'es' ? 'Error generando link.' : 'Error generating link.'}</p>`;
+                            contentHtml += `<p>${t.linkError}</p>`;
                         }
                     }
                 }
 
                 // Use template
-                const template = getEmailTemplate('message_delivery', locale) as any;
+                const template = getMessageDeliveryTemplate(dict as any, { contentHtml });
 
                 await resend.emails.send({
                     from: "VoiceForLater <noreply@voiceforlater.com>",
                     to: recipient.email,
                     subject: template.subject,
-                    html: template.html({ contentHtml })
+                    html: template.html
                 });
 
                 // Update status to delivered

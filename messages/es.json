@@ -43,7 +43,9 @@
         "Un mensaje que solo debería enviarse si vos no respondés más",
         "Un mensaje para vos mismo en el futuro (cápsula del tiempo)",
         "Algo que no querés olvidar decir"
-      ]
+      ],
+      "examples_label": "Ejemplos:",
+      "closing": "No es solo para despedidas.\nEs para momentos que todavía no llegaron."
     },
     "howItWorks": {
       "title": "Cómo funciona",
@@ -103,7 +105,8 @@
           "Solo texto",
           "Elige fecha exacta de envío",
           "1 persona de confianza (cómplice) para garantizar la entrega"
-        ]
+        ],
+        "price": "USD 0"
       },
       "pro": {
         "title": "Pro",
@@ -242,7 +245,11 @@
         "preview": "Previsualizar",
         "delete": "Eliminar",
         "timeLimit": "Máx. {seconds} segundos",
-        "timer": "{time}"
+        "timer": "{time}",
+        "errorMicrophone": "No se pudo acceder al micrófono. Por favor verifica los permisos.",
+        "errorCamera": "No se pudo acceder a la cámara o micrófono. Por favor verifica los permisos.",
+        "errorStart": "Error al iniciar la grabación.",
+        "loadingCamera": "Cargando cámara..."
       }
     },
     "step3": {
@@ -270,7 +277,14 @@
         "days60": "Cada 60 días",
         "days90": "Cada 90 días",
         "note": "Si no confirmas 3 veces, contactaremos a tu persona de confianza antes de entregar.",
-        "freeNote": "Plan Free: intervalo de 7 días con 1 recordatorio. Actualiza a Pro para intervalos más largos y contacto de confianza."
+        "freeNote": "Plan Free: intervalo de 7 días con 1 recordatorio. Actualiza a Pro para intervalos más largos y contacto de confianza.",
+        "trustedContacts": "Contactos de confianza",
+        "freeLimit": "Límite Free: 1",
+        "contactLabel": "Contacto de confianza",
+        "contactLabelNumbered": "Contacto de confianza {number}",
+        "selectPlaceholder": "Seleccionar",
+        "addNew": "+ Agregar nuevo contacto...",
+        "noContactWarning": "Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza. Puedes continuar y asignarlo luego desde el dashboard."
       },
       "test": {
         "title": "En 5 minutos (Modo Prueba)",
@@ -289,7 +303,10 @@
       "deliveryCheckin": "Si no hay actividad por {days} días",
       "submit": "Guardar mensaje",
       "editMessage": "Editar mensaje",
-      "submitting": "Creando..."
+      "submitting": "Creando...",
+      "audioContent": "🎤 {seconds}s audio",
+      "videoContent": "📹 {seconds}s video",
+      "noContactWarning": "Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza."
     }
   },
   "checkin": {
@@ -326,7 +343,9 @@
     "remove": "Eliminar",
     "addContact": "Agregar Contacto",
     "noContact": "Sin contacto de confianza",
-    "proRequired": "Contacto de confianza requiere plan Pro"
+    "proRequired": "Contacto de confianza requiere plan Pro",
+    "newContactTitle": "Nuevo Contacto de Confianza",
+    "errorCreating": "Error al guardar el contacto"
   },
   "stripe": {
     "upgrade": "Mejorar a PRO",
@@ -418,6 +437,51 @@
       "contacts": "Contactos",
       "storage": "Almacenamiento",
       "emails": "Emails Enviados"
+    }
+  },
+  "emails": {
+    "common": {
+      "footerSignature": "VoiceForLater"
+    },
+    "magicLink": {
+      "subject": "Tu enlace de acceso a VoiceForLater",
+      "subjectAdmin": "Acceso de administrador - VoiceForLater",
+      "title": "VoiceForLater",
+      "adminBadge": "Acceso de administrador",
+      "intro": "Hacé clic en el siguiente botón para entrar a tu cuenta:",
+      "button": "Entrar ahora",
+      "ignore": "Si no solicitaste este enlace, podés ignorar este correo."
+    },
+    "messageDelivery": {
+      "subject": "Tienes un mensaje vía VoiceForLater",
+      "title": "Tienes un mensaje de VoiceForLater",
+      "intro": "Ha llegado un mensaje programado para ti.",
+      "footer": "VoiceForLater - Mensajes para cuando realmente importa.",
+      "viewVideo": "Ver Video",
+      "listenAudio": "Escuchar Audio",
+      "linkValid": "Link válido por 7 días.",
+      "linkError": "Error generando link."
+    },
+    "checkinReminder": {
+      "subject": "⏰ Recordatorio de check-in - VoiceForLater",
+      "title": "¡Es hora de reportarse!",
+      "intro": "Tu check-in programado está vencido. Por favor confirma que estás activo.",
+      "attempt": "Intento {attempt} de 3",
+      "button": "Confirmar Actividad",
+      "warning": "Si no respondes después de 3 intentos, contactaremos a tu persona de confianza."
+    },
+    "trustedContactVerify": {
+      "subject": "ACCIÓN REQUERIDA: Confirmar estado de {email}",
+      "greeting": "Hola {name},",
+      "greetingUnknown": "Hola,",
+      "title": "Acción Requerida: Verificar Estado",
+      "intro": "{email} ha perdido sus check-ins programados en VoiceForLater.",
+      "explanation": "Como contacto de confianza, necesitamos que verifiques si no pueden acceder a su cuenta.",
+      "boxTitle": "¿{email} no está disponible?",
+      "boxText": "Si confirmas, sus mensajes programados serán liberados a los destinatarios.",
+      "button": "Verificar Estado Ahora",
+      "falseAlarm": "Si es una falsa alarma o sabes que están bien, por favor usa el enlace de arriba para reportarlo de forma segura.",
+      "expiry": "El enlace expira en 48 horas."
     }
   }
 }

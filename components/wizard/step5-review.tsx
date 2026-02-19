@@ -15,14 +15,18 @@ interface Step5Props {
         submit: string
         editMessage: string
         submitting: string
+        audioContent: string
+        videoContent: string
+        noContactWarning: string
     }
     typeDictionary: {
         text: { title: string }
         audio: { title: string }
+        video: { title: string }
     }
     onSubmit: () => Promise<void>
     isSubmitting: boolean
-    isReadOnly?: boolean // Added prop
+    isReadOnly?: boolean
 }
 
 export function Step5Review({ dictionary, typeDictionary, onSubmit, isSubmitting, isReadOnly = false }: Step5Props) {
@@ -47,14 +51,16 @@ export function Step5Review({ dictionary, typeDictionary, onSubmit, isSubmitting
     const reviewItems = [
         {
             label: dictionary.messageType,
-            value: data.messageType === 'text' ? typeDictionary.text.title : typeDictionary.audio.title,
+            value: typeDictionary[data.messageType as keyof typeof typeDictionary].title,
             step: 1
         },
         {
             label: dictionary.content,
             value: data.messageType === 'text'
                 ? (data.textContent.substring(0, 100) + (data.textContent.length > 100 ? '...' : ''))
-                : `🎤 ${Math.round(data.audioDuration)}s audio`,
+                : data.messageType === 'video'
+                    ? dictionary.videoContent.replace('{seconds}', String(Math.round(data.audioDuration)))
+                    : dictionary.audioContent.replace('{seconds}', String(Math.round(data.audioDuration))),
             step: 2
         },
         {
@@ -102,7 +108,7 @@ export function Step5Review({ dictionary, typeDictionary, onSubmit, isSubmitting
                 {data.deliveryMode === 'checkin' && data.trustedContactIds.length === 0 && (
                     <div className="max-w-md mx-auto mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-sm flex gap-2 animate-in fade-in">
                         <span className="text-base">⚠️</span>
-                        <span>Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza.</span>
+                        <span>{dictionary.noContactWarning}</span>
                     </div>
                 )}
             </div>

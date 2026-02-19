@@ -54,7 +54,9 @@
           "title": "For yourself in the future",
           "description": "A message for your future self (time capsule)."
         }
-      ]
+      ],
+      "examples_label": "Examples:",
+      "closing": "It's not just for goodbyes.\nIt's for moments that haven't arrived yet."
     },
     "howItWorks": {
       "title": "How it works",
@@ -114,7 +116,8 @@
           "Text only",
           "Choose the exact delivery date",
           "1 trusted person (companion)"
-        ]
+        ],
+        "price": "USD 0"
       },
       "pro": {
         "title": "Pro",
@@ -255,7 +258,11 @@
         "preview": "Preview",
         "delete": "Delete",
         "timeLimit": "Max {seconds} seconds",
-        "timer": "{time}"
+        "timer": "{time}",
+        "errorMicrophone": "Could not access microphone. Please check permissions.",
+        "errorCamera": "Could not access camera/microphone. Please check permissions.",
+        "errorStart": "Error starting recording.",
+        "loadingCamera": "Loading camera..."
       }
     },
     "step3": {
@@ -283,7 +290,14 @@
         "days60": "Every 60 days",
         "days90": "Every 90 days",
         "note": "If you miss 3 check-ins, we'll contact your trusted person before delivering.",
-        "freeNote": "Free plan: 7-day interval with 1 reminder. Upgrade to Pro for longer intervals and trusted contact."
+        "freeNote": "Free plan: 7-day interval with 1 reminder. Upgrade to Pro for longer intervals and trusted contact.",
+        "trustedContacts": "Trusted Contacts",
+        "freeLimit": "Free Limit: 1",
+        "contactLabel": "Trusted contact",
+        "contactLabelNumbered": "Trusted contact {number}",
+        "selectPlaceholder": "Select",
+        "addNew": "+ Add new contact...",
+        "noContactWarning": "This message will not be sent automatically until you assign a trusted contact. You can continue and assign it later from the dashboard."
       },
       "test": {
         "title": "In 5 minutes (Test Mode)",
@@ -302,7 +316,10 @@
       "deliveryCheckin": "If inactive for {days} days",
       "submit": "Confirm Message",
       "editMessage": "Edit message",
-      "submitting": "Creating..."
+      "submitting": "Creating...",
+      "audioContent": "🎤 {seconds}s audio",
+      "videoContent": "📹 {seconds}s video",
+      "noContactWarning": "This message will not be sent automatically until you assign a trusted contact."
     }
   },
   "checkin": {
@@ -339,7 +356,9 @@
     "remove": "Remove",
     "addContact": "Add Contact",
     "noContact": "No trusted contact set",
-    "proRequired": "Trusted contact requires Pro plan"
+    "proRequired": "Trusted contact requires Pro plan",
+    "newContactTitle": "New Trusted Contact",
+    "errorCreating": "Error creating contact"
   },
   "stripe": {
     "upgrade": "Upgrade to PRO",
@@ -431,6 +450,51 @@
       "contacts": "Contacts",
       "storage": "Storage",
       "emails": "Emails Sent"
+    }
+  },
+  "emails": {
+    "common": {
+      "footerSignature": "VoiceForLater"
+    },
+    "magicLink": {
+      "subject": "Your VoiceForLater Login Link",
+      "subjectAdmin": "Admin Access - VoiceForLater",
+      "title": "VoiceForLater",
+      "adminBadge": "Admin Access",
+      "intro": "Click the button below to sign in to your account:",
+      "button": "Sign In Now",
+      "ignore": "If you didn't request this link, you can safely ignore this email."
+    },
+    "messageDelivery": {
+      "subject": "You have a message via VoiceForLater",
+      "title": "You have a message from VoiceForLater",
+      "intro": "A message scheduled for you has arrived.",
+      "footer": "VoiceForLater - Messages for when it truly matters.",
+      "viewVideo": "View Video",
+      "listenAudio": "Listen to Audio",
+      "linkValid": "Link valid for 7 days.",
+      "linkError": "Error generating link."
+    },
+    "checkinReminder": {
+      "subject": "⏰ Check-in reminder - VoiceForLater",
+      "title": "Time to check in!",
+      "intro": "Your scheduled check-in is overdue. Please confirm you're still active.",
+      "attempt": "Attempt {attempt} of 3",
+      "button": "Confirm I'm Active",
+      "warning": "If you don't respond after 3 attempts, we'll contact your trusted contact."
+    },
+    "trustedContactVerify": {
+      "subject": "ACTION REQUIRED: Confirm status for {email}",
+      "greeting": "Hello {name},",
+      "greetingUnknown": "Hello,",
+      "title": "Action Required: Verify Status",
+      "intro": "{email} has missed their scheduled check-ins on VoiceForLater.",
+      "explanation": "As a trusted contact, we need you to verify if they are unable to access their account.",
+      "boxTitle": "Is {email} unavailable?",
+      "boxText": "If you confirm, their scheduled messages will be released to recipients.",
+      "button": "Verify Status Now",
+      "falseAlarm": "If this is a false alarm or you know they are fine, please use the link above to report it secure and stop further notifications.",
+      "expiry": "Link expires in 48 hours."
     }
   }
 }

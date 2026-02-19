@@ -4,11 +4,22 @@ import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid' // En caso de necesitar ID temporal, aunque idealmente el backend responde
 
 interface CreateContactFormProps {
+    dictionary: {
+        newContactTitle: string
+        nameLabel: string
+        namePlaceholder: string
+        emailLabel: string
+        emailPlaceholder: string
+        cancel: string
+        save: string
+        saving: string
+        errorCreating: string
+    }
     onCancel: () => void
     onSuccess: (newContact: { id: string, name: string, email: string }) => void
 }
 
-export function CreateContactForm({ onCancel, onSuccess }: CreateContactFormProps) {
+export function CreateContactForm({ dictionary, onCancel, onSuccess }: CreateContactFormProps) {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
@@ -29,13 +40,12 @@ export function CreateContactForm({ onCancel, onSuccess }: CreateContactFormProp
             const data = await res.json()
 
             if (!res.ok) {
-                throw new Error(data.error || 'Error creating contact')
+                throw new Error(data.error || dictionary.errorCreating)
             }
 
-            // Asumimos que la API devuelve el contacto creado
             onSuccess(data)
         } catch (err: any) {
-            setError(err.message || 'Error al guardar el contacto')
+            setError(err.message || dictionary.errorCreating)
         } finally {
             setLoading(false)
         }
@@ -43,30 +53,30 @@ export function CreateContactForm({ onCancel, onSuccess }: CreateContactFormProp
 
     return (
         <form onSubmit={handleSubmit} className="p-4 border rounded-lg bg-secondary/10 space-y-3 animate-in fade-in zoom-in-95">
-            <h4 className="font-medium text-sm">Nuevo Contacto de Confianza</h4>
+            <h4 className="font-medium text-sm">{dictionary.newContactTitle}</h4>
             {error && <p className="text-xs text-red-500">{error}</p>}
 
             <div className="space-y-1">
-                <label className="text-xs font-medium">Nombre</label>
+                <label className="text-xs font-medium">{dictionary.nameLabel}</label>
                 <input
                     required
                     type="text"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     className="w-full px-3 py-2 text-sm border rounded-md"
-                    placeholder="Ej: Juan Pérez"
+                    placeholder={dictionary.namePlaceholder}
                 />
             </div>
 
             <div className="space-y-1">
-                <label className="text-xs font-medium">Email</label>
+                <label className="text-xs font-medium">{dictionary.emailLabel}</label>
                 <input
                     required
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     className="w-full px-3 py-2 text-sm border rounded-md"
-                    placeholder="juan@email.com"
+                    placeholder={dictionary.emailPlaceholder}
                 />
             </div>
 
@@ -77,14 +87,14 @@ export function CreateContactForm({ onCancel, onSuccess }: CreateContactFormProp
                     className="px-3 py-1.5 text-xs font-medium hover:bg-secondary/50 rounded"
                     disabled={loading}
                 >
-                    Cancelar
+                    {dictionary.cancel}
                 </button>
                 <button
                     type="submit"
                     className="px-3 py-1.5 text-xs font-medium bg-primary text-white rounded hover:bg-primary/90 disabled:opacity-50"
                     disabled={loading}
                 >
-                    {loading ? 'Guardando...' : 'Guardar Contacto'}
+                    {loading ? dictionary.saving : dictionary.save}
                 </button>
             </div>
         </form>

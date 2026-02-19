@@ -18,6 +18,10 @@ interface Step2Props {
             delete: string
             timeLimit: string
             timer: string
+            errorMicrophone: string
+            errorCamera: string
+            errorStart: string
+            loadingCamera: string
         }
     }
     maxTextChars: number
