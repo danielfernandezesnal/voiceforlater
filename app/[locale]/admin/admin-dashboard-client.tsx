@@ -8,6 +8,7 @@ interface Props {
 
 export default function AdminDashboardClient({ locale }: Props) {
     const [totalUsers, setTotalUsers] = useState<number | null>(null);
+    const [paidUsers, setPaidUsers] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [dateFrom, setDateFrom] = useState<string>('');
@@ -26,13 +27,27 @@ export default function AdminDashboardClient({ locale }: Props) {
                 params.set('to', end.toISOString());
             }
 
-            const res = await fetch(`/api/admin/kpis/total-users?${params.toString()}`);
-            if (!res.ok) {
-                const data = await res.json();
-                throw new Error(data.error || 'Failed to fetch KPI');
+            const [resUsers, resPaid] = await Promise.all([
+                fetch(`/api/admin/kpis/total-users?${params.toString()}`),
+                fetch(`/api/admin/kpis/paid-users?${params.toString()}`)
+            ]);
+
+            if (!resUsers.ok) {
+                const data = await resUsers.json();
+                throw new Error(data.error || 'Failed to fetch Total Users KPI');
             }
-            const data = await res.json();
-            setTotalUsers(data.totalUsers);
+            if (!resPaid.ok) {
+                const data = await resPaid.json();
+                throw new Error(data.error || 'Failed to fetch Paid Users KPI');
+            }
+
+            const [dataUsers, dataPaid] = await Promise.all([
+                resUsers.json(),
+                resPaid.json()
+            ]);
+
+            setTotalUsers(dataUsers.totalUsers);
+            setPaidUsers(dataPaid.paidUsers);
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -169,8 +184,33 @@ export default function AdminDashboardClient({ locale }: Props) {
                         </div>
                     </div>
 
+                    <div className="relative overflow-hidden group p-8 bg-card border border-border rounded-3xl shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
+                        <div className="relative z-10">
+                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Paid Users</h3>
+                            {loading ? (
+                                <div className="mt-4 flex items-baseline gap-1">
+                                    <div className="h-10 w-24 bg-muted animate-pulse rounded-lg"></div>
+                                </div>
+                            ) : error ? (
+                                <div className="mt-4 text-destructive font-medium bg-destructive/10 p-3 rounded-xl text-sm border border-destructive/20 line-clamp-2">
+                                    {error}
+                                </div>
+                            ) : (
+                                <div className="mt-2 flex flex-col">
+                                    <span className="text-5xl font-black text-primary tracking-tighter">
+                                        {paidUsers?.toLocaleString() ?? 0}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground mt-1 font-medium italic">
+                                        {dateFrom || dateTo ? 'Payer in period' : 'Current active PRO'}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
                     {/* Placeholder Cards for Future KPIs */}
-                    {[1, 2, 3].map((i) => (
+                    {[1, 2].map((i) => (
                         <div key={i} className="p-8 bg-muted/20 border border-dashed border-border rounded-3xl flex flex-col items-center justify-center text-center opacity-50">
                             <div className="w-10 h-10 bg-muted rounded-full mb-3 shadow-inner"></div>
                             <div className="h-4 w-24 bg-muted rounded mb-2"></div>
