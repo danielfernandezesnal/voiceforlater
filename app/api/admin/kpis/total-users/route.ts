@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
         }
 
         // SECURITY: requirement for owner-only
-        const { adminClient, user } = await requireOwner();
+        const { supabase, user } = await requireOwner();
         userId = user.id;
 
         const searchParams = request.nextUrl.searchParams;
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
         const to = searchParams.get('to');
 
         // Call the SECURITY DEFINER SQL function
-        const { data: totalUsers, error: rpcError } = await adminClient
+        const { data: totalUsers, error: rpcError } = await supabase
             .rpc('admin_total_users', {
                 start_date: from || null,
                 end_date: to || null
