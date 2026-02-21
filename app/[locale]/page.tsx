@@ -10,7 +10,6 @@ export async function generateMetadata({
 }): Promise<Metadata> {
     const { locale: localeParam } = await params;
     const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
-    const dict = await getDictionary(locale);
 
     return {
         title: "Carry My Words",
@@ -259,7 +258,7 @@ export default async function LocaleHomePage({
                         {/* Free Plan */}
                         <div className="bg-card p-8 rounded-2xl border border-border shadow-sm flex flex-col">
                             <h3 className="text-xl font-bold mb-1">{dict.landing.pricing.free.title}</h3>
-                            <p className="text-xs text-muted-foreground italic mb-4">{(dict.landing.pricing.free as any).tagline}</p>
+                            <p className="text-xs text-muted-foreground italic mb-4">{(dict.landing.pricing.free as { tagline?: string }).tagline}</p>
                             <div className="text-3xl font-bold mb-6">{dict.landing.pricing.free.price}</div>
                             <ul className="space-y-4 mb-8 text-left flex-1">
                                 {dict.landing.pricing.free.features.map((f, i) => (
@@ -275,7 +274,7 @@ export default async function LocaleHomePage({
                                 {dict.landing.pricing.recommended}
                             </div>
                             <h3 className="text-xl font-bold mb-1 text-primary">{dict.landing.pricing.pro.title}</h3>
-                            <p className="text-xs text-primary/60 italic mb-4">{(dict.landing.pricing.pro as any).tagline}</p>
+                            <p className="text-xs text-primary/60 italic mb-4">{(dict.landing.pricing.pro as { tagline?: string }).tagline}</p>
                             <div className="text-3xl font-bold mb-6">{dict.common.price.replace('{amount}', '10')}</div>
                             <ul className="space-y-4 mb-8 text-left flex-1">
                                 {dict.landing.pricing.pro.features.map((f, i) => (
