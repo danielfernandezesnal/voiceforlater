@@ -51,91 +51,92 @@ export default async function LocaleHomePage({
             </nav>
 
             {/* Hero Section - Editorial Rebrand */}
-            <section className="relative w-full">
-                <div className="relative w-full h-[60vh] md:h-[70vh] min-h-[500px] overflow-hidden">
-                    <Image
-                        src="/assets/rebrand/hero-editorial.png"
-                        alt="Carry My Words - Editorial Hero"
-                        fill
-                        priority
-                        className="object-cover object-center"
-                    />
-                    <div className="absolute inset-0 bg-black/10"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
-                    <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-transparent"></div>
-                </div>
+            <section className="relative w-full h-[60vh] md:h-[70vh] min-h-[500px] flex flex-col items-center justify-center px-6">
+                <Image
+                    src="/assets/rebrand/hero-editorial.png"
+                    alt="Carry My Words - Editorial Hero"
+                    fill
+                    priority
+                    className="object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-black/10"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-transparent"></div>
 
-                <div className="relative -mt-32 md:-mt-48 px-6 text-center max-w-4xl mx-auto z-10 transition-all duration-1000">
-                    <h1 className="text-5xl md:text-7xl font-serif font-light tracking-tight mb-6 text-foreground leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                <div className="relative z-10 text-center max-w-5xl mx-auto transition-all duration-1000">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light tracking-tight mb-6 text-foreground leading-[1.1] md:whitespace-nowrap animate-in fade-in slide-in-from-bottom-8 duration-1000">
                         {dict.landing.hero.title}
                     </h1>
-                    <p className="max-w-2xl mx-auto text-xl md:text-2xl text-muted-foreground leading-relaxed mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
+                    <p className="max-w-2xl mx-auto text-xl md:text-2xl text-muted-foreground leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
                         {dict.landing.hero.subtitle}
                     </p>
+                </div>
+            </section>
 
-                    <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-in fade-in slide-in-from-bottom-2 duration-1000 delay-500">
-                        <Link
-                            href={`/${locale}/auth/login`}
-                            className="inline-flex items-center justify-center px-10 py-4 text-lg font-medium text-primary-foreground bg-primary rounded-sm hover:bg-primary/95 transition-all shadow-sm hover:shadow-md"
-                        >
-                            {dict.common.getStarted}
-                        </Link>
-                        <a
-                            href="#how-it-works"
-                            className="inline-flex items-center justify-center px-10 py-4 text-lg font-medium text-foreground bg-white/40 backdrop-blur-md border border-border/50 rounded-sm hover:bg-white/60 transition-all"
-                        >
-                            {dict.common.seeHow}
-                        </a>
+            {/* Editorial Section - 3 Columns */}
+            <section className="py-24 px-6 max-w-6xl mx-auto w-full">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+                    {/* Column 1 - Tiempo y futuro */}
+                    <div className="flex flex-col gap-6">
+                        {(locale === 'es'
+                            ? [
+                                "Un mensaje para tu hijo o hija cuando sea mayor",
+                                "Palabras para una fecha importante",
+                                "Un mensaje para vos mismo en el futuro (cápsula del tiempo)"
+                            ] : [
+                                "A message for your children when they are older",
+                                "Words for an important date",
+                                "A message for your future self (time capsule)"
+                            ]
+                        ).map((text, idx) => (
+                            <p key={idx} className="text-xl md:text-2xl font-serif font-light leading-relaxed text-muted-foreground">
+                                {text}
+                            </p>
+                        ))}
                     </div>
-
-                    {/* Emotional Tags - Refined */}
-                    <div className="flex flex-wrap justify-center gap-8 mb-24 text-sm tracking-widest uppercase text-muted-foreground opacity-60">
-                        {dict.landing.emotional.items.map((item, i) => (
-                            <span key={i} className="font-medium">
-                                {item}
-                            </span>
+                    {/* Column 2 - Lo que hoy no se puede decir */}
+                    <div className="flex flex-col gap-6">
+                        {(locale === 'es'
+                            ? [
+                                "Algo que querés decir, pero no ahora",
+                                "Algo que te cuesta decir en persona",
+                                "Algo que no querés olvidar decir"
+                            ] : [
+                                "Something you want to say, but not now",
+                                "Something that's hard to say in person",
+                                "Something you don't want to forget to say"
+                            ]
+                        ).map((text, idx) => (
+                            <p key={idx} className="text-xl md:text-2xl font-serif font-light leading-relaxed text-muted-foreground">
+                                {text}
+                            </p>
+                        ))}
+                    </div>
+                    {/* Column 3 - Distancia y ausencia */}
+                    <div className="flex flex-col gap-6">
+                        {(locale === 'es'
+                            ? [
+                                "Un mensaje de apoyo para alguien que sabés que lo va a necesitar más adelante",
+                                "Un mensaje para alguien con quien hoy no podés hablar",
+                                "Un mensaje que solo debería enviarse si vos no respondés más"
+                            ] : [
+                                "A supportive message for someone who will need it later",
+                                "A message for someone you can't talk to today",
+                                "A message that should only be sent if you no longer respond"
+                            ]
+                        ).map((text, idx) => (
+                            <p key={idx} className="text-xl md:text-2xl font-serif font-light leading-relaxed text-muted-foreground">
+                                {text}
+                            </p>
                         ))}
                     </div>
                 </div>
+
+
             </section>
 
 
-            {/* Uses Section - Intimate Writing Moment */}
-            <section className="py-24 px-6 max-w-6xl mx-auto w-full">
-                <div className="grid md:grid-cols-2 gap-16 items-center">
-                    <div className="order-2 md:order-1">
-                        <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-xl border border-border/50 relative">
-                            <Image
-                                src="/assets/rebrand/writing-editorial.png"
-                                alt="Writing a thoughtful note"
-                                fill
-                                className="object-cover"
-                            />
-                            <div className="absolute inset-0 bg-secondary/10"></div>
-                        </div>
-                    </div>
-                    <div className="order-1 md:order-2">
-                        <h2 className="text-4xl md:text-5xl font-serif font-light mb-8">{dict.landing.uses.title}</h2>
-                        <p className="text-xl text-primary italic font-medium mb-10 opacity-80">
-                            &quot;{dict.landing.uses.subtitle}&quot;
-                        </p>
-                        <p className="text-lg mb-6 font-medium">{dict.landing.uses.examples_label}</p>
-                        <ul className="space-y-4">
-                            {dict.landing.uses.items.map((item, i) => (
-                                <li key={i} className="flex items-start gap-3">
-                                    <span className="text-primary mt-1">•</span>
-                                    <span className="text-lg text-muted-foreground leading-relaxed">
-                                        {typeof item === 'string' ? item : item.title}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                        <p className="text-lg mt-8 font-medium whitespace-pre-line">
-                            {dict.landing.uses.closing}
-                        </p>
-                    </div>
-                </div>
-            </section>
+
 
             {/* How It Works */}
             <section id="how-it-works" className="py-20 px-6 bg-white/50 border-y border-border/50">
@@ -160,40 +161,44 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Delivery Options */}
-            <section className="py-20 px-6 max-w-6xl mx-auto w-full">
+            <section className="pt-20 pb-0 px-6 max-w-6xl mx-auto w-full">
                 <h2 className="text-4xl font-serif font-light text-center mb-20">{dict.landing.delivery.title}</h2>
-                <div className="grid md:grid-cols-2 gap-8">
-                    <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-sm hover:shadow-md transition-all">
-                        <div className="w-12 h-12 bg-blue-100/50 text-blue-600 rounded-lg flex items-center justify-center mb-6">
+                <div className="grid md:grid-cols-2 gap-8 mb-20">
+                    <div className="bg-card p-10 rounded-2xl border border-border/50 shadow-sm hover:shadow-md transition-all">
+                        <div className="w-12 h-12 bg-blue-100/50 text-blue-600 rounded-lg flex items-center justify-center mb-8 text-2xl">
                             📅
                         </div>
-                        <h3 className="text-xl font-bold mb-3">{dict.landing.delivery.date.title}</h3>
-                        <p className="text-muted-foreground">{dict.landing.delivery.date.description}</p>
+                        <h3 className="text-2xl font-serif font-light mb-4">{dict.landing.delivery.date.title}</h3>
+                        <p className="text-lg text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
                     </div>
-                    <div className="bg-card p-8 rounded-2xl border border-border/50 shadow-sm hover:shadow-md transition-all">
-                        <div className="w-12 h-12 bg-green-100/50 text-green-600 rounded-lg flex items-center justify-center mb-6">
+                    <div className="bg-card p-10 rounded-2xl border border-border/50 shadow-sm hover:shadow-md transition-all">
+                        <div className="w-12 h-12 bg-green-100/50 text-green-600 rounded-lg flex items-center justify-center mb-8 text-2xl">
                             ⏱️
                         </div>
-                        <h3 className="text-xl font-bold mb-3">{dict.landing.delivery.checkin.title}</h3>
-                        <p className="text-muted-foreground">{dict.landing.delivery.checkin.description}</p>
+                        <h3 className="text-2xl font-serif font-light mb-4">{dict.landing.delivery.checkin.title}</h3>
+                        <p className="text-lg text-muted-foreground leading-relaxed">{dict.landing.delivery.checkin.description}</p>
                     </div>
+                </div>
+
+                {/* Central CTA - ONLY ONE HERE */}
+                <div className="flex justify-center py-12">
+                    <Link
+                        href={`/${locale}/auth/login`}
+                        className="btn-cta"
+                    >
+                        {dict.common.getStarted}
+                    </Link>
                 </div>
             </section>
 
             {/* Audio Section - Warm Image & Integrated CTA */}
-            <section className="py-24 px-6 bg-secondary/30">
+            <section className="pt-20 pb-24 px-6 bg-secondary/30">
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
                     <div className="order-1">
                         <h2 className="text-4xl md:text-5xl font-serif font-light mb-8">{dict.landing.audio.title}</h2>
-                        <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                        <p className="text-xl text-muted-foreground leading-relaxed">
                             {dict.landing.audio.description}
                         </p>
-                        <Link
-                            href={`/${locale}/auth/login`}
-                            className="inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-white bg-primary rounded-xl hover:bg-primary/90 transition-all shadow-md"
-                        >
-                            {dict.common.getStarted}
-                        </Link>
                     </div>
                     <div className="order-2">
                         <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-white/50 relative group">
@@ -302,7 +307,7 @@ export default async function LocaleHomePage({
                 </p>
                 <Link
                     href={`/${locale}/auth/login`}
-                    className="inline-flex items-center justify-center px-10 py-4 text-lg font-semibold text-primary-foreground bg-primary rounded-xl hover:bg-primary/90 transition-all shadow-xl hover:shadow-2xl"
+                    className="btn-cta"
                 >
                     {dict.landing.cta_final}
                 </Link>

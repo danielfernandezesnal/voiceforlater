@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "VoiceForLater",
+    "appName": "Carry My Words",
     "loading": "Cargando...",
     "error": "Algo salió mal",
     "retry": "Intentar de nuevo",
@@ -19,7 +19,7 @@
   },
   "landing": {
     "hero": {
-      "title": "Tus palabras, cuando más importan.",
+      "title": "Tus palabras cuando más importan",
       "subtitle": "Un espacio para dejar mensajes que viajen en el tiempo, para quienes más quieres."
     },
     "emotional": {
@@ -74,8 +74,8 @@
       }
     },
     "audio": {
-      "title": "Tu voz y tu imagen",
-      "description": "A veces las palabras no alcanzan. Graba mensajes de audio o video para que tus seres queridos te vean y te escuchen."
+      "title": "Elegí el formato",
+      "description": "Enviá mensajes de texto, audio o video para tus seres queridos."
     },
     "trust": {
       "title": "Tranquilidad y control",

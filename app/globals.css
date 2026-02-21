@@ -74,4 +74,28 @@ html {
   .btn-primary {
     @apply bg-primary text-primary-foreground btn-enhanced hover:bg-primary/90;
   }
+
+  .btn-cta {
+    @apply relative overflow-hidden rounded-full px-12 py-5 text-xl font-medium text-white transition-all duration-300 ease-out border border-white/10 shadow-sm;
+    background: linear-gradient(to bottom, #4b5e50, #3A4D3F);
+  }
+
+  .btn-cta::after {
+    content: '';
+    @apply absolute inset-x-0 top-0 h-[40%] bg-white/15 pointer-events-none transition-opacity duration-300;
+  }
+
+  .btn-cta:hover {
+    @apply -translate-y-[1px] shadow-md;
+    background: linear-gradient(to bottom, #546a5b, #3e5243);
+  }
+
+  .btn-cta:active {
+    @apply translate-y-0 shadow-sm;
+    background: linear-gradient(to bottom, #3A4D3F, #324236);
+  }
+
+  .btn-cta:active::after {
+    @apply opacity-0;
+  }
 }
