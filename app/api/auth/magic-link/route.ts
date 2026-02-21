@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     // Send email via Resend
     const resend = getResend();
-    const sender = process.env.RESEND_FROM_EMAIL || 'VoiceForLater <onboarding@resend.dev>';
+    const sender = process.env.RESEND_FROM_EMAIL || 'Carry My Words <onboarding@resend.dev>';
 
     const dict = await getDictionary((locale || 'en') as Locale);
     const { subject: emailSubject, html: emailBody } = getMagicLinkTemplate(dict as any, { magicLink, isAdminLogin });

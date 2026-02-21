@@ -125,14 +125,14 @@ function VerifyStatusContent() {
                     <button
                         onClick={() => handleDecision('deny')}
                         disabled={status === 'loading'}
-                        className="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                        className="w-full flex justify-center py-3 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
                     >
                         No, it's a False Alarm
                     </button>
                 </div>
 
                 <p className="mt-6 text-center text-xs text-gray-400">
-                    VoiceForLater Verification System &bull; Secure Link
+                    Carry My Words Verification System &bull; Secure Link
                 </p>
             </div>
         </div>

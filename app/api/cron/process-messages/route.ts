@@ -139,7 +139,7 @@ export async function GET(request: NextRequest) {
                 const template = getMessageDeliveryTemplate(dict as any, { contentHtml });
 
                 await resend.emails.send({
-                    from: "VoiceForLater <noreply@voiceforlater.com>",
+                    from: "Carry My Words <noreply@carrymywords.com>",
                     to: recipient.email,
                     subject: template.subject,
                     html: template.html

@@ -129,7 +129,7 @@ export function LoginForm({ dictionary, locale }: LoginFormProps) {
     return (
         <div className="space-y-6">
             <div className="text-center mb-8">
-                <h1 className="text-2xl font-bold">{getTitle()}</h1>
+                <h1 className="text-2xl font-serif font-bold">{getTitle()}</h1>
                 <p className="mt-2 text-muted-foreground">{getSubtitle()}</p>
             </div>
 
