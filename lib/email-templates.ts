@@ -55,11 +55,11 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
 
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-        <h2 style="color: #6366f1;">${t.title}</h2>
+        <h2 style="color: #3A4D3F;">${t.title}</h2>
         ${data.isAdminLogin ? `<p style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; margin: 10px 0;"><strong>${t.adminBadge}</strong></p>` : ''}
         <p>${t.intro}</p>
         <div style="margin: 30px 0;">
-          <a href="${data.magicLink}" style="background-color: #6366f1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+          <a href="${data.magicLink}" style="background-color: #3A4D3F; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
             ${t.button}
           </a>
         </div>
@@ -121,7 +121,7 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
     const html = `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <h2>${greeting}</h2>
-            <h3 style="color: #6366f1;">${t.title}</h3>
+            <h3 style="color: #3A4D3F;">${t.title}</h3>
             <p>${t.intro.replace('{email}', data.userEmail)}</p>
             <p>${t.explanation}</p>
             
@@ -141,7 +141,7 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
             <p style="font-size:12px; color:#999;">${t.expiry}</p>
             <br/>
             <p>—<br/>
-            <strong>VoiceForLater</strong></p>
+            <strong>Carry My Words</strong></p>
         </div>
     `;
     return { subject, html };

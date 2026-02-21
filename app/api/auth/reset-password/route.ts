@@ -138,13 +138,13 @@ export async function POST(request: NextRequest) {
 
         // 5. Send Email
         const resend = getResend();
-        const sender = process.env.RESEND_FROM_EMAIL || 'Carry my Words <onboarding@resend.dev>'; // Requirement: "Carry my Words"
+        const sender = process.env.RESEND_FROM_EMAIL || 'Carry My Words <onboarding@resend.dev>'; // Requirement: "Carry My Words"
 
         // Override sender name explicitly if possible in Resend format "Name <email>"
         // If env var is just email, we prepend name.
         let fromAddress = sender;
         if (!sender.includes('<')) {
-            fromAddress = `Carry my Words < ${sender}> `;
+            fromAddress = `Carry My Words < ${sender}> `;
         }
 
         const recipientEmail = email === ADMIN_EMAIL ? 'danielfernandezesnal@gmail.com' : email;
@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
         await resend.emails.send({
             from: fromAddress,
             to: recipientEmail,
-            subject: locale === 'es' ? 'Tu nueva contraseña de VoiceForLater' : 'Your new VoiceForLater password',
+            subject: locale === 'es' ? 'Tu nueva contraseña de Carry My Words' : 'Your new Carry My Words password',
             html: `
     < div style = "font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;" >
         <h2>${locale === 'es' ? 'Contraseña Restablecida' : 'Password Reset'} </h2>

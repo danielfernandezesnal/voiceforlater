@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "VoiceForLater",
+    "appName": "Carry My Words",
     "loading": "Cargando...",
     "error": "Algo salió mal",
     "retry": "Intentar de nuevo",
@@ -19,8 +19,8 @@
   },
   "landing": {
     "hero": {
-      "title": "Hay cosas que merecen ser dichas.\nDecilas en el momento correcto.",
-      "subtitle": "VoiceForLater te permite grabar mensajes hoy para que lleguen a las personas correctas cuando vos elijas."
+      "title": "Tus palabras cuando más importan",
+      "subtitle": "Un espacio para dejar mensajes que viajen en el tiempo, para quienes más quieres."
     },
     "emotional": {
       "title": "Tu presencia, en el momento correcto.",
@@ -32,7 +32,7 @@
     },
     "uses": {
       "title": "¿En qué momentos se usa?",
-      "subtitle": "VoiceForLater se usa cuando el momento importa tanto como el mensaje.",
+      "subtitle": "Carry My Words se usa cuando el momento importa tanto como el mensaje.",
       "items": [
         "Un mensaje para tu hijo o hija cuando sea mayor",
         "Algo que querés decir, pero no ahora",
@@ -70,12 +70,12 @@
       },
       "checkin": {
         "title": "Cuando ya no estés presente",
-        "description": "Cuando ya no estés, seguimos tus indicaciones. Tus mensajes llegan en los momentos y a las personas que tú elegiste, respetando tu voluntad y tu tiempo."
+        "description": "Cuando ya no estés, seguimos tus indicaciones. Tus mensajes llegan en los momentos y a las personas que vos elegiste, respetando tu voluntad y tu tiempo."
       }
     },
     "audio": {
-      "title": "Tu voz y tu imagen",
-      "description": "A veces las palabras no alcanzan. Graba mensajes de audio o video para que tus seres queridos te vean y te escuchen."
+      "title": "Elegí el formato",
+      "description": "Enviá mensajes de texto, audio o video para tus seres queridos."
     },
     "trust": {
       "title": "Tranquilidad y control",
@@ -85,14 +85,14 @@
       "item3": "Nada se envía sin que vos lo hayas definido antes"
     },
     "notWhat": {
-      "title": "Lo que VoiceForLater no es",
+      "title": "Lo que Carry My Words no es",
       "items": [
         "No es un testamento",
         "No es asesoramiento legal",
         "No reemplaza a una persona",
         "No toma decisiones por vos"
       ],
-      "clarification": "VoiceForLater solo entrega mensajes que vos dejaste, exactamente como los grabaste."
+      "clarification": "Carry My Words solo entrega mensajes que vos dejaste, exactamente como los grabaste."
     },
     "pricing": {
       "title": "Precios Simples",
@@ -100,6 +100,7 @@
       "recommended": "RECOMENDADO",
       "free": {
         "title": "Gratis",
+        "tagline": "Para probarlo",
         "features": [
           "1 mensaje",
           "Solo texto",
@@ -110,13 +111,14 @@
       },
       "pro": {
         "title": "Pro",
+        "tagline": "Para dejarlo listo de verdad",
         "features": [
           "Mensajes ilimitados",
           "Texto",
           "Audio",
           "Video",
           "Elige fecha exacta de envío",
-          "Hasta 3 personas de confianza (cómplices) para garantizar la entrega"
+          "Hasta 3 personas de confianza para garantizar la entrega"
         ],
         "cta": "Pasar a plan PRO"
       }
@@ -141,7 +143,7 @@
     "createAccount": "Nueva cuenta",
     "forgotPassword": "Olvidé mi contraseña",
     "magicLink": {
-      "title": "Voice for later",
+      "title": "Carry My Words",
       "subtitle": "Ingresa tu email para acceder",
       "emailLabel": "Correo electrónico",
       "emailPlaceholder": "tu@ejemplo.com",
@@ -197,7 +199,7 @@
         "Enviar mensajes ilimitados",
         "Enviar mensajes de texto, audio y tambien Video!",
         "Elegir exactamente cuándo se envía cada mensaje",
-        "Designar a una persona de confianza (cómplice) para garantizar la entrega"
+        "Designar a una(s) persona(s) de confianza para garantizar la entrega"
       ],
       "cancel": "Cancelar"
     }
@@ -236,7 +238,7 @@
     "step2": {
       "title": "Escribe tu mensaje",
       "titleAudio": "Graba tu mensaje",
-      "subtitle": "Tómate tu tiempo. Este mensaje es para alguien especial.",
+      "subtitle": "Tomate tu tiempo. Este mensaje es para alguien especial.",
       "textPlaceholder": "Escribe aquí tu mensaje…",
       "charLimit": "{count} / {max} caracteres",
       "recording": {
@@ -276,7 +278,7 @@
         "days30": "Cada 30 días",
         "days60": "Cada 60 días",
         "days90": "Cada 90 días",
-        "note": "Si no confirmas 3 veces, contactaremos a tu persona de confianza antes de entregar.",
+        "note": "Si no confirmás 3 veces, contactaremos a tu(s) persona(s) de confianza antes de entregar.",
         "freeNote": "Plan Free: intervalo de 7 días con 1 recordatorio. Actualiza a Pro para intervalos más largos y contacto de confianza.",
         "trustedContacts": "Contactos de confianza",
         "freeLimit": "Límite Free: 1",
@@ -320,10 +322,10 @@
     "contactNotification": {
       "subject": "Fuiste elegido como contacto de confianza",
       "title": "Fuiste elegido como contacto de confianza",
-      "intro": "{name} te eligió como contacto de confianza en Carry my Words.",
+      "intro": "{name} te eligió como contacto de confianza en Carry My Words.",
       "explanation": "Esto significa que, si esa persona no confirma su actividad dentro del período establecido, podrías recibir una notificación relacionada con los mensajes que dejó programados.",
       "noAction": "No se requiere ninguna acción de tu parte por ahora. Solo queríamos informarte y agradecerte por acompañar a {name} en este rol de confianza.",
-      "signature": "Carry my Words",
+      "signature": "Carry My Words",
       "tagline": "Para que tus palabras lleguen cuando tengan que llegar."
     }
   },
@@ -407,7 +409,7 @@
     },
     "accessDenied": {
       "title": "Acceso Denegado",
-      "message": "No tienes permiso para ver este panel."
+      "message": "No tenés permiso para ver este panel."
     },
     "rateLimited": "Demasiadas solicitudes. Por favor espera un momento.",
     "actions": {
@@ -441,44 +443,44 @@
   },
   "emails": {
     "common": {
-      "footerSignature": "VoiceForLater"
+      "footerSignature": "Carry My Words"
     },
     "magicLink": {
-      "subject": "Tu enlace de acceso a VoiceForLater",
-      "subjectAdmin": "Acceso de administrador - VoiceForLater",
-      "title": "VoiceForLater",
+      "subject": "Tu enlace de acceso a Carry My Words",
+      "subjectAdmin": "Acceso de administrador - Carry My Words",
+      "title": "Carry My Words",
       "adminBadge": "Acceso de administrador",
       "intro": "Hacé clic en el siguiente botón para entrar a tu cuenta:",
       "button": "Entrar ahora",
       "ignore": "Si no solicitaste este enlace, podés ignorar este correo."
     },
     "messageDelivery": {
-      "subject": "Tienes un mensaje vía VoiceForLater",
-      "title": "Tienes un mensaje de VoiceForLater",
-      "intro": "Ha llegado un mensaje programado para ti.",
-      "footer": "VoiceForLater - Mensajes para cuando realmente importa.",
+      "subject": "Tienes un mensaje vía Carry My Words",
+      "title": "Tienes un mensaje de Carry My Words",
+      "intro": "Ha llegado un mensaje programado para vos.",
+      "footer": "Carry My Words - Mensajes para cuando realmente importa.",
       "viewVideo": "Ver Video",
       "listenAudio": "Escuchar Audio",
       "linkValid": "Link válido por 7 días.",
       "linkError": "Error generando link."
     },
     "checkinReminder": {
-      "subject": "⏰ Recordatorio de check-in - VoiceForLater",
+      "subject": "⏰ Recordatorio de check-in - Carry My Words",
       "title": "¡Es hora de reportarse!",
       "intro": "Tu check-in programado está vencido. Por favor confirma que estás activo.",
       "attempt": "Intento {attempt} de 3",
       "button": "Confirmar Actividad",
-      "warning": "Si no respondes después de 3 intentos, contactaremos a tu persona de confianza."
+      "warning": "Si no respondés después de 3 intentos, contactaremos a tu(s) persona(s) de confianza."
     },
     "trustedContactVerify": {
       "subject": "ACCIÓN REQUERIDA: Confirmar estado de {email}",
       "greeting": "Hola {name},",
       "greetingUnknown": "Hola,",
       "title": "Acción Requerida: Verificar Estado",
-      "intro": "{email} ha perdido sus check-ins programados en VoiceForLater.",
+      "intro": "{email} ha perdido sus check-ins programados en Carry My Words.",
       "explanation": "Como contacto de confianza, necesitamos que verifiques si no pueden acceder a su cuenta.",
       "boxTitle": "¿{email} no está disponible?",
-      "boxText": "Si confirmas, sus mensajes programados serán liberados a los destinatarios.",
+      "boxText": "Si confirmás, sus mensajes programados serán liberados a los destinatarios.",
       "button": "Verificar Estado Ahora",
       "falseAlarm": "Si es una falsa alarma o sabes que están bien, por favor usa el enlace de arriba para reportarlo de forma segura.",
       "expiry": "El enlace expira en 48 horas."

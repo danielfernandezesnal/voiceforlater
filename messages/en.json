@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "VoiceForLater",
+    "appName": "Carry My Words",
     "loading": "Loading...",
     "error": "Something went wrong",
     "retry": "Try again",
@@ -19,8 +19,8 @@
   },
   "landing": {
     "hero": {
-      "title": "Leave a message for when it truly matters.",
-      "subtitle": "VoiceForLater lets you leave text, audio, or video messages that will be delivered in the future, or when you are no longer here."
+      "title": "Your words, when they matter most.",
+      "subtitle": "A space to leave messages that travel through time, for those you love most."
     },
     "emotional": {
       "title": "Your presence, at the right moment.",
@@ -96,14 +96,14 @@
       "item3": "You stay in control at all times."
     },
     "notWhat": {
-      "title": "What VoiceForLater is NOT",
+      "title": "What Carry My Words is NOT",
       "items": [
         "Not a will or testament",
         "Not legal advice",
         "Not a replacement for a person",
         "Not making decisions for you"
       ],
-      "clarification": "VoiceForLater only delivers messages you left, exactly as you recorded them."
+      "clarification": "Carry My Words only delivers messages you left, exactly as you recorded them."
     },
     "pricing": {
       "title": "Simple Pricing",
@@ -111,6 +111,7 @@
       "recommended": "RECOMMENDED",
       "free": {
         "title": "Free",
+        "tagline": "To try it out",
         "features": [
           "1 message",
           "Text only",
@@ -121,6 +122,7 @@
       },
       "pro": {
         "title": "Pro",
+        "tagline": "To be truly prepared",
         "features": [
           "Unlimited messages",
           "Text",
@@ -153,7 +155,7 @@
     "createAccount": "New Account",
     "forgotPassword": "Forgot password?",
     "magicLink": {
-      "title": "Voice for later",
+      "title": "Carry My Words",
       "subtitle": "Enter your email to access",
       "emailLabel": "Email address",
       "emailPlaceholder": "you@example.com",
@@ -333,10 +335,10 @@
     "contactNotification": {
       "subject": "You’ve been chosen as a trusted contact",
       "title": "You’ve been chosen as a trusted contact",
-      "intro": "{name} has chosen you as a trusted contact on Carry my Words.",
+      "intro": "{name} has chosen you as a trusted contact on Carry My Words.",
       "explanation": "This means that if this person does not confirm their activity within the defined period, you may receive a notification related to the messages they have scheduled.",
       "noAction": "No action is required from you at this time. We just wanted to inform you and thank you for being part of {name}’s circle of trust.",
-      "signature": "Carry my Words",
+      "signature": "Carry My Words",
       "tagline": "So your words arrive when they’re meant to."
     }
   },
@@ -454,29 +456,29 @@
   },
   "emails": {
     "common": {
-      "footerSignature": "VoiceForLater"
+      "footerSignature": "Carry My Words"
     },
     "magicLink": {
-      "subject": "Your VoiceForLater Login Link",
-      "subjectAdmin": "Admin Access - VoiceForLater",
-      "title": "VoiceForLater",
+      "subject": "Your Carry My Words Login Link",
+      "subjectAdmin": "Admin Access - Carry My Words",
+      "title": "Carry My Words",
       "adminBadge": "Admin Access",
       "intro": "Click the button below to sign in to your account:",
       "button": "Sign In Now",
       "ignore": "If you didn't request this link, you can safely ignore this email."
     },
     "messageDelivery": {
-      "subject": "You have a message via VoiceForLater",
-      "title": "You have a message from VoiceForLater",
+      "subject": "You have a message via Carry My Words",
+      "title": "You have a message from Carry My Words",
       "intro": "A message scheduled for you has arrived.",
-      "footer": "VoiceForLater - Messages for when it truly matters.",
+      "footer": "Carry My Words - Messages for when it truly matters.",
       "viewVideo": "View Video",
       "listenAudio": "Listen to Audio",
       "linkValid": "Link valid for 7 days.",
       "linkError": "Error generating link."
     },
     "checkinReminder": {
-      "subject": "⏰ Check-in reminder - VoiceForLater",
+      "subject": "⏰ Check-in reminder - Carry My Words",
       "title": "Time to check in!",
       "intro": "Your scheduled check-in is overdue. Please confirm you're still active.",
       "attempt": "Attempt {attempt} of 3",
@@ -488,7 +490,7 @@
       "greeting": "Hello {name},",
       "greetingUnknown": "Hello,",
       "title": "Action Required: Verify Status",
-      "intro": "{email} has missed their scheduled check-ins on VoiceForLater.",
+      "intro": "{email} has missed their scheduled check-ins on Carry My Words.",
       "explanation": "As a trusted contact, we need you to verify if they are unable to access their account.",
       "boxTitle": "Is {email} unavailable?",
       "boxText": "If you confirm, their scheduled messages will be released to recipients.",

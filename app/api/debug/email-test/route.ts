@@ -44,11 +44,11 @@ export async function POST(request: NextRequest) {
 
         // 1. Magic Link
         const ml = getMagicLinkTemplate(dict as any as EmailDictionary, {
-            magicLink: 'https://voiceforlater.com/test-link',
+            magicLink: 'https://carrymywords.com/test-link',
             isAdminLogin: false
         });
         await resend.emails.send({
-            from: 'VoiceForLater Debug <onboarding@resend.dev>',
+            from: 'Carry My Words Debug <onboarding@resend.dev>',
             to: toEmail,
             subject: `[DEBUG] Magic Link (${locale}) - ${ml.subject}`,
             html: ml.html
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
             contentHtml: '<div style="background:#f0f0f0;padding:10px;">This is a test message content in English. Esta es una prueba en Español.</div>'
         });
         await resend.emails.send({
-            from: 'VoiceForLater Debug <onboarding@resend.dev>',
+            from: 'Carry My Words Debug <onboarding@resend.dev>',
             to: toEmail,
             subject: `[DEBUG] Message Delivery (${locale}) - ${md.subject}`,
             html: md.html
@@ -68,10 +68,10 @@ export async function POST(request: NextRequest) {
         // 3. Check-in Reminder
         const cr = getCheckinReminderTemplate(dict as any as EmailDictionary, {
             attempts: 1,
-            confirmUrl: 'https://voiceforlater.com/confirm'
+            confirmUrl: 'https://carrymywords.com/confirm'
         });
         await resend.emails.send({
-            from: 'VoiceForLater Debug <onboarding@resend.dev>',
+            from: 'Carry My Words Debug <onboarding@resend.dev>',
             to: toEmail,
             subject: `[DEBUG] Check-in Reminder (${locale}) - ${cr.subject}`,
             html: cr.html
@@ -81,10 +81,10 @@ export async function POST(request: NextRequest) {
         const tcv = getTrustedContactVerifyTemplate(dict as any as EmailDictionary, {
             name: 'John Doe',
             userEmail: 'sender@example.com',
-            verifyUrl: 'https://voiceforlater.com/verify'
+            verifyUrl: 'https://carrymywords.com/verify'
         });
         await resend.emails.send({
-            from: 'VoiceForLater Debug <onboarding@resend.dev>',
+            from: 'Carry My Words Debug <onboarding@resend.dev>',
             to: toEmail,
             subject: `[DEBUG] Trusted Contact Verify (${locale}) - ${tcv.subject}`,
             html: tcv.html

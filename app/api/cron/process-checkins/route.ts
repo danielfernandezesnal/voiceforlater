@@ -128,7 +128,7 @@ export async function GET(request: NextRequest) {
                         const { subject, html } = getCheckinReminderTemplate(dict as any, { attempts: attempts + 1, confirmUrl });
 
                         await resendClient.emails.send({
-                            from: "VoiceForLater <noreply@voiceforlater.com>",
+                            from: "Carry My Words <noreply@carrymywords.com>",
                             to: userEmail,
                             subject: subject,
                             html: html
@@ -241,7 +241,7 @@ export async function GET(request: NextRequest) {
                             });
 
                             await resendClientForTrusted.emails.send({
-                                from: "VoiceForLater <noreply@voiceforlater.com>",
+                                from: "Carry My Words <noreply@carrymywords.com>",
                                 to: contact.email,
                                 subject: subject,
                                 html: html
