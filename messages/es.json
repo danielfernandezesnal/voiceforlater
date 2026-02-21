@@ -70,7 +70,7 @@
       },
       "checkin": {
         "title": "Cuando ya no estés presente",
-        "description": "Cuando ya no estés, seguimos tus indicaciones. Tus mensajes llegan en los momentos y a las personas que tú elegiste, respetando tu voluntad y tu tiempo."
+        "description": "Cuando ya no estés, seguimos tus indicaciones. Tus mensajes llegan en los momentos y a las personas que vos elegiste, respetando tu voluntad y tu tiempo."
       }
     },
     "audio": {
@@ -100,6 +100,7 @@
       "recommended": "RECOMENDADO",
       "free": {
         "title": "Gratis",
+        "tagline": "Para probarlo",
         "features": [
           "1 mensaje",
           "Solo texto",
@@ -110,13 +111,14 @@
       },
       "pro": {
         "title": "Pro",
+        "tagline": "Para dejarlo listo de verdad",
         "features": [
           "Mensajes ilimitados",
           "Texto",
           "Audio",
           "Video",
           "Elige fecha exacta de envío",
-          "Hasta 3 personas de confianza (cómplices) para garantizar la entrega"
+          "Hasta 3 personas de confianza para garantizar la entrega"
         ],
         "cta": "Pasar a plan PRO"
       }
@@ -197,7 +199,7 @@
         "Enviar mensajes ilimitados",
         "Enviar mensajes de texto, audio y tambien Video!",
         "Elegir exactamente cuándo se envía cada mensaje",
-        "Designar a una persona de confianza (cómplice) para garantizar la entrega"
+        "Designar a una(s) persona(s) de confianza para garantizar la entrega"
       ],
       "cancel": "Cancelar"
     }
@@ -236,7 +238,7 @@
     "step2": {
       "title": "Escribe tu mensaje",
       "titleAudio": "Graba tu mensaje",
-      "subtitle": "Tómate tu tiempo. Este mensaje es para alguien especial.",
+      "subtitle": "Tomate tu tiempo. Este mensaje es para alguien especial.",
       "textPlaceholder": "Escribe aquí tu mensaje…",
       "charLimit": "{count} / {max} caracteres",
       "recording": {
@@ -276,7 +278,7 @@
         "days30": "Cada 30 días",
         "days60": "Cada 60 días",
         "days90": "Cada 90 días",
-        "note": "Si no confirmas 3 veces, contactaremos a tu persona de confianza antes de entregar.",
+        "note": "Si no confirmás 3 veces, contactaremos a tu(s) persona(s) de confianza antes de entregar.",
         "freeNote": "Plan Free: intervalo de 7 días con 1 recordatorio. Actualiza a Pro para intervalos más largos y contacto de confianza.",
         "trustedContacts": "Contactos de confianza",
         "freeLimit": "Límite Free: 1",
@@ -407,7 +409,7 @@
     },
     "accessDenied": {
       "title": "Acceso Denegado",
-      "message": "No tienes permiso para ver este panel."
+      "message": "No tenés permiso para ver este panel."
     },
     "rateLimited": "Demasiadas solicitudes. Por favor espera un momento.",
     "actions": {
@@ -455,7 +457,7 @@
     "messageDelivery": {
       "subject": "Tienes un mensaje vía Carry My Words",
       "title": "Tienes un mensaje de Carry My Words",
-      "intro": "Ha llegado un mensaje programado para ti.",
+      "intro": "Ha llegado un mensaje programado para vos.",
       "footer": "Carry My Words - Mensajes para cuando realmente importa.",
       "viewVideo": "Ver Video",
       "listenAudio": "Escuchar Audio",
@@ -468,7 +470,7 @@
       "intro": "Tu check-in programado está vencido. Por favor confirma que estás activo.",
       "attempt": "Intento {attempt} de 3",
       "button": "Confirmar Actividad",
-      "warning": "Si no respondes después de 3 intentos, contactaremos a tu persona de confianza."
+      "warning": "Si no respondés después de 3 intentos, contactaremos a tu(s) persona(s) de confianza."
     },
     "trustedContactVerify": {
       "subject": "ACCIÓN REQUERIDA: Confirmar estado de {email}",
@@ -478,7 +480,7 @@
       "intro": "{email} ha perdido sus check-ins programados en Carry My Words.",
       "explanation": "Como contacto de confianza, necesitamos que verifiques si no pueden acceder a su cuenta.",
       "boxTitle": "¿{email} no está disponible?",
-      "boxText": "Si confirmas, sus mensajes programados serán liberados a los destinatarios.",
+      "boxText": "Si confirmás, sus mensajes programados serán liberados a los destinatarios.",
       "button": "Verificar Estado Ahora",
       "falseAlarm": "Si es una falsa alarma o sabes que están bien, por favor usa el enlace de arriba para reportarlo de forma segura.",
       "expiry": "El enlace expira en 48 horas."

@@ -42,7 +42,10 @@ export default async function LocaleHomePage({
                         <span className="text-border">/</span>
                         <Link href="/es" className={locale === 'es' ? 'text-primary' : 'text-muted-foreground hover:text-foreground transition-colors'}>ES</Link>
                     </div>
-                    <Link href={`/${locale}/auth/login`} className="text-sm font-medium hover:text-primary transition-colors">
+                    <Link
+                        href={`/${locale}/auth/login`}
+                        className="text-sm font-medium px-4 py-2 border border-border/50 rounded-sm hover:bg-white/10 transition-colors"
+                    >
                         {dict.auth.login}
                     </Link>
                 </div>
@@ -58,8 +61,9 @@ export default async function LocaleHomePage({
                         priority
                         className="object-cover object-center"
                     />
-                    <div className="absolute inset-0 bg-black/5"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+                    <div className="absolute inset-0 bg-black/10"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-transparent"></div>
                 </div>
 
                 <div className="relative -mt-32 md:-mt-48 px-6 text-center max-w-4xl mx-auto z-10 transition-all duration-1000">
@@ -254,7 +258,8 @@ export default async function LocaleHomePage({
                     <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
                         {/* Free Plan */}
                         <div className="bg-card p-8 rounded-2xl border border-border shadow-sm flex flex-col">
-                            <h3 className="text-xl font-bold mb-2">{dict.landing.pricing.free.title}</h3>
+                            <h3 className="text-xl font-bold mb-1">{dict.landing.pricing.free.title}</h3>
+                            <p className="text-xs text-muted-foreground italic mb-4">{(dict.landing.pricing.free as any).tagline}</p>
                             <div className="text-3xl font-bold mb-6">{dict.landing.pricing.free.price}</div>
                             <ul className="space-y-4 mb-8 text-left flex-1">
                                 {dict.landing.pricing.free.features.map((f, i) => (
@@ -269,7 +274,8 @@ export default async function LocaleHomePage({
                             <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">
                                 {dict.landing.pricing.recommended}
                             </div>
-                            <h3 className="text-xl font-bold mb-2 text-primary">{dict.landing.pricing.pro.title}</h3>
+                            <h3 className="text-xl font-bold mb-1 text-primary">{dict.landing.pricing.pro.title}</h3>
+                            <p className="text-xs text-primary/60 italic mb-4">{(dict.landing.pricing.pro as any).tagline}</p>
                             <div className="text-3xl font-bold mb-6">{dict.common.price.replace('{amount}', '10')}</div>
                             <ul className="space-y-4 mb-8 text-left flex-1">
                                 {dict.landing.pricing.pro.features.map((f, i) => (

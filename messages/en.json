@@ -111,6 +111,7 @@
       "recommended": "RECOMMENDED",
       "free": {
         "title": "Free",
+        "tagline": "To try it out",
         "features": [
           "1 message",
           "Text only",
@@ -121,6 +122,7 @@
       },
       "pro": {
         "title": "Pro",
+        "tagline": "To be truly prepared",
         "features": [
           "Unlimited messages",
           "Text",
