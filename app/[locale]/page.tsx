@@ -70,6 +70,17 @@ export default async function LocaleHomePage({
                     <p className="max-w-2xl mx-auto text-xl md:text-2xl text-muted-foreground leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
                         {dict.landing.hero.subtitle}
                     </p>
+                    <div className="mt-10 flex flex-col items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400">
+                        <Link
+                            href={`/${locale}/auth/login`}
+                            className="btn-cta"
+                        >
+                            {(dict.landing.hero as any).cta}
+                        </Link>
+                        <p className="text-sm text-muted-foreground/70 max-w-xs md:max-w-none text-center">
+                            {(dict.landing.hero as any).microcopy}
+                        </p>
+                    </div>
                 </div>
             </section>
 
