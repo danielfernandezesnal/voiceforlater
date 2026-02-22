@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/server/requireAdmin";
-import { getAdminClient } from "@/lib/supabase/admin";
 import { checkRateLimit, logAdminAction } from "@/lib/admin/utils";
 
 export const runtime = 'nodejs';
@@ -21,84 +20,35 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: errorMsg }, { status });
         }
 
-        const { adminClient, user } = await requireAdmin();
+        const { supabase, user } = await requireAdmin();
         userId = user.id;
 
         const searchParams = request.nextUrl.searchParams;
         const page = parseInt(searchParams.get('page') || '1', 10);
-        const limit = parseInt(searchParams.get('limit') || '20', 10);
+        const limit = parseInt(searchParams.get('limit') || '50', 10);
         const search = searchParams.get('search') || '';
+        const from = searchParams.get('from') || null;
+        const to = searchParams.get('to') || null;
 
-        // Fetch users from Auth Admin API
-        const { data: { users }, error: listError } = await adminClient.auth.admin.listUsers({
-            page: page,
-            perPage: limit,
+        // Use the highly optimized SECURITY DEFINER RPC
+        const { data: users, error: rpcError } = await supabase.rpc('admin_list_users', {
+            p_date_from: from,
+            p_date_to: to,
+            p_page: page,
+            p_limit: limit,
+            p_search: search || null
         });
 
-        if (listError) throw listError;
+        if (rpcError) throw rpcError;
 
-        let userList = users;
-        // Basic search filter if API didn't support it (Supabase ListUsers has specific behavior)
-        if (search) {
-            const q = search.toLowerCase();
-            userList = users.filter(u => u.email?.toLowerCase().includes(q));
-        }
+        resultCount = users?.length || 0;
+        return NextResponse.json(users || []);
 
-        // Enrich with profile/subscription data
-        const enrichedUsers = await Promise.all(userList.map(async (u) => {
-            // Get Plan
-            const { data: sub } = await adminClient
-                .from('user_subscriptions')
-                .select('plan, status')
-                .eq('user_id', u.id)
-                .single();
-
-            // Get Messages Count
-            const { count: msgCount } = await adminClient
-                .from('messages')
-                .select('*', { count: 'exact', head: true })
-                .eq('owner_id', u.id);
-
-            // Get Storage
-            const { data: msgs } = await adminClient
-                .from('messages')
-                .select('file_size_bytes')
-                .eq('owner_id', u.id);
-            const storage = msgs?.reduce((acc, m) => acc + (m.file_size_bytes || 0), 0) || 0;
-
-            // Get Emails Sent
-            // Include failed ones if we updated schema, but sticking to existing pattern for now
-            const { count: emailCount } = await adminClient
-                .from('email_events')
-                .select('*', { count: 'exact', head: true })
-                .eq('user_id', u.id);
-
-            // Get Contacts Count (Requested in Step 3 drilldown)
-            const { count: contactsCount } = await adminClient
-                .from('trusted_contacts')
-                .select('*', { count: 'exact', head: true })
-                .eq('user_id', u.id);
-
-            return {
-                id: u.id,
-                email: u.email,
-                created_at: u.created_at,
-                plan: sub?.plan || 'free',
-                status: sub?.status || 'inactive',
-                messages_count: msgCount || 0,
-                storage_mb: Math.round((storage / 1024 / 1024) * 100) / 100,
-                emails_sent: emailCount || 0,
-                contacts_count: contactsCount || 0
-            };
-        }));
-
-        resultCount = enrichedUsers.length;
-        return NextResponse.json(enrichedUsers);
-
-    } catch (error: any) {
-        console.error("User List Error:", error);
-        status = error.message?.includes("Forbidden") ? 403 : 500;
-        errorMsg = error.message || "Internal Server Error";
+    } catch (err: unknown) {
+        console.error("User List Error:", err);
+        const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
+        status = errorMessage.includes("Forbidden") ? 403 : 500;
+        errorMsg = errorMessage;
         return NextResponse.json(
             { error: errorMsg },
             { status }
