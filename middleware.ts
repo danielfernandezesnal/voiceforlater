@@ -100,6 +100,11 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(url);
     }
 
+    // --- Sensitive Data Cache Control ---
+    if (pathname.includes('/api/') || isLocaleAdmin || isLocaleDashboard) {
+        response.headers.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+    }
+
     return response;
 }
 
