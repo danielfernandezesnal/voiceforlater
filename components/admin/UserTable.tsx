@@ -66,7 +66,7 @@ export default function UserTable() {
                 <p className="font-bold">Error loading users</p>
                 <p className="text-sm opacity-80">{error}</p>
                 <button
-                    onClick={() => { setError(null); fetchUsers(1); }}
+                    onClick={() => { setError(null); setPage(1); fetchUsers(1); }}
                     className="mt-4 px-4 py-2 bg-destructive text-destructive-foreground rounded-lg text-sm font-medium"
                 >
                     Retry
