@@ -1,5 +1,6 @@
 import { requireOwner } from "@/lib/server/requireAdmin";
 import { redirect } from "next/navigation";
+import UserTable from "@/components/admin/UserTable";
 
 interface PageProps {
     params: Promise<{ locale: string }>;
@@ -19,21 +20,20 @@ export default async function AdminUsersPage({
 
     return (
         <div className="p-6 sm:p-10 space-y-10">
-            <header className="max-w-7xl mx-auto">
-                <h1 className="text-4xl font-extrabold tracking-tight">Users</h1>
-                <p className="text-muted-foreground mt-2">Coming soon...</p>
+            <header className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 className="text-4xl font-extrabold tracking-tight">User Management</h1>
+                    <p className="text-muted-foreground mt-2">View and monitor account status across the platform.</p>
+                </div>
+                <div className="flex bg-card border border-border p-1 rounded-xl">
+                    <div className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 rounded-lg">
+                        List View
+                    </div>
+                </div>
             </header>
 
             <main className="max-w-7xl mx-auto">
-                <div className="bg-card border border-border border-dashed rounded-3xl p-20 flex flex-col items-center justify-center text-center">
-                    <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center text-2xl mb-4">
-                        👥
-                    </div>
-                    <h2 className="text-xl font-bold text-muted-foreground">User Management</h2>
-                    <p className="text-sm text-muted-foreground/60 max-w-xs mt-2">
-                        We are working on bringing full user management capabilities to the admin panel.
-                    </p>
-                </div>
+                <UserTable />
             </main>
         </div>
     );
