@@ -96,14 +96,8 @@ export default function AdminDashboardClient({ locale }: Props) {
                     <h1 className="text-4xl font-extrabold tracking-tight">Admin Dashboard</h1>
                     <p className="text-muted-foreground mt-2">Platform insights and key performance indicators.</p>
                 </div>
-                <div className="flex gap-2">
-                    <a
-                        href={`/${locale}/dashboard`}
-                        className="px-4 py-2 text-sm border border-border rounded-lg hover:bg-muted transition-colors font-medium"
-                    >
-                        User View
-                    </a>
-                </div>
+                <div></div>
+
             </header>
 
             <main className="max-w-7xl mx-auto space-y-8">
