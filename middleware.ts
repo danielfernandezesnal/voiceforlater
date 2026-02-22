@@ -75,13 +75,11 @@ export async function middleware(request: NextRequest) {
     // Check Role
     let isPrivileged = false;
     if (user) {
-        const { data: roleData } = await supabase
-            .from('user_roles')
-            .select('role')
-            .eq('user_id', user.id)
-            .single();
+        const { data: isAdmin } = await supabase.rpc('check_if_admin', {
+            p_user_id: user.id
+        });
 
-        if (roleData && (roleData.role === 'owner' || roleData.role === 'admin')) {
+        if (isAdmin) {
             isPrivileged = true;
         }
     }
