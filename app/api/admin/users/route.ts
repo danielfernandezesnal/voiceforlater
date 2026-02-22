@@ -29,6 +29,8 @@ export async function GET(request: NextRequest) {
 
         const limit = parseInt(searchParams.get('limit') || '50', 10);
         const search = searchParams.get('search') || '';
+        const plan = searchParams.get('plan') || null;
+        const statusParam = searchParams.get('status') || null;
         const from = searchParams.get('from') || null;
         const to = searchParams.get('to') || null;
 
@@ -38,7 +40,9 @@ export async function GET(request: NextRequest) {
             p_date_to: to,
             p_page: page,
             p_limit: limit,
-            p_search: search || null
+            p_search: search || null,
+            p_plan: plan || null,
+            p_status: statusParam || null
         });
 
         if (rpcError) throw rpcError;

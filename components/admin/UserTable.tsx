@@ -21,10 +21,23 @@ export default function UserTable() {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
-    const fetchUsers = useCallback(async (pageNum: number) => {
+    // Filters
+    const [search, setSearch] = useState('');
+    const [plan, setPlan] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
+
+    const fetchUsers = useCallback(async (pageNum: number, currentSearch: string, currentPlan: string, currentStatus: string) => {
         setLoading(true);
         try {
-            const res = await fetch(`/api/admin/users?page=${pageNum}&limit=50`);
+            const params = new URLSearchParams({
+                page: pageNum.toString(),
+                limit: '50',
+                search: currentSearch,
+                plan: currentPlan,
+                status: currentStatus
+            });
+
+            const res = await fetch(`/api/admin/users?${params.toString()}`);
             if (!res.ok) {
                 const data = await res.json();
                 throw new Error(data.error || 'Failed to fetch users');
@@ -51,13 +64,14 @@ export default function UserTable() {
     }, []);
 
     useEffect(() => {
-        fetchUsers(1);
-    }, [fetchUsers]);
+        setPage(1);
+        fetchUsers(1, search, plan, statusFilter);
+    }, [search, plan, statusFilter, fetchUsers]);
 
     const loadMore = () => {
         const nextPage = page + 1;
         setPage(nextPage);
-        fetchUsers(nextPage);
+        fetchUsers(nextPage, search, plan, statusFilter);
     };
 
     if (error) {
@@ -66,7 +80,7 @@ export default function UserTable() {
                 <p className="font-bold">Error loading users</p>
                 <p className="text-sm opacity-80">{error}</p>
                 <button
-                    onClick={() => { setError(null); setPage(1); fetchUsers(1); }}
+                    onClick={() => { setError(null); setPage(1); fetchUsers(1, search, plan, statusFilter); }}
                     className="mt-4 px-4 py-2 bg-destructive text-destructive-foreground rounded-lg text-sm font-medium"
                 >
                     Retry
@@ -77,6 +91,47 @@ export default function UserTable() {
 
     return (
         <div className="space-y-6">
+            {/* Filter Bar */}
+            <div className="flex flex-col md:flex-row gap-4 bg-card border border-border p-4 rounded-2xl shadow-sm">
+                <div className="flex-1 relative">
+                    <input
+                        type="text"
+                        placeholder="Search by email..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 bg-muted/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                    <div className="absolute left-3 top-2.5 text-muted-foreground">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                    <select
+                        value={plan}
+                        onChange={(e) => setPlan(e.target.value)}
+                        className="px-4 py-2 bg-muted/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer"
+                    >
+                        <option value="">All Plans</option>
+                        <option value="free">Free</option>
+                        <option value="pro">Pro</option>
+                    </select>
+
+                    <select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        className="px-4 py-2 bg-muted/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer"
+                    >
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="trialing">Trialing</option>
+                        <option value="past_due">Past Due</option>
+                        <option value="canceled">Canceled</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
             <div className="overflow-x-auto bg-card border border-border rounded-3xl shadow-sm">
                 <table className="w-full text-left border-collapse">
                     <thead>
