@@ -195,7 +195,7 @@ export default async function LocaleHomePage({
                 <div className="flex justify-center py-12">
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="btn-cta"
+                        className="rounded-full px-12 py-5 text-xl font-medium transition-all duration-300 border border-border text-primary hover:bg-secondary hover:border-primary/40 hover:-translate-y-[1px] active:translate-y-0 active:scale-[0.98]"
                     >
                         {dict.common.getStarted}
                     </Link>
@@ -301,7 +301,7 @@ export default async function LocaleHomePage({
                             </ul>
                             <Link
                                 href={`/${locale}/auth/login`}
-                                className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+                                className="w-full py-3 border border-primary/20 text-primary font-semibold rounded-lg hover:bg-primary/5 transition-all duration-200 text-center"
                             >
                                 {/* Force redeploy trigger */}
                                 {dict.landing.pricing.pro.cta}
@@ -318,7 +318,7 @@ export default async function LocaleHomePage({
                 </p>
                 <Link
                     href={`/${locale}/auth/login`}
-                    className="btn-cta"
+                    className="rounded-full px-12 py-5 text-xl font-medium transition-all duration-300 border border-border text-primary hover:bg-secondary hover:border-primary/40 hover:-translate-y-[1px] active:translate-y-0 active:scale-[0.98]"
                 >
                     {dict.landing.cta_final}
                 </Link>
