@@ -20,7 +20,9 @@
   "landing": {
     "hero": {
       "title": "Tus palabras cuando más importan",
-      "subtitle": "Un espacio para dejar mensajes que viajen en el tiempo, para quienes más quieres."
+      "subtitle": "Un espacio para dejar mensajes que viajen en el tiempo, para quienes más quieres.",
+      "cta": "Crear mi primer mensaje",
+      "microcopy": "Te lleva al creador de mensajes. Sin tarjeta. Sin compromiso."
     },
     "emotional": {
       "title": "Tu presencia, en el momento correcto.",

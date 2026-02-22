@@ -20,7 +20,9 @@
   "landing": {
     "hero": {
       "title": "Your words, when they matter most.",
-      "subtitle": "A space to leave messages that travel through time, for those you love most."
+      "subtitle": "A space to leave messages that travel through time, for those you love most.",
+      "cta": "Create my first message",
+      "microcopy": "Takes you to the message creator. No card. No commitment."
     },
     "emotional": {
       "title": "Your presence, at the right moment.",
