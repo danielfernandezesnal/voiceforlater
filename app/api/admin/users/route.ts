@@ -24,7 +24,9 @@ export async function GET(request: NextRequest) {
         userId = user.id;
 
         const searchParams = request.nextUrl.searchParams;
-        const page = parseInt(searchParams.get('page') || '1', 10);
+        let page = parseInt(searchParams.get('page') || '1', 10);
+        if (isNaN(page) || page < 1) page = 1;
+
         const limit = parseInt(searchParams.get('limit') || '50', 10);
         const search = searchParams.get('search') || '';
         const from = searchParams.get('from') || null;
