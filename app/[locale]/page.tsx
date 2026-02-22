@@ -75,10 +75,10 @@ export default async function LocaleHomePage({
                             href={`/${locale}/auth/login`}
                             className="btn-cta"
                         >
-                            {(dict.landing.hero as any).cta}
+                            {dict.landing.hero.cta}
                         </Link>
                         <p className="text-sm text-muted-foreground/70 max-w-xs md:max-w-none text-center">
-                            {(dict.landing.hero as any).microcopy}
+                            {dict.landing.hero.microcopy}
                         </p>
                     </div>
                 </div>
@@ -195,7 +195,7 @@ export default async function LocaleHomePage({
                 <div className="flex justify-center py-12">
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="btn-cta"
+                        className="btn-secondary"
                     >
                         {dict.common.getStarted}
                     </Link>
@@ -301,7 +301,7 @@ export default async function LocaleHomePage({
                             </ul>
                             <Link
                                 href={`/${locale}/auth/login`}
-                                className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+                                className="btn-secondary w-full py-3 text-base"
                             >
                                 {/* Force redeploy trigger */}
                                 {dict.landing.pricing.pro.cta}
@@ -318,7 +318,7 @@ export default async function LocaleHomePage({
                 </p>
                 <Link
                     href={`/${locale}/auth/login`}
-                    className="btn-cta"
+                    className="btn-secondary"
                 >
                     {dict.landing.cta_final}
                 </Link>

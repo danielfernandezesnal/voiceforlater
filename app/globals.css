@@ -95,6 +95,10 @@ html {
     background: linear-gradient(to bottom, #3A4D3F, #324236);
   }
 
+  .btn-secondary {
+    @apply rounded-full px-12 py-5 text-xl font-medium transition-all duration-300 border border-border text-primary hover:bg-secondary active:bg-muted hover:border-primary hover:-translate-y-[1px] active:translate-y-0 active:scale-[0.98];
+  }
+
   .btn-cta:active::after {
     @apply opacity-0;
   }
