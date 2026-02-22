@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: errorMsg }, { status });
         }
 
-        const { adminClient, user } = await requireAdmin();
+        const { supabase, user } = await requireAdmin();
         userId = user.id;
 
         const searchParams = request.nextUrl.searchParams;
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
         const to = searchParams.get('to') || null;
 
         // Use the highly optimized SECURITY DEFINER RPC
-        const { data: users, error: rpcError } = await adminClient.rpc('admin_list_users', {
+        const { data: users, error: rpcError } = await supabase.rpc('admin_list_users', {
             p_date_from: from,
             p_date_to: to,
             p_page: page,
