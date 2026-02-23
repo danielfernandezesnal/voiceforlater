@@ -6,26 +6,36 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: false,
   },
   async headers() {
-    const supabaseUrl = "https://nrbnmuqjzyghwqlzbxts.supabase.co";
+    // 1) Variables para CSP
+    // Usamos el origen genérico *.supabase.co para abarcar cualquier entorno local o productivo, 
+    // y extraemos el de la variable si existe para mayor solidez. 
+    const supabaseUrls = `${process.env.NEXT_PUBLIC_SUPABASE_URL || ''} https://*.supabase.co`.trim();
 
-    // Content Security Policy (Report Only)
-    // We include 'unsafe-inline' and 'unsafe-eval' for Next.js compatibility in this initial step.
+    // Stripe
+    const stripeApi = "https://api.stripe.com https://hooks.stripe.com";
+    const stripeJs = "https://js.stripe.com";
+
+    // 2) Content Security Policy (Report Only mode para no romper producción)
+    // - Eliminamos 'unsafe-eval'. Si tu proyecto usa React puro Next.js puede necesitarlo en dev, 
+    //   pero en producción (App Router) por lo general es seguro quitarlo.
+    // - Eliminamos dominios *.vercel.app genéricos por seguridad.
     const csp = [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com",
-      `connect-src 'self' ${supabaseUrl} https://api.stripe.com`,
-      `img-src 'self' blob: data: ${supabaseUrl}`,
-      "style-src 'self' 'unsafe-inline'",
+      `script-src 'self' 'unsafe-inline' ${stripeJs}`,
+      `style-src 'self' 'unsafe-inline'`,
+      `img-src 'self' blob: data: ${supabaseUrls}`,
+      `connect-src 'self' ${supabaseUrls} ${stripeApi}`,
       "font-src 'self' data:",
-      "frame-src https://js.stripe.com",
-      "frame-ancestors 'none'",
       "object-src 'none'",
       "base-uri 'self'",
-      "form-action 'self'",
+      `frame-src ${stripeJs} https://hooks.stripe.com`,
+      "frame-ancestors 'none'",
+      "form-action 'self'"
     ].join('; ');
 
     return [
       {
+        // Aplica a todas las rutas
         source: '/:path*',
         headers: [
           {
@@ -43,11 +53,8 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
+          }
+          // Nota: Omitimos X-Frame-Options porque CSP frame-ancestors lo reemplaza y es más flexible si a futuro requieres un origen específico.
         ],
       },
     ];
