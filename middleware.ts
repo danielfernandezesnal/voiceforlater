@@ -60,7 +60,6 @@ export async function middleware(request: NextRequest) {
     if (isApiOrAuth || isLocaleAdmin || isLocaleDashboard) {
         response.headers.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
         response.headers.set('Pragma', 'no-cache'); // added for legacy compat
-        response.headers.set('X-MW', '1'); // Debug header for Vercel
     }
 
     // API routes: only needed session refresh (done above), skip locale logic
