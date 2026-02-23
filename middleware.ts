@@ -46,14 +46,26 @@ export async function middleware(request: NextRequest) {
 
     const pathname = request.nextUrl.pathname;
 
+    // --- Sensitive Data Cache Control ---
+    // We apply this early so it affects API routes and auth/admin routes before any early return.
+    const isApiOrAuth = pathname.startsWith('/api/') || pathname.includes('/auth/');
+
+    // Check if we are on dashboard (e.g. /en/dashboard)
+    const locales = ['en', 'es'];
+    const parts = pathname.split("/").filter(Boolean);
+    const firstPart = parts[0];
+    const isLocaleDashboard = parts.length >= 2 && parts[1] === "dashboard";
+    const isLocaleAdmin = parts.length >= 2 && parts[1] === "admin";
+
+    if (isApiOrAuth || isLocaleAdmin || isLocaleDashboard) {
+        response.headers.set('Cache-Control', 'no-store, max-age=0, must-revalidate');
+        response.headers.set('Pragma', 'no-cache'); // added for legacy compat
+    }
+
     // API routes: only needed session refresh (done above), skip locale logic
     if (pathname.startsWith('/api/') || pathname.startsWith('/_next/') || pathname.includes('.')) {
         return response;
     }
-
-    const locales = ['en', 'es'];
-    const parts = pathname.split("/").filter(Boolean);
-    const firstPart = parts[0];
 
     const pathnameHasLocale = locales.includes(firstPart);
     const locale = pathnameHasLocale ? firstPart : resolveLocale(request);
@@ -65,13 +77,6 @@ export async function middleware(request: NextRequest) {
     }
 
     // --- Admin / Dashboard Access Control Logic ---
-
-    // Check if we are on dashboard (e.g. /en/dashboard)
-    const isLocaleDashboard = parts.length >= 2 && parts[1] === "dashboard";
-
-    // Check if we are on admin (e.g. /en/admin)
-    const isLocaleAdmin = parts.length >= 2 && parts[1] === "admin";
-
     // Check Role
     let isPrivileged = false;
     if (user) {
@@ -105,18 +110,14 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
+        '/api/:path*',
         /*
          * Match all request paths except for the ones starting with:
          * - _next/static (static files)
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
          * - public folder (assets, etc)
-         * - api (api routes should not be localized typically)
-         *   EXCEPT /api/trusted-contact(s) which need session refresh
          */
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|api/).*)',
-        '/api/trusted-contact',
-        '/api/trusted-contacts',
-        '/api/profile',
+        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     ],
 };
