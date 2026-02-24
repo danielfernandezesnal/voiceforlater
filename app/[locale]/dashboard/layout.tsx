@@ -68,7 +68,7 @@ export default async function DashboardLayout({
     const currentPlan = profile?.plan || 'free';
 
     return (
-        <div className="min-h-screen flex flex-col bg-background/50">
+        <div className="min-h-screen flex flex-col bg-background">
             {/* Sync Cookie Client Side */}
             <LocaleSyncer locale={profileLocale} />
 

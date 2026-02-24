@@ -249,7 +249,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                     {step > 1 && (
                         <button
                             onClick={handleBack}
-                            className="px-6 py-2.5 text-muted-foreground hover:text-foreground transition-colors"
+                            className="btn-ghost"
                         >
                             {dictionary.common.back}
                         </button>
@@ -257,7 +257,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                     <button
                         onClick={handleNext}
                         disabled={!canProceed}
-                        className="px-8 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-primary/20"
+                        className="btn-primary"
                     >
                         {dictionary.common.next}
                     </button>
@@ -266,33 +266,36 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
 
             {/* Terms of Service Modal */}
             {showTosModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm px-4 text-foreground">
-                    <div className="bg-card w-full max-w-md p-6 rounded-2xl border border-border/50 shadow-xl space-y-6">
-                        <h2 className="text-xl font-serif font-bold">Terms of Service Required</h2>
-                        <p className="text-sm text-muted-foreground">
-                            Before saving your message, please accept our Terms of Service to confirm you won&apos;t use Carry My Words for illicit purposes.
-                        </p>
-                        <div className="flex items-start gap-3 p-4 bg-secondary/20 rounded-lg">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md px-4 text-foreground transition-all duration-300">
+                    <div className="bg-card w-full max-w-lg p-8 rounded-2xl border border-border shadow-2xl space-y-8 animate-in zoom-in-95 duration-200">
+                        <div className="text-center space-y-3">
+                            <h2 className="text-2xl font-serif font-medium tracking-tight">Terms of Service Required</h2>
+                            <p className="text-base text-muted-foreground">
+                                Before saving your message, please accept our Terms of Service to confirm you won&apos;t use Carry My Words for illicit purposes.
+                            </p>
+                        </div>
+                        <div className="flex items-start gap-4 p-5 bg-muted rounded-xl border border-border/50">
                             <input
                                 type="checkbox"
                                 id="tos-accept"
-                                className="mt-1"
+                                className="mt-1 w-5 h-5 rounded border-border text-primary focus:ring-primary/20"
                                 checked={tosAccepted}
                                 onChange={(e) => setTosAccepted(e.target.checked)}
                             />
-                            <label htmlFor="tos-accept" className="text-sm">
+                            <label htmlFor="tos-accept" className="text-sm text-foreground/90 leading-relaxed cursor-pointer selection:bg-transparent">
                                 I have read and agree to the <Link href={`/${locale}/terms`} target="_blank" className="text-primary hover:underline font-medium">Terms of Service</Link> and <Link href={`/${locale}/privacy`} target="_blank" className="text-primary hover:underline font-medium">Privacy Policy</Link>.
                             </label>
                         </div>
-                        <div className="flex justify-end gap-3 pt-4 border-t border-border/50">
+                        <div className="flex justify-between gap-4 pt-4">
                             <button
                                 onClick={() => { setShowTosModal(false); setTosAccepted(false) }}
-                                className="px-4 py-2 text-sm font-medium hover:text-foreground text-muted-foreground transition-colors"
+                                className="btn-secondary w-full"
                             >
                                 Cancel
                             </button>
                             <button
                                 disabled={!tosAccepted}
+                                className="btn-primary w-full"
                                 onClick={async () => {
                                     try {
                                         const res = await fetch('/api/tos/accept', {
@@ -311,7 +314,6 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                                         alert('Error connecting to server.');
                                     }
                                 }}
-                                className="px-4 py-2 text-sm bg-primary text-primary-foreground font-medium rounded-lg disabled:opacity-50 transition-colors"
                             >
                                 Continue to Save
                             </button>
