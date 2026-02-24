@@ -52,7 +52,7 @@ export default async function LocaleHomePage({
             </nav>
 
             {/* Hero Section - Editorial Rebrand */}
-            <section className="relative w-full h-[60vh] md:h-[70vh] min-h-[500px] flex flex-col items-center justify-center px-6">
+            <section className="relative w-full h-[70vh] min-h-[600px] flex flex-col items-center justify-center px-6">
                 <Image
                     src="/assets/rebrand/hero-editorial.png"
                     alt="Carry My Words - Editorial Hero"
@@ -60,9 +60,9 @@ export default async function LocaleHomePage({
                     priority
                     className="object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-black/10"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-background/50"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-transparent"></div>
 
                 <div className="relative z-10 text-center max-w-5xl mx-auto transition-all duration-1000">
                     <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light tracking-tight mb-6 text-foreground leading-[1.1] md:whitespace-nowrap animate-in fade-in slide-in-from-bottom-8 duration-1000">
@@ -151,9 +151,9 @@ export default async function LocaleHomePage({
 
 
             {/* How It Works */}
-            <section id="how-it-works" className="py-20 px-6 bg-white/50 border-y border-border/50">
+            <section id="how-it-works" className="py-24 px-6 bg-surface/50 border-y border-border/50">
                 <div className="max-w-6xl mx-auto">
-                    <h2 className="text-4xl font-serif font-light text-center mb-20">{dict.landing.howItWorks.title}</h2>
+                    <h2 className="text-4xl md:text-5xl font-serif font-light text-center mb-20">{dict.landing.howItWorks.title}</h2>
                     <div className="grid md:grid-cols-3 gap-12">
                         {[
                             { step: "01", ...dict.landing.howItWorks.step1 },
@@ -173,10 +173,10 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Delivery Options */}
-            <section className="pt-20 pb-0 px-6 max-w-6xl mx-auto w-full">
-                <h2 className="text-4xl font-serif font-light text-center mb-20">{dict.landing.delivery.title}</h2>
+            <section className="py-24 px-6 max-w-6xl mx-auto w-full">
+                <h2 className="text-4xl md:text-5xl font-serif font-light text-center mb-20">{dict.landing.delivery.title}</h2>
                 <div className="grid md:grid-cols-2 gap-8 mb-20">
-                    <div className="bg-card p-10 rounded-2xl border border-border/50 shadow-sm hover:shadow-md transition-all">
+                    <div className="bg-card p-10 rounded-2xl border border-border shadow-sm hover:shadow-md transition-all">
                         <div className="w-12 h-12 bg-blue-100/50 text-blue-600 rounded-lg flex items-center justify-center mb-8 text-2xl">
                             📅
                         </div>
@@ -193,10 +193,10 @@ export default async function LocaleHomePage({
                 </div>
 
                 {/* Central CTA - ONLY ONE HERE */}
-                <div className="flex justify-center py-12">
+                <div className="flex justify-center py-4">
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="rounded-full px-12 py-5 text-xl font-medium transition-all duration-300 border border-border text-primary hover:bg-secondary hover:border-primary/40 hover:-translate-y-[1px] active:translate-y-0 active:scale-[0.98]"
+                        className="btn-cta"
                     >
                         {dict.common.getStarted}
                     </Link>
@@ -204,10 +204,10 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Audio Section - Warm Image & Integrated CTA */}
-            <section className="pt-20 pb-24 px-6 bg-secondary/30">
+            <section className="py-24 px-6 bg-surface/50 border-t border-border/50">
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
                     <div className="order-1">
-                        <h2 className="text-4xl md:text-5xl font-serif font-light mb-8">{dict.landing.audio.title}</h2>
+                        <h2 className="text-4xl md:text-5xl font-serif font-light mb-8 leading-tight">{dict.landing.audio.title}</h2>
                         <p className="text-xl text-muted-foreground leading-relaxed">
                             {dict.landing.audio.description}
                         </p>
@@ -227,9 +227,9 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Trust & Privacy */}
-            <section className="py-20 px-6">
+            <section className="py-24 px-6 border-t border-border/50">
                 <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-4xl font-serif font-light mb-12">{dict.landing.trust.title}</h2>
+                    <h2 className="text-4xl md:text-5xl font-serif font-light mb-12">{dict.landing.trust.title}</h2>
                     <ul className="grid md:grid-cols-3 gap-8">
                         <li className="flex flex-col items-center gap-3">
                             <span className="text-2xl">🔒</span>
@@ -248,9 +248,9 @@ export default async function LocaleHomePage({
             </section>
 
             {/* What VoiceForLater is NOT */}
-            <section className="py-20 px-6 bg-white/50 border-y border-border/50">
+            <section className="py-24 px-6 bg-surface/50 border-y border-border/50">
                 <div className="max-w-4xl mx-auto">
-                    <h2 className="text-4xl font-serif font-light text-center mb-16">{dict.landing.notWhat.title}</h2>
+                    <h2 className="text-4xl md:text-5xl font-serif font-light text-center mb-16">{dict.landing.notWhat.title}</h2>
                     <ul className="grid md:grid-cols-2 gap-6 mb-8">
                         {dict.landing.notWhat.items.map((item, i) => (
                             <li key={i} className="flex items-start gap-3 bg-card p-4 rounded-lg border border-border/50">
@@ -266,9 +266,9 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Pricing */}
-            <section className="py-20 px-6 bg-white/50 border-y border-border/50">
+            <section className="py-24 px-6 border-b border-border/50">
                 <div className="max-w-5xl mx-auto text-center">
-                    <h2 className="text-5xl font-serif font-light mb-6">{dict.landing.pricing.title}</h2>
+                    <h2 className="text-4xl md:text-5xl font-serif font-light mb-6">{dict.landing.pricing.title}</h2>
                     <p className="text-muted-foreground mb-16">{dict.landing.pricing.justification}</p>
 
                     <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
@@ -313,21 +313,21 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Contact Form Section */}
-            <section id="contact" className="py-24 px-6 bg-secondary/10 border-y border-border/50">
+            <section id="contact" className="py-24 px-6 bg-surface/50 border-b border-border/50">
                 <div className="max-w-xl mx-auto">
-                    <h2 className="text-4xl font-serif font-light text-center mb-8">Contact Us</h2>
+                    <h2 className="text-4xl md:text-5xl font-serif font-light text-center mb-12">Contact Us</h2>
                     <LandingContactForm />
                 </div>
             </section>
 
             {/* Closing */}
             <section className="py-32 px-6 text-center">
-                <p className="text-2xl md:text-4xl font-serif italic text-muted-foreground leading-relaxed max-w-4xl mx-auto mb-12">
+                <p className="text-2xl md:text-4xl font-serif font-light italic text-muted-foreground leading-relaxed max-w-4xl mx-auto mb-16">
                     &quot;{dict.landing.final_thought}&quot;
                 </p>
                 <Link
                     href={`/${locale}/auth/login`}
-                    className="rounded-full px-12 py-5 text-xl font-medium transition-all duration-300 border border-border text-primary hover:bg-secondary hover:border-primary/40 hover:-translate-y-[1px] active:translate-y-0 active:scale-[0.98]"
+                    className="btn-cta"
                 >
                     {dict.landing.cta_final}
                 </Link>
