@@ -4,7 +4,7 @@ import { Resend } from "resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
 import crypto from 'crypto';
 import { getDictionary, Locale } from '@/lib/i18n';
-import { getCheckinReminderTemplate, getTrustedContactVerifyTemplate } from '@/lib/email-templates';
+import { getCheckinReminderTemplate, getTrustedContactVerifyTemplate, EmailDictionary } from '@/lib/email-templates';
 
 // Generate secure token (helper function inline for now to avoid large diffs if util not available in easy import path)
 function generateToken() {
@@ -64,8 +64,7 @@ export async function GET(request: NextRequest) {
 
     const supabase = getAdminClient();
     const now = new Date();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const initialData: any = {
+    const initialData = {
         processed: 0,
         reminders_sent: 0,
         trusted_contact_notified: 0,
@@ -125,7 +124,7 @@ export async function GET(request: NextRequest) {
                     const resendClient = getResendClient();
                     if (userEmail && resendClient) {
                         const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/checkin/confirm`;
-                        const { subject, html } = getCheckinReminderTemplate(dict as any, { attempts: attempts + 1, confirmUrl });
+                        const { subject, html } = getCheckinReminderTemplate(dict as unknown as EmailDictionary, { attempts: attempts + 1, confirmUrl });
 
                         await resendClient.emails.send({
                             from: "Carry My Words <noreply@carrymywords.com>",
@@ -177,8 +176,7 @@ export async function GET(request: NextRequest) {
                     if (userMessages) {
                         userMessages.forEach(msg => {
                             // Supabase returns array for HasMany
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            const links = msg.message_trusted_contacts as any[];
+                            const links = msg.message_trusted_contacts as unknown as Array<{ trusted_contacts: { name: string; email: string } }>;
                             if (Array.isArray(links)) {
                                 links.forEach(link => {
                                     const contact = link.trusted_contacts;
@@ -234,7 +232,7 @@ export async function GET(request: NextRequest) {
                             // 3. Send actionable email
                             // Use User's locale for creating urgency and clarity on behalf of user
                             const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify-status?token=${rawToken}`;
-                            const { subject, html } = getTrustedContactVerifyTemplate(dict as any, {
+                            const { subject, html } = getTrustedContactVerifyTemplate(dict as unknown as EmailDictionary, {
                                 name: contact.name,
                                 userEmail: userEmail || '',
                                 verifyUrl

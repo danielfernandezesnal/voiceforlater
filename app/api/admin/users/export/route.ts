@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/server/requireAdmin';
 import { getAdminClient } from '@/lib/supabase/admin';
 import { checkRateLimit, logAdminAction } from "@/lib/admin/utils";
+import { getErrorMessage } from "@/lib/errors";
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -33,7 +34,7 @@ export async function GET(request: Request) {
         const supabase = getAdminClient();
 
         // Base query for users
-        let query = supabase.auth.admin.listUsers({
+        const query = supabase.auth.admin.listUsers({
             page: 1,
             perPage: 1000 // Reasonable limit for CSV export
         });
@@ -136,10 +137,11 @@ export async function GET(request: Request) {
             },
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const msg = getErrorMessage(error);
         console.error('Export Error:', error);
-        status = error.message?.includes("Forbidden") ? 403 : 500;
-        errorMsg = error.message || "Internal Server Error";
+        status = msg.includes("Forbidden") ? 403 : 500;
+        errorMsg = msg;
         return NextResponse.json({ error: errorMsg }, { status });
     } finally {
         if (status !== 429) {

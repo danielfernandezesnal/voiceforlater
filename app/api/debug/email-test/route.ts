@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         console.log(`Sending debug emails to ${toEmail} in ${locale}...`);
 
         // 1. Magic Link
-        const ml = getMagicLinkTemplate(dict as any as EmailDictionary, {
+        const ml = getMagicLinkTemplate(dict as unknown as EmailDictionary, {
             magicLink: 'https://carrymywords.com/test-link',
             isAdminLogin: false
         });
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
         });
 
         // 2. Message Delivery
-        const md = getMessageDeliveryTemplate(dict as any as EmailDictionary, {
+        const md = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, {
             contentHtml: '<div style="background:#f0f0f0;padding:10px;">This is a test message content in English. Esta es una prueba en Español.</div>'
         });
         await resend.emails.send({
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
         });
 
         // 3. Check-in Reminder
-        const cr = getCheckinReminderTemplate(dict as any as EmailDictionary, {
+        const cr = getCheckinReminderTemplate(dict as unknown as EmailDictionary, {
             attempts: 1,
             confirmUrl: 'https://carrymywords.com/confirm'
         });
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
         });
 
         // 4. Trusted Contact Verify
-        const tcv = getTrustedContactVerifyTemplate(dict as any as EmailDictionary, {
+        const tcv = getTrustedContactVerifyTemplate(dict as unknown as EmailDictionary, {
             name: 'John Doe',
             userEmail: 'sender@example.com',
             verifyUrl: 'https://carrymywords.com/verify'

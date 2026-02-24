@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/server/requireAdmin";
 import { createClient } from "@/lib/supabase/server";
+import { getErrorMessage } from "@/lib/errors";
 import { checkRateLimit, logAdminAction } from "@/lib/admin/utils";
 
 export const runtime = 'nodejs';
@@ -31,9 +32,9 @@ export async function GET(request: NextRequest) {
             user_id: user.id
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         status = 403;
-        errorMsg = error.message || "Forbidden";
+        errorMsg = getErrorMessage(error);
         return NextResponse.json(
             { error: errorMsg },
             { status }

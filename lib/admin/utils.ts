@@ -35,7 +35,7 @@ export function checkRateLimit(ip: string): boolean {
 interface AuditLogEntry {
     admin_user_id?: string | null;
     action: string;
-    meta?: any;
+    meta?: Record<string, unknown>;
     req?: Request;
     ip?: string;
 }

@@ -56,8 +56,8 @@ export default function AdminDashboardClient({ locale }: Props) {
             setTotalUsers(dataUsers.totalUsers);
             setPaidUsers(dataPaid.paidUsers);
             setStorageMB(dataStorage.storageMB);
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Unknown error');
         } finally {
             setLoading(false);
         }

@@ -28,7 +28,7 @@ export async function requireAdmin() {
         .eq('user_id', user.id)
         .single();
 
-    let profile: any = null;
+    let profile: { is_admin?: boolean } | null = null;
     // Also check profiles.is_admin as fallback/legacy
     if (roleError && roleError.code === 'PGRST116') {
         // No row in user_roles. Try profiles.is_admin if table exists

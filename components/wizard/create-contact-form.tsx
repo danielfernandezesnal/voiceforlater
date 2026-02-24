@@ -44,8 +44,8 @@ export function CreateContactForm({ dictionary, onCancel, onSuccess }: CreateCon
             }
 
             onSuccess(data)
-        } catch (err: any) {
-            setError(err.message || dictionary.errorCreating)
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : dictionary.errorCreating)
         } finally {
             setLoading(false)
         }

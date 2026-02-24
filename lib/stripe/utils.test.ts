@@ -15,7 +15,7 @@ describe('Stripe Utils', () => {
         });
 
         it('should return id property if input is an object with id', () => {
-            expect(getResourceId({ id: 'sub_456' } as any)).toBe('sub_456');
+            expect(getResourceId({ id: 'sub_456' } as { id: string })).toBe('sub_456');
         });
     });
 

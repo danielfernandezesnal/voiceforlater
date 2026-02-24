@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/server/requireAdmin";
 import { checkRateLimit, logAdminAction } from "@/lib/admin/utils";
+import { getErrorMessage } from "@/lib/errors";
 
 // Simple in-memory cache
 // Key: "from|to"
-// Value: { data: any, timestamp: number }
+interface KpiCacheEntry {
+    data: { total_users: number; paid_users: number; storage_mb: number; emails_sent: number };
+    timestamp: number;
+}
 const CACHE_TTL_MS = 60 * 1000; // 60 seconds
-const kpiCache = new Map<string, { data: any, timestamp: number }>();
+const kpiCache = new Map<string, KpiCacheEntry>();
 
 export const runtime = 'nodejs';
 
@@ -118,10 +122,11 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json(data);
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const msg = getErrorMessage(error);
         console.error("KPI Error:", error);
-        status = error.message?.includes("Forbidden") ? 403 : 500;
-        errorMsg = error.message || "Internal Server Error";
+        status = msg.includes("Forbidden") ? 403 : 500;
+        errorMsg = msg;
         return NextResponse.json(
             { error: errorMsg },
             { status }

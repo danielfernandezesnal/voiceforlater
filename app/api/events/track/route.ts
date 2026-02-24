@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
         // Wait, "Checkout could start" for anonymous via pricing page?
         // But for "product analytics", usually we track user behavior.
 
-        let userId = user?.id;
+        const userId = user?.id;
 
         const body = await request.json();
         const { event, metadata } = body;

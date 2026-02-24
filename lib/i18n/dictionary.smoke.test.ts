@@ -6,7 +6,7 @@ describe('i18n Dictionary Smoke Test', () => {
 
     locales.forEach((locale) => {
         describe(`Locale: ${locale}`, () => {
-            let dictionary: any
+            let dictionary: Awaited<ReturnType<typeof getDictionary>>
 
             beforeAll(async () => {
                 dictionary = await getDictionary(locale)
