@@ -220,7 +220,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
             )}
 
             {/* Step Content */}
-            <div className="mb-8">
+            <div className="mb-8 animate-in slide-in-from-right-4 fade-in duration-500 ease-out" key={step}>
                 {!isReadOnly && step === 1 && <Step1TypeSelect dictionary={dictionary.wizard.step1} userPlan={userPlan} />}
                 {!isReadOnly && step === 2 && (
                     <Step2Content
@@ -266,12 +266,16 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
 
             {/* Terms of Service Modal */}
             {showTosModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md px-4 text-foreground transition-all duration-300">
-                    <div className="bg-card w-full max-w-lg p-8 rounded-2xl border border-border shadow-2xl space-y-8 animate-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md px-4 text-foreground transition-all duration-300 animate-in fade-in">
+                    <div className="bg-card w-full max-w-lg p-8 rounded-2xl border border-border shadow-2xl space-y-8 animate-in zoom-in-95 fade-in duration-300">
                         <div className="text-center space-y-3">
-                            <h2 className="text-2xl font-serif font-medium tracking-tight">Terms of Service Required</h2>
+                            <h2 className="text-2xl font-serif font-medium tracking-tight">
+                                {locale === 'es' ? 'Una Breve Formalidad' : 'A Brief Formality'}
+                            </h2>
                             <p className="text-base text-muted-foreground">
-                                Before saving your message, please accept our Terms of Service to confirm you won&apos;t use Carry My Words for illicit purposes.
+                                {locale === 'es'
+                                    ? 'Para mantener un espacio seguro y de confianza, te pedimos que aceptes nuestros Términos de Servicio. Esto simplemente confirma que Carry My Words se utilizará con un propósito valioso y genuino.'
+                                    : 'To maintain a safe and trusted space, we kindly ask you to accept our Terms of Service. This simply confirms that Carry My Words will be used for its intended, meaningful purpose.'}
                             </p>
                         </div>
                         <div className="flex items-start gap-4 p-5 bg-muted rounded-xl border border-border/50">

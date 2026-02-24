@@ -176,14 +176,14 @@ export default async function LocaleHomePage({
             <section className="py-24 px-6 max-w-6xl mx-auto w-full">
                 <h2 className="text-4xl md:text-5xl font-serif font-light text-center mb-20">{dict.landing.delivery.title}</h2>
                 <div className="grid md:grid-cols-2 gap-8 mb-20">
-                    <div className="bg-card p-10 rounded-2xl border border-border shadow-sm hover:shadow-md transition-all">
+                    <div className="bg-card p-10 rounded-2xl border border-border shadow-sm card-hover">
                         <div className="w-12 h-12 bg-blue-100/50 text-blue-600 rounded-lg flex items-center justify-center mb-8 text-2xl">
                             📅
                         </div>
                         <h3 className="text-2xl font-serif font-light mb-4">{dict.landing.delivery.date.title}</h3>
                         <p className="text-lg text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
                     </div>
-                    <div className="bg-card p-10 rounded-2xl border border-border/50 shadow-sm hover:shadow-md transition-all">
+                    <div className="bg-card p-10 rounded-2xl border border-border/50 shadow-sm card-hover">
                         <div className="w-12 h-12 bg-green-100/50 text-green-600 rounded-lg flex items-center justify-center mb-8 text-2xl">
                             ⏱️
                         </div>
@@ -273,7 +273,7 @@ export default async function LocaleHomePage({
 
                     <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
                         {/* Free Plan */}
-                        <div className="bg-card p-8 rounded-2xl border border-border shadow-sm flex flex-col">
+                        <div className="bg-card p-8 rounded-2xl border border-border shadow-sm card-hover flex flex-col">
                             <h3 className="text-xl font-bold mb-1">{dict.landing.pricing.free.title}</h3>
                             <p className="text-xs text-muted-foreground italic mb-4">{(dict.landing.pricing.free as { tagline?: string }).tagline}</p>
                             <div className="text-3xl font-bold mb-6">{dict.landing.pricing.free.price}</div>
@@ -286,7 +286,7 @@ export default async function LocaleHomePage({
                             </ul>
                         </div>
                         {/* Pro Plan */}
-                        <div className="bg-card p-8 rounded-2xl border-2 border-primary shadow-xl relative flex flex-col">
+                        <div className="bg-card p-8 rounded-2xl border-2 border-primary shadow-xl card-hover relative flex flex-col">
                             <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">
                                 {dict.landing.pricing.recommended}
                             </div>

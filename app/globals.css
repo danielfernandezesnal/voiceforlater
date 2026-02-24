@@ -41,8 +41,7 @@ body {
 
 /* Focus ring */
 *:focus-visible {
-  outline: 2px solid hsl(var(--primary) / 0.2);
-  outline-offset: 2px;
+  @apply outline-none ring-2 ring-primary/30 ring-offset-2 ring-offset-background;
 }
 
 /* Smooth scrolling */
@@ -73,7 +72,7 @@ html {
 
   /* Button Primitives */
   .btn-base {
-    @apply inline-flex items-center justify-center font-medium transition-all duration-200 outline-none disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center font-medium transition-all duration-300 ease-out outline-none disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .btn-primary {
@@ -110,8 +109,12 @@ html {
 }
 
 @layer utilities {
+  .card-hover {
+    @apply transition-all duration-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5;
+  }
+
   .btn-enhanced {
-    @apply shadow-md hover:shadow-lg active:shadow-sm transition-all duration-200 active:scale-[0.98];
+    @apply shadow-md hover:shadow-lg active:shadow-sm transition-all duration-300 ease-out active:scale-[0.98];
   }
 
   /* Note: Replaced legacy .btn-primary utility closely via .btn-primary in components layer */
