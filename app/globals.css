@@ -3,42 +3,45 @@
 @tailwind utilities;
 
 :root {
-  --background: #FCFBF9;
-  /* Luminous Ivory */
-  --foreground: #2D2D2D;
-  /* Deep Charcoal */
-  --card: #ffffff;
-  --card-foreground: #2D2D2D;
-  --primary: #3A4D3F;
-  /* Elegant Forest Green */
-  --primary-foreground: #ffffff;
-  --secondary: #F5F2ED;
-  /* Soft Warm Neutral */
-  --secondary-foreground: #2D2D2D;
-  --muted: #F0EDE8;
-  --muted-foreground: #6B7280;
-  --accent: #5E6F64;
-  --accent-foreground: #ffffff;
-  --border: #E5E1DA;
-  --input: #ffffff;
-  --ring: #3A4D3F;
-  --success: #6B7E6D;
-  --warning: #D4A373;
-  --error: #A63D40;
-  --radius: 0.25rem;
-  /* More elegant, less rounded */
+  --bg: 45 29% 98%;
+  /* Warm off-white #FBFAF7 */
+  --surface: 0 0% 100%;
+  /* Pure white #FFFFFF */
+  --border: 38 20% 88%;
+  /* #E5E1DA */
+  --text: 0 0% 18%;
+  /* #2D2D2D */
+  --muted: 38 25% 93%;
+  /* #F0EDE8 */
+  --muted-foreground: 220 9% 46%;
+  /* #6B7280 */
+  --primary: 136 14% 26%;
+  /* Forest Green #3A4D3F */
+  --primary-foreground: 0 0% 100%;
+  /* #FFFFFF */
+
+  --accent: 141 8% 40%;
+  /* #5E6F64 */
+  --accent-foreground: 0 0% 100%;
+  --success: 126 8% 45%;
+  /* #6B7E6D */
+  --warning: 29 55% 64%;
+  /* #D4A373 */
+  --error: 358 46% 44%;
+  /* #A63D40 */
+  --radius: 0.75rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: hsl(var(--bg));
+  color: hsl(var(--text));
   font-family: var(--font-sans), system-ui, sans-serif;
   min-height: 100vh;
 }
 
 /* Focus ring */
 *:focus-visible {
-  outline: 2px solid var(--ring);
+  outline: 2px solid hsl(var(--primary) / 0.2);
   outline-offset: 2px;
 }
 
@@ -54,16 +57,41 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: hsl(var(--bg));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--secondary);
+  background: hsl(var(--muted));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--muted-foreground);
+  background: hsl(var(--muted-foreground));
+}
+
+@layer components {
+
+  /* Button Primitives */
+  .btn-base {
+    @apply inline-flex items-center justify-center font-medium transition-all duration-200 outline-none disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply btn-base rounded-full bg-primary text-primary-foreground shadow-sm hover:shadow-md hover:-translate-y-[1px] hover:bg-primary/90 active:scale-[0.98] active:translate-y-0 px-6 py-2.5;
+  }
+
+  .btn-secondary {
+    @apply btn-base rounded-full bg-transparent text-foreground border border-border shadow-sm hover:bg-secondary/20 active:scale-[0.98] px-6 py-2.5;
+  }
+
+  .btn-ghost {
+    @apply btn-base rounded-md px-4 py-2 hover:bg-secondary/50 text-foreground;
+  }
+
+  /* Input Primitives */
+  .form-input {
+    @apply flex h-11 w-full rounded-md border border-border bg-card px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50;
+  }
 }
 
 @layer utilities {
@@ -71,9 +99,7 @@ html {
     @apply shadow-md hover:shadow-lg active:shadow-sm transition-all duration-200 active:scale-[0.98];
   }
 
-  .btn-primary {
-    @apply bg-primary text-primary-foreground btn-enhanced hover:bg-primary/90;
-  }
+  /* Note: Replaced legacy .btn-primary utility closely via .btn-primary in components layer */
 
   .btn-cta {
     @apply relative overflow-hidden rounded-full px-12 py-5 text-xl font-medium text-white transition-all duration-300 ease-out border border-white/10 shadow-sm;

@@ -21,7 +21,7 @@ export function PlanUpgradeSuccess({ currentPlan, locale }: PlanUpgradeSuccessPr
 
         // If already Pro, just show success and cleanup
         if (currentPlan.toLowerCase() === 'pro') {
-            setStatus('success')
+            setTimeout(() => setStatus('success'), 0)
             // Remove query param after delay
             const timer = setTimeout(() => {
                 router.replace(`/${locale}/dashboard/plan`, { scroll: false })
@@ -30,7 +30,7 @@ export function PlanUpgradeSuccess({ currentPlan, locale }: PlanUpgradeSuccessPr
         }
 
         // If still Free, poll via refresh
-        setStatus('checking')
+        setTimeout(() => setStatus('checking'), 0)
 
         const timers: NodeJS.Timeout[] = []
 

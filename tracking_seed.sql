@@ -1,0 +1,38 @@
+﻿CREATE SCHEMA IF NOT EXISTS supabase_migrations;
+CREATE TABLE IF NOT EXISTS supabase_migrations.schema_migrations (version text PRIMARY KEY);
+ALTER TABLE supabase_migrations.schema_migrations ADD COLUMN IF NOT EXISTS statements text[];
+ALTER TABLE supabase_migrations.schema_migrations ADD COLUMN IF NOT EXISTS name text;
+
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('001', 'initial_schema', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('002', 'audio_bucket', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('003', 'stripe_fields', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('004', 'add_video_type', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('005', 'admin_dashboard', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('006', 'product_pack_update', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('007', 'fix_admin_list_users', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('008', 'profile_fields', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('009', 'create_verification_tables', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('010', 'harden_verification', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('011', 'fix_confirmation_events_uniqueness', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('012', 'fix_confirmation_events_unique_rule', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('013', 'normalize_confirmation_events', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('014', 'remove_token_decision', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('015', 'reload_schema', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('016', 'consolidated_verification_setup', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('017', 'add_message_delivery_claim', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('018', 'enforce_token_id_events', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('019', 'add_locale_to_profiles', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('020', 'create_user_subscriptions', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('021', 'admin_security_and_metrics', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('022', 'harden_admin_list_users', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('023', 'admin_list_users_filters', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('024', 'fix_user_roles_rls', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('025', 'revoke_anon_execute_admin_rpcs', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('20250101000000', 'remove_single_contact_constraint', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('20260217220000', 'create_admin_audit_log', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('20260217221500', 'create_product_events', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('20260218122000', 'create_stripe_webhook_events', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('20260218133000', 'update_profile_locale_default', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('20260219114500', 'admin_total_users', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+INSERT INTO supabase_migrations.schema_migrations (version, name, statements) VALUES ('20260220180000', 'admin_total_paid_users', '{}') ON CONFLICT (version) DO UPDATE SET name = EXCLUDED.name, statements = EXCLUDED.statements;
+
