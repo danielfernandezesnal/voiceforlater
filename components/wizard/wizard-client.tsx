@@ -31,6 +31,8 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
     const { step, setStep, canProceed, data, updateData, clearDrafts, clearStorageOnly } = useWizard()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [showTosModal, setShowTosModal] = useState(false)
+    const [tosAccepted, setTosAccepted] = useState(false)
 
     // Handle ?new=true to reset wizard
     useEffect(() => {
@@ -156,7 +158,12 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                 let errorMessage = 'Failed to create message'
                 try {
                     const result = await response.json()
-                    console.error('API error response:', result)
+                    if (result.code === 'TOS_REQUIRED') {
+                        setShowTosModal(true)
+                        setIsSubmitting(false)
+                        return
+                    }
+
                     errorMessage = result.error || errorMessage
                     if (result.details) {
                         errorMessage += `: ${result.details}`
@@ -254,6 +261,62 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                     >
                         {dictionary.common.next}
                     </button>
+                </div>
+            )}
+
+            {/* Terms of Service Modal */}
+            {showTosModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm px-4 text-foreground">
+                    <div className="bg-card w-full max-w-md p-6 rounded-2xl border border-border/50 shadow-xl space-y-6">
+                        <h2 className="text-xl font-serif font-bold">Terms of Service Required</h2>
+                        <p className="text-sm text-muted-foreground">
+                            Before saving your message, please accept our Terms of Service to confirm you won't use Carry My Words for illicit purposes.
+                        </p>
+                        <div className="flex items-start gap-3 p-4 bg-secondary/20 rounded-lg">
+                            <input
+                                type="checkbox"
+                                id="tos-accept"
+                                className="mt-1"
+                                checked={tosAccepted}
+                                onChange={(e) => setTosAccepted(e.target.checked)}
+                            />
+                            <label htmlFor="tos-accept" className="text-sm">
+                                I have read and agree to the <Link href={`/${locale}/terms`} target="_blank" className="text-primary hover:underline font-medium">Terms of Service</Link> and <Link href={`/${locale}/privacy`} target="_blank" className="text-primary hover:underline font-medium">Privacy Policy</Link>.
+                            </label>
+                        </div>
+                        <div className="flex justify-end gap-3 pt-4 border-t border-border/50">
+                            <button
+                                onClick={() => { setShowTosModal(false); setTosAccepted(false) }}
+                                className="px-4 py-2 text-sm font-medium hover:text-foreground text-muted-foreground transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                disabled={!tosAccepted}
+                                onClick={async () => {
+                                    try {
+                                        const res = await fetch('/api/tos/accept', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ version: '1.0' }) // Matching REQUIRED_TOS_VERSION
+                                        });
+                                        if (res.ok) {
+                                            setShowTosModal(false);
+                                            handleSubmit(); // Retry save
+                                        } else {
+                                            const errorData = await res.json();
+                                            alert(errorData.error || 'Failed to accept Terms');
+                                        }
+                                    } catch (e) {
+                                        alert('Error connecting to server.');
+                                    }
+                                }}
+                                className="px-4 py-2 text-sm bg-primary text-primary-foreground font-medium rounded-lg disabled:opacity-50 transition-colors"
+                            >
+                                Continue to Save
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

@@ -311,6 +311,77 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
+            {/* Contact Form Section */}
+            <section id="contact" className="py-24 px-6 bg-secondary/10 border-y border-border/50">
+                <div className="max-w-xl mx-auto">
+                    <h2 className="text-4xl font-serif font-light text-center mb-8">Contact Us</h2>
+                    <form
+                        className="space-y-6 bg-card p-8 rounded-2xl border border-border/50 shadow-sm"
+                        onSubmit={async (e) => {
+                            e.preventDefault();
+                            const form = e.target as HTMLFormElement;
+                            const btn = form.querySelector('button');
+                            if (btn) btn.disabled = true;
+
+                            const formData = new FormData(form);
+                            try {
+                                const res = await fetch('/api/contact', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(Object.fromEntries(formData)),
+                                });
+                                if (res.ok) {
+                                    alert('Message sent successfully!');
+                                    form.reset();
+                                } else {
+                                    alert('Failed to send message.');
+                                }
+                            } catch (error) {
+                                alert('Error sending message.');
+                            } finally {
+                                if (btn) btn.disabled = false;
+                            }
+                        }}
+                    >
+                        <div>
+                            <label className="block text-sm font-medium mb-2">Email</label>
+                            <input
+                                type="email"
+                                name="email"
+                                required
+                                className="w-full p-3 rounded-lg border border-border bg-background"
+                                placeholder="you@example.com"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-2">Subject</label>
+                            <input
+                                type="text"
+                                name="subject"
+                                className="w-full p-3 rounded-lg border border-border bg-background"
+                                placeholder="How can we help?"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-2">Message</label>
+                            <textarea
+                                name="message"
+                                required
+                                rows={4}
+                                className="w-full p-3 rounded-lg border border-border bg-background resize-none"
+                                placeholder="Your message here..."
+                            ></textarea>
+                        </div>
+                        <button
+                            type="submit"
+                            className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+                        >
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </section>
+
             {/* Closing */}
             <section className="py-32 px-6 text-center">
                 <p className="text-2xl md:text-4xl font-serif italic text-muted-foreground leading-relaxed max-w-4xl mx-auto mb-12">
@@ -329,9 +400,9 @@ export default async function LocaleHomePage({
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="font-serif font-bold text-foreground text-lg">Carry My Words</div>
                     <div className="flex gap-6">
-                        <span>{dict.landing.footer.privacy}</span>
-                        <span>{dict.landing.footer.terms}</span>
-                        <span>{dict.landing.footer.contact}</span>
+                        <Link href={`/${locale}/privacy`} className="hover:text-foreground transition-colors">{dict.landing.footer.privacy}</Link>
+                        <Link href={`/${locale}/terms`} className="hover:text-foreground transition-colors">{dict.landing.footer.terms}</Link>
+                        <a href="#contact" className="hover:text-foreground transition-colors">{dict.landing.footer.contact}</a>
                     </div>
                     <div className="flex items-center gap-2">
                         <Link href="/en" className={locale === 'en' ? 'text-primary font-bold' : 'hover:text-foreground'}>EN</Link>
