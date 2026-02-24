@@ -51,14 +51,12 @@ export function SideNav({ locale, labels, user, plan }: SideNavProps) {
 
     return (
         <aside
-            className="hidden md:flex flex-col w-64 fixed inset-y-0 z-40 pt-16 transition-all duration-300"
-            style={{ backgroundColor: '#FBFAF7', borderRight: '1px solid rgba(94,111,100,0.08)' }}
+            className="hidden md:flex flex-col w-64 fixed inset-y-0 z-40 pt-16 transition-all duration-300 bg-background border-r border-border/50"
         >
             <div className="flex-1 px-5 py-8 overflow-y-auto scrollbar-none">
                 {/* Título cálido, sin gritar */}
                 <p
-                    className="text-[11px] font-medium tracking-wide mb-6 px-3"
-                    style={{ color: '#5E6F64', opacity: 0.55 }}
+                    className="text-[11px] font-medium tracking-wide mb-6 px-3 text-accent opacity-60"
                 >
                     {labels.workspace || 'Mi espacio'}
                 </p>
@@ -72,14 +70,12 @@ export function SideNav({ locale, labels, user, plan }: SideNavProps) {
                                 key={item.href}
                                 href={item.href}
                                 className={`flex items-center gap-3 px-3 py-2.5 text-[13.5px] font-medium rounded-xl transition-all duration-200 group ${isActive
-                                    ? 'text-foreground'
+                                    ? 'text-foreground bg-accent/5'
                                     : 'text-muted-foreground hover:text-foreground'
                                     }`}
-                                style={isActive ? { backgroundColor: 'rgba(94,111,100,0.07)' } : undefined}
                             >
                                 <item.icon
-                                    className="h-[18px] w-[18px] transition-colors duration-200 flex-shrink-0"
-                                    style={{ color: isActive ? '#5E6F64' : undefined }}
+                                    className={`h-[18px] w-[18px] transition-colors duration-200 flex-shrink-0 ${isActive ? 'text-accent' : ''}`}
                                 />
                                 {item.label}
                             </Link>
@@ -90,16 +86,14 @@ export function SideNav({ locale, labels, user, plan }: SideNavProps) {
 
             {/* Pie del sidebar — perfil del usuario */}
             <div
-                className="px-5 py-5"
-                style={{ borderTop: '1px solid rgba(94,111,100,0.06)' }}
+                className="px-5 py-5 border-t border-border/50"
             >
                 <div className="flex items-center gap-3 px-1">
                     {/* Avatar unisex — círculo cálido */}
                     <div
-                        className="h-9 w-9 rounded-full flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: 'rgba(94,111,100,0.08)' }}
+                        className="h-9 w-9 rounded-full flex items-center justify-center flex-shrink-0 bg-accent/10"
                     >
-                        <svg className="h-[18px] w-[18px]" style={{ color: '#5E6F64' }} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <svg className="h-[18px] w-[18px] text-accent" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
                             <circle cx="12" cy="10" r="3"></circle>
                             <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path>
@@ -109,11 +103,10 @@ export function SideNav({ locale, labels, user, plan }: SideNavProps) {
                         <span className="text-sm font-medium truncate text-foreground/85">
                             {user.full_name || (user.email ? user.email.split('@')[0] : 'Usuario')}
                         </span>
-                        <span className="text-[11px] capitalize flex items-center gap-1.5" style={{ color: '#5E6F64', opacity: 0.6 }}>
+                        <span className="text-[11px] capitalize flex items-center gap-1.5 text-accent opacity-60">
                             {plan === 'pro' && (
                                 <span
-                                    className="inline-block w-1.5 h-1.5 rounded-full"
-                                    style={{ backgroundColor: '#5E6F64' }}
+                                    className="inline-block w-1.5 h-1.5 rounded-full bg-accent"
                                 ></span>
                             )}
                             Plan {plan}
