@@ -270,7 +270,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                     <div className="bg-card w-full max-w-md p-6 rounded-2xl border border-border/50 shadow-xl space-y-6">
                         <h2 className="text-xl font-serif font-bold">Terms of Service Required</h2>
                         <p className="text-sm text-muted-foreground">
-                            Before saving your message, please accept our Terms of Service to confirm you won't use Carry My Words for illicit purposes.
+                            Before saving your message, please accept our Terms of Service to confirm you won&apos;t use Carry My Words for illicit purposes.
                         </p>
                         <div className="flex items-start gap-3 p-4 bg-secondary/20 rounded-lg">
                             <input

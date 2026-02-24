@@ -69,14 +69,37 @@ html {
   background: hsl(var(--muted-foreground));
 }
 
+@layer components {
+
+  /* Button Primitives */
+  .btn-base {
+    @apply inline-flex items-center justify-center font-medium transition-all duration-200 outline-none disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply btn-base rounded-full bg-primary text-primary-foreground shadow-sm hover:shadow-md hover:-translate-y-[1px] hover:bg-primary/90 active:scale-[0.98] active:translate-y-0 px-6 py-2.5;
+  }
+
+  .btn-secondary {
+    @apply btn-base rounded-full bg-transparent text-foreground border border-border shadow-sm hover:bg-secondary/20 active:scale-[0.98] px-6 py-2.5;
+  }
+
+  .btn-ghost {
+    @apply btn-base rounded-md px-4 py-2 hover:bg-secondary/50 text-foreground;
+  }
+
+  /* Input Primitives */
+  .form-input {
+    @apply flex h-11 w-full rounded-md border border-border bg-card px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+}
+
 @layer utilities {
   .btn-enhanced {
     @apply shadow-md hover:shadow-lg active:shadow-sm transition-all duration-200 active:scale-[0.98];
   }
 
-  .btn-primary {
-    @apply bg-primary text-primary-foreground btn-enhanced hover:bg-primary/90;
-  }
+  /* Note: Replaced legacy .btn-primary utility closely via .btn-primary in components layer */
 
   .btn-cta {
     @apply relative overflow-hidden rounded-full px-12 py-5 text-xl font-medium text-white transition-all duration-300 ease-out border border-white/10 shadow-sm;
