@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { Metadata } from "next";
+import { LandingContactForm } from "@/components/landing-contact-form";
 
 export async function generateMetadata({
     params,
@@ -311,6 +312,14 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
+            {/* Contact Form Section */}
+            <section id="contact" className="py-24 px-6 bg-secondary/10 border-y border-border/50">
+                <div className="max-w-xl mx-auto">
+                    <h2 className="text-4xl font-serif font-light text-center mb-8">Contact Us</h2>
+                    <LandingContactForm />
+                </div>
+            </section>
+
             {/* Closing */}
             <section className="py-32 px-6 text-center">
                 <p className="text-2xl md:text-4xl font-serif italic text-muted-foreground leading-relaxed max-w-4xl mx-auto mb-12">
@@ -329,9 +338,9 @@ export default async function LocaleHomePage({
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="font-serif font-bold text-foreground text-lg">Carry My Words</div>
                     <div className="flex gap-6">
-                        <span>{dict.landing.footer.privacy}</span>
-                        <span>{dict.landing.footer.terms}</span>
-                        <span>{dict.landing.footer.contact}</span>
+                        <Link href={`/${locale}/privacy`} className="hover:text-foreground transition-colors">{dict.landing.footer.privacy}</Link>
+                        <Link href={`/${locale}/terms`} className="hover:text-foreground transition-colors">{dict.landing.footer.terms}</Link>
+                        <a href="#contact" className="hover:text-foreground transition-colors">{dict.landing.footer.contact}</a>
                     </div>
                     <div className="flex items-center gap-2">
                         <Link href="/en" className={locale === 'en' ? 'text-primary font-bold' : 'hover:text-foreground'}>EN</Link>
