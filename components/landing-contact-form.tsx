@@ -31,37 +31,37 @@ export function LandingContactForm() {
             }}
         >
             <div>
-                <label className="block text-sm font-medium mb-2">Email</label>
+                <label className="block text-sm font-medium mb-2 text-foreground/80">Email</label>
                 <input
                     type="email"
                     name="email"
                     required
-                    className="w-full p-3 rounded-lg border border-border bg-background"
+                    className="form-input"
                     placeholder="you@example.com"
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium mb-2">Subject</label>
+                <label className="block text-sm font-medium mb-2 text-foreground/80">Subject</label>
                 <input
                     type="text"
                     name="subject"
-                    className="w-full p-3 rounded-lg border border-border bg-background"
+                    className="form-input"
                     placeholder="How can we help?"
                 />
             </div>
             <div>
-                <label className="block text-sm font-medium mb-2">Message</label>
+                <label className="block text-sm font-medium mb-2 text-foreground/80">Message</label>
                 <textarea
                     name="message"
                     required
                     rows={4}
-                    className="w-full p-3 rounded-lg border border-border bg-background resize-none"
+                    className="form-input h-auto resize-none"
                     placeholder="Your message here..."
                 ></textarea>
             </div>
             <button
                 type="submit"
-                className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+                className="btn-primary w-full"
             >
                 Send Message
             </button>
