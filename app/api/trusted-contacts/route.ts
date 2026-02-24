@@ -4,6 +4,7 @@ import { getResend } from '@/lib/resend';
 import { getEffectivePlan } from '@/lib/plan-resolver';
 import { getPlanLimits } from '@/lib/plans';
 import { trackServerEvent } from '@/lib/analytics/trackEvent';
+import { getErrorMessage } from '@/lib/errors';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,9 +34,9 @@ export async function GET() {
         }
 
         return NextResponse.json(data);
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error('[GET /api/trusted-contacts] Error:', e);
-        return NextResponse.json({ error: e.message || 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json({ error: getErrorMessage(e) }, { status: 500 });
     }
 }
 
@@ -179,9 +180,9 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(contact);
 
-    } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
+    } catch (error: unknown) {
         console.error('Error creating contact:', error);
-        return NextResponse.json({ error: error.message || 'Internal Error' }, { status: 500 });
+        return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
     }
 }
 
@@ -211,7 +212,7 @@ export async function DELETE(request: NextRequest) {
         if (error) throw error;
 
         return NextResponse.json({ success: true });
-    } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
     }
 }

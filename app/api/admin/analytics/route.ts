@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/server/requireAdmin";
 import { getAdminClient } from "@/lib/supabase/admin";
 import { checkRateLimit, logAdminAction } from "@/lib/admin/utils";
+import { getErrorMessage, hasErrorCode } from "@/lib/errors";
 
 export const runtime = 'nodejs';
 
@@ -88,9 +89,9 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json(analyticsData);
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         // --- Fallback Logic: If product_events table missing, derive analytics from core tables ---
-        if (error && (error.code === 'PGRST205' || error.code === '42P01')) {
+        if (hasErrorCode(error, 'PGRST205') || hasErrorCode(error, '42P01')) {
             console.warn("Analytics table missing, falling back to core table derivation.");
             const adminClient = getAdminClient(); // Re-initialize if needed, or use existing one
 
@@ -140,9 +141,10 @@ export async function GET(request: NextRequest) {
         }
 
         // If it's not a missing table error, or if fallback also fails, then re-throw or handle as generic error
+        const msg = getErrorMessage(error);
         console.error("Analytics Error:", error);
-        status = error.message?.includes("Forbidden") ? 403 : 500;
-        errorMsg = error.message || "Internal Server Error";
+        status = msg.includes("Forbidden") ? 403 : 500;
+        errorMsg = msg;
         return NextResponse.json({ error: errorMsg }, { status });
     } finally {
         if (status === 200) {

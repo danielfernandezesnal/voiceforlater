@@ -2,7 +2,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { getDictionary, Locale } from '@/lib/i18n';
-import { getMessageDeliveryTemplate } from "@/lib/email-templates";
+import { getMessageDeliveryTemplate, EmailDictionary } from "@/lib/email-templates";
 
 // Helper to get admin client
 function getAdminClient() {
@@ -151,7 +151,7 @@ export async function releaseCheckinMessages(userId: string) {
                 }
 
                 // Use template
-                const template = getMessageDeliveryTemplate(dict as any, { contentHtml });
+                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml });
 
                 await resend.emails.send({
                     from: "Carry My Words <noreply@carrymywords.com>",

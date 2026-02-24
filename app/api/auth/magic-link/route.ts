@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { getResend } from '@/lib/resend';
 import { trackEmail } from '@/lib/email-tracking';
 import { getDictionary, Locale } from '@/lib/i18n';
-import { getMagicLinkTemplate } from '@/lib/email-templates';
+import { getMagicLinkTemplate, EmailDictionary } from '@/lib/email-templates';
 
 export const dynamic = 'force-dynamic';
 
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     const sender = process.env.RESEND_FROM_EMAIL || 'Carry My Words <onboarding@resend.dev>';
 
     const dict = await getDictionary((locale || 'en') as Locale);
-    const { subject: emailSubject, html: emailBody } = getMagicLinkTemplate(dict as any, { magicLink, isAdminLogin });
+    const { subject: emailSubject, html: emailBody } = getMagicLinkTemplate(dict as unknown as EmailDictionary, { magicLink, isAdminLogin });
 
     const { data: emailData, error: emailError } = await resend.emails.send({
       from: sender,

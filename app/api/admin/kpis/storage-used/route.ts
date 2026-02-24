@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireOwner } from "@/lib/server/requireAdmin";
 import { checkRateLimit, logAdminAction } from "@/lib/admin/utils";
+import { getErrorMessage } from "@/lib/errors";
 
 export const runtime = 'nodejs';
 
@@ -38,10 +39,11 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({ storageMB: Number(storageMB) });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const msg = getErrorMessage(error);
         console.error("Storage KPI Error:", error);
-        status = error.message?.includes("Forbidden") ? 403 : 500;
-        errorMsg = error.message || "Internal Server Error";
+        status = msg.includes("Forbidden") ? 403 : 500;
+        errorMsg = msg;
         return NextResponse.json(
             { error: errorMsg },
             { status }

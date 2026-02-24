@@ -7,7 +7,7 @@ export const DEFAULT_LOCALE: Locale = 'en';
 export const LOCALE_COOKIE = 'vfl_locale';
 
 export function isValidLocale(locale: string): locale is Locale {
-    return LOCALES.includes(locale as any);
+    return (LOCALES as readonly string[]).includes(locale);
 }
 
 /**

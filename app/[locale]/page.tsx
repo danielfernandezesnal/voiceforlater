@@ -75,10 +75,10 @@ export default async function LocaleHomePage({
                             href={`/${locale}/auth/login`}
                             className="btn-cta"
                         >
-                            {(dict.landing.hero as any).cta}
+                            {(dict.landing.hero as unknown as { cta: string }).cta}
                         </Link>
                         <p className="text-sm text-muted-foreground/70 max-w-xs md:max-w-none text-center">
-                            {(dict.landing.hero as any).microcopy}
+                            {(dict.landing.hero as unknown as { microcopy: string }).microcopy}
                         </p>
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { getResend } from '@/lib/resend';
 import { trackEmail } from '@/lib/email-tracking';
 import { getDictionary, Locale } from '@/lib/i18n';
-import { getMessageDeliveryTemplate } from '@/lib/email-templates';
+import { getMessageDeliveryTemplate, EmailDictionary } from '@/lib/email-templates';
 
 // Use service role for admin operations (bypass RLS)
 function getAdminClient() {
@@ -96,7 +96,7 @@ export async function GET(request: NextRequest) {
             }
 
             try {
-                const localeRaw = (message.profiles as any)?.locale || 'en';
+                const localeRaw = (message.profiles as { locale?: string } | null)?.locale || 'en';
                 const locale = (['en', 'es'].includes(localeRaw) ? localeRaw : 'en') as Locale;
                 const dict = await getDictionary(locale);
                 const t = dict.emails.messageDelivery;
@@ -136,7 +136,7 @@ export async function GET(request: NextRequest) {
                 }
 
                 // Use template
-                const template = getMessageDeliveryTemplate(dict as any, { contentHtml });
+                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml });
 
                 await resend.emails.send({
                     from: "Carry My Words <noreply@carrymywords.com>",

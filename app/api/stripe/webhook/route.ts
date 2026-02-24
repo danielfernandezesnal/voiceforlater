@@ -296,9 +296,9 @@ export async function POST(request: NextRequest) {
             }
 
             case "invoice.payment_failed": {
-                // Cast to any to avoid property missing error if types are outdated
-                const invoice = event.data.object as any;
-                const subId = getResourceId(invoice.subscription);
+                // Use type assertion for invoice properties that vary across Stripe API versions
+                const invoice = event.data.object as Stripe.Invoice & { subscription?: string | { id: string } | null };
+                const subId = getResourceId(invoice.subscription ?? null);
                 const customerId = getResourceId(invoice.customer);
 
                 // Attempt to fetch fresh subscription status to be authoritative
