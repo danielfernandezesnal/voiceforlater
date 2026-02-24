@@ -20,7 +20,7 @@ Implement mandatory Terms of Service acceptance before message creation, and est
 
 ## Backend Enforcement (Defense-in-Depth)
 1. **Next.js Gateway:** 
-   - Uses `REQUIRED_TOS_VERSION` configuration in `lib/constants.ts`.
+   - Configured securely using `REQUIRED_TOS_VERSION` within `lib/constants.ts`.
    - Returns 403 `TOS_REQUIRED` if version mismatched or unaccepted.
 2. **Supabase Database Trigger:**
    - A `BEFORE INSERT` trigger on `public.messages` utilizing `enforce_tos_before_message()`.
