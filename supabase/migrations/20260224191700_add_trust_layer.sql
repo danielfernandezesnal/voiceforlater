@@ -76,7 +76,7 @@ BEGIN
   -- Fetch user's ToS acceptance state
   SELECT tos_accepted_at INTO v_tos_accepted_at
   FROM public.profiles
-  WHERE id = auth.uid();
+  WHERE id = NEW.owner_id;
 
   -- Test if accepted
   IF v_tos_accepted_at IS NULL THEN

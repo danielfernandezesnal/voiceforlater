@@ -42,8 +42,8 @@ export async function POST(request: NextRequest) {
                 subject: subject || null,
                 message,
                 metadata: {
-                    ip: request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown",
-                    userAgent: request.headers.get("user-agent") || "unknown",
+                    ip_address: request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown",
+                    user_agent: request.headers.get("user-agent") || "unknown",
                 }
             });
 
