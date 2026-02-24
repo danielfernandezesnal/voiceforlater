@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { type Plan, getPlanLimits, canCreateMessage, isCheckinIntervalAllowed } from "@/lib/plans";
 import { getEffectivePlan } from "@/lib/plan-resolver";
 import { trackServerEvent } from "@/lib/analytics/trackEvent";
+import { REQUIRED_TOS_VERSION } from "@/lib/constants";
 
 
 export const runtime = "nodejs";
@@ -61,12 +62,23 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        // Get user profile for validation (completeness only)
+        // Get user profile for validation
         const { data: profile } = await supabase
             .from("profiles")
-            .select("first_name, last_name, country")
+            .select("first_name, last_name, country, tos_version, tos_accepted_at")
             .eq("id", user.id)
             .single();
+
+        // Validate ToS
+        if (profile?.tos_version !== REQUIRED_TOS_VERSION || !profile?.tos_accepted_at) {
+            return NextResponse.json(
+                {
+                    error: "Terms of Service acceptance is required.",
+                    code: "TOS_REQUIRED"
+                },
+                { status: 403 }
+            );
+        }
 
         // Validate profile completeness
         const isProfileComplete =
@@ -377,6 +389,23 @@ export async function PUT(request: NextRequest) {
         } = await supabase.auth.getUser();
         if (!user) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        // Validate ToS
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("tos_version, tos_accepted_at")
+            .eq("id", user.id)
+            .single();
+
+        if (profile?.tos_version !== REQUIRED_TOS_VERSION || !profile?.tos_accepted_at) {
+            return NextResponse.json(
+                {
+                    error: "Terms of Service acceptance is required.",
+                    code: "TOS_REQUIRED"
+                },
+                { status: 403 }
+            );
         }
 
         const formData = await request.formData();
