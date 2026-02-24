@@ -41,13 +41,13 @@ CREATE POLICY "Admins can view tickets"
   ON public.contact_tickets
   FOR SELECT
   TO authenticated
-  USING (public.is_admin());
+  USING (public.check_if_admin(auth.uid()));
 
 CREATE POLICY "Admins can update tickets"
   ON public.contact_tickets
   FOR UPDATE
   TO authenticated
-  USING (public.is_admin());
+  USING (public.check_if_admin(auth.uid()));
 
 -- 3. DB Enforcement (Defense-in-Depth for ToS)
 -- We enforce this on public.messages BEFORE INSERT
