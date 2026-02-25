@@ -48,10 +48,10 @@ export async function POST(request: NextRequest) {
     let event: Stripe.Event;
     const stripe = getStripe();
 
-    console.log("--- STRIPE WEBHOOK START ---");
+    console.info("[stripe:webhook] received", { type: "(verifying)" });
     try {
         event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-        console.log("Event Type:", event.type);
+        console.info("[stripe:webhook]", event.type);
     } catch (err) {
         console.error("Webhook signature verification failed:", err);
         return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
@@ -159,7 +159,6 @@ export async function POST(request: NextRequest) {
                     console.error("Failed to log event:", e);
                 }
 
-                console.log(`User ${userId} upgraded to PRO`);
                 break;
             }
 
@@ -219,9 +218,9 @@ export async function POST(request: NextRequest) {
                         })
                         .eq("id", targetUserId);
 
-                    console.log(`Updated subscription for user ${targetUserId}: ${plan} (${effectiveStatus})`);
+                    console.info("[stripe:webhook] subscription.updated", { plan, effectiveStatus });
                 } else {
-                    console.warn(`Could not find user for subscription update: ${subscription.id}`);
+                    console.warn("[stripe:webhook] could not find user for subscription update");
                 }
                 break;
             }
@@ -290,7 +289,7 @@ export async function POST(request: NextRequest) {
                         metadata: { subscription_id: subscription.id }
                     });
 
-                    console.log(`User ${targetUserId} downgraded to FREE (Subscription Deleted)`);
+                    console.info("[stripe:webhook] subscription.deleted → downgraded to free");
                 }
                 break;
             }
@@ -325,7 +324,7 @@ export async function POST(request: NextRequest) {
                         currentPeriodEndStr = new Date(freshSubTyped.current_period_end * 1000).toISOString();
                         cancelAtPeriodEndVal = freshSub.cancel_at_period_end;
                     } catch (fetchErr) {
-                        console.error(`Failed to fetch subscription ${subId} in payment_failed`, fetchErr);
+                        console.error("[stripe:webhook] failed to fetch subscription in payment_failed", fetchErr);
                         // Fallback: stay on defaults (free/past_due)
                     }
                 }
@@ -370,13 +369,13 @@ export async function POST(request: NextRequest) {
                         metadata: { invoice_id: invoice.id, subscription_id: subId },
                     });
 
-                    console.log(`User ${profile.id} processed for payment_failed: ${mappedPlan.plan} (${mappedPlan.effectiveStatus})`);
+                    console.info("[stripe:webhook] invoice.payment_failed processed", { plan: mappedPlan.plan, status: mappedPlan.effectiveStatus });
                 }
                 break;
             }
 
             default:
-                console.log(`Unhandled event type: ${event.type}`);
+                console.warn("[stripe:webhook] unhandled event type", event.type);
         }
 
         return NextResponse.json({ received: true });
