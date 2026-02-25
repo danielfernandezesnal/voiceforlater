@@ -10,7 +10,7 @@
     "save": "Save",
     "confirm": "Confirm",
     "getStarted": "Create your first message",
-    "seeHow": "Read how it works",
+    "seeHow": "See how it works",
     "edit": "Edit",
     "view": "View Message",
     "delete": "Delete",
@@ -19,9 +19,9 @@
   },
   "landing": {
     "hero": {
-      "title": "A letter to the future.",
-      "subtitle": "Carefully preserve your thoughts, to be delivered exactly when they matter most.",
-      "cta": "Draft your first letter",
+      "title": "Your words, when they matter most.",
+      "subtitle": "A space to leave messages that travel through time, for those you love most.",
+      "cta": "Create my first message",
       "microcopy": "Takes you to the message creator. No card. No commitment."
     },
     "emotional": {
@@ -188,7 +188,7 @@
     "subtitle": "Messages you've created for your loved ones",
     "empty": {
       "title": "No messages yet",
-      "description": "Your archive is currently empty. Start drafting your first message to the future.",
+      "description": "Create your first message to leave for someone special.",
       "cta": "Create Your First Message"
     },
     "limitReached": {
