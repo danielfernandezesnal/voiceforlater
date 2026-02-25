@@ -137,18 +137,6 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                 }
             }
 
-            // Log payload for debugging
-            console.log('Submitting message:', {
-                type: data.messageType,
-                recipientName: data.recipientName,
-                recipientEmail: data.recipientEmail,
-                deliveryMode: data.deliveryMode,
-                hasAudioBlob: !!data.audioBlob,
-                textContent: data.messageType === 'text' ? data.textContent?.substring(0, 50) : null,
-                deliverAt: data.deliverAt,
-                checkinIntervalDays: data.checkinIntervalDays
-            })
-
             const response = await fetch('/api/messages', {
                 method: messageId ? 'PUT' : 'POST',
                 body: formData,
