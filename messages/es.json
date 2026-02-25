@@ -487,5 +487,129 @@
       "falseAlarm": "Si es una falsa alarma o sabes que están bien, por favor usa el enlace de arriba para reportarlo de forma segura.",
       "expiry": "El enlace expira en 48 horas."
     }
+  },
+  "legal": {
+    "terms": {
+      "version": "Versión 1.0",
+      "lastUpdated": "Última actualización: Octubre 2026",
+      "title": "Términos de Servicio",
+      "sections": [
+        {
+          "heading": "1. Introducción y Aceptación",
+          "body": "Bienvenido a Carry My Words. Al acceder o utilizar nuestra plataforma, aceptas formar un acuerdo vinculante con nosotros bajo estos términos. Si no estás de acuerdo, por favor no utilices nuestro servicio."
+        },
+        {
+          "heading": "2. Elegibilidad",
+          "body": "Debes tener al menos 16 años para utilizar Carry My Words. Los menores requieren el consentimiento de un padre o tutor para realizar compras o utilizar funciones premium."
+        },
+        {
+          "heading": "3. Seguridad de la Cuenta",
+          "body": "Eres responsable de mantener la confidencialidad y seguridad de tu cuenta, incluidos tus enlaces mágicos y contraseñas. Notifícanos inmediatamente sobre cualquier uso no autorizado."
+        },
+        {
+          "heading": "4. Uso Aceptable",
+          "body": "Carry My Words está diseñado para mensajes personales y afectivos. Aceptas no utilizar nuestra plataforma para distribuir contenido ilegal, acoso, amenazas, spam o material malicioso."
+        },
+        {
+          "heading": "5. Contenido del Usuario y Propiedad",
+          "body": "Conservas la propiedad total y los derechos de propiedad intelectual sobre todos tus mensajes de texto, audio y video. Solo nos otorgas la licencia necesaria para almacenar tus datos de forma segura y entregarlos estrictamente según las reglas y plazos que establezcas."
+        },
+        {
+          "heading": "6. Entrega de Mensajes y Programación",
+          "body": "Aunque hacemos nuestro mejor esfuerzo para lograr una entrega precisa, nuestro servicio depende de proveedores de correo electrónico de terceros. Por lo tanto, no podemos garantizar un 100% de tiempo de actividad, la llegada a la bandeja de entrada principal o un formato idéntico en el lado del destinatario."
+        },
+        {
+          "heading": "7. Contactos de Confianza y Check-ins",
+          "body": "Al asignar contactos de confianza, nos autorizas a contactarlos si no respondes a tus check-ins durante el período especificado. No somos responsables si los datos de contacto que proporcionas son incorrectos, están desactualizados o no responden."
+        },
+        {
+          "heading": "8. Tarifas y Suscripciones",
+          "body": "Ciertas funciones (funciones Pro) requieren pago a través de nuestro procesador de pagos autorizado (Stripe). Las suscripciones se renuevan automáticamente al final de su ciclo de facturación a menos que las canceles de antemano."
+        },
+        {
+          "heading": "9. Política de Reembolso",
+          "body": "Puedes solicitar un reembolso completo dentro de los 14 días posteriores a tu compra inicial, siempre que no hayas utilizado activamente las funciones premium (como programar múltiples mensajes o cargar video/audio). Fuera de este período, los pagos no son reembolsables."
+        },
+        {
+          "heading": "10. Descargos de Responsabilidad",
+          "body": "Nuestro servicio se proporciona \"tal cual\" y \"según disponibilidad\". Carry My Words es una herramienta de mensajería; no reemplaza un testamento legal, directivas de salud ni asesoramiento legal o financiero profesional."
+        },
+        {
+          "heading": "11. Límite de Responsabilidad",
+          "body": "En la máxima medida permitida por la ley, nuestra responsabilidad total hacia ti por cualquier daño, pérdida o causa de acción no excederá la cantidad total que nos hayas pagado en los doce (12) meses anteriores al incidente. No asumimos responsabilidad alguna por problemas emocionales derivados de mensajes retrasados o no entregados."
+        },
+        {
+          "heading": "12. Terminación",
+          "body": "Nos reservamos el derecho de suspender o cancelar tu cuenta a nuestra entera discreción si creemos razonablemente que has violado estos Términos de Servicio, en particular las disposiciones sobre uso aceptable."
+        },
+        {
+          "heading": "13. Ley Aplicable",
+          "body": "Estos términos se rigen por las leyes del Estado de Delaware, Estados Unidos, sin tener en cuenta sus principios de conflicto de leyes."
+        },
+        {
+          "heading": "14. Cambios y Contacto",
+          "body": "Podemos actualizar ocasionalmente estos términos (reflejado en el número de versión anterior). Si tienes preguntas sobre estos términos, por favor contáctanos."
+        }
+      ]
+    },
+    "privacy": {
+      "version": "Versión 1.0",
+      "lastUpdated": "Última actualización: Octubre 2026",
+      "title": "Política de Privacidad",
+      "sections": [
+        {
+          "heading": "1. Introducción",
+          "body": "Estamos profundamente comprometidos con tu privacidad. Esta política explica cómo recopilamos, utilizamos y protegemos tu información al usar Carry My Words. Actuamos como un procesador de datos para el contenido de tus mensajes."
+        },
+        {
+          "heading": "2. Datos que Recopilamos",
+          "body": "Recopilamos la información que nos proporcionas directamente: tu correo electrónico, nombre, dirección IP (por razones de seguridad) y el contenido sin procesar de los mensajes (texto, audio y video) que compones."
+        },
+        {
+          "heading": "3. Cuenta y Autenticación",
+          "body": "Manejamos la autenticación mediante tokens seguros (enlaces mágicos) y contraseñas cifradas a través de Supabase Auth. No tenemos acceso a tu contraseña sin procesar."
+        },
+        {
+          "heading": "4. Pagos (Stripe)",
+          "body": "El procesamiento de pagos es manejado de manera segura por Stripe. No almacenamos, procesamos ni transmitimos el número completo de tu tarjeta de crédito en nuestros servidores."
+        },
+        {
+          "heading": "5. Almacenamiento y Seguridad de Contenido",
+          "body": "Tus archivos de texto, audio y video se cifran y almacenan de forma segura en las bases de datos y repositorios de almacenamiento de Supabase. Tus mensajes se mantienen estrictamente privados y solo se liberan cuando se cumplen tus condiciones de entrega definidas."
+        },
+        {
+          "heading": "6. Cookies y Rastreo",
+          "body": "Utilizamos cookies estrictamente necesarias para mantener tu sesión y garantizar la seguridad de la plataforma. Adoptamos un enfoque minimalista para el rastreo y no empleamos cookies publicitarias invasivas de terceros."
+        },
+        {
+          "heading": "7. Analítica",
+          "body": "Podemos recopilar y analizar eventos anónimos de uso (por ejemplo, el número de eventos de 'Mensaje creado') para medir y mejorar nuestra aplicación. Estos datos nunca incluyen ni exponen el contenido personal de tus mensajes."
+        },
+        {
+          "heading": "8. Retención y Eliminación",
+          "body": "Tienes control total sobre tus mensajes activos y puedes eliminarlos en cualquier momento. Al eliminar un mensaje, se borra de forma permanente de nuestras bases de datos activas junto con los archivos multimedia adjuntos."
+        },
+        {
+          "heading": "9. Derechos del Usuario",
+          "body": "Según tu ubicación (por ejemplo, bajo GDPR o CCPA), tienes el derecho a acceder, corregir, exportar o solicitar la eliminación de tus datos personales."
+        },
+        {
+          "heading": "10. Privacidad Infantil",
+          "body": "Carry My Words no está dirigido a menores de 13 años y no recopilamos intencionalmente datos personales de ellos."
+        },
+        {
+          "heading": "11. Transferencias Internacionales",
+          "body": "Tus datos se almacenan principalmente en servidores ubicados en los Estados Unidos. Al utilizar nuestro servicio, aceptas esta transferencia y procesamiento internacional de forma segura."
+        },
+        {
+          "heading": "12. Medidas de Seguridad",
+          "body": "Aplicamos estricta Seguridad a Nivel de Fila (RLS) en nuestra base de datos, ciframos todos los datos en tránsito mediante TLS y restringimos fuertemente el acceso administrativo a nuestros entornos de producción."
+        },
+        {
+          "heading": "13. Contacto",
+          "body": "Si tienes alguna pregunta, inquietud o solicitud sobre esta Política de Privacidad, por favor contáctanos."
+        }
+      ]
+    }
   }
 }

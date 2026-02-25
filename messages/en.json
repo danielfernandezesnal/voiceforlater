@@ -500,5 +500,129 @@
       "falseAlarm": "If this is a false alarm or you know they are fine, please use the link above to report it secure and stop further notifications.",
       "expiry": "Link expires in 48 hours."
     }
+  },
+  "legal": {
+    "terms": {
+      "version": "Version 1.0",
+      "lastUpdated": "Last updated: October 2026",
+      "title": "Terms of Service",
+      "sections": [
+        {
+          "heading": "1. Introduction & Acceptance",
+          "body": "Welcome to Carry My Words. By accessing or using our platform, you agree to form a binding agreement with us under these terms. If you do not agree to these terms, please do not use our service."
+        },
+        {
+          "heading": "2. Eligibility",
+          "body": "You must be at least 16 years old to use Carry My Words. Minors require the consent of a parent or guardian to make purchases or use premium features."
+        },
+        {
+          "heading": "3. Account Security",
+          "body": "You are fully responsible for maintaining the confidentiality and security of your account, including your magic links and passwords. Notify us immediately of any unauthorized use."
+        },
+        {
+          "heading": "4. Acceptable Use",
+          "body": "Carry My Words is designed for personal and emotional messages. You agree not to use our platform to distribute illegal content, harassment, threats, spam, or malicious material."
+        },
+        {
+          "heading": "5. User Content & Ownership",
+          "body": "You retain full ownership and intellectual property rights over all your text, audio, and video messages. We only obtain the necessary license to store your data securely and deliver it strictly according to the rules and timelines you establish."
+        },
+        {
+          "heading": "6. Message Delivery & Scheduling",
+          "body": "While we strive for precise and accurate delivery, our service relies on third-party email providers. Consequently, we cannot guarantee 100% uptime, immediate inbox placement, or identical formatting on the recipient's end."
+        },
+        {
+          "heading": "7. Trusted Contacts & Check-ins",
+          "body": "By assigning trusted contacts, you authorize us to reach out to them if you fail to respond to your check-ins over the specified period. We are not responsible if the contact details you provide are incorrect, outdated, or unresponsive."
+        },
+        {
+          "heading": "8. Fees & Subscriptions",
+          "body": "Certain features (Pro features) require payment via our authorized payment processor (Stripe). Subscriptions automatically renew at the end of their billing cycle unless you cancel them beforehand."
+        },
+        {
+          "heading": "9. Refund Policy",
+          "body": "You may request a full refund within 14 days of your initial purchase provided you have not actively utilized the premium features (such as scheduling multiple messages or uploading video/audio). Outside of this window, payments are non-refundable."
+        },
+        {
+          "heading": "10. Disclaimers",
+          "body": "Our service is provided on an \"as is\" and \"as available\" basis. Carry My Words is a messaging tool; it is not a replacement for a legal will, testament, healthcare directive, or professional legal and financial advice."
+        },
+        {
+          "heading": "11. Limitation of Liability",
+          "body": "To the maximum extent permitted by law, our total liability to you for any damages, losses, or causes of action will not exceed the total amount you have paid us in the twelve (12) months prior to the incident. We bear no liability for emotional distress resulting from delayed or undelivered messages."
+        },
+        {
+          "heading": "12. Termination",
+          "body": "We reserve the right to suspend or terminate your account at our sole discretion if we reasonably believe you have violated these Terms of Service, particularly the acceptable use provisions."
+        },
+        {
+          "heading": "13. Governing Law",
+          "body": "These terms are governed by the laws of the State of Delaware, United States, without regard to its conflict of law principles."
+        },
+        {
+          "heading": "14. Changes & Contact",
+          "body": "We may occasionally update these terms (reflected in the version number above). If you have questions regarding these terms, please contact us."
+        }
+      ]
+    },
+    "privacy": {
+      "version": "Version 1.0",
+      "lastUpdated": "Last updated: October 2026",
+      "title": "Privacy Policy",
+      "sections": [
+        {
+          "heading": "1. Introduction",
+          "body": "We are deeply committed to your privacy. This policy explains how we collect, use, and protect your information when you use Carry My Words. We act as a data processor for the content of your scheduled messages."
+        },
+        {
+          "heading": "2. Data We Collect",
+          "body": "We collect the information you provide directly to us: your email, name, IP address (for security purposes), and the raw content of the messages (text, audio, and video) you compose."
+        },
+        {
+          "heading": "3. Account & Authentication",
+          "body": "We handle authentication via secure magic link tokens and password hashes using Supabase Auth. We do not have access to your raw password."
+        },
+        {
+          "heading": "4. Payments (Stripe)",
+          "body": "All payment processing is handled securely by Stripe. We do not store, process, or transmit your full credit card numbers on our servers."
+        },
+        {
+          "heading": "5. Content Storage & Encryption",
+          "body": "Your text, audio, and video files are securely encrypted and stored in databases and storage buckets managed by Supabase. Your messages are strictly kept private and are only released when your defined delivery conditions are met."
+        },
+        {
+          "heading": "6. Cookies & Tracking",
+          "body": "We use strictly necessary cookies to maintain your session and ensure platform security. We adopt a minimalist approach to tracking and do not use intrusive third-party advertising cookies."
+        },
+        {
+          "heading": "7. Analytics",
+          "body": "We may collect and analyze anonymous usage events (for instance, the number of 'Message Created' events) to measure and improve our application. This data never includes or exposes your personal message content."
+        },
+        {
+          "heading": "8. Retention & Deletion",
+          "body": "You have full control over your active messages and can delete them at any time. When you delete a message, it is permanently wiped from our active databases along with any attached media files."
+        },
+        {
+          "heading": "9. User Rights",
+          "body": "Depending on your location (e.g., under GDPR or CCPA), you have the right to access, correct, export, or request the deletion of your personal data."
+        },
+        {
+          "heading": "10. Children's Privacy",
+          "body": "Carry My Words is not intended for children under 13 years of age, and we do not knowingly collect personal data from them."
+        },
+        {
+          "heading": "11. International Transfers",
+          "body": "Your data is primarily stored on servers located in the United States. By using our service, you consent to this transfer and processing across borders seamlessly securely."
+        },
+        {
+          "heading": "12. Security Measures",
+          "body": "We enforce strict Row Level Security (RLS) in our database, encrypt all data in transit via TLS, and heavily restrict administrative access to our production environments to protect your information."
+        },
+        {
+          "heading": "13. Contact Us",
+          "body": "If you have any questions, concerns, or requests regarding this Privacy Policy, please reach out to us."
+        }
+      ]
+    }
   }
 }
