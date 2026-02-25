@@ -22,7 +22,7 @@ interface ProfileFormProps {
     locale?: string
 }
 
-export function ProfileForm({ initialData, dictionary, onboarding = false, locale = 'es' }: ProfileFormProps) {
+export function ProfileForm({ initialData, dictionary, onboarding = false, locale }: ProfileFormProps) {
     const t = dictionary.profile.form
     const router = useRouter()
     const [form, setForm] = useState<ProfileData>(initialData)
@@ -85,8 +85,8 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
 
             // After a successful save during onboarding, return the user to message creation.
             // Guard: only when the onboarding flag is explicitly set (no redirect on normal edits).
-            if (onboarding) {
-                setTimeout(() => router.push(`/${locale}/messages/create`), 400)
+            if (onboarding && locale) {
+                router.push(`/${locale}/messages/create`)
             }
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : t.errors.saveError
