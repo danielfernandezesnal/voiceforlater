@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getEffectivePlan } from "@/lib/plan-resolver";
 import { PlanUpgradeSuccess } from "@/components/dashboard/plan/plan-upgrade-success";
 import { PlanCurrentCard } from "@/components/dashboard/plan/plan-current-card";
 import { PlanCompare } from "@/components/dashboard/plan/plan-compare";
@@ -19,16 +20,31 @@ export default async function PlanPage({
         redirect(`/${locale}/auth/login`);
     }
 
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('plan')
-        .eq('id', user.id)
-        .single();
+    // --- Authoritative plan resolution ---
+    // getEffectivePlan() reads user_subscriptions first, falls back to profiles.plan.
+    const effectivePlan = await getEffectivePlan(supabase, user.id);
 
-    // Default to 'free' if null, and Capitalize for display (free -> Free, pro -> Pro)
-    const rawPlan = profile?.plan || 'free';
-    const planName = rawPlan.charAt(0).toUpperCase() + rawPlan.slice(1);
-    const status = "Activo"; // TODO: obtener estado real de suscripción (active, trialing, past_due)
+    // --- Live subscription status from source of truth ---
+    // Read status and cancel_at_period_end directly from user_subscriptions.
+    // Falls back to "free" for users with no subscription row.
+    const { data: subscription } = await supabase
+        .from("user_subscriptions")
+        .select("status, cancel_at_period_end")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+    // Derive display status:
+    // - If cancelling at period end: treat as "canceling"
+    // - Otherwise: use the real DB status (active, trialing, past_due, canceled, unpaid)
+    // - No subscription row: "free"
+    const rawStatus = subscription?.status ?? "free";
+    const status =
+        subscription?.cancel_at_period_end && rawStatus === "active"
+            ? "canceling"
+            : rawStatus;
+
+    // Capitalize plan name for display (free → Free, pro → Pro)
+    const planName = effectivePlan.charAt(0).toUpperCase() + effectivePlan.slice(1);
 
     return (
         <div className="max-w-3xl mx-auto space-y-8">
