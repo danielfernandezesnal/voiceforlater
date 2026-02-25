@@ -30,7 +30,8 @@ const nextConfig: NextConfig = {
       "base-uri 'self'",
       `frame-src ${stripeJs} https://hooks.stripe.com`,
       "frame-ancestors 'none'",
-      "form-action 'self'"
+      "form-action 'self'",
+      "report-uri /api/csp-report"
     ].join('; ');
 
     const globalHeaders = [
