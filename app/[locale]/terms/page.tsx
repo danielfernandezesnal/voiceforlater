@@ -13,6 +13,7 @@ export default async function TermsPage({
     const { locale: localeParam } = await params;
     const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
     const dict = await getDictionary(locale);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { title, version, lastUpdated, sections } = (dict as any).legal.terms;
 
     return (
