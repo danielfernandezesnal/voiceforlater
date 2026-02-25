@@ -270,12 +270,10 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                     <div className="bg-card w-full max-w-lg p-8 rounded-2xl border border-border shadow-2xl space-y-8 animate-in zoom-in-95 fade-in duration-300">
                         <div className="text-center space-y-3">
                             <h2 className="text-2xl font-serif font-medium tracking-tight">
-                                {locale === 'es' ? 'Una Breve Formalidad' : 'A Brief Formality'}
+                                {dictionary.wizard.tosModal.title}
                             </h2>
                             <p className="text-base text-muted-foreground">
-                                {locale === 'es'
-                                    ? 'Para mantener un espacio seguro y de confianza, te pedimos que aceptes nuestros Términos de Servicio. Esto simplemente confirma que Carry My Words se utilizará con un propósito valioso y genuino.'
-                                    : 'To maintain a safe and trusted space, we kindly ask you to accept our Terms of Service. This simply confirms that Carry My Words will be used for its intended, meaningful purpose.'}
+                                {dictionary.wizard.tosModal.subtitle}
                             </p>
                         </div>
                         <div className="flex items-start gap-4 p-5 bg-muted rounded-xl border border-border/50">
@@ -287,7 +285,10 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                                 onChange={(e) => setTosAccepted(e.target.checked)}
                             />
                             <label htmlFor="tos-accept" className="text-sm text-foreground/90 leading-relaxed cursor-pointer selection:bg-transparent">
-                                I have read and agree to the <Link href={`/${locale}/terms`} target="_blank" className="text-primary hover:underline font-medium">Terms of Service</Link> and <Link href={`/${locale}/privacy`} target="_blank" className="text-primary hover:underline font-medium">Privacy Policy</Link>.
+                                {dictionary.wizard.tosModal.checkboxPre}
+                                <Link href={`/${locale}/terms`} target="_blank" className="text-primary hover:underline font-medium">{dictionary.wizard.tosModal.checkboxTerms}</Link>
+                                {dictionary.wizard.tosModal.checkboxMid}
+                                <Link href={`/${locale}/privacy`} target="_blank" className="text-primary hover:underline font-medium">{dictionary.wizard.tosModal.checkboxPrivacy}</Link>.
                             </label>
                         </div>
                         <div className="flex justify-between gap-4 pt-4">
@@ -295,7 +296,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                                 onClick={() => { setShowTosModal(false); setTosAccepted(false) }}
                                 className="btn-secondary w-full"
                             >
-                                Cancel
+                                {dictionary.wizard.tosModal.cancel}
                             </button>
                             <button
                                 disabled={!tosAccepted}
@@ -319,7 +320,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                                     }
                                 }}
                             >
-                                Continue to Save
+                                {dictionary.wizard.tosModal.confirm}
                             </button>
                         </div>
                     </div>

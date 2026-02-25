@@ -311,6 +311,54 @@
       "audioContent": "🎤 {seconds}s audio",
       "videoContent": "📹 {seconds}s video",
       "noContactWarning": "Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza."
+    },
+    "tosModal": {
+      "title": "Una Breve Formalidad",
+      "subtitle": "Para mantener un espacio seguro y de confianza, te pedimos que aceptes nuestros Términos de Servicio. Esto simplemente confirma que Carry My Words se utilizará con un propósito valioso y genuino.",
+      "checkboxPre": "He leído y acepto los ",
+      "checkboxMid": " y la ",
+      "checkboxTerms": "Términos de Servicio",
+      "checkboxPrivacy": "Política de Privacidad",
+      "cancel": "Cancelar",
+      "confirm": "Continuar para guardar"
+    }
+  },
+  "profile": {
+    "title": "Mi Perfil",
+    "subtitle": "Configuración de tu cuenta y datos personales.",
+    "onboardingBanner": {
+      "heading": "Completá tu perfil para comenzar",
+      "body": "Para crear tu primer mensaje, necesitamos conocerte un poco mejor. Por favor, completá los campos obligatorios."
+    },
+    "form": {
+      "personalData": "Datos personales",
+      "firstName": "Nombre",
+      "firstNamePlaceholder": "Tu nombre",
+      "lastName": "Apellido",
+      "lastNamePlaceholder": "Tu apellido",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "emailChangeNotice": "Al cambiar tu email, recibirás un correo de confirmación en la nueva dirección.",
+      "locationContact": "Ubicación y contacto",
+      "country": "País",
+      "countryPlaceholder": "Seleccionar país",
+      "city": "Ciudad",
+      "cityOptional": "(opcional)",
+      "cityPlaceholder": "Ej: Buenos Aires",
+      "phone": "Teléfono",
+      "phoneOptional": "(opcional)",
+      "phonePlaceholder": "Ej: 99 123 456",
+      "save": "Guardar cambios",
+      "saving": "Guardando...",
+      "errors": {
+        "countryRequired": "El país es obligatorio.",
+        "saveFallback": "Error al guardar",
+        "saveError": "Error al guardar el perfil."
+      },
+      "success": {
+        "saved": "Perfil guardado correctamente.",
+        "emailConfirmation": " Se envió un correo de confirmación a tu nueva dirección de email."
+      }
     }
   },
   "checkin": {
