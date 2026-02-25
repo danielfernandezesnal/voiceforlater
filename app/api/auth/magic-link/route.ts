@@ -40,9 +40,10 @@ export async function POST(request: NextRequest) {
 
     const { properties } = data;
     const tokenHash = properties.hashed_token;
+    const actionType = properties.verification_type || 'magiclink';
 
     // Construct our own direct callback link to avoid Supabase's implicit flow redirect
-    const magicLink = `${origin.replace(/\/$/, '')}/${locale || 'en'}/auth/callback?token_hash=${tokenHash}&type=magiclink`;
+    const magicLink = `${origin.replace(/\/$/, '')}/${locale || 'en'}/auth/callback?token_hash=${tokenHash}&type=${actionType}`;
 
     // Determine recipient email (admin redirect)
     const isAdminLogin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
