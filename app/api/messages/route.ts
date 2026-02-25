@@ -547,8 +547,6 @@ export async function PUT(request: NextRequest) {
 
         // Update Trusted Contacts
         if (deliveryMode === 'checkin') {
-            console.log(`[DEBUG PUT] Updating trusted contacts. IDs received: ${JSON.stringify(trustedContactIds)}`);
-
             // Remove existing
             const { error: delError } = await supabase.from('message_trusted_contacts').delete().eq('message_id', messageId);
             if (delError) console.error('[DEBUG PUT] Delete TC error:', delError);
