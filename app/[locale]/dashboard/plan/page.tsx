@@ -33,15 +33,11 @@ export default async function PlanPage({
         .eq("user_id", user.id)
         .maybeSingle();
 
-    // Derive display status:
-    // - If cancelling at period end: treat as "canceling"
-    // - Otherwise: use the real DB status (active, trialing, past_due, canceled, unpaid)
-    // - No subscription row: "free"
-    const rawStatus = subscription?.status ?? "free";
-    const status =
-        subscription?.cancel_at_period_end && rawStatus === "active"
-            ? "canceling"
-            : rawStatus;
+    // Real subscription status (active, trialing, past_due, canceled, unpaid) or "free".
+    // cancel_at_period_end is surfaced as a separate boolean — never merged into status.
+    const status = subscription?.status ?? "free";
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const isCanceling = subscription?.cancel_at_period_end === true;
 
     // Capitalize plan name for display (free → Free, pro → Pro)
     const planName = effectivePlan.charAt(0).toUpperCase() + effectivePlan.slice(1);
