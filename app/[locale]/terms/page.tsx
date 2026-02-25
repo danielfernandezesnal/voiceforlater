@@ -5,6 +5,10 @@ export async function generateMetadata(): Promise<Metadata> {
     return { title: "Terms of Service | Carry My Words" };
 }
 
+type LegalSection = { heading: string; body: string };
+type LegalDoc = { title: string; version: string; lastUpdated: string; sections: LegalSection[] };
+type LegalDict = { legal: { terms: LegalDoc; privacy: LegalDoc } };
+
 export default async function TermsPage({
     params,
 }: {
@@ -13,8 +17,7 @@ export default async function TermsPage({
     const { locale: localeParam } = await params;
     const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
     const dict = await getDictionary(locale);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { title, version, lastUpdated, sections } = (dict as any).legal.terms;
+    const { title, version, lastUpdated, sections } = (dict as unknown as LegalDict).legal.terms;
 
     return (
         <section className="min-h-screen bg-background py-24 px-6">
@@ -24,7 +27,7 @@ export default async function TermsPage({
                     {version} · {lastUpdated}
                 </p>
 
-                {sections.map((section: { heading: string; body: string }, index: number) => (
+                {sections.map((section: LegalSection, index: number) => (
                     <div key={index}>
                         <h2>{section.heading}</h2>
                         <p>{section.body}</p>
