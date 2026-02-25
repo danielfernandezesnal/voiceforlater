@@ -64,7 +64,7 @@ export default async function ProfilePage({
                 </div>
             )}
 
-            <ProfileForm initialData={initialData} dictionary={dict} />
+            <ProfileForm initialData={initialData} dictionary={dict} onboarding={showOnboarding} locale={locale} />
         </div>
     );
 }

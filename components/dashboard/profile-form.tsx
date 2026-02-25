@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 import { COUNTRIES } from '@/lib/countries'
 import { CALLING_CODES, parsePhone } from '@/lib/callingCodes'
 import type { Dictionary } from '@/lib/i18n'
@@ -17,10 +18,13 @@ interface ProfileData {
 interface ProfileFormProps {
     initialData: ProfileData
     dictionary: Dictionary
+    onboarding?: boolean
+    locale?: string
 }
 
-export function ProfileForm({ initialData, dictionary }: ProfileFormProps) {
+export function ProfileForm({ initialData, dictionary, onboarding = false, locale = 'es' }: ProfileFormProps) {
     const t = dictionary.profile.form
+    const router = useRouter()
     const [form, setForm] = useState<ProfileData>(initialData)
     const [isSaving, setIsSaving] = useState(false)
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
@@ -78,6 +82,12 @@ export function ProfileForm({ initialData, dictionary }: ProfileFormProps) {
             }
 
             setMessage({ type: 'success', text: successText })
+
+            // After a successful save during onboarding, return the user to message creation.
+            // Guard: only when the onboarding flag is explicitly set (no redirect on normal edits).
+            if (onboarding) {
+                setTimeout(() => router.push(`/${locale}/messages/create`), 400)
+            }
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : t.errors.saveError
             setMessage({ type: 'error', text: msg || t.errors.saveError })
