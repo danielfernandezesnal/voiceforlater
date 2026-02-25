@@ -33,29 +33,41 @@ const nextConfig: NextConfig = {
       "form-action 'self'"
     ].join('; ');
 
+    const globalHeaders = [
+      {
+        key: 'Content-Security-Policy-Report-Only',
+        value: csp,
+      },
+      {
+        key: 'X-Content-Type-Options',
+        value: 'nosniff',
+      },
+      {
+        key: 'Referrer-Policy',
+        value: 'strict-origin-when-cross-origin',
+      },
+      {
+        key: 'Permissions-Policy',
+        value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+      },
+      {
+        key: 'X-Frame-Options',
+        value: 'DENY',
+      }
+    ];
+
+    if (process.env.NODE_ENV === 'production') {
+      globalHeaders.push({
+        key: 'Strict-Transport-Security',
+        value: 'max-age=31536000; includeSubDomains; preload',
+      });
+    }
+
     return [
       {
         // Aplica a todas las rutas
         source: '/:path*',
-        headers: [
-          {
-            key: 'Content-Security-Policy-Report-Only',
-            value: csp,
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
-          }
-          // Nota: Omitimos X-Frame-Options porque CSP frame-ancestors lo reemplaza y es más flexible si a futuro requieres un origen específico.
-        ],
+        headers: globalHeaders,
       },
     ];
   },
