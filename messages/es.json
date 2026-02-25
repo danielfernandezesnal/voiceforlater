@@ -13,15 +13,15 @@
     "delete": "Eliminar",
     "confirm": "Confirmar",
     "getStarted": "Crear mi primer mensaje",
-    "seeHow": "Leer cómo funciona",
+    "seeHow": "Cómo funciona",
     "price": "USD {amount}",
     "sentAt": "Enviado el "
   },
   "landing": {
     "hero": {
-      "title": "Una carta hacia el futuro.",
-      "subtitle": "Preservá tus pensamientos con cuidado, para ser entregados exactamente cuando más importen.",
-      "cta": "Escribir tu primera carta",
+      "title": "Tus palabras cuando más importan",
+      "subtitle": "Un espacio para dejar mensajes que viajen en el tiempo, para quienes más quieres.",
+      "cta": "Crear mi primer mensaje",
       "microcopy": "Te lleva al creador de mensajes. Sin tarjeta. Sin compromiso."
     },
     "emotional": {
@@ -176,7 +176,7 @@
     "subtitle": "Acá podés crear, editar o eliminar los mensajes que dejaste grabados.",
     "empty": {
       "title": "Todavía no creaste ningún mensaje.",
-      "description": "Tu archivo está vacío en este momento. Empezá a escribir tu primer mensaje para el futuro.",
+      "description": "Cuando lo hagas, aparecerán acá.",
       "cta": "Crear Tu Primer Mensaje"
     },
     "createMessage": "Nuevo mensaje",
