@@ -324,6 +324,54 @@
       "audioContent": "🎤 {seconds}s audio",
       "videoContent": "📹 {seconds}s video",
       "noContactWarning": "This message will not be sent automatically until you assign a trusted contact."
+    },
+    "tosModal": {
+      "title": "A Brief Formality",
+      "subtitle": "To maintain a safe and trusted space, we kindly ask you to accept our Terms of Service. This simply confirms that Carry My Words will be used for its intended, meaningful purpose.",
+      "checkboxPre": "I have read and agree to the ",
+      "checkboxMid": " and ",
+      "checkboxTerms": "Terms of Service",
+      "checkboxPrivacy": "Privacy Policy",
+      "cancel": "Cancel",
+      "confirm": "Continue to Save"
+    }
+  },
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Your account settings and personal information.",
+    "onboardingBanner": {
+      "heading": "Complete your profile to get started",
+      "body": "To create your first message, we need to know a little more about you. Please fill in the required fields."
+    },
+    "form": {
+      "personalData": "Personal information",
+      "firstName": "First name",
+      "firstNamePlaceholder": "Your first name",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Your last name",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com",
+      "emailChangeNotice": "When you change your email, you will receive a confirmation email at the new address.",
+      "locationContact": "Location and contact",
+      "country": "Country",
+      "countryPlaceholder": "Select country",
+      "city": "City",
+      "cityOptional": "(optional)",
+      "cityPlaceholder": "e.g. New York",
+      "phone": "Phone",
+      "phoneOptional": "(optional)",
+      "phonePlaceholder": "e.g. 99 123 456",
+      "save": "Save changes",
+      "saving": "Saving...",
+      "errors": {
+        "countryRequired": "Country is required.",
+        "saveFallback": "Error saving",
+        "saveError": "Error saving profile."
+      },
+      "success": {
+        "saved": "Profile saved successfully.",
+        "emailConfirmation": " A confirmation email has been sent to your new address."
+      }
     }
   },
   "checkin": {

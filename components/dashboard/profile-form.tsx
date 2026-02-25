@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import { COUNTRIES } from '@/lib/countries'
 import { CALLING_CODES, parsePhone } from '@/lib/callingCodes'
+import type { Dictionary } from '@/lib/i18n'
 
 interface ProfileData {
     first_name: string
@@ -15,9 +16,11 @@ interface ProfileData {
 
 interface ProfileFormProps {
     initialData: ProfileData
+    dictionary: Dictionary
 }
 
-export function ProfileForm({ initialData }: ProfileFormProps) {
+export function ProfileForm({ initialData, dictionary }: ProfileFormProps) {
+    const t = dictionary.profile.form
     const [form, setForm] = useState<ProfileData>(initialData)
     const [isSaving, setIsSaving] = useState(false)
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
@@ -45,7 +48,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
 
         // Validate country
         if (!form.country.trim()) {
-            setMessage({ type: 'error', text: 'El país es obligatorio.' })
+            setMessage({ type: 'error', text: t.errors.countryRequired })
             return
         }
 
@@ -66,23 +69,23 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
             const data = await res.json()
 
             if (!res.ok) {
-                throw new Error(data.error || 'Error al guardar')
+                throw new Error(data.error || t.errors.saveFallback)
             }
 
-            let successText = 'Perfil guardado correctamente.'
+            let successText = t.success.saved
             if (data.emailConfirmationRequired) {
-                successText += ' Se envió un correo de confirmación a tu nueva dirección de email.'
+                successText += t.success.emailConfirmation
             }
 
             setMessage({ type: 'success', text: successText })
-        } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-            setMessage({ type: 'error', text: err.message || 'Error al guardar el perfil.' })
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : t.errors.saveError
+            setMessage({ type: 'error', text: msg || t.errors.saveError })
         } finally {
             setIsSaving(false)
         }
     }
 
-    // TODO: i18n — replace hardcoded ES strings with dictionary keys
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             {/* Status message */}
@@ -98,33 +101,33 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
             )}
 
             <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-5">
-                <h2 className="text-lg font-semibold mb-1">Datos personales</h2>
+                <h2 className="text-lg font-semibold mb-1">{t.personalData}</h2>
 
                 {/* Name row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium mb-1.5" htmlFor="first_name">
-                            Nombre
+                            {t.firstName}
                         </label>
                         <input
                             id="first_name"
                             type="text"
                             value={form.first_name}
                             onChange={e => handleChange('first_name', e.target.value)}
-                            placeholder="Tu nombre"
+                            placeholder={t.firstNamePlaceholder}
                             className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
                         />
                     </div>
                     <div>
                         <label className="block text-sm font-medium mb-1.5" htmlFor="last_name">
-                            Apellido
+                            {t.lastName}
                         </label>
                         <input
                             id="last_name"
                             type="text"
                             value={form.last_name}
                             onChange={e => handleChange('last_name', e.target.value)}
-                            placeholder="Tu apellido"
+                            placeholder={t.lastNamePlaceholder}
                             className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
                         />
                     </div>
@@ -133,33 +136,33 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                 {/* Email */}
                 <div>
                     <label className="block text-sm font-medium mb-1.5" htmlFor="email">
-                        Email
+                        {t.email}
                     </label>
                     <input
                         id="email"
                         type="email"
                         value={form.email}
                         onChange={e => handleChange('email', e.target.value)}
-                        placeholder="tu@email.com"
+                        placeholder={t.emailPlaceholder}
                         required
                         className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
                     />
                     {form.email !== initialData.email && (
                         <p className="text-xs text-amber-600 mt-1">
-                            Al cambiar tu email, recibirás un correo de confirmación en la nueva dirección.
+                            {t.emailChangeNotice}
                         </p>
                     )}
                 </div>
             </div>
 
             <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-5">
-                <h2 className="text-lg font-semibold mb-1">Ubicación y contacto</h2>
+                <h2 className="text-lg font-semibold mb-1">{t.locationContact}</h2>
 
                 {/* Country (dropdown) + City */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium mb-1.5" htmlFor="country">
-                            País <span className="text-red-400">*</span>
+                            {t.country} <span className="text-red-400">*</span>
                         </label>
                         <select
                             id="country"
@@ -168,7 +171,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                             required
                             className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
                         >
-                            <option value="">Seleccionar país</option>
+                            <option value="">{t.countryPlaceholder}</option>
                             {COUNTRIES.map(c => (
                                 <option key={c.code} value={c.name}>
                                     {c.name}
@@ -178,14 +181,14 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                     </div>
                     <div>
                         <label className="block text-sm font-medium mb-1.5" htmlFor="city">
-                            Ciudad <span className="text-muted-foreground text-xs">(opcional)</span>
+                            {t.city} <span className="text-muted-foreground text-xs">{t.cityOptional}</span>
                         </label>
                         <input
                             id="city"
                             type="text"
                             value={form.city}
                             onChange={e => handleChange('city', e.target.value)}
-                            placeholder="Ej: Buenos Aires"
+                            placeholder={t.cityPlaceholder}
                             className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
                         />
                     </div>
@@ -194,7 +197,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                 {/* Phone: dial code select + local number input */}
                 <div>
                     <label className="block text-sm font-medium mb-1.5">
-                        Teléfono <span className="text-muted-foreground text-xs">(opcional)</span>
+                        {t.phone} <span className="text-muted-foreground text-xs">{t.phoneOptional}</span>
                     </label>
                     <div className="grid grid-cols-[130px_1fr] sm:grid-cols-[140px_1fr] gap-2">
                         <select
@@ -214,7 +217,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                             type="tel"
                             value={localNumber}
                             onChange={e => handleLocalNumberChange(e.target.value)}
-                            placeholder="Ej: 99 123 456"
+                            placeholder={t.phonePlaceholder}
                             className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
                         />
                     </div>
@@ -228,7 +231,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                     disabled={isSaving}
                     className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 disabled:opacity-50 transition-colors shadow-sm min-w-[140px]"
                 >
-                    {isSaving ? 'Guardando...' : 'Guardar cambios'}
+                    {isSaving ? t.saving : t.save}
                 </button>
             </div>
         </form>
