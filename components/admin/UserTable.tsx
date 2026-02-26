@@ -79,6 +79,17 @@ export default function UserTable({ dict }: UserTableProps) {
         fetchUsers(nextPage, search, plan, statusFilter);
     };
 
+    const getStatusLabel = (status?: string) => {
+        if (!status) return '—';
+        const s = status.toLowerCase();
+        if (s === 'active') return dict.admin.users.table.statusActive;
+        if (s === 'trialing') return dict.admin.users.table.statusTrialing;
+        if (s === 'past_due') return dict.admin.users.table.statusPastDue;
+        if (s === 'canceled') return dict.admin.users.table.statusCanceled;
+        if (s === 'inactive') return dict.admin.users.table.statusInactive;
+        return '—';
+    };
+
     if (error) {
         return (
             <div className="bg-destructive/10 border border-destructive/20 rounded-2xl p-6 text-destructive text-center">
@@ -194,7 +205,7 @@ export default function UserTable({ dict }: UserTableProps) {
                                             ? 'bg-green-100/50 text-green-700 border border-green-200'
                                             : 'bg-yellow-100/50 text-yellow-700 border border-yellow-200'
                                             }`}>
-                                            {user.status}
+                                            {getStatusLabel(user.status)}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
