@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { requireOwner } from "@/lib/server/requireAdmin";
 import AdminDashboardClient from "./admin-dashboard-client";
+import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 
 export const runtime = 'nodejs';
 
@@ -11,7 +12,9 @@ interface PageProps {
 export default async function AdminDashboard({
     params,
 }: PageProps) {
-    const { locale } = await params;
+    const { locale: localeParam } = await params;
+    const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
+    const dict = await getDictionary(locale);
 
     // Strict owner-only access
     try {
@@ -21,6 +24,6 @@ export default async function AdminDashboard({
     }
 
     return (
-        <AdminDashboardClient locale={locale} />
+        <AdminDashboardClient locale={locale} dict={dict} />
     );
 }
