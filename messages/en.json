@@ -19,6 +19,7 @@
   },
   "landing": {
     "hero": {
+      "tag": "Messages that travel through time",
       "title": "Your words, when they matter most.",
       "subtitle": "A space to leave messages that travel through time, for those you love most.",
       "cta": "Create my first message",
@@ -33,29 +34,19 @@
       ]
     },
     "uses": {
+      "tag": "For whom, for when",
       "title": "Moments worth saying",
       "subtitle": "Not all messages are for now. Some need time, context, or distance.",
       "items": [
-        {
-          "title": "For your children",
-          "description": "A message for them to receive when they are older."
-        },
-        {
-          "title": "For the right moment",
-          "description": "An audio for someone special, arriving exactly when needed."
-        },
-        {
-          "title": "To leave something unsaid",
-          "description": "Words you don't know how to say today, but want heard tomorrow."
-        },
-        {
-          "title": "So your words remain",
-          "description": "A memory, a story, or advice you want to keep."
-        },
-        {
-          "title": "For yourself in the future",
-          "description": "A message for your future self (time capsule)."
-        }
+        "A message for your children when they are older",
+        "Something you want to say, but not right now",
+        "Words for an important date",
+        "A supportive message for someone who will need it later",
+        "Something that's hard to say in person",
+        "A message for someone you can't talk to today",
+        "A message that should only be sent if you no longer respond",
+        "A message for your future self (time capsule)",
+        "Something you don't want to forget to say"
       ],
       "examples_label": "Examples:",
       "closing": "It's not just for goodbyes.\nIt's for moments that haven't arrived yet."
