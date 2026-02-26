@@ -30,7 +30,7 @@ export default async function LocaleHomePage({
     const dict = await getDictionary(locale);
 
     return (
-        <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <div className="min-h-screen flex flex-col" style={{ background: 'hsl(var(--cream))' }}>
             {/* Navbar */}
             <nav className="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
                 <div className="font-serif font-bold text-2xl tracking-tight text-primary">
@@ -51,24 +51,31 @@ export default async function LocaleHomePage({
                 </div>
             </nav>
 
-            {/* Hero Section - Editorial Rebrand */}
-            <section className="relative w-full h-[70vh] min-h-[600px] flex flex-col items-center justify-center px-6">
-                <Image
-                    src="/assets/rebrand/hero-editorial.png"
-                    alt="Carry My Words - Editorial Hero"
-                    fill
-                    priority
-                    quality={95}
-                    className="object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-background/20"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-transparent"></div>
-
-                <div className="relative z-10 text-center max-w-5xl mx-auto transition-all duration-1000">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light tracking-tight mb-10 text-foreground leading-[1.1] md:whitespace-nowrap animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            {/* Hero Section — clean 2-column grid, self-contained */}
+            <section className="hero-grid">
+                {/* Left: text */}
+                <div className="flex flex-col justify-end px-[7%] pb-20 pt-16">
+                    <h1 className="font-serif font-light tracking-tight leading-[1.06] mb-10 animate-in fade-in slide-in-from-bottom-8 duration-1000"
+                        style={{ fontSize: 'clamp(3.4rem, 5.6vw, 5.6rem)', color: 'hsl(var(--ink))' }}>
                         {dict.landing.hero.title}
                     </h1>
+                </div>
+
+                {/* Right: image — overflow-hidden contains the fill image */}
+                <div className="hero-img-col relative overflow-hidden">
+                    <Image
+                        src="/assets/rebrand/hero-editorial.png"
+                        alt="Carry My Words - Editorial Hero"
+                        fill
+                        priority
+                        quality={95}
+                        className="object-cover object-center"
+                        style={{ filter: 'sepia(18%) saturate(0.9) brightness(1.05)' }}
+                    />
+                    {/* Left-edge fade blend */}
+                    <div className="absolute inset-0 pointer-events-none"
+                        style={{ background: 'linear-gradient(to right, hsl(var(--cream)) 0%, transparent 30%)' }}
+                    />
                 </div>
             </section>
 
