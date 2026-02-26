@@ -72,7 +72,9 @@ export async function middleware(request: NextRequest) {
 
     // If missing locale in path, redirect
     if (!pathnameHasLocale) {
-        request.nextUrl.pathname = `/${locale}${pathname}`;
+        // SPECIAL CASE: Admin area defaults to Spanish if no locale is explicitly provided in the path
+        const targetLocale = (pathname === '/admin' || pathname.startsWith('/admin/')) ? 'es' : locale;
+        request.nextUrl.pathname = `/${targetLocale}${pathname}`;
         return NextResponse.redirect(request.nextUrl);
     }
 

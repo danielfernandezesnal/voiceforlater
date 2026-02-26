@@ -147,8 +147,8 @@
     }
   },
   "auth": {
-    "login": "Sign In",
-    "logout": "Sign Out",
+    "login": "Log in",
+    "logout": "Log out",
     "emailLabel": "Email address",
     "passwordLabel": "Password",
     "emailPlaceholder": "you@example.com",
@@ -441,6 +441,11 @@
       "toDate": "To",
       "clear": "Clear"
     },
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "back": "Back to App"
+    },
     "analytics": {
       "title": "Product Analytics",
       "funnel": "Conversion Funnel",
@@ -465,6 +470,14 @@
         "email": "Email",
         "joined": "Joined",
         "plan": "Plan",
+        "renewal": "Renewal",
+        "planPro": "Pro",
+        "planFree": "Free",
+        "statusActive": "Active",
+        "statusTrialing": "Trialing",
+        "statusPastDue": "Past Due",
+        "statusCanceled": "Canceled",
+        "statusInactive": "Inactive",
         "messages": "Messages",
         "storage": "Storage",
         "emails": "Emails"
@@ -672,5 +685,8 @@
         }
       ]
     }
+  },
+  "contact": {
+    "title": "Contact us"
   }
 }

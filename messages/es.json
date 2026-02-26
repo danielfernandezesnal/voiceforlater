@@ -428,6 +428,11 @@
       "toDate": "Hasta",
       "clear": "Limpiar"
     },
+    "sidebar": {
+      "dashboard": "Panel Control",
+      "users": "Usuarios",
+      "back": "Volver a la App"
+    },
     "users": {
       "title": "Gestión de Usuarios",
       "searchPlaceholder": "Buscar por email...",
@@ -437,6 +442,14 @@
         "email": "Email",
         "joined": "Registro",
         "plan": "Plan",
+        "renewal": "Renovación",
+        "planPro": "Pro",
+        "planFree": "Free",
+        "statusActive": "Activo",
+        "statusTrialing": "Prueba",
+        "statusPastDue": "Vencido",
+        "statusCanceled": "Cancelado",
+        "statusInactive": "Inactivo",
         "messages": "Mensajes",
         "storage": "Espacio",
         "emails": "Emails"
@@ -659,5 +672,8 @@
         }
       ]
     }
+  },
+  "contact": {
+    "title": "Contacto"
   }
 }

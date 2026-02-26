@@ -58,11 +58,12 @@ export default async function LocaleHomePage({
                     alt="Carry My Words - Editorial Hero"
                     fill
                     priority
+                    quality={95}
                     className="object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-background/50"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-background/20"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-transparent"></div>
 
                 <div className="relative z-10 text-center max-w-5xl mx-auto transition-all duration-1000">
                     <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light tracking-tight mb-6 text-foreground leading-[1.1] md:whitespace-nowrap animate-in fade-in slide-in-from-bottom-8 duration-1000">
@@ -71,17 +72,7 @@ export default async function LocaleHomePage({
                     <p className="max-w-2xl mx-auto text-xl md:text-2xl text-muted-foreground leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
                         {dict.landing.hero.subtitle}
                     </p>
-                    <div className="mt-10 flex flex-col items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-400">
-                        <Link
-                            href={`/${locale}/auth/login`}
-                            className="btn-cta"
-                        >
-                            {(dict.landing.hero as unknown as { cta: string }).cta}
-                        </Link>
-                        <p className="text-sm text-muted-foreground/70 max-w-xs md:max-w-none text-center">
-                            {(dict.landing.hero as unknown as { microcopy: string }).microcopy}
-                        </p>
-                    </div>
+
                 </div>
             </section>
 
@@ -173,22 +164,26 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Delivery Options */}
-            <section className="py-24 px-6 max-w-6xl mx-auto w-full">
-                <h2 className="text-4xl md:text-5xl font-serif font-light text-center mb-20">{dict.landing.delivery.title}</h2>
-                <div className="grid md:grid-cols-2 gap-8 mb-20">
-                    <div className="bg-card p-10 rounded-2xl border border-border shadow-sm card-hover">
-                        <div className="w-12 h-12 bg-blue-100/50 text-blue-600 rounded-lg flex items-center justify-center mb-8 text-2xl">
+            <section className="py-32 px-6 max-w-5xl mx-auto w-full">
+                <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">{dict.landing.delivery.title}</h2>
+                <div className="grid md:grid-cols-2 gap-12 md:gap-16 mb-20">
+                    <div className="flex flex-col items-start gap-6 border-l border-border/40 pl-8 transition-colors hover:border-primary/40 group">
+                        <div className="text-2xl opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all">
                             📅
                         </div>
-                        <h3 className="text-2xl font-serif font-light mb-4">{dict.landing.delivery.date.title}</h3>
-                        <p className="text-lg text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
+                        <div>
+                            <h3 className="text-xl md:text-2xl font-serif font-light mb-4">{dict.landing.delivery.date.title}</h3>
+                            <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
+                        </div>
                     </div>
-                    <div className="bg-card p-10 rounded-2xl border border-border/50 shadow-sm card-hover">
-                        <div className="w-12 h-12 bg-green-100/50 text-green-600 rounded-lg flex items-center justify-center mb-8 text-2xl">
+                    <div className="flex flex-col items-start gap-6 border-l border-border/40 pl-8 transition-colors hover:border-primary/40 group">
+                        <div className="text-2xl opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all">
                             ⏱️
                         </div>
-                        <h3 className="text-2xl font-serif font-light mb-4">{dict.landing.delivery.checkin.title}</h3>
-                        <p className="text-lg text-muted-foreground leading-relaxed">{dict.landing.delivery.checkin.description}</p>
+                        <div>
+                            <h3 className="text-xl md:text-2xl font-serif font-light mb-4">{dict.landing.delivery.checkin.title}</h3>
+                            <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.checkin.description}</p>
+                        </div>
                     </div>
                 </div>
 
@@ -247,19 +242,19 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
-            {/* What VoiceForLater is NOT */}
-            <section className="py-24 px-6 bg-surface/50 border-y border-border/50">
-                <div className="max-w-4xl mx-auto">
-                    <h2 className="text-4xl md:text-5xl font-serif font-light text-center mb-16">{dict.landing.notWhat.title}</h2>
-                    <ul className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* What Carry My Words is NOT - Minimal Version */}
+            <section className="py-16 px-6 border-t border-border/30">
+                <div className="max-w-3xl mx-auto">
+                    <h2 className="text-xl md:text-2xl font-serif font-light text-center mb-10 opacity-80">{dict.landing.notWhat.title}</h2>
+                    <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8">
                         {dict.landing.notWhat.items.map((item, i) => (
-                            <li key={i} className="flex items-start gap-3 bg-card p-4 rounded-lg border border-border/50">
-                                <span className="text-muted-foreground mt-1">✗</span>
-                                <span className="text-muted-foreground">{item}</span>
-                            </li>
+                            <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground/70">
+                                <span className="text-xs">✕</span>
+                                <span>{item}</span>
+                            </div>
                         ))}
-                    </ul>
-                    <p className="text-center text-lg text-foreground font-medium max-w-2xl mx-auto">
+                    </div>
+                    <p className="text-center text-sm text-muted-foreground max-w-xl mx-auto italic">
                         {dict.landing.notWhat.clarification}
                     </p>
                 </div>
@@ -312,13 +307,7 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
-            {/* Contact Form Section */}
-            <section id="contact" className="py-24 px-6 bg-surface/50 border-b border-border/50">
-                <div className="max-w-xl mx-auto">
-                    <h2 className="text-4xl md:text-5xl font-serif font-light text-center mb-12">Contact Us</h2>
-                    <LandingContactForm />
-                </div>
-            </section>
+
 
             {/* Closing */}
             <section className="py-32 px-6 text-center">
@@ -340,7 +329,7 @@ export default async function LocaleHomePage({
                     <div className="flex gap-6">
                         <Link href={`/${locale}/privacy`} className="hover:text-foreground transition-colors">{dict.landing.footer.privacy}</Link>
                         <Link href={`/${locale}/terms`} className="hover:text-foreground transition-colors">{dict.landing.footer.terms}</Link>
-                        <a href="#contact" className="hover:text-foreground transition-colors">{dict.landing.footer.contact}</a>
+                        <Link href={`/${locale}/contact`} className="hover:text-foreground transition-colors">{dict.landing.footer.contact}</Link>
                     </div>
                     <div className="flex items-center gap-2">
                         <Link href="/en" className={locale === 'en' ? 'text-primary font-bold' : 'hover:text-foreground'}>EN</Link>

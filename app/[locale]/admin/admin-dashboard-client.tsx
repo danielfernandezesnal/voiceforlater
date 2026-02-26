@@ -4,9 +4,10 @@ import { useState, useEffect, useCallback } from 'react';
 
 interface Props {
     locale: string;
+    dict: any;
 }
 
-export default function AdminDashboardClient({ locale }: Props) {
+export default function AdminDashboardClient({ locale, dict }: Props) {
     const [totalUsers, setTotalUsers] = useState<number | null>(null);
     const [paidUsers, setPaidUsers] = useState<number | null>(null);
     const [storageMB, setStorageMB] = useState<number | null>(null);
@@ -93,11 +94,10 @@ export default function AdminDashboardClient({ locale }: Props) {
         <div className="min-h-screen bg-background text-foreground p-6 sm:p-10 space-y-10 font-sans">
             <header className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 className="text-4xl font-extrabold tracking-tight">Admin Dashboard</h1>
-                    <p className="text-muted-foreground mt-2">Platform insights and key performance indicators.</p>
+                    <h1 className="text-4xl font-extrabold tracking-tight">{dict.admin.title}</h1>
+                    <p className="text-muted-foreground mt-2">{dict.admin.users.title}</p>
                 </div>
                 <div></div>
-
             </header>
 
             <main className="max-w-7xl mx-auto space-y-8">
@@ -105,17 +105,17 @@ export default function AdminDashboardClient({ locale }: Props) {
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 bg-card border border-border rounded-2xl p-6 shadow-sm">
                     <div className="space-y-4 w-full">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Global Filters</h3>
+                            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{dict.admin.filters.title}</h3>
                             <button
                                 onClick={() => { setDateFrom(''); setDateTo(''); }}
                                 className="text-xs text-primary hover:underline"
                             >
-                                Reset to All Time
+                                {dict.admin.filters.clear}
                             </button>
                         </div>
                         <div className="flex flex-wrap gap-4 items-center">
                             <div className="flex flex-col gap-1.5">
-                                <label className="text-[10px] uppercase font-bold text-muted-foreground/70 ml-1">Start Date</label>
+                                <label className="text-[10px] uppercase font-bold text-muted-foreground/70 ml-1">{dict.admin.filters.fromDate}</label>
                                 <input
                                     type="date"
                                     value={dateFrom}
@@ -124,7 +124,7 @@ export default function AdminDashboardClient({ locale }: Props) {
                                 />
                             </div>
                             <div className="flex flex-col gap-1.5">
-                                <label className="text-[10px] uppercase font-bold text-muted-foreground/70 ml-1">End Date</label>
+                                <label className="text-[10px] uppercase font-bold text-muted-foreground/70 ml-1">{dict.admin.filters.toDate}</label>
                                 <input
                                     type="date"
                                     value={dateTo}
@@ -138,13 +138,13 @@ export default function AdminDashboardClient({ locale }: Props) {
                                     onClick={() => handlePreset('today')}
                                     className="px-4 py-2 text-xs bg-muted hover:bg-muted/80 rounded-xl transition font-medium"
                                 >
-                                    Today
+                                    {dict.admin.presets.today}
                                 </button>
                                 <button
                                     onClick={() => handlePreset('month')}
                                     className="px-4 py-2 text-xs bg-muted hover:bg-muted/80 rounded-xl transition font-medium"
                                 >
-                                    This Month
+                                    {dict.admin.presets.thisMonth}
                                 </button>
                             </div>
                         </div>
@@ -153,7 +153,7 @@ export default function AdminDashboardClient({ locale }: Props) {
                         onClick={fetchKPI}
                         className="w-full lg:w-auto px-8 py-3 bg-primary text-primary-foreground rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
                     >
-                        Apply Filters
+                        {dict.admin.actions.refresh}
                     </button>
                 </div>
 
@@ -164,7 +164,7 @@ export default function AdminDashboardClient({ locale }: Props) {
                         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
 
                         <div className="relative z-10">
-                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Total Users</h3>
+                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{dict.admin.kpis.totalUsers}</h3>
                             {loading ? (
                                 <div className="mt-4 flex items-baseline gap-1">
                                     <div className="h-10 w-24 bg-muted animate-pulse rounded-lg"></div>
@@ -179,7 +179,7 @@ export default function AdminDashboardClient({ locale }: Props) {
                                         {totalUsers?.toLocaleString() ?? 0}
                                     </span>
                                     <span className="text-xs text-muted-foreground mt-1 font-medium italic">
-                                        {dateFrom || dateTo ? 'Registered in period' : 'Total registered'}
+                                        {dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.today}
                                     </span>
                                 </div>
                             )}
@@ -189,7 +189,7 @@ export default function AdminDashboardClient({ locale }: Props) {
                     <div className="relative overflow-hidden group p-8 bg-card border border-border rounded-3xl shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
                         <div className="relative z-10">
-                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Paid Users</h3>
+                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{dict.admin.kpis.paidUsers}</h3>
                             {loading ? (
                                 <div className="mt-4 flex items-baseline gap-1">
                                     <div className="h-10 w-24 bg-muted animate-pulse rounded-lg"></div>
@@ -204,7 +204,7 @@ export default function AdminDashboardClient({ locale }: Props) {
                                         {paidUsers?.toLocaleString() ?? 0}
                                     </span>
                                     <span className="text-xs text-muted-foreground mt-1 font-medium italic">
-                                        {dateFrom || dateTo ? 'Payer in period' : 'Current active PRO'}
+                                        {dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.active}
                                     </span>
                                 </div>
                             )}
@@ -214,7 +214,7 @@ export default function AdminDashboardClient({ locale }: Props) {
                     <div className="relative overflow-hidden group p-8 bg-card border border-border rounded-3xl shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
                         <div className="relative z-10">
-                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">Storage Used (MB)</h3>
+                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{dict.admin.kpis.storageUsed} (MB)</h3>
                             {loading ? (
                                 <div className="mt-4 flex items-baseline gap-1">
                                     <div className="h-10 w-24 bg-muted animate-pulse rounded-lg"></div>
@@ -229,7 +229,7 @@ export default function AdminDashboardClient({ locale }: Props) {
                                         {storageMB?.toLocaleString() ?? 0}
                                     </span>
                                     <span className="text-xs text-muted-foreground mt-1 font-medium italic">
-                                        {dateFrom || dateTo ? 'Created in period' : 'Total uploaded'}
+                                        {dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.today}
                                     </span>
                                 </div>
                             )}
