@@ -196,6 +196,17 @@ html {
     background: hsl(var(--rose-border) / 0.35);
   }
 
+  /* Timeline description — legible on cream background */
+  .tl-desc {
+    font-size: 12.5px;
+    font-weight: 300;
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+    color: rgba(42, 37, 32, 0.72);
+    /* ink at 72% — passes WCAG AA on cream */
+    opacity: 1;
+  }
+
   /* Example card */
   .ex-card {
     @apply flex items-start gap-3.5 rounded-[10px] p-6 transition-all duration-200 cursor-default;
