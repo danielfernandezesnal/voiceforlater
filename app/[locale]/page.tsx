@@ -51,111 +51,112 @@ export default async function LocaleHomePage({
                 </div>
             </nav>
 
-            {/* Hero Section - Editorial Rebrand */}
-            <section className="relative w-full h-[70vh] min-h-[600px] flex flex-col items-center justify-center px-6">
-                <Image
-                    src="/assets/rebrand/hero-editorial.png"
-                    alt="Carry My Words - Editorial Hero"
-                    fill
-                    priority
-                    quality={95}
-                    className="object-cover object-center"
-                />
-                <div className="absolute inset-0 bg-background/20"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-transparent"></div>
-
-                <div className="relative z-10 text-center max-w-5xl mx-auto transition-all duration-1000">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light tracking-tight mb-10 text-foreground leading-[1.1] md:whitespace-nowrap animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            {/* Hero Section - Propuesta D: 2-column layout */}
+            <section className="relative w-full min-h-[86vh] grid grid-cols-1 md:grid-cols-[52%_48%] overflow-hidden bg-[hsl(var(--cream))]">
+                {/* Left: text column */}
+                <div className="relative z-10 flex flex-col justify-end px-[7%] pb-20 pt-16 md:pt-0">
+                    <span className="hero-tag mb-8">
+                        {dict.landing.hero.tag}
+                    </span>
+                    <h1 className="font-serif font-light tracking-tight text-[hsl(var(--ink))] leading-[1.06] mb-10 animate-in fade-in slide-in-from-bottom-8 duration-1000"
+                        style={{ fontSize: 'clamp(3.4rem, 5.6vw, 5.6rem)' }}>
                         {dict.landing.hero.title}
                     </h1>
+                    <Link
+                        href={`/${locale}/auth/login`}
+                        className="self-start bg-[hsl(var(--ink))] text-[hsl(var(--cream))] text-[10.5px] tracking-[0.14em] uppercase px-9 py-3.5 font-normal transition-colors duration-200 hover:bg-[hsl(var(--rose))] animate-in fade-in duration-1000 delay-300"
+                    >
+                        {dict.common.getStarted}
+                    </Link>
+                </div>
+
+                {/* Right: editorial image */}
+                <div className="relative overflow-hidden min-h-[55vw] md:min-h-0">
+                    <Image
+                        src="/assets/rebrand/hero-editorial.png"
+                        alt="Carry My Words - Editorial Hero"
+                        fill
+                        priority
+                        quality={95}
+                        className="object-cover object-center"
+                        style={{ filter: 'sepia(18%) saturate(0.9) brightness(1.05)' }}
+                    />
+                    {/* Fade blend to left */}
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, hsl(var(--cream)) 0%, transparent 28%)' }} />
+                    {/* Decorative ∞ */}
+                    <div className="deco-num absolute bottom-[-30px] right-[5%]" aria-hidden="true">∞</div>
                 </div>
             </section>
 
-            {/* Editorial Section - 3 Columns */}
-            <section className="py-24 px-6 max-w-6xl mx-auto w-full">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
-                    {/* Column 1 - Tiempo y futuro */}
-                    <div className="flex flex-col gap-6">
-                        {(locale === 'es'
-                            ? [
-                                "Un mensaje para tu hijo o hija cuando sea mayor",
-                                "Palabras para una fecha importante",
-                                "Un mensaje para vos mismo en el futuro (cápsula del tiempo)"
-                            ] : [
-                                "A message for your children when they are older",
-                                "Words for an important date",
-                                "A message for your future self (time capsule)"
-                            ]
-                        ).map((text, idx) => (
-                            <p key={idx} className="text-xl md:text-2xl font-serif font-light leading-relaxed text-muted-foreground">
-                                {text}
-                            </p>
-                        ))}
+            {/* Examples - Propuesta D card grid */}
+            <section className="py-[110px] px-[7%] bg-[hsl(var(--cream))] relative">
+                {/* Header: tag + title + deco num */}
+                <div className="flex items-start justify-between mb-14 gap-8">
+                    <div>
+                        <span className="examples-tag">{dict.landing.uses.tag}</span>
+                        <h2 className="font-serif font-normal text-[hsl(var(--ink))] leading-[1.1]"
+                            style={{ fontSize: 'clamp(2.6rem, 4vw, 3.8rem)' }}>
+                            {dict.landing.uses.title}
+                        </h2>
                     </div>
-                    {/* Column 2 - Lo que hoy no se puede decir */}
-                    <div className="flex flex-col gap-6">
-                        {(locale === 'es'
-                            ? [
-                                "Algo que querés decir, pero no ahora",
-                                "Algo que te cuesta decir en persona",
-                                "Algo que no querés olvidar decir"
-                            ] : [
-                                "Something you want to say, but not now",
-                                "Something that's hard to say in person",
-                                "Something you don't want to forget to say"
-                            ]
-                        ).map((text, idx) => (
-                            <p key={idx} className="text-xl md:text-2xl font-serif font-light leading-relaxed text-muted-foreground">
-                                {text}
-                            </p>
-                        ))}
-                    </div>
-                    {/* Column 3 - Distancia y ausencia */}
-                    <div className="flex flex-col gap-6">
-                        {(locale === 'es'
-                            ? [
-                                "Un mensaje de apoyo para alguien que sabés que lo va a necesitar más adelante",
-                                "Un mensaje para alguien con quien hoy no podés hablar",
-                                "Un mensaje que solo debería enviarse si vos no respondés más"
-                            ] : [
-                                "A supportive message for someone who will need it later",
-                                "A message for someone you can't talk to today",
-                                "A message that should only be sent if you no longer respond"
-                            ]
-                        ).map((text, idx) => (
-                            <p key={idx} className="text-xl md:text-2xl font-serif font-light leading-relaxed text-muted-foreground">
-                                {text}
-                            </p>
-                        ))}
-                    </div>
+                    <div className="deco-num hidden sm:block flex-shrink-0 mt-[-8px]" aria-hidden="true">09</div>
                 </div>
 
-
+                {/* Cards grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                    {dict.landing.uses.items.map((text, i) => (
+                        <div key={i} className={`ex-card${i === dict.landing.uses.items.length - 1 ? ' featured' : ''}`}>
+                            <div className="ex-bullet" />
+                            <p className="text-[13px] font-light leading-[1.7] tracking-[0.01em]" style={{ color: 'hsl(var(--ink-soft))' }}>
+                                {text}
+                            </p>
+                        </div>
+                    ))}
+                </div>
             </section>
+            {/* How It Works - Propuesta D Timeline */}
+            <section id="how-it-works" className="py-[110px] px-[7%] bg-[hsl(var(--cream))]">
+                <div className="text-center mb-[72px]">
+                    <h2 className="font-serif font-normal text-[hsl(var(--ink))] mb-2.5"
+                        style={{ fontSize: 'clamp(2.6rem, 4vw, 3.8rem)', lineHeight: 1.1 }}>
+                        {dict.landing.howItWorks.title}
+                    </h2>
+                </div>
 
-
-
-
-            {/* How It Works */}
-            <section id="how-it-works" className="py-24 px-6 bg-surface/50 border-y border-border/50">
-                <div className="max-w-6xl mx-auto">
-                    <h2 className="text-4xl md:text-5xl font-serif font-light text-center mb-20">{dict.landing.howItWorks.title}</h2>
-                    <div className="grid md:grid-cols-3 gap-12">
-                        {[
-                            { step: "01", ...dict.landing.howItWorks.step1 },
-                            { step: "02", ...dict.landing.howItWorks.step2 },
-                            { step: "03", ...dict.landing.howItWorks.step3 }
-                        ].map((item, i) => (
-                            <div key={i} className="flex flex-col items-center text-center">
-                                <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-lg mb-6">
-                                    {item.step}
+                {/* Timeline */}
+                <div className="flex flex-col md:flex-row items-start justify-center max-w-[860px] mx-auto">
+                    {[
+                        { step: '01', ...dict.landing.howItWorks.step1 },
+                        { step: '02', ...dict.landing.howItWorks.step2 },
+                        { step: '03', ...dict.landing.howItWorks.step3 }
+                    ].map((item, i) => (
+                        <div key={i} className="tl-step flex-1 flex flex-col items-center text-center relative md:flex-col flex-row gap-5 md:gap-0">
+                            {/* Node row with connecting lines */}
+                            <div className="flex items-center w-full mb-7">
+                                {/* Left line: invisible on first step */}
+                                {i === 0
+                                    ? <div className="flex-1 h-px bg-transparent" />
+                                    : <div className="tl-line" />}
+                                <div className="tl-circle">
+                                    <span className="font-serif text-base font-normal tracking-[0.05em]" style={{ color: 'hsl(var(--rose))' }}>
+                                        {item.step}
+                                    </span>
                                 </div>
-                                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                                <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+                                {/* Right line: invisible on last step */}
+                                {i === 2
+                                    ? <div className="flex-1 h-px bg-transparent" />
+                                    : <div className="tl-line" />}
                             </div>
-                        ))}
-                    </div>
+                            <div className="px-4">
+                                <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2.5 leading-[1.25] text-[1.35rem]">
+                                    {item.title}
+                                </h3>
+                                <p className="text-[12.5px] font-light leading-[1.75] tracking-[0.01em]" style={{ color: 'hsl(var(--ink-muted))' }}>
+                                    {item.description}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </section>
 

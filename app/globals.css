@@ -30,6 +30,24 @@
   --error: 358 46% 44%;
   /* #A63D40 */
   --radius: 0.75rem;
+
+  /* ── Propuesta D Landing Palette ── */
+  --rose: 25 37% 54%;
+  /* #B5896A */
+  --rose-light: 27 37% 67%;
+  /* #C9A98C */
+  --rose-border: 25 37% 54%;
+  /* used with opacity */
+  --cream: 35 33% 91%;
+  /* #F0EBE1 */
+  --cream-card: 36 47% 96%;
+  /* #FAF7F2 */
+  --ink: 24 13% 15%;
+  /* #2A2520 */
+  --ink-soft: 24 5% 28%;
+  /* #4A4540 */
+  --ink-muted: 27 8% 57%;
+  /* #9C9088 */
 }
 
 body {
@@ -141,5 +159,80 @@ html {
 
   .btn-cta:active::after {
     @apply opacity-0;
+  }
+
+  /* ── Propuesta D Landing Utilities ── */
+
+  /* Hero tag pill */
+  .hero-tag {
+    @apply inline-block border text-xs font-light tracking-[0.18em] uppercase px-4 py-1.5 self-start;
+    border-color: hsl(var(--rose-border) / 0.35);
+    color: hsl(var(--rose));
+  }
+
+  /* Examples section tag pill */
+  .examples-tag {
+    @apply inline-block border text-[9.5px] font-normal tracking-[0.18em] uppercase px-3.5 py-1 rounded-full mb-4;
+    border-color: hsl(var(--ink) / 0.15);
+    color: hsl(var(--ink-muted));
+  }
+
+  /* Timeline node */
+  .tl-circle {
+    @apply flex-shrink-0 flex items-center justify-center rounded-full transition-all duration-200;
+    width: 52px;
+    height: 52px;
+    border: 1px solid hsl(var(--rose-border) / 0.35);
+    background: hsl(var(--cream));
+  }
+
+  .tl-step:hover .tl-circle {
+    border-color: hsl(var(--rose));
+    background: hsl(var(--rose) / 0.06);
+  }
+
+  .tl-line {
+    @apply flex-1 h-px;
+    background: hsl(var(--rose-border) / 0.35);
+  }
+
+  /* Example card */
+  .ex-card {
+    @apply flex items-start gap-3.5 rounded-[10px] p-6 transition-all duration-200 cursor-default;
+    background: hsl(var(--cream-card));
+  }
+
+  .ex-card:hover {
+    box-shadow: 0 8px 28px hsl(var(--ink) / 0.08);
+    transform: translateY(-2px);
+  }
+
+  .ex-card.featured {
+    border: 1px solid hsl(var(--rose-border) / 0.35);
+    background: hsl(var(--rose) / 0.08);
+  }
+
+  /* Example bullet */
+  .ex-bullet {
+    @apply flex-shrink-0 rounded-full mt-1.5;
+    width: 7px;
+    height: 7px;
+    background: hsl(var(--rose-light));
+  }
+
+  .ex-card.featured .ex-bullet {
+    background: hsl(var(--rose));
+  }
+
+  /* Decorative outline number */
+  .deco-num {
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: 9rem;
+    font-weight: 300;
+    color: transparent;
+    -webkit-text-stroke: 1.5px hsl(var(--ink) / 0.07);
+    line-height: 0.85;
+    user-select: none;
+    pointer-events: none;
   }
 }
