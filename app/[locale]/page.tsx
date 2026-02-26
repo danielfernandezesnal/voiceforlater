@@ -66,13 +66,9 @@ export default async function LocaleHomePage({
                 <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-transparent"></div>
 
                 <div className="relative z-10 text-center max-w-5xl mx-auto transition-all duration-1000">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light tracking-tight mb-6 text-foreground leading-[1.1] md:whitespace-nowrap animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light tracking-tight mb-10 text-foreground leading-[1.1] md:whitespace-nowrap animate-in fade-in slide-in-from-bottom-8 duration-1000">
                         {dict.landing.hero.title}
                     </h1>
-                    <p className="max-w-2xl mx-auto text-xl md:text-2xl text-muted-foreground leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
-                        {dict.landing.hero.subtitle}
-                    </p>
-
                 </div>
             </section>
 
