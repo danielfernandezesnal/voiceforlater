@@ -51,40 +51,24 @@ export default async function LocaleHomePage({
                 </div>
             </nav>
 
-            {/* Hero Section - Propuesta D: 2-column layout */}
-            <section className="relative w-full min-h-[86vh] grid grid-cols-1 md:grid-cols-[52%_48%] overflow-hidden bg-[hsl(var(--cream))]">
-                {/* Left: text column */}
-                <div className="relative z-10 flex flex-col justify-end px-[7%] pb-20 pt-16 md:pt-0">
-                    <span className="hero-tag mb-8">
-                        {dict.landing.hero.tag}
-                    </span>
-                    <h1 className="font-serif font-light tracking-tight text-[hsl(var(--ink))] leading-[1.06] mb-10 animate-in fade-in slide-in-from-bottom-8 duration-1000"
-                        style={{ fontSize: 'clamp(3.4rem, 5.6vw, 5.6rem)' }}>
+            {/* Hero Section - Editorial Rebrand */}
+            <section className="relative w-full h-[70vh] min-h-[600px] flex flex-col items-center justify-center px-6">
+                <Image
+                    src="/assets/rebrand/hero-editorial.png"
+                    alt="Carry My Words - Editorial Hero"
+                    fill
+                    priority
+                    quality={95}
+                    className="object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-background/20"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-transparent"></div>
+
+                <div className="relative z-10 text-center max-w-5xl mx-auto transition-all duration-1000">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light tracking-tight mb-10 text-foreground leading-[1.1] md:whitespace-nowrap animate-in fade-in slide-in-from-bottom-8 duration-1000">
                         {dict.landing.hero.title}
                     </h1>
-                    <Link
-                        href={`/${locale}/auth/login`}
-                        className="self-start bg-[hsl(var(--ink))] text-[hsl(var(--cream))] text-[10.5px] tracking-[0.14em] uppercase px-9 py-3.5 font-normal transition-colors duration-200 hover:bg-[hsl(var(--rose))] animate-in fade-in duration-1000 delay-300"
-                    >
-                        {dict.common.getStarted}
-                    </Link>
-                </div>
-
-                {/* Right: editorial image */}
-                <div className="relative overflow-hidden min-h-[55vw] md:min-h-0">
-                    <Image
-                        src="/assets/rebrand/hero-editorial.png"
-                        alt="Carry My Words - Editorial Hero"
-                        fill
-                        priority
-                        quality={95}
-                        className="object-cover object-center"
-                        style={{ filter: 'sepia(18%) saturate(0.9) brightness(1.05)' }}
-                    />
-                    {/* Fade blend to left */}
-                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, hsl(var(--cream)) 0%, transparent 28%)' }} />
-                    {/* Decorative ∞ */}
-                    <div className="deco-num absolute bottom-[-30px] right-[5%]" aria-hidden="true">∞</div>
                 </div>
             </section>
 
