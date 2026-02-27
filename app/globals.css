@@ -230,6 +230,9 @@ html {
     letter-spacing: 0.01em;
     color: rgba(42, 37, 32, 0.72);
     /* ink at 72% — passes WCAG AA on cream */
+    max-width: 250px;
+    margin: 0 auto;
+    text-wrap: balance;
     opacity: 1;
   }
 

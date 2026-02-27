@@ -55,10 +55,14 @@ export default async function LocaleHomePage({
             <section className="hero-grid">
                 {/* Left: text */}
                 <div className="flex flex-col justify-end px-[7%] pb-20 pt-16">
-                    <h1 className="font-serif font-light tracking-tight leading-[1.06] mb-10 animate-in fade-in slide-in-from-bottom-8 duration-1000"
+                    <h1 className="font-serif font-light tracking-tight leading-[1.06] mb-6 animate-in fade-in slide-in-from-bottom-8 duration-1000"
                         style={{ fontSize: 'clamp(3.4rem, 5.6vw, 5.6rem)', color: 'hsl(var(--ink))' }}>
                         {dict.landing.hero.title}
                     </h1>
+                    <p className="font-light leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200"
+                        style={{ fontSize: 'clamp(1.1rem, 1.4vw, 1.35rem)', color: 'rgba(42, 37, 32, 0.65)', maxWidth: '500px' }}>
+                        {dict.landing.hero.subtitle}
+                    </p>
                 </div>
 
                 {/* Right: image — overflow-hidden contains the fill image */}
@@ -72,37 +76,46 @@ export default async function LocaleHomePage({
                         className="object-cover object-center"
                         style={{ filter: 'sepia(18%) saturate(0.9) brightness(1.05)' }}
                     />
-                    {/* Left-edge fade blend */}
+                    {/* Multi-edge fade blend: Left (30%) and Bottom (20%) */}
                     <div className="absolute inset-0 pointer-events-none"
-                        style={{ background: 'linear-gradient(to right, hsl(var(--cream)) 0%, transparent 30%)' }}
+                        style={{
+                            background: 'linear-gradient(to right, hsl(var(--cream)) 0%, transparent 30%), linear-gradient(to top, hsl(var(--cream)) 0%, transparent 20%)'
+                        }}
                     />
                 </div>
             </section>
 
-            {/* Examples - Propuesta D card grid */}
+            {/* Examples - Redesigned card grid */}
             <section className="py-[110px] px-[7%] bg-[hsl(var(--cream))] relative">
-                {/* Header: tag + title + deco num */}
-                <div className="flex items-start justify-between mb-14 gap-8">
-                    <div>
-                        <span className="examples-tag">{dict.landing.uses.tag}</span>
-                        <h2 className="font-serif font-normal text-[hsl(var(--ink))] leading-[1.1]"
-                            style={{ fontSize: 'clamp(2.6rem, 4vw, 3.8rem)' }}>
-                            {dict.landing.uses.title}
-                        </h2>
-                    </div>
-                    <div className="deco-num hidden sm:block flex-shrink-0 mt-[-8px]" aria-hidden="true">09</div>
+                {/* Header: Centered title matching the rest of the page style */}
+                <div className="flex justify-center mb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                    <h2 className="text-3xl md:text-4xl font-serif font-light text-center tracking-tight">
+                        {dict.landing.uses.tag}
+                    </h2>
                 </div>
 
                 {/* Cards grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                    {dict.landing.uses.items.map((text, i) => (
-                        <div key={i} className={`ex-card${i === dict.landing.uses.items.length - 1 ? ' featured' : ''}`}>
-                            <div className="ex-bullet" />
-                            <p className="text-[13px] font-light leading-[1.7] tracking-[0.01em]" style={{ color: 'hsl(var(--ink-soft))' }}>
-                                {text}
-                            </p>
-                        </div>
-                    ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {(dict.landing.uses as any).cards.map((card: any, i: number) => {
+                        const isLast = i === (dict.landing.uses as any).cards.length - 1;
+                        return (
+                            <div
+                                key={i}
+                                className={`flex flex-col items-center text-center p-9 rounded-[2rem] transition-all duration-500 border ${isLast
+                                    ? 'bg-[#2D4A3E] border-[#2D4A3E] text-[hsl(var(--cream))] shadow-xl lg:scale-[1.03] z-10'
+                                    : 'bg-[hsl(var(--cream-card))] border-[hsl(var(--ink))/0.04] hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1'
+                                    }`}
+                            >
+                                <span className={`text-4xl mb-6 transform transition-transform duration-500 ${!isLast && 'group-hover:scale-110'}`}>{card.icon}</span>
+                                <h3 className={`text-[1.15rem] font-bold mb-3 tracking-tight leading-snug ${isLast ? 'text-[hsl(var(--cream))]' : 'text-[hsl(var(--ink))]'}`}>
+                                    {card.title}
+                                </h3>
+                                <p className={`text-[13.5px] leading-relaxed font-light ${isLast ? 'text-[hsl(var(--cream))/0.85]' : 'text-[hsl(var(--ink-muted))]'}`}>
+                                    {card.description}
+                                </p>
+                            </div>
+                        );
+                    })}
                 </div>
             </section>
             {/* How It Works - Propuesta D Timeline */}
@@ -115,7 +128,7 @@ export default async function LocaleHomePage({
                 </div>
 
                 {/* Timeline */}
-                <div className="flex flex-col md:flex-row items-start justify-center max-w-[860px] mx-auto">
+                <div className="flex flex-col md:flex-row items-start justify-center max-w-[940px] mx-auto">
                     {[
                         { step: '01', ...dict.landing.howItWorks.step1 },
                         { step: '02', ...dict.landing.howItWorks.step2 },
@@ -138,8 +151,8 @@ export default async function LocaleHomePage({
                                     ? <div className="flex-1 h-px bg-transparent" />
                                     : <div className="tl-line" />}
                             </div>
-                            <div className="px-4">
-                                <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2.5 leading-[1.25] text-[1.35rem]">
+                            <div className="px-2">
+                                <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2 leading-[1.2] text-[1.25rem]">
                                     {item.title}
                                 </h3>
                                 <p className="tl-desc">
