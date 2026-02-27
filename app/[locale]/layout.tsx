@@ -18,6 +18,7 @@ const barlow = Barlow({
 const playfair = Playfair_Display({
     variable: "--font-playfair",
     subsets: ["latin"],
+    style: ["normal", "italic"],
 });
 
 
