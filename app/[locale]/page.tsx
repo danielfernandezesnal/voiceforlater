@@ -76,15 +76,17 @@ export default async function LocaleHomePage({
                         className="object-cover object-center"
                         style={{ filter: 'sepia(18%) saturate(0.9) brightness(1.05)' }}
                     />
-                    {/* Left-edge fade blend */}
+                    {/* Multi-edge fade blend: Left (30%) and Bottom (20%) */}
                     <div className="absolute inset-0 pointer-events-none"
-                        style={{ background: 'linear-gradient(to right, hsl(var(--cream)) 0%, transparent 30%)' }}
+                        style={{
+                            background: 'linear-gradient(to right, hsl(var(--cream)) 0%, transparent 30%), linear-gradient(to top, hsl(var(--cream)) 0%, transparent 20%)'
+                        }}
                     />
                 </div>
             </section>
 
             {/* Examples - Redesigned card grid */}
-            <section className="py-[110px] px-[7%] bg-[hsl(var(--cream))] relative border-t border-[hsl(var(--ink))/0.03]">
+            <section className="py-[110px] px-[7%] bg-[hsl(var(--cream))] relative">
                 {/* Header: only the tag pill, centered */}
                 <div className="flex justify-center mb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                     <span className="examples-tag" style={{ fontSize: '11px', padding: '6px 18px' }}>
@@ -100,8 +102,8 @@ export default async function LocaleHomePage({
                             <div
                                 key={i}
                                 className={`flex flex-col items-center text-center p-9 rounded-[2rem] transition-all duration-500 border ${isLast
-                                        ? 'bg-[#2D4A3E] border-[#2D4A3E] text-[hsl(var(--cream))] shadow-xl lg:scale-[1.03] z-10'
-                                        : 'bg-[hsl(var(--cream-card))] border-[hsl(var(--ink))/0.04] hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1'
+                                    ? 'bg-[#2D4A3E] border-[#2D4A3E] text-[hsl(var(--cream))] shadow-xl lg:scale-[1.03] z-10'
+                                    : 'bg-[hsl(var(--cream-card))] border-[hsl(var(--ink))/0.04] hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1'
                                     }`}
                             >
                                 <span className={`text-4xl mb-6 transform transition-transform duration-500 ${!isLast && 'group-hover:scale-110'}`}>{card.icon}</span>
