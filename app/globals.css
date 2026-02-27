@@ -170,6 +170,32 @@ html {
     color: hsl(var(--rose));
   }
 
+  /* Hero — 2-column grid layout */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 52% 48%;
+    min-height: 86vh;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* Hero image column — needs explicit min-height on mobile */
+  .hero-img-col {
+    min-height: 500px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .hero-img-col {
+      min-height: 55vw;
+      order: -1;
+    }
+  }
+
   /* Examples section tag pill */
   .examples-tag {
     @apply inline-block border text-[9.5px] font-normal tracking-[0.18em] uppercase px-3.5 py-1 rounded-full mb-4;
