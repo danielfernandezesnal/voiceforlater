@@ -35,21 +35,53 @@
     },
     "uses": {
       "tag": "Para quién, para cuándo",
-      "title": "¿En qué momentos se usa?",
-      "subtitle": "Carry My Words se usa cuando el momento importa tanto como el mensaje.",
-      "items": [
-        "Un mensaje para tu hijo o hija cuando sea mayor",
-        "Algo que querés decir, pero no ahora",
-        "Palabras para una fecha importante",
-        "Un mensaje de apoyo para alguien que sabés que lo va a necesitar más adelante",
-        "Algo que te cuesta decir en persona",
-        "Un mensaje para alguien con quien hoy no podés hablar",
-        "Un mensaje que solo debería enviarse si vos no respondés más",
-        "Un mensaje para vos mismo en el futuro (cápsula del tiempo)",
-        "Algo que no querés olvidar decir"
-      ],
-      "examples_label": "Ejemplos:",
-      "closing": "No es solo para despedidas.\nEs para momentos que todavía no llegaron."
+      "cards": [
+        {
+          "icon": "👶",
+          "title": "Para tu hijo cuando sea mayor",
+          "description": "Palabras que van a llegar cuando estén listos para recibirlas."
+        },
+        {
+          "icon": "📅",
+          "title": "Para una fecha importante",
+          "description": "Cumpleaños, aniversarios, graduaciones. El momento exacto que elegís."
+        },
+        {
+          "icon": "💬",
+          "title": "Algo que querés decir, pero no ahora",
+          "description": "Guardalo. Va a llegar cuando el momento sea el correcto."
+        },
+        {
+          "icon": "🤝",
+          "title": "Un mensaje de apoyo anticipado",
+          "description": "Para alguien que sabés que lo va a necesitar más adelante."
+        },
+        {
+          "icon": "🔇",
+          "title": "Lo que cuesta decir en persona",
+          "description": "A veces las palabras fluyen mejor cuando no hay miradas de por medio."
+        },
+        {
+          "icon": "⏳",
+          "title": "Una cápsula del tiempo",
+          "description": "Un mensaje para vos mismo en el futuro. ¿Qué le dirías?"
+        },
+        {
+          "icon": "🌐",
+          "title": "Para alguien con quien hoy no podés hablar",
+          "description": "Las distancias cambian. Las palabras pueden esperar."
+        },
+        {
+          "icon": "📝",
+          "title": "Algo que no querés olvidar decir",
+          "description": "Dejalo guardado. Que no se pierda por falta de tiempo."
+        },
+        {
+          "icon": "🕊️",
+          "title": "Para cuando ya no estés presente",
+          "description": "Tus palabras llegan igual. En el momento y a la persona que elegiste."
+        }
+      ]
     },
     "howItWorks": {
       "title": "Cómo funciona",

@@ -83,30 +83,37 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
-            {/* Examples - Propuesta D card grid */}
-            <section className="py-[110px] px-[7%] bg-[hsl(var(--cream))] relative">
-                {/* Header: tag + title + deco num */}
-                <div className="flex items-start justify-between mb-14 gap-8">
-                    <div>
-                        <span className="examples-tag">{dict.landing.uses.tag}</span>
-                        <h2 className="font-serif font-normal text-[hsl(var(--ink))] leading-[1.1]"
-                            style={{ fontSize: 'clamp(2.6rem, 4vw, 3.8rem)' }}>
-                            {dict.landing.uses.title}
-                        </h2>
-                    </div>
-                    <div className="deco-num hidden sm:block flex-shrink-0 mt-[-8px]" aria-hidden="true">09</div>
+            {/* Examples - Redesigned card grid */}
+            <section className="py-[110px] px-[7%] bg-[hsl(var(--cream))] relative border-t border-[hsl(var(--ink))/0.03]">
+                {/* Header: only the tag pill, centered */}
+                <div className="flex justify-center mb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                    <span className="examples-tag" style={{ fontSize: '11px', padding: '6px 18px' }}>
+                        {dict.landing.uses.tag}
+                    </span>
                 </div>
 
                 {/* Cards grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                    {dict.landing.uses.items.map((text, i) => (
-                        <div key={i} className={`ex-card${i === dict.landing.uses.items.length - 1 ? ' featured' : ''}`}>
-                            <div className="ex-bullet" />
-                            <p className="text-[13px] font-light leading-[1.7] tracking-[0.01em]" style={{ color: 'hsl(var(--ink-soft))' }}>
-                                {text}
-                            </p>
-                        </div>
-                    ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {(dict.landing.uses as any).cards.map((card: any, i: number) => {
+                        const isLast = i === (dict.landing.uses as any).cards.length - 1;
+                        return (
+                            <div
+                                key={i}
+                                className={`flex flex-col items-center text-center p-9 rounded-[2rem] transition-all duration-500 border ${isLast
+                                        ? 'bg-[#2D4A3E] border-[#2D4A3E] text-[hsl(var(--cream))] shadow-xl lg:scale-[1.03] z-10'
+                                        : 'bg-[hsl(var(--cream-card))] border-[hsl(var(--ink))/0.04] hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1'
+                                    }`}
+                            >
+                                <span className={`text-4xl mb-6 transform transition-transform duration-500 ${!isLast && 'group-hover:scale-110'}`}>{card.icon}</span>
+                                <h3 className={`text-[1.15rem] font-bold mb-3 tracking-tight leading-snug ${isLast ? 'text-[hsl(var(--cream))]' : 'text-[hsl(var(--ink))]'}`}>
+                                    {card.title}
+                                </h3>
+                                <p className={`text-[13.5px] leading-relaxed font-light ${isLast ? 'text-[hsl(var(--cream))/0.85]' : 'text-[hsl(var(--ink-muted))]'}`}>
+                                    {card.description}
+                                </p>
+                            </div>
+                        );
+                    })}
                 </div>
             </section>
             {/* How It Works - Propuesta D Timeline */}

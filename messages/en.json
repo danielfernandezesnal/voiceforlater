@@ -35,21 +35,53 @@
     },
     "uses": {
       "tag": "For whom, for when",
-      "title": "Moments worth saying",
-      "subtitle": "Not all messages are for now. Some need time, context, or distance.",
-      "items": [
-        "A message for your children when they are older",
-        "Something you want to say, but not right now",
-        "Words for an important date",
-        "A supportive message for someone who will need it later",
-        "Something that's hard to say in person",
-        "A message for someone you can't talk to today",
-        "A message that should only be sent if you no longer respond",
-        "A message for your future self (time capsule)",
-        "Something you don't want to forget to say"
-      ],
-      "examples_label": "Examples:",
-      "closing": "It's not just for goodbyes.\nIt's for moments that haven't arrived yet."
+      "cards": [
+        {
+          "icon": "👶",
+          "title": "For your children when they are older",
+          "description": "Words that will arrive when they are ready to receive them."
+        },
+        {
+          "icon": "📅",
+          "title": "For an important date",
+          "description": "Birthdays, anniversaries, graduations. The exact moment you choose."
+        },
+        {
+          "icon": "💬",
+          "title": "Something you want to say, but not now",
+          "description": "Save it. It will arrive when the moment is right."
+        },
+        {
+          "icon": "🤝",
+          "title": "An anticipated supportive message",
+          "description": "For someone you know will need it later."
+        },
+        {
+          "icon": "🔇",
+          "title": "What's hard to say in person",
+          "description": "Sometimes words flow better when there are no eyes involved."
+        },
+        {
+          "icon": "⏳",
+          "title": "A time capsule",
+          "description": "A message for your future self. What would you say?"
+        },
+        {
+          "icon": "🌐",
+          "title": "For someone you can't talk to today",
+          "description": "Distances change. Words can wait."
+        },
+        {
+          "icon": "📝",
+          "title": "Something you don't want to forget to say",
+          "description": "Keep it saved. Don't let it be lost for lack of time."
+        },
+        {
+          "icon": "🕊️",
+          "title": "For when you are no longer present",
+          "description": "Your words arrive anyway. At the moment and to the person you chose."
+        }
+      ]
     },
     "howItWorks": {
       "title": "How it works",
