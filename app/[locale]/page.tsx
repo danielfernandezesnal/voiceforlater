@@ -33,7 +33,7 @@ export default async function LocaleHomePage({
         <div className="min-h-screen flex flex-col" style={{ background: 'hsl(var(--cream))' }}>
             {/* Navbar */}
             <nav className="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
-                <div className="font-serif italic font-normal text-2xl tracking-tight" style={{ color: '#2D4A3E' }}>
+                <div className="font-serif italic font-normal text-5xl tracking-tight" style={{ color: '#2D4A3E' }}>
                     Carry My Words
                 </div>
                 <div className="flex gap-6 items-center">
