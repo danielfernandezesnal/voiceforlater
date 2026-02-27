@@ -169,8 +169,13 @@ export default async function LocaleHomePage({
                 <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">{dict.landing.delivery.title}</h2>
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 mb-20">
                     <div className="flex flex-col items-start gap-6 border-l border-border/40 pl-8 transition-colors hover:border-primary/40 group">
-                        <div className="text-2xl opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all">
-                            📅
+                        <div className="mb-2">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D4A3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" />
+                                <line x1="3" y1="9" x2="21" y2="9" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                            </svg>
                         </div>
                         <div>
                             <h3 className="text-xl md:text-2xl font-serif font-light mb-4">{dict.landing.delivery.date.title}</h3>
@@ -178,8 +183,14 @@ export default async function LocaleHomePage({
                         </div>
                     </div>
                     <div className="flex flex-col items-start gap-6 border-l border-border/40 pl-8 transition-colors hover:border-primary/40 group">
-                        <div className="text-2xl opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all">
-                            ⏱️
+                        <div className="mb-2">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D4A3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 22h14" />
+                                <path d="M5 2h14" />
+                                <path d="M17 22c0-3.1-2-6-5-6s-5 2.9-5 6" />
+                                <path d="M17 2c0 3.1-2 6-5 6s-5-2.9-5-6" />
+                                <path d="M12 11v1" />
+                            </svg>
                         </div>
                         <div>
                             <h3 className="text-xl md:text-2xl font-serif font-light mb-4">{dict.landing.delivery.checkin.title}</h3>
