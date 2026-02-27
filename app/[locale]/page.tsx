@@ -87,11 +87,11 @@ export default async function LocaleHomePage({
 
             {/* Examples - Redesigned card grid */}
             <section className="py-[110px] px-[7%] bg-[hsl(var(--cream))] relative">
-                {/* Header: only the tag pill, centered */}
+                {/* Header: Centered title matching the rest of the page style */}
                 <div className="flex justify-center mb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                    <span className="examples-tag" style={{ fontSize: '11px', padding: '6px 18px' }}>
+                    <h2 className="text-3xl md:text-4xl font-serif font-light text-center tracking-tight">
                         {dict.landing.uses.tag}
-                    </span>
+                    </h2>
                 </div>
 
                 {/* Cards grid */}
