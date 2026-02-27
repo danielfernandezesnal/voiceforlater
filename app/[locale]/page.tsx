@@ -115,7 +115,7 @@ export default async function LocaleHomePage({
                 </div>
 
                 {/* Timeline */}
-                <div className="flex flex-col md:flex-row items-start justify-center max-w-[860px] mx-auto">
+                <div className="flex flex-col md:flex-row items-start justify-center max-w-[940px] mx-auto">
                     {[
                         { step: '01', ...dict.landing.howItWorks.step1 },
                         { step: '02', ...dict.landing.howItWorks.step2 },
@@ -138,8 +138,8 @@ export default async function LocaleHomePage({
                                     ? <div className="flex-1 h-px bg-transparent" />
                                     : <div className="tl-line" />}
                             </div>
-                            <div className="px-4">
-                                <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2.5 leading-[1.25] text-[1.35rem]">
+                            <div className="px-2">
+                                <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2 leading-[1.2] text-[1.25rem]">
                                     {item.title}
                                 </h3>
                                 <p className="tl-desc">
