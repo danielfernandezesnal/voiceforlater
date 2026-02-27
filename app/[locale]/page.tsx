@@ -142,7 +142,7 @@ export default async function LocaleHomePage({
                                 <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2.5 leading-[1.25] text-[1.35rem]">
                                     {item.title}
                                 </h3>
-                                <p className="text-[12.5px] font-light leading-[1.75] tracking-[0.01em]" style={{ color: 'hsl(var(--ink-muted))' }}>
+                                <p className="tl-desc">
                                     {item.description}
                                 </p>
                             </div>
