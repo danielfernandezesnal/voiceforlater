@@ -21,7 +21,7 @@
     "hero": {
       "tag": "Messages that travel through time",
       "title": "Your words, when they matter most.",
-      "subtitle": "A space to leave messages that travel through time, for those you love most.",
+      "subtitle": "Record voice, text, or video messages for your loved ones. You choose when they arrive.",
       "cta": "Create my first message",
       "microcopy": "Takes you to the message creator. No card. No commitment."
     },
@@ -55,15 +55,15 @@
       "title": "How it works",
       "step1": {
         "title": "Create your message",
-        "description": "Write a text, record your voice, or film a video."
+        "description": "Text, audio or video. Express yourself however you like."
       },
       "step2": {
         "title": "You choose the moment",
-        "description": "Decide when and to whom your message will arrive. We handle the rest."
+        "description": "A loved one, several, or even yourself in the future."
       },
       "step3": {
         "title": "When the time comes",
-        "description": "Your messages will be sent to those you chose, exactly as you decided."
+        "description": "A date, a birthday, or when you are no longer present."
       }
     },
     "delivery": {
