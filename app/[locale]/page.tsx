@@ -168,7 +168,7 @@ export default async function LocaleHomePage({
             <section className="py-32 px-6 max-w-5xl mx-auto w-full">
                 <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">{dict.landing.delivery.title}</h2>
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 mb-20">
-                    <div className="flex flex-col items-start gap-6 border-l border-border/40 pl-8 transition-colors hover:border-primary/40 group">
+                    <div className="flex flex-col items-center text-center gap-6 transition-colors group">
                         <div className="mb-2">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D4A3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" />
@@ -182,7 +182,7 @@ export default async function LocaleHomePage({
                             <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
                         </div>
                     </div>
-                    <div className="flex flex-col items-start gap-6 border-l border-border/40 pl-8 transition-colors hover:border-primary/40 group">
+                    <div className="flex flex-col items-center text-center gap-6 transition-colors group">
                         <div className="mb-2">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D4A3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 22h14" />
