@@ -346,7 +346,9 @@
       "submitting": "Creating...",
       "audioContent": "🎤 {seconds}s audio",
       "videoContent": "📹 {seconds}s video",
-      "noContactWarning": "This message will not be sent automatically until you assign a trusted contact."
+      "noContactWarning": "This message will not be sent automatically until you assign a trusted contact.",
+      "agreeTerms": "I agree to the ",
+      "termsLink": "terms and conditions"
     },
     "tosModal": {
       "title": "A Brief Formality",
@@ -503,7 +505,8 @@
         "statusInactive": "Inactive",
         "messages": "Messages",
         "storage": "Storage",
-        "emails": "Emails"
+        "emails": "Emails",
+        "actions": "Actions"
       }
     },
     "accessDenied": {
