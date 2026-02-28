@@ -58,3 +58,53 @@ export async function DELETE(
         }, { status: 500 });
     }
 }
+
+export async function PATCH(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        // Verify admin access
+        await requireAdmin();
+
+        const { id: userId } = await params;
+        const { plan } = await request.json();
+
+        if (!userId) {
+            return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+        }
+
+        if (!plan || !['free', 'pro'].includes(plan)) {
+            return NextResponse.json({ error: 'Invalid plan' }, { status: 400 });
+        }
+
+        const supabase = createAdminClient();
+
+        // Update user subscription
+        const { error: updateError } = await supabase
+            .from('user_subscriptions')
+            .upsert({
+                user_id: userId,
+                plan: plan,
+                status: plan === 'pro' ? 'active' : 'inactive',
+                updated_at: new Date().toISOString()
+            }, { onConflict: 'user_id' });
+
+        if (updateError) {
+            throw updateError;
+        }
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error('Admin update user plan error:', error);
+
+        if (error instanceof Error && error.message.includes('Unauthorized')) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+        }
+
+        return NextResponse.json({
+            error: 'Failed to update user plan',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 });
+    }
+}

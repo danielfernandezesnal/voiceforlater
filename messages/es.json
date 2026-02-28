@@ -344,7 +344,9 @@
       "submitting": "Creando...",
       "audioContent": "🎤 {seconds}s audio",
       "videoContent": "📹 {seconds}s video",
-      "noContactWarning": "Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza."
+      "noContactWarning": "Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza.",
+      "agreeTerms": "Acepto los ",
+      "termsLink": "términos y condiciones"
     },
     "tosModal": {
       "title": "Una Breve Formalidad",
@@ -486,7 +488,8 @@
         "statusInactive": "Inactivo",
         "messages": "Mensajes",
         "storage": "Espacio",
-        "emails": "Emails"
+        "emails": "Emails",
+        "actions": "Acciones"
       }
     },
     "analytics": {

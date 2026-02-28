@@ -16,6 +16,7 @@ interface UserData {
 }
 
 interface UserTableProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dict: any;
 }
 
@@ -30,6 +31,7 @@ export default function UserTable({ dict }: UserTableProps) {
     const [search, setSearch] = useState('');
     const [plan, setPlan] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const [actionLoading, setActionLoading] = useState<string | null>(null);
 
     const fetchUsers = useCallback(async (pageNum: number, currentSearch: string, currentPlan: string, currentStatus: string) => {
         setLoading(true);
@@ -67,6 +69,58 @@ export default function UserTable({ dict }: UserTableProps) {
             setLoading(false);
         }
     }, []);
+
+    const handleDeleteUser = async (userId: string, email: string) => {
+        if (!confirm(`¿Estás seguro que quieres eliminar al usuario ${email}?\nEsta acción es irreversible y borrará todos sus mensajes y archivos.`)) {
+            return;
+        }
+
+        setActionLoading(userId);
+        try {
+            const res = await fetch(`/api/admin/users/${userId}`, {
+                method: 'DELETE',
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || 'Failed to delete user');
+            }
+
+            // Remove from local state
+            setUsers(prev => prev.filter(u => u.user_id !== userId));
+        } catch (err: unknown) {
+            alert(err instanceof Error ? err.message : 'An error occurred');
+        } finally {
+            setActionLoading(null);
+        }
+    };
+
+    const handleUpdatePlan = async (userId: string, newPlan: string) => {
+        setActionLoading(userId);
+        try {
+            const res = await fetch(`/api/admin/users/${userId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ plan: newPlan }),
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || 'Failed to update plan');
+            }
+
+            // Update local state
+            setUsers(prev => prev.map(u =>
+                u.user_id === userId
+                    ? { ...u, plan: newPlan, status: newPlan === 'pro' ? 'active' : u.status }
+                    : u
+            ));
+        } catch (err: unknown) {
+            alert(err instanceof Error ? err.message : 'An error occurred');
+        } finally {
+            setActionLoading(null);
+        }
+    };
 
     useEffect(() => {
         setPage(1);
@@ -155,9 +209,11 @@ export default function UserTable({ dict }: UserTableProps) {
                             <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted-foreground">{dict.admin.users.table.email}</th>
                             <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted-foreground">{dict.admin.users.table.joined}</th>
                             <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted-foreground text-center">{dict.admin.users.table.plan}</th>
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted-foreground text-center">{(dict.admin.users.table as any).renewal}</th>
                             <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted-foreground text-center">{dict.admin.userDetail.status}</th>
                             <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted-foreground text-center">{dict.admin.userDetail.stats}</th>
+                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-muted-foreground text-center">{dict.admin.users.table.actions}</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -181,13 +237,21 @@ export default function UserTable({ dict }: UserTableProps) {
                                             day: 'numeric'
                                         })}
                                     </td>
-                                    <td className="px-6 py-4 text-center">
-                                        <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${isPro
-                                            ? 'bg-primary/10 text-primary border border-primary/20'
-                                            : 'bg-muted text-muted-foreground border border-border'
-                                            }`}>
-                                            {isPro ? dict.admin.users.table.planPro : dict.admin.users.table.planFree}
-                                        </span>
+                                    <td className="px-6 py-4">
+                                        <div className="flex justify-center">
+                                            <select
+                                                value={user.plan}
+                                                disabled={actionLoading === user.user_id}
+                                                onChange={(e) => handleUpdatePlan(user.user_id, e.target.value)}
+                                                className={`px-2 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider cursor-pointer focus:outline-none transition-all ${user.plan === 'pro'
+                                                    ? 'bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20'
+                                                    : 'bg-muted text-muted-foreground border border-border hover:bg-muted/80'
+                                                    } ${actionLoading === user.user_id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                            >
+                                                <option value="free">{dict.admin.users.table.planFree}</option>
+                                                <option value="pro">{dict.admin.users.table.planPro}</option>
+                                            </select>
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 text-center text-sm text-muted-foreground whitespace-nowrap">
                                         {isPro && user.renewal_date ? (
@@ -224,6 +288,22 @@ export default function UserTable({ dict }: UserTableProps) {
                                                 <span className="font-bold text-foreground">{user.emails_sent}</span>
                                                 <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter">logs</span>
                                             </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center justify-center gap-2">
+                                            <button
+                                                onClick={() => handleDeleteUser(user.user_id, user.email)}
+                                                disabled={actionLoading === user.user_id}
+                                                className={`p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all active:scale-[0.9] ${actionLoading === user.user_id ? 'opacity-50 cursor-wait' : ''}`}
+                                                title={dict.common.delete}
+                                            >
+                                                {actionLoading === user.user_id ? (
+                                                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                                                ) : (
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                                )}
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
