@@ -29,6 +29,10 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
     const searchParams = useSearchParams()
     const isReadOnly = searchParams.get('readonly') === 'true'
     const { step, setStep, canProceed, data, updateData, clearDrafts, clearStorageOnly } = useWizard()
+
+    // Logic for Terms of Service (TOS)
+    // Requirement: Must show for EVERY message creation attempt.
+    const [tosConfirmedInPhase, setTosConfirmedInPhase] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [showTosModal, setShowTosModal] = useState(false)
@@ -53,25 +57,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
     useEffect(() => {
         const typeParam = searchParams.get('type')
         if (typeParam === 'video' && userPlan === 'pro') {
-            updateData({ messageType: 'video' }) // We treat video as 'audio' type internally for now, or need to expand types
-            // Wait for data update then set step?
-            // Actually, the request said "Mensaje de Video" card.
-            // If I set messageType to 'video', I need to ensure the rest of the app handles it.
-            // The prompt said: "Add 'Video Message' card... same flow as 'Better to Pro'".
-            // BUT, if they upgrade, they should be able to record video.
-            // Current types are 'text' | 'audio'. 
-            // I should probably map 'video' to 'audio' with a flag or extend the type.
-            // Let's stick to the requested UX: "Video Message" card.
-            // If I use 'audio' type but show video recorder, that works.
-            // However, let's assume 'video' is a distinct type in the UI, but maybe backend treats it similar to audio (blob).
-            // Let's defer type expansion decision. The user asked for "Video Message" option.
-            // For now, I will map it to 'audio' logic in step 2 but maybe show video UI.
-            // Wait, step 2 has 'Step2Content'. I need to see if it supports video.
-            // The implementation plan had `messageType: 'video'` in redirect.
-            // I'll need to update `wizard-context` type to include 'video' if I truly want 'video'.
-            // Let's update `wizard-context.tsx` first to allow 'video' type.
-            // Wait, I already added 'video' to MessageType in `wizard-context.tsx`.
-            // So I can set messageType to 'video'.
+            updateData({ messageType: 'video' })
             setStep(2)
         }
     }, [searchParams, userPlan, updateData, setStep])
@@ -104,6 +90,13 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
         setIsSubmitting(true)
         setError(null)
 
+        // Force ToS Modal for EVERY message creation/update (Requirement: "SIEMPRE")
+        if (!tosConfirmedInPhase) {
+            setShowTosModal(true)
+            setIsSubmitting(false)
+            return
+        }
+
         try {
             const formData = new FormData()
             if (messageId) {
@@ -119,7 +112,6 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                 formData.append('textContent', data.textContent)
             } else if (data.audioBlob) {
                 const filename = 'recording.webm'
-                // Use correct key: "video" for video messages, "audio" for audio messages
                 const fileKey = data.messageType === 'video' ? 'video' : 'audio'
                 formData.append(fileKey, data.audioBlob, filename)
             }
@@ -128,8 +120,6 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                 formData.append('deliverAt', data.deliverAt)
             } else {
                 formData.append('checkinIntervalDays', String(data.checkinIntervalDays))
-
-                // Add trusted contacts
                 if (data.trustedContactIds && data.trustedContactIds.length > 0) {
                     data.trustedContactIds.forEach(id => {
                         formData.append('trustedContactIds', id)
@@ -147,6 +137,8 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                 try {
                     const result = await response.json()
                     if (result.code === 'TOS_REQUIRED') {
+                        // This shouldn't normally be hit if we force it client-side, 
+                        // but keep as safety fallback.
                         setShowTosModal(true)
                         setIsSubmitting(false)
                         return
@@ -155,9 +147,6 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                     errorMessage = result.error || errorMessage
                     if (result.details) {
                         errorMessage += `: ${result.details}`
-                    }
-                    if (result.code) {
-                        errorMessage += ` (code: ${result.code})`
                     }
                 } catch (e) {
                     console.error('Failed to parse error response:', e)
@@ -168,7 +157,6 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
             await clearStorageOnly()
             router.push(`/${locale}/dashboard`)
             router.refresh()
-            // Keep isSubmitting true during navigation to prevent UI interaction
         } catch (err) {
             console.error('Error creating/updating message:', err)
             setError(err instanceof Error ? err.message : 'Failed to save message')
@@ -194,20 +182,17 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                         ? dictionary.common.view
                         : (initialData ? dictionary.common.edit || dictionary.wizard.title : dictionary.wizard.title)}
                 </h1>
-                <div className="w-20" /> {/* Spacer for centering */}
+                <div className="w-20" />
             </div>
 
-            {/* Step Indicator - Hide in read-only mode */}
             {!isReadOnly && <StepIndicator currentStep={step} steps={steps} />}
 
-            {/* Error Display */}
             {error && (
                 <div className="max-w-md mx-auto mb-6 p-4 bg-error/10 border border-error/20 rounded-lg text-error text-center">
                     {error}
                 </div>
             )}
 
-            {/* Step Content */}
             <div className="mb-8 animate-in slide-in-from-right-4 fade-in duration-500 ease-out" key={step}>
                 {!isReadOnly && step === 1 && <Step1TypeSelect dictionary={dictionary.wizard.step1} userPlan={userPlan} />}
                 {!isReadOnly && step === 2 && (
@@ -219,40 +204,33 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                 )}
                 {!isReadOnly && step === 3 && <Step3Recipient dictionary={dictionary.wizard.step3} />}
                 {!isReadOnly && step === 4 && <Step4Delivery dictionary={dictionary} userPlan={userPlan} />}
-                {/* Always show step 5 content if readonly or step 5 */}
                 {(step === 5 || isReadOnly) && (
                     <Step5Review
                         dictionary={dictionary.wizard.step5}
                         typeDictionary={dictionary.wizard.step1}
                         onSubmit={handleSubmit}
                         isSubmitting={isSubmitting}
+                        tosAccepted={tosAccepted}
+                        onTosChange={setTosAccepted}
+                        locale={locale}
                         isReadOnly={isReadOnly}
                     />
                 )}
             </div>
 
-            {/* Navigation Buttons */}
             {!isReadOnly && step < 5 && (
                 <div className="flex justify-center gap-4">
                     {step > 1 && (
-                        <button
-                            onClick={handleBack}
-                            className="btn-ghost"
-                        >
+                        <button onClick={handleBack} className="btn-ghost">
                             {dictionary.common.back}
                         </button>
                     )}
-                    <button
-                        onClick={handleNext}
-                        disabled={!canProceed}
-                        className="btn-primary"
-                    >
+                    <button onClick={handleNext} disabled={!canProceed} className="btn-primary">
                         {dictionary.common.next}
                     </button>
                 </div>
             )}
 
-            {/* Terms of Service Modal */}
             {showTosModal && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md px-4 text-foreground transition-all duration-300 animate-in fade-in">
                     <div className="bg-card w-full max-w-lg p-8 rounded-2xl border border-border shadow-2xl space-y-8 animate-in zoom-in-95 fade-in duration-300">
@@ -267,12 +245,12 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                         <div className="flex items-start gap-4 p-5 bg-muted rounded-xl border border-border/50">
                             <input
                                 type="checkbox"
-                                id="tos-accept"
+                                id="tos-accept-modal"
                                 className="mt-1 w-5 h-5 rounded border-border text-primary focus:ring-primary/20"
                                 checked={tosAccepted}
                                 onChange={(e) => setTosAccepted(e.target.checked)}
                             />
-                            <label htmlFor="tos-accept" className="text-sm text-foreground/90 leading-relaxed cursor-pointer selection:bg-transparent">
+                            <label htmlFor="tos-accept-modal" className="text-sm text-foreground/90 leading-relaxed cursor-pointer selection:bg-transparent">
                                 {dictionary.wizard.tosModal.checkboxPre}
                                 <Link href={`/${locale}/terms`} target="_blank" className="text-primary hover:underline font-medium">{dictionary.wizard.tosModal.checkboxTerms}</Link>
                                 {dictionary.wizard.tosModal.checkboxMid}
@@ -288,23 +266,24 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                             </button>
                             <button
                                 disabled={!tosAccepted}
-                                className="btn-primary w-full"
+                                className="btn-primary w-full shadow-lg shadow-primary/20"
                                 onClick={async () => {
                                     try {
-                                        const res = await fetch('/api/tos/accept', {
+                                        // Still record acceptance on server for audit/one-time logic
+                                        await fetch('/api/tos/accept', {
                                             method: 'POST',
                                             headers: { 'Content-Type': 'application/json' },
-                                            body: JSON.stringify({ version: '1.0' }) // Matching REQUIRED_TOS_VERSION
+                                            body: JSON.stringify({ version: '1.0' })
                                         });
-                                        if (res.ok) {
-                                            setShowTosModal(false);
-                                            handleSubmit(); // Retry save
-                                        } else {
-                                            const errorData = await res.json();
-                                            alert(errorData.error || 'Failed to accept Terms');
-                                        }
+                                        setTosConfirmedInPhase(true);
+                                        setShowTosModal(false);
+                                        // Set a timeout to avoid UI state conflicts during state updates
+                                        setTimeout(() => handleSubmit(), 0);
                                     } catch (e) {
-                                        alert('Error connecting to server.');
+                                        // Even if server record fails, we let them proceed if they checked the box locally
+                                        setTosConfirmedInPhase(true);
+                                        setShowTosModal(false);
+                                        setTimeout(() => handleSubmit(), 0);
                                     }
                                 }}
                             >
