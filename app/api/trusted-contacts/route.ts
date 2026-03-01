@@ -114,33 +114,45 @@ export async function POST(request: NextRequest) {
         const resend = getResend();
         const sender = process.env.RESEND_FROM_EMAIL || 'Carry my Words <onboarding@resend.dev>';
 
-        let fromAddress = sender;
-        if (!sender.includes('<') && !sender.toLowerCase().includes('carry my words')) {
-            if (sender.includes('<')) {
-                fromAddress = sender.replace(/.*</, 'Carry my Words <');
-            } else {
-                fromAddress = `Carry my Words <${sender}>`;
+        const emailMatch = sender.match(/<([^>]+)>/);
+        const senderEmail = emailMatch ? emailMatch[1] : sender;
+        const fromAddress = `Carry my Words <${senderEmail}>`;
+
+        const fullName = user.user_metadata?.full_name;
+        const userDisplayName = fullName ? `${fullName} (${user.email})` : user.email;
+
+        // Fallback for locale from referer if not provided
+        let emailLocale = locale;
+        if (!emailLocale) {
+            const referer = request.headers.get('referer');
+            if (referer) {
+                try {
+                    const url = new URL(referer);
+                    const firstPart = url.pathname.split('/')[1];
+                    if (['en', 'es'].includes(firstPart)) {
+                        emailLocale = firstPart;
+                    }
+                } catch (e) { }
             }
         }
-
-        const userName = user.user_metadata?.full_name || user.email;
+        emailLocale = emailLocale || 'en';
 
         // Subject and Body based on Locale
         // "Fulano de tal te puso como persona de confianza para los mensajes que estableció en Carry my Words"
-        const subject = locale === 'es'
-            ? `${userName} te eligió como contacto de confianza en Carry my Words`
-            : `${userName} chose you as a trusted contact on Carry my Words`;
+        const subject = emailLocale === 'es'
+            ? `${userDisplayName} te eligió como contacto de confianza en Carry my Words`
+            : `${userDisplayName} chose you as a trusted contact on Carry my Words`;
 
-        const html = locale === 'es'
+        const html = emailLocale === 'es'
             ? `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                 <h2>Has sido elegido como contacto de confianza</h2>
                 <p>Hola ${name || ''},</p>
-                <p><strong>${userName}</strong> te ha seleccionado como su "persona de confianza" en <strong>Carry my Words</strong>.</p>
+                <p><strong>${userDisplayName}</strong> te ha seleccionado como su "persona de confianza" en <strong>Carry my Words</strong>.</p>
                 
                 <div style="background: #f4f4f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
                     <h3 style="margin-top: 0;">¿Qué significa esto?</h3>
-                    <p>Carry my Words permite a las personas dejar mensajes programados para el futuro. Si ${userName} deja de confirmar su actividad por un tiempo prolongado, te contactaremos para verificar su estado.</p>
+                    <p>Carry my Words permite a las personas dejar mensajes programados para el futuro. Si ${userDisplayName} deja de confirmar su actividad por un tiempo prolongado, te contactaremos para verificar su estado.</p>
                     <p>Solo en ese caso, y con tu confirmación, entregaremos los mensajes que dejó preparados.</p>
                 </div>
                 
@@ -152,11 +164,11 @@ export async function POST(request: NextRequest) {
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                 <h2>You have been chosen as a trusted contact</h2>
                 <p>Hello ${name || ''},</p>
-                <p><strong>${userName}</strong> has selected you as their "trusted contact" on <strong>Carry my Words</strong>.</p>
+                <p><strong>${userDisplayName}</strong> has selected you as their "trusted contact" on <strong>Carry my Words</strong>.</p>
                 
                 <div style="background: #f4f4f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
                     <h3 style="margin-top: 0;">What does this mean?</h3>
-                    <p>Carry my Words allows people to leave messages scheduled for the future. If ${userName} stops confirming their activity for an extended period, we will contact you to verify their status.</p>
+                    <p>Carry my Words allows people to leave messages scheduled for the future. If ${userDisplayName} stops confirming their activity for an extended period, we will contact you to verify their status.</p>
                     <p>Only then, and with your confirmation, will we deliver the messages they prepared.</p>
                 </div>
                 
