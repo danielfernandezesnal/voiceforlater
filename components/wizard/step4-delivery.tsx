@@ -10,6 +10,7 @@ interface Step4Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any // Using specific type earlier, but simplifying for flexibility with new structure
     userPlan: Plan
+    locale: string
 }
 
 interface Contact {
@@ -18,7 +19,7 @@ interface Contact {
     email: string
 }
 
-export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
+export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
     const { data, updateData } = useWizard()
     const step4Dict = dictionary.wizard.step4
     const limits = getPlanLimits(userPlan)
@@ -252,6 +253,7 @@ export function Step4Delivery({ dictionary, userPlan }: Step4Props) {
                                                             saving: dictionary.trustedContact.saving,
                                                             errorCreating: dictionary.trustedContact.errorCreating
                                                         }}
+                                                        locale={locale}
                                                         onCancel={() => setIsCreating(false)}
                                                         onSuccess={handleContactCreated}
                                                     />

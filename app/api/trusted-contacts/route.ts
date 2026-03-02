@@ -5,6 +5,8 @@ import { getEffectivePlan } from '@/lib/plan-resolver';
 import { getPlanLimits } from '@/lib/plans';
 import { trackServerEvent } from '@/lib/analytics/trackEvent';
 import { getErrorMessage } from '@/lib/errors';
+import { trackEmail } from '@/lib/email-tracking';
+import { getDictionary, type Locale } from '@/lib/i18n';
 
 export const dynamic = 'force-dynamic';
 
@@ -63,6 +65,13 @@ export async function POST(request: NextRequest) {
         const limits = getPlanLimits(plan);
         const maxContacts = limits.maxTrustedContacts;
 
+        // 1.5 Get user profile for invitation details (name)
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('first_name, last_name')
+            .eq('id', user.id)
+            .single();
+
         const { count, error: countError } = await supabase
             .from('trusted_contacts')
             .select('*', { count: 'exact', head: true })
@@ -118,7 +127,10 @@ export async function POST(request: NextRequest) {
         const senderEmail = emailMatch ? emailMatch[1] : sender;
         const fromAddress = `Carry my Words <${senderEmail}>`;
 
-        const fullName = user.user_metadata?.full_name;
+        const fullName = profile?.first_name
+            ? `${profile.first_name} ${profile.last_name || ''}`.trim()
+            : user.user_metadata?.full_name;
+
         const userDisplayName = fullName ? `${fullName} (${user.email})` : user.email;
 
         // Fallback for locale from referer if not provided
@@ -137,52 +149,58 @@ export async function POST(request: NextRequest) {
         }
         emailLocale = emailLocale || 'en';
 
+        emailLocale = emailLocale || 'en';
+        const dict = await getDictionary(emailLocale as Locale);
+        const t = dict.checkin.contactNotification;
+
         // Subject and Body based on Locale
-        // "Fulano de tal te puso como persona de confianza para los mensajes que estableció en Carry my Words"
-        const subject = emailLocale === 'es'
-            ? `${userDisplayName} te eligió como contacto de confianza en Carry my Words`
-            : `${userDisplayName} chose you as a trusted contact on Carry my Words`;
+        const subject = (t.subject || '').replace('{name}', userDisplayName);
 
-        const html = emailLocale === 'es'
-            ? `
-            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                <h2>Has sido elegido como contacto de confianza</h2>
-                <p>Hola ${name || ''},</p>
-                <p><strong>${userDisplayName}</strong> te ha seleccionado como su "persona de confianza" en <strong>Carry my Words</strong>.</p>
+        const html = `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+                <h2 style="color: #2c3e50;">${t.title || 'Fuiste elegido como contacto de confianza'}</h2>
+                <p>${(t.intro || '').replace('{name}', `<strong>${userDisplayName}</strong>`)}</p>
                 
-                <div style="background: #f4f4f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <h3 style="margin-top: 0;">¿Qué significa esto?</h3>
-                    <p>Carry my Words permite a las personas dejar mensajes programados para el futuro. Si ${userDisplayName} deja de confirmar su actividad por un tiempo prolongado, te contactaremos para verificar su estado.</p>
-                    <p>Solo en ese caso, y con tu confirmación, entregaremos los mensajes que dejó preparados.</p>
+                <div style="background: #f4f4f5; padding: 25px; border-radius: 12px; margin: 25px 0; border: 1px solid #e4e4e7;">
+                    <h3 style="margin-top: 0; color: #18181b;">¿Qué significa esto?</h3>
+                    <p style="line-height: 1.6;">${(t.explanation || '').replace('{name}', userDisplayName)}</p>
                 </div>
                 
-                <p>No necesitas hacer nada ahora. Solo te avisamos para que estés al tanto.</p>
-                <p>Gracias por ser parte de esto.</p>
-            </div>
-            `
-            : `
-            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                <h2>You have been chosen as a trusted contact</h2>
-                <p>Hello ${name || ''},</p>
-                <p><strong>${userDisplayName}</strong> has selected you as their "trusted contact" on <strong>Carry my Words</strong>.</p>
+                <p style="line-height: 1.6;">${(t.noAction || '').replace('{name}', userDisplayName)}</p>
                 
-                <div style="background: #f4f4f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <h3 style="margin-top: 0;">What does this mean?</h3>
-                    <p>Carry my Words allows people to leave messages scheduled for the future. If ${userDisplayName} stops confirming their activity for an extended period, we will contact you to verify their status.</p>
-                    <p>Only then, and with your confirmation, will we deliver the messages they prepared.</p>
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; font-size: 14px; color: #71717a;">
+                    <p style="margin-bottom: 4px;"><strong>${t.signature || 'Carry My Words'}</strong></p>
+                    <p style="margin-top: 0; font-style: italic;">${t.tagline || 'Para que tus palabras lleguen cuando tengan que llegar.'}</p>
                 </div>
-                
-                <p>You don't need to do anything right now. We just wanted to let you know.</p>
-                <p>Thank you.</p>
             </div>
-            `;
+        `;
 
-        await resend.emails.send({
+        const { data: emailRes, error: emailErr } = await resend.emails.send({
             from: fromAddress,
             to: email,
             subject: subject,
             html: html
         });
+
+        if (emailErr) {
+            console.error('[POST /api/trusted-contacts] Resend error:', emailErr);
+            await trackEmail({
+                userId: user.id,
+                toEmail: email,
+                emailType: 'trusted_contact_alert', // Using existing type for now as simple tracking
+                status: 'failed',
+                errorMessage: JSON.stringify(emailErr)
+            });
+        } else {
+            console.log('[POST /api/trusted-contacts] Invitation email sent:', emailRes?.id);
+            await trackEmail({
+                userId: user.id,
+                toEmail: email,
+                emailType: 'trusted_contact_alert',
+                providerMessageId: emailRes?.id,
+                status: 'sent'
+            });
+        }
 
         // --- Product Analytics ---
         await trackServerEvent({
