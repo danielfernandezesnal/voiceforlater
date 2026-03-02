@@ -30,12 +30,8 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
     const isReadOnly = searchParams.get('readonly') === 'true'
     const { step, setStep, canProceed, data, updateData, clearDrafts, clearStorageOnly } = useWizard()
 
-    // Logic for Terms of Service (TOS)
-    // Requirement: Must show for EVERY message creation attempt.
-    const [tosConfirmedInPhase, setTosConfirmedInPhase] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const [showTosModal, setShowTosModal] = useState(false)
     const [tosAccepted, setTosAccepted] = useState(false)
 
     // Handle ?new=true to reset wizard
@@ -87,17 +83,19 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
     }
 
     const handleSubmit = async () => {
+        if (!tosAccepted) return
+
         setIsSubmitting(true)
         setError(null)
 
-        // Force ToS Modal for EVERY message creation/update (Requirement: "SIEMPRE")
-        if (!tosConfirmedInPhase) {
-            setShowTosModal(true)
-            setIsSubmitting(false)
-            return
-        }
-
         try {
+            // Also notify server about ToS acceptance if they checked it (Requirement: audit record)
+            fetch('/api/tos/accept', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ version: '1.0' })
+            }).catch(e => console.error("Failed to record ToS acceptance silently:", e));
+
             const formData = new FormData()
             if (messageId) {
                 formData.append('id', messageId)
@@ -136,14 +134,6 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                 let errorMessage = 'Failed to create message'
                 try {
                     const result = await response.json()
-                    if (result.code === 'TOS_REQUIRED') {
-                        // This shouldn't normally be hit if we force it client-side, 
-                        // but keep as safety fallback.
-                        setShowTosModal(true)
-                        setIsSubmitting(false)
-                        return
-                    }
-
                     errorMessage = result.error || errorMessage
                     if (result.details) {
                         errorMessage += `: ${result.details}`
@@ -203,7 +193,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                     />
                 )}
                 {!isReadOnly && step === 3 && <Step3Recipient dictionary={dictionary.wizard.step3} />}
-                {!isReadOnly && step === 4 && <Step4Delivery dictionary={dictionary} userPlan={userPlan} />}
+                {!isReadOnly && step === 4 && <Step4Delivery dictionary={dictionary} userPlan={userPlan} locale={locale} />}
                 {(step === 5 || isReadOnly) && (
                     <Step5Review
                         dictionary={dictionary.wizard.step5}
@@ -228,69 +218,6 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                     <button onClick={handleNext} disabled={!canProceed} className="btn-primary">
                         {dictionary.common.next}
                     </button>
-                </div>
-            )}
-
-            {showTosModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md px-4 text-foreground transition-all duration-300 animate-in fade-in">
-                    <div className="bg-card w-full max-w-lg p-8 rounded-2xl border border-border shadow-2xl space-y-8 animate-in zoom-in-95 fade-in duration-300">
-                        <div className="text-center space-y-3">
-                            <h2 className="text-2xl font-serif font-medium tracking-tight">
-                                {dictionary.wizard.tosModal.title}
-                            </h2>
-                            <p className="text-base text-muted-foreground">
-                                {dictionary.wizard.tosModal.subtitle}
-                            </p>
-                        </div>
-                        <div className="flex items-start gap-4 p-5 bg-muted rounded-xl border border-border/50">
-                            <input
-                                type="checkbox"
-                                id="tos-accept-modal"
-                                className="mt-1 w-5 h-5 rounded border-border text-primary focus:ring-primary/20"
-                                checked={tosAccepted}
-                                onChange={(e) => setTosAccepted(e.target.checked)}
-                            />
-                            <label htmlFor="tos-accept-modal" className="text-sm text-foreground/90 leading-relaxed cursor-pointer selection:bg-transparent">
-                                {dictionary.wizard.tosModal.checkboxPre}
-                                <Link href={`/${locale}/terms`} target="_blank" className="text-primary hover:underline font-medium">{dictionary.wizard.tosModal.checkboxTerms}</Link>
-                                {dictionary.wizard.tosModal.checkboxMid}
-                                <Link href={`/${locale}/privacy`} target="_blank" className="text-primary hover:underline font-medium">{dictionary.wizard.tosModal.checkboxPrivacy}</Link>.
-                            </label>
-                        </div>
-                        <div className="flex justify-between gap-4 pt-4">
-                            <button
-                                onClick={() => { setShowTosModal(false); setTosAccepted(false) }}
-                                className="btn-secondary w-full"
-                            >
-                                {dictionary.wizard.tosModal.cancel}
-                            </button>
-                            <button
-                                disabled={!tosAccepted}
-                                className="btn-primary w-full shadow-lg shadow-primary/20"
-                                onClick={async () => {
-                                    try {
-                                        // Still record acceptance on server for audit/one-time logic
-                                        await fetch('/api/tos/accept', {
-                                            method: 'POST',
-                                            headers: { 'Content-Type': 'application/json' },
-                                            body: JSON.stringify({ version: '1.0' })
-                                        });
-                                        setTosConfirmedInPhase(true);
-                                        setShowTosModal(false);
-                                        // Set a timeout to avoid UI state conflicts during state updates
-                                        setTimeout(() => handleSubmit(), 0);
-                                    } catch (e) {
-                                        // Even if server record fails, we let them proceed if they checked the box locally
-                                        setTosConfirmedInPhase(true);
-                                        setShowTosModal(false);
-                                        setTimeout(() => handleSubmit(), 0);
-                                    }
-                                }}
-                            >
-                                {dictionary.wizard.tosModal.confirm}
-                            </button>
-                        </div>
-                    </div>
                 </div>
             )}
         </div>

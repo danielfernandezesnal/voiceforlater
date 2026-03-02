@@ -15,11 +15,12 @@ interface CreateContactFormProps {
         saving: string
         errorCreating: string
     }
+    locale: string
     onCancel: () => void
     onSuccess: (newContact: { id: string, name: string, email: string }) => void
 }
 
-export function CreateContactForm({ dictionary, onCancel, onSuccess }: CreateContactFormProps) {
+export function CreateContactForm({ dictionary, locale, onCancel, onSuccess }: CreateContactFormProps) {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
@@ -34,7 +35,7 @@ export function CreateContactForm({ dictionary, onCancel, onSuccess }: CreateCon
             const res = await fetch('/api/trusted-contacts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email })
+                body: JSON.stringify({ name, email, locale })
             })
 
             const data = await res.json()
