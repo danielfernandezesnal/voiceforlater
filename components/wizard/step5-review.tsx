@@ -18,6 +18,8 @@ interface Step5Props {
         audioContent: string
         videoContent: string
         noContactWarning: string
+        agreeTerms: string
+        termsLink: string
     }
     typeDictionary: {
         text: { title: string }
@@ -26,10 +28,22 @@ interface Step5Props {
     }
     onSubmit: () => Promise<void>
     isSubmitting: boolean
+    tosAccepted: boolean
+    onTosChange: (accepted: boolean) => void
+    locale: string
     isReadOnly?: boolean
 }
 
-export function Step5Review({ dictionary, typeDictionary, onSubmit, isSubmitting, isReadOnly = false }: Step5Props) {
+export function Step5Review({
+    dictionary,
+    typeDictionary,
+    onSubmit,
+    isSubmitting,
+    tosAccepted,
+    onTosChange,
+    locale,
+    isReadOnly = false
+}: Step5Props) {
     const { data, setStep } = useWizard()
 
     const formatDate = (dateString: string) => {
@@ -105,34 +119,69 @@ export function Step5Review({ dictionary, typeDictionary, onSubmit, isSubmitting
                         )}
                     </div>
                 ))}
-                {data.deliveryMode === 'checkin' && data.trustedContactIds.length === 0 && (
-                    <div className="max-w-md mx-auto mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-sm flex gap-2 animate-in fade-in">
-                        <span className="text-base">⚠️</span>
-                        <span>{dictionary.noContactWarning}</span>
-                    </div>
-                )}
             </div>
 
-            {
-                !isReadOnly && (
-                    <div className="flex flex-col sm:flex-row justify-center gap-3">
-                        <button
-                            onClick={() => setStep(2)} // Go to Content step
-                            disabled={isSubmitting}
-                            className="px-8 py-3 bg-card border border-border text-foreground rounded-lg font-medium hover:bg-secondary/50 disabled:opacity-50 transition-all"
-                        >
-                            {dictionary.editMessage}
-                        </button>
-                        <button
-                            onClick={onSubmit}
-                            disabled={isSubmitting}
-                            className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-primary/25"
-                        >
-                            {isSubmitting ? dictionary.submitting : dictionary.submit}
-                        </button>
-                    </div>
-                )
-            }
-        </div >
+            {data.deliveryMode === 'checkin' && data.trustedContactIds.length === 0 && !isReadOnly && (
+                <div className="max-w-md mx-auto p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-sm flex gap-2 animate-in fade-in">
+                    <span className="text-base">⚠️</span>
+                    <span>{dictionary.noContactWarning}</span>
+                </div>
+            )}
+
+            {!isReadOnly && (
+                <div className="max-w-md mx-auto py-2">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                        <div className="relative flex items-center justify-center">
+                            <input
+                                type="checkbox"
+                                checked={tosAccepted}
+                                onChange={(e) => onTosChange(e.target.checked)}
+                                className="peer appearance-none w-5 h-5 rounded border border-border bg-card checked:bg-primary checked:border-primary transition-all cursor-pointer"
+                            />
+                            <svg
+                                className="absolute w-3 h-3 text-primary-foreground opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={4}
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <span className="text-sm text-foreground/80 selection:bg-transparent">
+                            {dictionary.agreeTerms}
+                            <a
+                                href={`/${locale}/terms`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary hover:underline font-medium"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {dictionary.termsLink}
+                            </a>
+                        </span>
+                    </label>
+                </div>
+            )}
+
+            {!isReadOnly && (
+                <div className="flex flex-col sm:flex-row justify-center gap-3">
+                    <button
+                        onClick={() => setStep(2)} // Go to Content step
+                        disabled={isSubmitting}
+                        className="px-8 py-3 bg-card border border-border text-foreground rounded-lg font-medium hover:bg-secondary/50 disabled:opacity-50 transition-all font-sans"
+                    >
+                        {dictionary.editMessage}
+                    </button>
+                    <button
+                        onClick={onSubmit}
+                        disabled={isSubmitting || !tosAccepted}
+                        className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-primary/25 font-sans"
+                    >
+                        {isSubmitting ? dictionary.submitting : dictionary.submit}
+                    </button>
+                </div>
+            )}
+        </div>
     )
 }
