@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
             ? `${profile.first_name} ${profile.last_name || ''}`.trim()
             : user.user_metadata?.full_name;
 
-        const userDisplayName = fullName ? `${fullName} (${user.email})` : user.email;
+        const userDisplayName: string = (fullName ? `${fullName} (${user.email})` : user.email) || 'User';
 
         // Fallback for locale from referer if not provided
         let emailLocale = locale;
@@ -149,7 +149,6 @@ export async function POST(request: NextRequest) {
         }
         emailLocale = emailLocale || 'en';
 
-        emailLocale = emailLocale || 'en';
         const dict = await getDictionary(emailLocale as Locale);
         const t = dict.checkin.contactNotification;
 
