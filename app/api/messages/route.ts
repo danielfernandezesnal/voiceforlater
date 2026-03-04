@@ -620,12 +620,10 @@ export async function DELETE(request: NextRequest) {
                 .remove([message.audio_path]);
         }
 
-        // Delete message (cascade should handle recipients and delivery_rules, but explicit is safer if no cascade)
-        // Assuming cascade is set up in DB, but let's delete explicitly to be sure or just delete message
-        // If we delete message, and foreign keys restrict, it fails. If cascade, it works.
-        // Let's try deleting dependent rows usually best practice if unsure of DB schema.
+        // Delete message dependencies (cascade should handle them, but explicit is safer)
         await supabase.from("delivery_rules").delete().eq("message_id", id);
         await supabase.from("recipients").delete().eq("message_id", id);
+        await supabase.from("message_trusted_contacts").delete().eq("message_id", id);
 
         const { error: deleteError } = await supabase
             .from("messages")

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface Contact {
@@ -19,6 +19,12 @@ interface TrustedContactListProps {
 
 export function TrustedContactList({ dictionary, locale, plan, initialContacts }: TrustedContactListProps) {
     const [contacts, setContacts] = useState<Contact[]>(initialContacts)
+
+    // Sync state with props when router.refresh() is called
+    useEffect(() => {
+        setContacts(initialContacts);
+    }, [initialContacts]);
+
     const [isSaving, setIsSaving] = useState(false)
     const [isDeleting, setIsDeleting] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
@@ -72,7 +78,7 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts }
     }
 
     async function handleDelete(id: string) {
-        if (!confirm('Are you sure?')) return
+        if (!confirm(dictionary.trustedContact.deleteConfirm || 'Are you sure?')) return
 
         setIsDeleting(id)
         try {

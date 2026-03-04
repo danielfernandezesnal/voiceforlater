@@ -1,6 +1,6 @@
 'use client'
 
-import { useWizard, DeliveryMode } from './wizard-context'
+import { useWizard, DeliveryMode, WizardData } from './wizard-context'
 import { useState, useEffect, useCallback, useMemo, type ChangeEvent } from 'react'
 import Link from 'next/link'
 import { type Plan, getPlanLimits } from '@/lib/plans'
@@ -23,7 +23,7 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
     const { data, updateData } = useWizard()
     const step4Dict = dictionary.wizard.step4
     const limits = getPlanLimits(userPlan)
-    const [selectedTab, setSelectedTab] = useState<DeliveryMode | 'test'>(data.deliveryMode || 'checkin')
+    const [selectedTab, setSelectedTab] = useState<DeliveryMode>(data.deliveryMode || 'checkin')
 
     // Trusted Contacts State
     const [contacts, setContacts] = useState<Contact[]>([])
@@ -68,23 +68,23 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
 
     // REMOVED: Auto-correct interval useEffect (Free plan interval restriction removed)
 
-    const handleSelect = useCallback((mode: DeliveryMode | 'test') => {
+    const handleSelect = useCallback((mode: DeliveryMode) => {
         setSelectedTab(mode)
 
         if (mode === 'checkin') {
             fetchContacts()
+            updateData({ deliveryMode: mode })
+        } else if (mode === 'date') {
+            const updates: Partial<WizardData> = { deliveryMode: 'date' }
+            if (!data.deliverAt) {
+                const tomorrow = new Date()
+                tomorrow.setDate(tomorrow.getDate() + 1)
+                tomorrow.setHours(0, 0, 0, 0)
+                updates.deliverAt = tomorrow.toISOString()
+            }
+            updateData(updates)
         }
-
-        if (mode === 'test') {
-            const testDate = new Date(Date.now() + 5 * 60 * 1000)
-            updateData({
-                deliveryMode: 'date',
-                deliverAt: testDate.toISOString()
-            })
-        } else {
-            updateData({ deliveryMode: mode as DeliveryMode })
-        }
-    }, [updateData, fetchContacts])
+    }, [updateData, fetchContacts, data.deliverAt])
 
     const handleContactChange = (index: number, contactId: string) => {
         if (contactId === 'new') {
@@ -145,16 +145,6 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                 </svg>
             ),
         },
-        {
-            mode: 'test',
-            title: step4Dict.test.title,
-            description: step4Dict.test.description,
-            icon: (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-            ),
-        },
     ], [step4Dict])
 
     const [minDate] = useState(() => {
@@ -162,6 +152,18 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
         tomorrow.setDate(tomorrow.getDate() + 1)
         return tomorrow.toISOString().split('T')[0]
     })
+
+    const currentDate = useMemo(() => {
+        if (data.deliverAt) return data.deliverAt.split('T')[0]
+        return minDate
+    }, [data.deliverAt, minDate])
+
+    const currentTime = useMemo(() => {
+        if (data.deliverAt && data.deliverAt.includes('T')) {
+            return data.deliverAt.split('T')[1].substring(0, 5)
+        }
+        return '00:00'
+    }, [data.deliverAt])
 
     const handleIntervalChange = (e: ChangeEvent<HTMLSelectElement>) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -182,7 +184,7 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                 {options.map((option) => (
                     <div key={option.mode}>
                         <button
-                            onClick={() => handleSelect(option.mode as DeliveryMode | 'test')}
+                            onClick={() => handleSelect(option.mode as DeliveryMode)}
                             className={`w-full p-4 rounded-xl border-2 text-left transition-all ${selectedTab === option.mode
                                 ? 'border-primary bg-primary/5 shadow-sm shadow-primary/5'
                                 : 'border-border hover:border-primary/30'
@@ -202,20 +204,40 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                         {selectedTab === option.mode && (
                             <div className="mt-3 ml-10 p-4 bg-card rounded-lg border border-border animate-in slide-in-from-top-1">
                                 {option.mode === 'date' && (
-                                    <div>
-                                        <label className="block text-sm font-medium mb-2">{step4Dict.date.label}</label>
-                                        <input
-                                            type="date"
-                                            min={minDate}
-                                            value={data.deliverAt ? data.deliverAt.split('T')[0] : ''}
-                                            onChange={(e) => {
-                                                if (!e.target.value) return;
-                                                const localDate = new Date(e.target.value + 'T00:00:00');
-                                                updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
-                                            }}
-                                            className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
-                                        />
+                                    <div className="flex flex-col sm:flex-row gap-4">
+                                        <div className="flex-1">
+                                            <label className="block text-sm font-medium mb-2">{step4Dict.date.label}</label>
+                                            <input
+                                                type="date"
+                                                min={minDate}
+                                                value={currentDate}
+                                                onChange={(e) => {
+                                                    if (!e.target.value) return;
+                                                    const localDate = new Date(e.target.value + 'T' + currentTime + ':00');
+                                                    updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
+                                                }}
+                                                className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
+                                            />
+                                        </div>
+                                        <div className="w-full sm:w-40">
+                                            <label className="block text-sm font-medium mb-2">{step4Dict.date.timeLabel}</label>
+                                            <input
+                                                type="time"
+                                                value={currentTime}
+                                                onChange={(e) => {
+                                                    const localDate = new Date(currentDate + 'T' + e.target.value + ':00');
+                                                    updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
+                                                }}
+                                                className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
+                                            />
+                                        </div>
                                     </div>
+                                )}
+
+                                {option.mode === 'date' && (
+                                    <p className="mt-4 text-xs text-muted-foreground pt-2 border-t border-border">
+                                        ℹ️ {step4Dict.date.optionalContactNote}
+                                    </p>
                                 )}
 
                                 {option.mode === 'checkin' && (
@@ -302,17 +324,7 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                     </div>
                                 )}
 
-                                {option.mode === 'test' && (
-                                    <div className="p-3 bg-primary/10 border border-primary/20 rounded-lg">
-                                        <p className="text-sm font-medium text-primary flex items-center gap-2">
-                                            <span className="relative flex h-3 w-3">
-                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                                                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
-                                            </span>
-                                            {step4Dict.test.note}
-                                        </p>
-                                    </div>
-                                )}
+
                             </div>
                         )}
                     </div>

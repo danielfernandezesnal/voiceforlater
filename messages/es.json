@@ -35,6 +35,29 @@
     },
     "uses": {
       "tag": "Para quién, para cuándo",
+      "scenarios": {
+        "eyebrow": "Para quién, para cuándo",
+        "title": "Tres momentos que",
+        "titleEm": "cambian todo",
+        "s1": {
+          "tag": "Para el futuro",
+          "question": "¿Qué le dirías a tu hijo el día que cumpla 18?",
+          "heading": "Grabá hoy lo que querés que escuche mañana",
+          "body": "Hay palabras que hoy sentís con claridad pero que el tiempo puede difuminar. Grabá ese mensaje ahora, y nosotros nos encargamos de que llegue exactamente cuando vos elegís."
+        },
+        "s2": {
+          "tag": "Lo difícil de decir",
+          "question": "¿Hay algo que querés decir, pero no sabés cómo?",
+          "heading": "Nos encargamos de que llegue en el momento correcto",
+          "body": "A veces las palabras más importantes son las que más cuesta decir. Tomate el tiempo que necesitás para decirlas bien. Nosotros las guardamos hasta que sea el momento."
+        },
+        "s3": {
+          "tag": "Para siempre",
+          "question": "¿Y si mañana no pudieras estar?",
+          "heading": "Tus palabras llegan igual",
+          "body": "En el cumpleaños, en la graduación, en el día de su boda. En el momento y a la persona que vos elegiste, respetando tu voluntad."
+        }
+      },
       "cards": [
         {
           "icon": "👶",
@@ -102,7 +125,7 @@
       "title": "Vos elegís el momento",
       "date": {
         "title": "En una fecha específica",
-        "description": "Cumpleaños, aniversarios o cualquier momento importante."
+        "description": "Definís cuándo debe llegar. Y llega exactamente ese día, a esa hora."
       },
       "checkin": {
         "title": "Cuando ya no estés presente",
@@ -118,17 +141,8 @@
       "reassurance": "",
       "item1": "Vos decidís qué se envía, a quién y cuándo",
       "item2": "Podés modificar o borrar tus mensajes mientras estés activo",
-      "item3": "Nada se envía sin que vos lo hayas definido antes"
-    },
-    "notWhat": {
-      "title": "Lo que Carry My Words no es",
-      "items": [
-        "No es un testamento",
-        "No es asesoramiento legal",
-        "No reemplaza a una persona",
-        "No toma decisiones por vos"
-      ],
-      "clarification": "Carry My Words solo entrega mensajes que vos dejaste, exactamente como los grabaste."
+      "item3": "Nada se envía sin que vos lo hayas definido antes",
+      "clarification": "Carry My Words solo entrega lo que vos grabaste, exactamente como lo dejaste."
     },
     "pricing": {
       "title": "Precios Simples",
@@ -303,18 +317,20 @@
       "subtitle": "Elegí cuándo o bajo qué condición querés que este mensaje se envíe.",
       "date": {
         "title": "En una fecha específica",
-        "description": "Cumpleaños, aniversario, graduación...",
-        "label": "Fecha de entrega"
+        "description": "Cumpleaños, aniversario, graduación, lo que cuesta decir en persona, un mensaje para vos mismo en el futuro...",
+        "label": "Fecha de entrega",
+        "timeLabel": "Hora de entrega",
+        "optionalContactNote": "No se requiere un contacto de confianza para esta modalidad. El mensaje se enviará automáticamente en la fecha y hora elegidas."
       },
       "checkin": {
-        "title": "Cuando ya no estés",
-        "description": "Si dejas de confirmar periódicamente, enviaremos tus mensajes.",
+        "title": "Cuando ya no estés presente",
+        "description": "Tus palabras llegan igual, en el momento y a la persona que vos elegiste, respetando tu voluntad.",
         "interval": "Intervalo de confirmación",
         "days7": "Cada 7 días",
         "days30": "Cada 30 días",
         "days60": "Cada 60 días",
         "days90": "Cada 90 días",
-        "note": "Si no confirmás 3 veces, contactaremos a tu(s) persona(s) de confianza antes de entregar.",
+        "note": "Si perdemos el contacto contigo, intentaremos con el contacto de confianza que hayas indicado antes de enviar tus mensajes.",
         "freeNote": "Plan Free: intervalo de 7 días con 1 recordatorio. Actualiza a Pro para intervalos más largos y contacto de confianza.",
         "trustedContacts": "Contactos de confianza",
         "freeLimit": "Límite Free: 1",
@@ -323,11 +339,6 @@
         "selectPlaceholder": "Seleccionar",
         "addNew": "+ Agregar nuevo contacto...",
         "noContactWarning": "Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza. Puedes continuar y asignarlo luego desde el dashboard."
-      },
-      "test": {
-        "title": "En 5 minutos (Modo Prueba)",
-        "description": "Solo para probar que el mensaje llega correctamente.",
-        "note": "Entregaremos este mensaje en 5 minutos usando el flujo real."
       }
     },
     "step5": {
@@ -428,6 +439,7 @@
     "save": "Guardar Contacto",
     "saving": "Guardando...",
     "saved": "¡Contacto guardado!",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar este contacto?",
     "remove": "Eliminar",
     "addContact": "Agregar Contacto",
     "noContact": "Sin contacto de confianza",
@@ -647,6 +659,10 @@
         {
           "heading": "14. Cambios y Contacto",
           "body": "Podemos actualizar ocasionalmente estos términos (reflejado en el número de versión anterior). Si tienes preguntas sobre estos términos, por favor contáctanos."
+        },
+        {
+          "heading": "15. Alcance del servicio",
+          "body": "Carry My Words es un servicio de entrega de mensajes personales. A los efectos de su uso, es importante tener en cuenta que: no es un testamento ni reemplaza ningún instrumento legal; no constituye asesoramiento legal, financiero ni de ningún otro tipo; no reemplaza a una persona ni actúa en su nombre; no toma decisiones por el usuario. Carry My Words únicamente entrega los mensajes que el usuario dejó grabados, exactamente como fueron registrados, en el momento y a las personas que el usuario definió."
         }
       ]
     },

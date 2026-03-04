@@ -31,11 +31,9 @@ export async function trackEmail(params: TrackEmailParams): Promise<void> {
 
         if (error) {
             console.error('Failed to track email event:', error);
-            // Don't throw - email tracking is not critical, shouldn't break main flow
         }
     } catch (err) {
         console.error('Error in trackEmail:', err);
-        // Silently fail - don't break the application
     }
 }
 

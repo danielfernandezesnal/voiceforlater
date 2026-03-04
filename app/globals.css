@@ -3,40 +3,58 @@
 @tailwind utilities;
 
 :root {
-  --bg: 45 29% 98%;
-  /* Warm off-white #FBFAF7 */
-  --surface: 0 0% 100%;
-  /* Pure white #FFFFFF */
-  --border: 38 20% 88%;
-  /* #E5E1DA */
-  --text: 0 0% 18%;
-  /* #2D2D2D */
-  --muted: 38 25% 93%;
-  /* #F0EDE8 */
-  --muted-foreground: 220 9% 46%;
-  /* #6B7280 */
-  --primary: 136 14% 26%;
-  /* Forest Green #3A4D3F */
+  /* ── Base surfaces — warm cream palette (matches landing) ── */
+  --bg: 35 33% 96%;
+  /* #F7F3EE — warm off-white */
+  --background: 35 33% 96%;
+  --surface: 36 47% 98%;
+  /* #FDFAF6 — near white */
+  --card: 36 47% 98%;
+  --card-foreground: 24 13% 15%;
+  --popover: 36 47% 98%;
+  --popover-foreground: 24 13% 15%;
+
+  --border: 30 18% 86%;
+  /* #E3DDD6 — warm border */
+  --input: 30 18% 86%;
+  --text: 24 13% 15%;
+  /* #2A2520 — ink */
+  --foreground: 24 13% 15%;
+  --muted: 35 20% 91%;
+  /* #EDE8E2 */
+  --muted-foreground: 27 8% 50%;
+  /* #8C8078 */
+  --secondary: 35 20% 91%;
+  --secondary-foreground: 24 13% 15%;
+
+  /* ── Primary — terracota #C4623A ── */
+  --primary: 18 56% 49%;
+  /* #C4623A */
   --primary-foreground: 0 0% 100%;
   /* #FFFFFF */
 
-  --accent: 141 8% 40%;
-  /* #5E6F64 */
+  /* ── Accent — terracota soft #A84F2D (hover / active) ── */
+  --accent: 18 56% 49%;
+  /* mismo terracota para íconos activos */
   --accent-foreground: 0 0% 100%;
+
   --success: 126 8% 45%;
   /* #6B7E6D */
   --warning: 29 55% 64%;
   /* #D4A373 */
   --error: 358 46% 44%;
   /* #A63D40 */
+  --destructive: 358 46% 44%;
+  --destructive-foreground: 0 0% 100%;
+  --ring: 18 56% 49%;
   --radius: 0.75rem;
 
   /* ── Propuesta D Landing Palette ── */
-  --rose: 25 37% 54%;
-  /* #B5896A */
-  --rose-light: 27 37% 67%;
-  /* #C9A98C */
-  --rose-border: 25 37% 54%;
+  --rose: 18 56% 49%;
+  /* terracota */
+  --rose-light: 20 45% 62%;
+  /* terracota light */
+  --rose-border: 18 56% 49%;
   /* used with opacity */
   --cream: 35 33% 91%;
   /* #F0EBE1 */
@@ -49,6 +67,7 @@
   --ink-muted: 27 8% 57%;
   /* #9C9088 */
 }
+
 
 body {
   background: hsl(var(--bg));
@@ -274,5 +293,347 @@ html {
     line-height: 0.85;
     user-select: none;
     pointer-events: none;
+  }
+
+  /* ── CMW Scenarios Section (para-antigravity.html) ── */
+  .cmw-scenarios-section {
+    padding: 120px 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .cmw-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #C4623A;
+    margin-bottom: 16px;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .cmw-section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    text-align: center;
+    margin-bottom: 100px;
+    line-height: 1.2;
+    color: #1A1510;
+  }
+
+  .cmw-section-title em {
+    font-style: italic;
+    color: #C4623A;
+  }
+
+  .cmw-scenario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-bottom: 100px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.85s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .cmw-scenario.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .cmw-scenario:last-child {
+    margin-bottom: 0;
+  }
+
+  .cmw-scenario.reverse {
+    direction: rtl;
+  }
+
+  .cmw-scenario.reverse>* {
+    direction: ltr;
+  }
+
+  .cmw-visual-card {
+    border-radius: 20px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .cmw-visual-card--1 {
+    background: #F2EDE4;
+    border: 1.5px solid rgba(196, 98, 58, 0.18);
+  }
+
+  .cmw-visual-card--2 {
+    background: #F7F0E6;
+    border: 1.5px solid rgba(212, 168, 83, 0.25);
+  }
+
+  .cmw-visual-card--3 {
+    background: #F0EBE3;
+    border: 1.5px solid rgba(122, 110, 98, 0.2);
+  }
+
+  .cmw-visual-number {
+    position: absolute;
+    bottom: 12px;
+    right: 20px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(196, 98, 58, 0.07);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .cmw-visual-card--2 .cmw-visual-number {
+    color: rgba(212, 168, 83, 0.10);
+  }
+
+  .cmw-visual-card--3 .cmw-visual-number {
+    color: rgba(122, 110, 98, 0.08);
+  }
+
+  .cmw-visual-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(196, 98, 58, 0.08);
+    flex-shrink: 0;
+  }
+
+  .cmw-visual-card--2 .cmw-visual-icon {
+    background: rgba(212, 168, 83, 0.12);
+  }
+
+  .cmw-visual-card--3 .cmw-visual-icon {
+    background: rgba(122, 110, 98, 0.10);
+  }
+
+  .cmw-visual-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  .cmw-visual-card--1 .cmw-visual-icon svg {
+    stroke: #C4623A;
+  }
+
+  .cmw-visual-card--2 .cmw-visual-icon svg {
+    stroke: #D4A853;
+  }
+
+  .cmw-visual-card--3 .cmw-visual-icon svg {
+    stroke: #7A6E62;
+  }
+
+  .cmw-visual-question {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+    color: #1A1510;
+    line-height: 1.4;
+    border-left: 2px solid rgba(196, 98, 58, 0.3);
+    padding-left: 14px;
+  }
+
+  .cmw-visual-card--2 .cmw-visual-question {
+    border-left-color: rgba(212, 168, 83, 0.50);
+  }
+
+  .cmw-visual-card--3 .cmw-visual-question {
+    border-left-color: rgba(122, 110, 98, 0.25);
+  }
+
+  .cmw-scenario-text {
+    padding: 8px 0;
+  }
+
+  .cmw-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #C4623A;
+    margin-bottom: 20px;
+  }
+
+  .cmw-tag-line {
+    width: 20px;
+    height: 1px;
+    background: #C4623A;
+    display: inline-block;
+  }
+
+  .cmw-tag--gold {
+    color: #B8922A;
+  }
+
+  .cmw-tag--gold .cmw-tag-line {
+    background: #B8922A;
+  }
+
+  .cmw-tag--muted {
+    color: #7A6E62;
+  }
+
+  .cmw-tag--muted .cmw-tag-line {
+    background: #7A6E62;
+  }
+
+  .cmw-scenario-heading {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+    line-height: 1.25;
+    margin-bottom: 20px;
+    color: #1A1510;
+  }
+
+  .cmw-scenario-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.975rem;
+    line-height: 1.8;
+    color: #7A6E62;
+  }
+
+  @media (max-width: 800px) {
+    .cmw-scenarios-section {
+      padding: 80px 28px;
+    }
+
+    .cmw-scenario {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      margin-bottom: 72px;
+    }
+
+    .cmw-scenario.reverse {
+      direction: ltr;
+    }
+
+    .cmw-section-title {
+      margin-bottom: 60px;
+    }
+  }
+
+  /* ── Terracota CTA buttons ── */
+  .nav-cta-pill {
+    display: inline-block;
+    background: #C4623A;
+    color: #fff;
+    border-radius: 100px;
+    padding: 10px 22px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .nav-cta-pill:hover {
+    background: #A84F2D;
+    transform: translateY(-1px);
+  }
+
+  /* ── Escenario 03 Featured — bloque ancho completo ── */
+  .cmw-scenario--featured {
+    grid-template-columns: 1fr 1fr !important;
+    background: #F0EBE3;
+    border-radius: 28px;
+    padding: 64px 72px;
+    gap: 80px;
+    border: 1px solid rgba(122, 110, 98, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Anula el margin-bottom del último escenario cuando es featured */
+  .cmw-scenario--featured:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Número decorativo gigante de fondo */
+  .cmw-featured-number {
+    position: absolute;
+    bottom: -40px;
+    right: -20px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18rem;
+    font-weight: 700;
+    color: rgba(196, 98, 58, 0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+
+  /* Contenido del lado visual (izquierdo) */
+  .cmw-featured-visual {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Wrapper del ícono SVG */
+  .cmw-featured-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(196, 98, 58, 0.10);
+    flex-shrink: 0;
+    margin-bottom: 24px;
+  }
+
+  /* Pregunta en itálica con borde izquierdo */
+  .cmw-featured-question {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    color: #1A1510;
+    line-height: 1.4;
+    border-left: 2px solid rgba(196, 98, 58, 0.3);
+    padding-left: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Lado de texto con z-index sobre el número decorativo */
+  .cmw-scenario--featured .cmw-scenario-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Responsive featured */
+  @media (max-width: 800px) {
+    .cmw-scenario--featured {
+      grid-template-columns: 1fr !important;
+      gap: 40px;
+      padding: 48px 36px;
+    }
+
+    .cmw-featured-number {
+      font-size: 10rem;
+      bottom: -20px;
+      right: -10px;
+    }
   }
 }

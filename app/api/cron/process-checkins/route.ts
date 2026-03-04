@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
+import { getResend, DEFAULT_SENDER } from "@/lib/resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
 import crypto from 'crypto';
 import { getDictionary, Locale } from '@/lib/i18n';
@@ -127,7 +128,7 @@ export async function GET(request: NextRequest) {
                         const { subject, html } = getCheckinReminderTemplate(dict as unknown as EmailDictionary, { attempts: attempts + 1, confirmUrl });
 
                         await resendClient.emails.send({
-                            from: "Carry My Words <noreply@carrymywords.com>",
+                            from: DEFAULT_SENDER,
                             to: userEmail,
                             subject: subject,
                             html: html
@@ -239,7 +240,7 @@ export async function GET(request: NextRequest) {
                             });
 
                             await resendClientForTrusted.emails.send({
-                                from: "Carry My Words <noreply@carrymywords.com>",
+                                from: DEFAULT_SENDER,
                                 to: contact.email,
                                 subject: subject,
                                 html: html

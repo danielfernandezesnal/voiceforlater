@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { Metadata } from "next";
 import { LandingContactForm } from "@/components/landing-contact-form";
+import { LandingScenarios } from "@/components/landing-scenarios";
 
 export async function generateMetadata({
     params,
@@ -20,6 +21,11 @@ export async function generateMetadata({
     };
 }
 
+/* ── Terracota palette ── */
+const TC = '#C4623A';
+const TC_DARK = '#A84F2D';
+const TC_BG = 'rgba(196,98,58,0.08)';
+
 export default async function LocaleHomePage({
     params,
 }: {
@@ -29,11 +35,13 @@ export default async function LocaleHomePage({
     const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
     const dict = await getDictionary(locale);
 
+    const ctaLabel = locale === 'es' ? 'Grabá tu primer mensaje' : 'Record your first message';
+
     return (
         <div className="min-h-screen flex flex-col" style={{ background: 'hsl(var(--cream))' }}>
             {/* Navbar */}
             <nav className="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
-                <div className="font-serif italic font-normal text-5xl tracking-tight" style={{ color: '#2D4A3E' }}>
+                <div className="font-serif italic font-normal text-5xl tracking-tight" style={{ color: TC }}>
                     Carry My Words
                 </div>
                 <div className="flex gap-6 items-center">
@@ -42,11 +50,12 @@ export default async function LocaleHomePage({
                         <span className="text-border">/</span>
                         <Link href="/es" className={locale === 'es' ? 'text-primary' : 'text-muted-foreground hover:text-foreground transition-colors'}>ES</Link>
                     </div>
+                    {/* Nav CTA — terracota pill */}
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="text-sm font-medium px-4 py-2 border border-border/50 rounded-sm hover:bg-white/10 transition-colors"
+                        className="nav-cta-pill"
                     >
-                        {dict.auth.login}
+                        {ctaLabel}
                     </Link>
                 </div>
             </nav>
@@ -59,10 +68,29 @@ export default async function LocaleHomePage({
                         style={{ fontSize: 'clamp(3.4rem, 5.6vw, 5.6rem)', color: 'hsl(var(--ink))' }}>
                         {dict.landing.hero.title}
                     </h1>
-                    <p className="font-light leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200"
+                    <p className="font-light leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200 mb-10"
                         style={{ fontSize: 'clamp(1.1rem, 1.4vw, 1.35rem)', color: 'rgba(42, 37, 32, 0.65)', maxWidth: '500px' }}>
                         {dict.landing.hero.subtitle}
                     </p>
+                    {/* Hero CTA */}
+                    <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+                        <Link
+                            href={`/${locale}/auth/login`}
+                            style={{
+                                display: 'inline-block',
+                                background: TC,
+                                color: '#fff',
+                                borderRadius: '100px',
+                                padding: '16px 36px',
+                                fontSize: '1rem',
+                                fontWeight: 500,
+                                textDecoration: 'none',
+                                transition: 'background 0.2s, transform 0.2s',
+                            }}
+                        >
+                            {ctaLabel}
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Right: image — overflow-hidden contains the fill image */}
@@ -85,39 +113,9 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
-            {/* Examples - Redesigned card grid */}
-            <section className="py-[110px] px-[7%] bg-[hsl(var(--cream))] relative">
-                {/* Header: Centered title matching the rest of the page style */}
-                <div className="flex justify-center mb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                    <h2 className="text-3xl md:text-4xl font-serif font-light text-center tracking-tight">
-                        {dict.landing.uses.tag}
-                    </h2>
-                </div>
+            {/* Examples - Redesigned Scenarios Section */}
+            <LandingScenarios t={(dict.landing.uses as any).scenarios} />
 
-                {/* Cards grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    {(dict.landing.uses as any).cards.map((card: any, i: number) => {
-                        const isLast = i === (dict.landing.uses as any).cards.length - 1;
-                        return (
-                            <div
-                                key={i}
-                                className={`flex flex-col items-center text-center p-9 rounded-[2rem] transition-all duration-500 border ${isLast
-                                    ? 'bg-[#2D4A3E] border-[#2D4A3E] text-[hsl(var(--cream))] shadow-xl lg:scale-[1.03] z-10'
-                                    : 'bg-[hsl(var(--cream-card))] border-[hsl(var(--ink))/0.04] hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1'
-                                    }`}
-                            >
-                                <span className={`text-4xl mb-6 transform transition-transform duration-500 ${!isLast && 'group-hover:scale-110'}`}>{card.icon}</span>
-                                <h3 className={`text-[1.15rem] font-bold mb-3 tracking-tight leading-snug ${isLast ? 'text-[hsl(var(--cream))]' : 'text-[hsl(var(--ink))]'}`}>
-                                    {card.title}
-                                </h3>
-                                <p className={`text-[13.5px] leading-relaxed font-light ${isLast ? 'text-[hsl(var(--cream))/0.85]' : 'text-[hsl(var(--ink-muted))]'}`}>
-                                    {card.description}
-                                </p>
-                            </div>
-                        );
-                    })}
-                </div>
-            </section>
             {/* How It Works - Propuesta D Timeline */}
             <section id="how-it-works" className="py-[110px] px-[7%] bg-[hsl(var(--cream))]">
                 <div className="text-center mb-[72px]">
@@ -137,16 +135,14 @@ export default async function LocaleHomePage({
                         <div key={i} className="tl-step flex-1 flex flex-col items-center text-center relative md:flex-col flex-row gap-5 md:gap-0">
                             {/* Node row with connecting lines */}
                             <div className="flex items-center w-full mb-7">
-                                {/* Left line: invisible on first step */}
                                 {i === 0
                                     ? <div className="flex-1 h-px bg-transparent" />
                                     : <div className="tl-line" />}
                                 <div className="tl-circle">
-                                    <span className="font-serif text-base font-normal tracking-[0.05em]" style={{ color: 'hsl(var(--rose))' }}>
+                                    <span className="font-serif text-base font-normal tracking-[0.05em]" style={{ color: TC }}>
                                         {item.step}
                                     </span>
                                 </div>
-                                {/* Right line: invisible on last step */}
                                 {i === 2
                                     ? <div className="flex-1 h-px bg-transparent" />
                                     : <div className="tl-line" />}
@@ -164,13 +160,14 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
-            {/* Delivery Options */}
+            {/* Delivery Options — "Vos elegís el momento" */}
             <section className="py-32 px-6 max-w-5xl mx-auto w-full">
                 <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">{dict.landing.delivery.title}</h2>
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 mb-20">
+                    {/* Date delivery */}
                     <div className="flex flex-col items-center text-center gap-6 transition-colors group">
-                        <div className="mb-2">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D4A3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <div className="mb-2" style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" />
                                 <line x1="3" y1="9" x2="21" y2="9" />
                                 <line x1="8" y1="2" x2="8" y2="6" />
@@ -182,9 +179,10 @@ export default async function LocaleHomePage({
                             <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
                         </div>
                     </div>
+                    {/* Checkin delivery */}
                     <div className="flex flex-col items-center text-center gap-6 transition-colors group">
-                        <div className="mb-2">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2D4A3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <div className="mb-2" style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M5 22h14" />
                                 <path d="M5 2h14" />
                                 <path d="M17 22c0-3.1-2-6-5-6s-5 2.9-5 6" />
@@ -199,18 +197,27 @@ export default async function LocaleHomePage({
                     </div>
                 </div>
 
-                {/* Central CTA - ONLY ONE HERE */}
+                {/* Central CTA */}
                 <div className="flex justify-center py-4">
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="btn-cta"
+                        style={{
+                            display: 'inline-block',
+                            background: TC,
+                            color: '#fff',
+                            borderRadius: '100px',
+                            padding: '16px 40px',
+                            fontSize: '1.1rem',
+                            fontWeight: 500,
+                            textDecoration: 'none',
+                        }}
                     >
-                        {dict.common.getStarted}
+                        {ctaLabel}
                     </Link>
                 </div>
             </section>
 
-            {/* Audio Section - Warm Image & Integrated CTA */}
+            {/* Audio Section */}
             <section className="py-24 px-6 bg-surface/50 border-t border-border/50">
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
                     <div className="order-1">
@@ -238,36 +245,38 @@ export default async function LocaleHomePage({
                 <div className="max-w-4xl mx-auto text-center">
                     <h2 className="text-4xl md:text-5xl font-serif font-light mb-12">{dict.landing.trust.title}</h2>
                     <ul className="grid md:grid-cols-3 gap-8">
-                        <li className="flex flex-col items-center gap-3">
-                            <span className="text-2xl">🔒</span>
+                        {/* 🔒 → lock */}
+                        <li className="flex flex-col items-center gap-4">
+                            <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z" />
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg>
+                            </div>
                             <span className="font-medium">{dict.landing.trust.item1}</span>
                         </li>
-                        <li className="flex flex-col items-center gap-3">
-                            <span className="text-2xl">🤝</span>
+                        {/* 🤝 → check-circle */}
+                        <li className="flex flex-col items-center gap-4">
+                            <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                            </div>
                             <span className="font-medium">{dict.landing.trust.item2}</span>
                         </li>
-                        <li className="flex flex-col items-center gap-3">
-                            <span className="text-2xl">⚡</span>
+                        {/* ⚡ → shield */}
+                        <li className="flex flex-col items-center gap-4">
+                            <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                </svg>
+                            </div>
                             <span className="font-medium">{dict.landing.trust.item3}</span>
                         </li>
                     </ul>
-                </div>
-            </section>
-
-            {/* What Carry My Words is NOT - Minimal Version */}
-            <section className="py-16 px-6 border-t border-border/30">
-                <div className="max-w-3xl mx-auto">
-                    <h2 className="text-xl md:text-2xl font-serif font-light text-center mb-10 opacity-80">{dict.landing.notWhat.title}</h2>
-                    <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8">
-                        {dict.landing.notWhat.items.map((item, i) => (
-                            <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground/70">
-                                <span className="text-xs">✕</span>
-                                <span>{item}</span>
-                            </div>
-                        ))}
-                    </div>
-                    <p className="text-center text-sm text-muted-foreground max-w-xl mx-auto italic">
-                        {dict.landing.notWhat.clarification}
+                    <p className="text-center text-sm text-muted-foreground mt-10 max-w-xl mx-auto italic">
+                        {(dict.landing.trust as any).clarification}
                     </p>
                 </div>
             </section>
@@ -287,39 +296,37 @@ export default async function LocaleHomePage({
                             <ul className="space-y-4 mb-8 text-left flex-1">
                                 {dict.landing.pricing.free.features.map((f, i) => (
                                     <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                                        <span className="text-foreground">✓</span> {f}
+                                        <span style={{ color: TC }} className="font-bold">✓</span> {f}
                                     </li>
                                 ))}
                             </ul>
                         </div>
                         {/* Pro Plan */}
-                        <div className="bg-card p-8 rounded-2xl border-2 border-primary shadow-xl card-hover relative flex flex-col">
-                            <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">
+                        <div className="bg-card p-8 rounded-2xl shadow-xl card-hover relative flex flex-col" style={{ border: `2px solid ${TC}` }}>
+                            <div className="absolute top-0 right-0 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg" style={{ background: TC }}>
                                 {dict.landing.pricing.recommended}
                             </div>
-                            <h3 className="text-xl font-bold mb-1 text-primary">{dict.landing.pricing.pro.title}</h3>
-                            <p className="text-xs text-primary/60 italic mb-4">{(dict.landing.pricing.pro as { tagline?: string }).tagline}</p>
+                            <h3 className="text-xl font-bold mb-1" style={{ color: TC }}>{dict.landing.pricing.pro.title}</h3>
+                            <p className="text-xs italic mb-4" style={{ color: `${TC}99` }}>{(dict.landing.pricing.pro as { tagline?: string }).tagline}</p>
                             <div className="text-3xl font-bold mb-6">{dict.common.price.replace('{amount}', '10')}</div>
                             <ul className="space-y-4 mb-8 text-left flex-1">
                                 {dict.landing.pricing.pro.features.map((f, i) => (
                                     <li key={i} className="flex items-center gap-2 text-sm">
-                                        <span className="text-primary font-bold">✓</span> {f}
+                                        <span style={{ color: TC }} className="font-bold">✓</span> {f}
                                     </li>
                                 ))}
                             </ul>
                             <Link
                                 href={`/${locale}/auth/login`}
-                                className="w-full py-3 border border-primary/20 text-primary font-semibold rounded-lg hover:bg-primary/5 transition-all duration-200 text-center"
+                                className="w-full py-3 text-white font-semibold text-center transition-all duration-200"
+                                style={{ background: TC, borderRadius: '100px', display: 'block' }}
                             >
-                                {/* Force redeploy trigger */}
                                 {dict.landing.pricing.pro.cta}
                             </Link>
                         </div>
                     </div>
                 </div>
             </section>
-
-
 
             {/* Closing */}
             <section className="py-32 px-6 text-center">
@@ -328,9 +335,18 @@ export default async function LocaleHomePage({
                 </p>
                 <Link
                     href={`/${locale}/auth/login`}
-                    className="btn-cta"
+                    style={{
+                        display: 'inline-block',
+                        background: TC,
+                        color: '#fff',
+                        borderRadius: '100px',
+                        padding: '18px 44px',
+                        fontSize: '1.15rem',
+                        fontWeight: 500,
+                        textDecoration: 'none',
+                    }}
                 >
-                    {dict.landing.cta_final}
+                    {ctaLabel}
                 </Link>
             </section>
 
