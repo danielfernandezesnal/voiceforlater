@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { getResend } from '@/lib/resend';
+import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { getEffectivePlan } from '@/lib/plan-resolver';
 import { getPlanLimits } from '@/lib/plans';
 import { trackServerEvent } from '@/lib/analytics/trackEvent';
@@ -121,11 +121,9 @@ export async function POST(request: NextRequest) {
 
         // 3. Send Invitation Email (Requirement 6)
         const resend = getResend();
-        const sender = process.env.RESEND_FROM_EMAIL || 'Carry my Words <onboarding@resend.dev>';
+        const fromAddress = DEFAULT_SENDER;
 
-        const emailMatch = sender.match(/<([^>]+)>/);
-        const senderEmail = emailMatch ? emailMatch[1] : sender;
-        const fromAddress = `Carry my Words <${senderEmail}>`;
+        console.log('[POST /api/trusted-contacts] Using From Address:', fromAddress);
 
         const fullName = profile?.first_name
             ? `${profile.first_name} ${profile.last_name || ''}`.trim()
@@ -174,6 +172,7 @@ export async function POST(request: NextRequest) {
             </div>
         `;
 
+        console.log('[POST /api/trusted-contacts] Sending email to:', email);
         const { data: emailRes, error: emailErr } = await resend.emails.send({
             from: fromAddress,
             to: email,
@@ -182,16 +181,16 @@ export async function POST(request: NextRequest) {
         });
 
         if (emailErr) {
-            console.error('[POST /api/trusted-contacts] Resend error:', emailErr);
+            console.error('[POST /api/trusted-contacts] Resend error:', JSON.stringify(emailErr));
             await trackEmail({
                 userId: user.id,
                 toEmail: email,
-                emailType: 'trusted_contact_alert', // Using existing type for now as simple tracking
+                emailType: 'trusted_contact_alert',
                 status: 'failed',
                 errorMessage: JSON.stringify(emailErr)
             });
         } else {
-            console.log('[POST /api/trusted-contacts] Invitation email sent:', emailRes?.id);
+            console.log('[POST /api/trusted-contacts] Invitation email sent successfully. ID:', emailRes?.id);
             await trackEmail({
                 userId: user.id,
                 toEmail: email,
@@ -232,14 +231,32 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ error: 'ID is required' }, { status: 400 });
         }
 
+        console.log(`[DELETE /api/trusted-contacts] Attempting to delete contact ${id} for user ${user.id}`);
+
+        // 1. Explicitly delete relations first (Safety against FK constraints if CASCADE isn't enough)
+        const { error: relationError } = await supabase
+            .from('message_trusted_contacts')
+            .delete()
+            .eq('trusted_contact_id', id);
+
+        if (relationError) {
+            console.error('[DELETE /api/trusted-contacts] Relation delete error:', relationError);
+            // We continue anyway, as the main delete might still work
+        }
+
+        // 2. Delete the contact
         const { error } = await supabase
             .from('trusted_contacts')
             .delete()
             .eq('id', id)
             .eq('user_id', user.id);
 
-        if (error) throw error;
+        if (error) {
+            console.error('[DELETE /api/trusted-contacts] Contact delete error:', error);
+            throw error;
+        }
 
+        console.log(`[DELETE /api/trusted-contacts] Contact ${id} deleted successfully`);
         return NextResponse.json({ success: true });
     } catch (error: unknown) {
         return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });

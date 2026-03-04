@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Barlow, Playfair_Display } from "next/font/google";
+import { Inter, Barlow, Playfair_Display, DM_Sans } from "next/font/google";
 import "../globals.css";
 import { locales, type Locale, getDictionary, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { SyncProfileLocale } from "@/components/SyncProfileLocale";
@@ -19,6 +19,12 @@ const playfair = Playfair_Display({
     variable: "--font-playfair",
     subsets: ["latin"],
     style: ["normal", "italic"],
+});
+
+const dmSans = DM_Sans({
+    variable: "--font-dm-sans",
+    subsets: ["latin"],
+    weight: ["300", "400", "500"],
 });
 
 
@@ -58,7 +64,7 @@ export default async function LocaleLayout({
 
     return (
         <html lang={locale}>
-            <body className={`${inter.variable} ${barlow.variable} ${playfair.variable} font-sans antialiased bg-background text-foreground`}>
+            <body className={`${inter.variable} ${barlow.variable} ${playfair.variable} ${dmSans.variable} font-sans antialiased bg-background text-foreground`}>
                 <SyncProfileLocale locale={locale} />
                 {children}
             </body>

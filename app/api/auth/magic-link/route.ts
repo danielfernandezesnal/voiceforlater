@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { getResend } from '@/lib/resend';
+import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { trackEmail } from '@/lib/email-tracking';
 import { getDictionary, Locale } from '@/lib/i18n';
 import { getMagicLinkTemplate, EmailDictionary } from '@/lib/email-templates';
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 
     // Send email via Resend
     const resend = getResend();
-    const sender = process.env.RESEND_FROM_EMAIL || 'Carry My Words <onboarding@resend.dev>';
+    const sender = DEFAULT_SENDER;
 
     const dict = await getDictionary((locale || 'en') as Locale);
     const { subject: emailSubject, html: emailBody } = getMagicLinkTemplate(dict as unknown as EmailDictionary, { magicLink, isAdminLogin });

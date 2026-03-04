@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
-import { getResend } from '@/lib/resend';
+import { Resend } from "resend";
+import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { trackEmail } from '@/lib/email-tracking';
 import { getDictionary, Locale } from '@/lib/i18n';
 import { getMessageDeliveryTemplate, EmailDictionary } from '@/lib/email-templates';
@@ -139,7 +140,7 @@ export async function GET(request: NextRequest) {
                 const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml });
 
                 await resend.emails.send({
-                    from: "Carry My Words <noreply@carrymywords.com>",
+                    from: DEFAULT_SENDER,
                     to: recipient.email,
                     subject: template.subject,
                     html: template.html

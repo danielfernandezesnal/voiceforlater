@@ -13,3 +13,21 @@ export function getResend() {
     }
     return resendInstance;
 }
+
+export function getDefaultSender() {
+    const resendFromEnv = process.env.RESEND_FROM_EMAIL;
+    if (!resendFromEnv) {
+        // Fallback to Resend's default onboarding email but with our branding if allowed
+        // Note: Resend is very strict with onboarding@resend.dev, sometimes display name works, sometimes not.
+        return "Carry My Words <onboarding@resend.dev>";
+    }
+
+    // Use the ENV value but ensure the display name is 'Carry My Words'
+    if (resendFromEnv.includes('<')) {
+        return resendFromEnv.replace(/^[A-Za-z0-9\s"']+(?=<)/, 'Carry My Words ');
+    }
+
+    return `Carry My Words <${resendFromEnv}>`;
+}
+
+export const DEFAULT_SENDER = getDefaultSender();

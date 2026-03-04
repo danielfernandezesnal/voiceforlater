@@ -34,6 +34,11 @@ interface Props {
 export function DashboardMessageList({ initialMessages, userPlan, locale, dict }: Props) {
     const [messages, setMessages] = useState<MessageWithRecipient[]>(initialMessages);
 
+    // Sync state with props when router.refresh() is called
+    useEffect(() => {
+        setMessages(initialMessages);
+    }, [initialMessages]);
+
     useEffect(() => {
         const controller = new AbortController();
 

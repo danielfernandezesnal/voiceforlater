@@ -35,6 +35,29 @@
     },
     "uses": {
       "tag": "For whom, for when",
+      "scenarios": {
+        "eyebrow": "For whom, for when",
+        "title": "Three moments that",
+        "titleEm": "change everything",
+        "s1": {
+          "tag": "For the future",
+          "question": "What would you tell your child the day they turn 18?",
+          "heading": "Record today what you want them to hear tomorrow",
+          "body": "Some words feel clear today but may fade with time. Record your message now, and we'll make sure it arrives exactly when you choose."
+        },
+        "s2": {
+          "tag": "The hard to say",
+          "question": "Is there something you want to say, but don't know how?",
+          "heading": "We make sure it arrives at the right moment",
+          "body": "Sometimes the most important words are the hardest to say. Take the time you need to say them well. We'll keep them safe until the moment is right."
+        },
+        "s3": {
+          "tag": "Forever",
+          "question": "What if tomorrow you couldn't be there?",
+          "heading": "Your words arrive anyway",
+          "body": "At the birthday, the graduation, the wedding day. At the moment and to the person you chose, honoring your wishes."
+        }
+      },
       "cards": [
         {
           "icon": "👶",
@@ -305,18 +328,20 @@
       "subtitle": "Choose when your message will reach its destination",
       "date": {
         "title": "On a specific date",
-        "description": "Birthday, anniversary, graduation...",
-        "label": "Delivery date"
+        "description": "Birthdays, anniversaries, graduations, things that are hard to say in person, a message for your future self...",
+        "label": "Delivery date",
+        "timeLabel": "Delivery time",
+        "optionalContactNote": "No trusted contact is required for this mode. The message will be sent automatically at the chosen date and time."
       },
       "checkin": {
-        "title": "After I stop checking in",
-        "description": "We'll ask you to confirm periodically",
+        "title": "When you are no longer present",
+        "description": "Your words arrive anyway, at the moment and to the person you chose, respecting your will.",
         "interval": "Check-in interval",
         "days7": "Every 7 days",
         "days30": "Every 30 days",
         "days60": "Every 60 days",
         "days90": "Every 90 days",
-        "note": "If you miss 3 check-ins, we'll contact your trusted person before delivering.",
+        "note": "If we lose contact with you, we will try the trusted contact you indicated before sending your messages.",
         "freeNote": "Free plan: 7-day interval with 1 reminder. Upgrade to Pro for longer intervals and trusted contact.",
         "trustedContacts": "Trusted Contacts",
         "freeLimit": "Free Limit: 1",
@@ -325,11 +350,6 @@
         "selectPlaceholder": "Select",
         "addNew": "+ Add new contact...",
         "noContactWarning": "This message will not be sent automatically until you assign a trusted contact. You can continue and assign it later from the dashboard."
-      },
-      "test": {
-        "title": "In 5 minutes (Test Mode)",
-        "description": "Only to verify that the message arrives correctly.",
-        "note": "We will deliver this message in 5 minutes using the real delivery flow."
       }
     },
     "step5": {
@@ -430,6 +450,7 @@
     "save": "Save Contact",
     "saving": "Saving...",
     "saved": "Contact saved!",
+    "deleteConfirm": "Are you sure you want to remove this contact?",
     "remove": "Remove",
     "addContact": "Add Contact",
     "noContact": "No trusted contact set",
