@@ -33,14 +33,18 @@
 
 ### Domain Verification
 ```sh
-# Before activating new domain
+# Before activating new domain (allows NEW domain to fail safely)
 npm run smoke:domain
 
-# After activating new domain
-OLD_URL=https://voiceforlater.vercel.app NEW_URL=https://carrymywords.com npm run smoke:domain
+# On Switch Day (strictly verifies NEW domain is active and responding)
+STRICT_NEW=true npm run smoke:domain
 ```
 
 ### Stripe Webhook Verification
 ```sh
+# Non-blocking for NEW domain until switch
 npm run smoke:stripe
+
+# Strict verification after webhook is added in Stripe
+STRICT_NEW=true npm run smoke:stripe
 ```
