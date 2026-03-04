@@ -2,6 +2,8 @@
 
 ## Checklist (Secure Order)
 
+> **Nota Operativa:** `carrymywords.com` responde 200 en `/` pero 404 en `/es`,`/en` y webhook al día de hoy; tratar como estado externo y revalidar ownership/apuntado el Switch Day.
+
 1. **(a) Add domain in Vercel (no primary)**
    - Go to Vercel Dashboard -> Project -> settings -> Domains.
    - Add `carrymywords.com`.
