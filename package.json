@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
-    "script:stripe-reconcile": "tsx scripts/stripe-reconcile.ts"
+    "script:stripe-reconcile": "tsx scripts/stripe-reconcile.ts",
+    "smoke:domain": "node scripts/domain-smoke-test.mjs",
+    "smoke:stripe": "node scripts/stripe-webhook-smoke.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
