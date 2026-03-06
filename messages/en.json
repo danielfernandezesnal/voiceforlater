@@ -141,7 +141,8 @@
       "reassurance": "Your messages are encrypted and only released when you decide.",
       "item1": "Your messages are private.",
       "item2": "Only delivered when conditions are met.",
-      "item3": "You stay in control at all times."
+      "item3": "You stay in control at all times.",
+      "encryption": "Your messages are encrypted and we never read them. Only you and your recipients have access."
     },
     "notWhat": {
       "title": "What Carry My Words is NOT",
@@ -155,7 +156,7 @@
     },
     "pricing": {
       "title": "Simple Pricing",
-      "justification": "Less than a coffee a month, for peace of mind.",
+      "justification": "USD 10 a year. Less than you imagine for something that lasts forever.",
       "recommended": "RECOMMENDED",
       "free": {
         "title": "Free",
