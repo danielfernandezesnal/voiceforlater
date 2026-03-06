@@ -145,6 +145,65 @@
       "clarification": "Carry My Words solo entrega lo que vos grabaste, exactamente como lo dejaste.",
       "encryption": "Tus mensajes están encriptados y nunca los leemos. Solo vos y tus destinatarios tienen acceso."
     },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "showMore": "Ver todas las preguntas",
+      "showLess": "Ver menos",
+      "items": [
+        {
+          "q": "¿Qué es Carry My Words?",
+          "a": "Carry My Words es un servicio que te permite crear hoy mensajes que se entregarán en el futuro. Podés escribir un mensaje, grabar audio o video, elegir quién lo recibirá y decidir cuándo debe ser entregado. Algunas personas lo utilizan para enviar mensajes en fechas importantes. Otras lo usan para dejar palabras para sus seres queridos en caso de que algún día ya no puedan hacerlo."
+        },
+        {
+          "q": "¿Cómo funciona la entrega de los mensajes?",
+          "a": "Cuando creás un mensaje, elegís cómo debe entregarse. Podés seleccionar: una fecha y hora específicas, un momento en el futuro, o una condición en la que el mensaje se entregue si dejás de confirmar que estás activo. Hasta que llegue el momento de la entrega, siempre mantenés el control total sobre tus mensajes."
+        },
+        {
+          "q": "¿Mis mensajes son privados?",
+          "a": "Sí. Tus mensajes son privados y están protegidos. Solo se entregan según las condiciones que vos hayas establecido. No leemos, vendemos ni compartimos tus mensajes personales."
+        },
+        {
+          "q": "¿Qué pasa si dejo de responder a las confirmaciones de actividad?",
+          "a": "Para los mensajes configurados con la opción \"cuando ya no esté\", el sistema verifica periódicamente si seguís activo. Si dejás de responder: primero intentamos contactarte. Si no recibimos respuesta, podemos contactar a la persona de confianza que elegiste. Si se confirma la situación, comienza el proceso de entrega. Este proceso existe para evitar entregas accidentales."
+        },
+        {
+          "q": "¿Cuál es la diferencia entre el plan Free y Pro?",
+          "a": "Free: 1 mensaje, solo texto, entrega en fecha específica, 1 persona de confianza. Pro: mensajes ilimitados, texto, audio y video, hasta 3 personas de confianza, más opciones de entrega."
+        },
+        {
+          "q": "¿Puedo editar o eliminar mis mensajes?",
+          "a": "Sí. Mientras no se haya cumplido la condición de entrega, podés editar, actualizar o eliminar tus mensajes en cualquier momento. Nada se envía sin tu consentimiento."
+        },
+        {
+          "q": "¿Qué es una persona de confianza?",
+          "a": "Es alguien que elegís para ayudar a confirmar tu situación si el sistema no logra comunicarse con vos. Esta persona no puede leer ni modificar tus mensajes. Su única función es ayudar a confirmar si seguís activo."
+        },
+        {
+          "q": "¿Mi persona de confianza puede ver mis mensajes?",
+          "a": "No. Tu persona de confianza no tiene acceso al contenido de tus mensajes. Los mensajes permanecen privados y solo se entregan cuando se cumple la condición que vos definiste."
+        },
+        {
+          "q": "¿Qué tipos de mensajes puedo crear?",
+          "a": "Dependiendo del plan que elijas, podés crear mensajes escritos, de audio o de video. Estos pueden enviarse a uno o varios destinatarios."
+        },
+        {
+          "q": "¿Cuándo se envían realmente los mensajes?",
+          "a": "Los mensajes solo se entregan cuando se cumple la condición que elegiste. Hasta ese momento, permanecen privados y bajo tu control."
+        },
+        {
+          "q": "¿Por qué alguien usaría Carry My Words?",
+          "a": "Las personas lo utilizan por distintas razones. Algunos escriben mensajes para cumpleaños, aniversarios o momentos importantes del futuro. Otros quieren dejar palabras para su familia o seres queridos para asegurarse de que esos mensajes lleguen algún día. Es simplemente una forma de asegurarse de que las palabras importantes nunca queden sin decir."
+        },
+        {
+          "q": "¿Puedo cancelar mi cuenta?",
+          "a": "Sí. Podés cancelar tu cuenta en cualquier momento. Si lo hacés, tus mensajes no serán enviados, salvo que la condición de entrega ya se haya activado."
+        },
+        {
+          "q": "¿Cómo puedo contactarlos si tengo dudas?",
+          "a": "Podés escribirnos a través del formulario de contacto disponible en el sitio y te responderemos lo antes posible."
+        }
+      ]
+    },
     "pricing": {
       "title": "Precios Simples",
       "justification": "USD 10 al año. Menos de lo que imaginás para algo que dura para siempre.",
