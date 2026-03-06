@@ -154,6 +154,65 @@
       ],
       "clarification": "Carry My Words only delivers messages you left, exactly as you recorded them."
     },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "showMore": "View all questions",
+      "showLess": "View less",
+      "items": [
+        {
+          "q": "What is Carry My Words?",
+          "a": "Carry My Words is a service that allows you to create messages today that will be delivered in the future. You can write a message, record audio or video, choose who will receive it, and decide when it should be delivered. Some people use it to send messages on important dates. Others use it to leave words for their loved ones in case they can no longer do so themselves."
+        },
+        {
+          "q": "How does message delivery work?",
+          "a": "When you create a message, you choose how it should be delivered. You can select: a specific date and time, a moment in the future, or a condition where the message is delivered if you stop confirming your activity. Until the time of delivery, you always retain full control over your messages."
+        },
+        {
+          "q": "Are my messages private?",
+          "a": "Yes. Your messages are private and protected. They are only delivered according to the conditions you establish. We do not read, sell, or share your personal messages."
+        },
+        {
+          "q": "What happens if I stop responding to activity confirmations?",
+          "a": "For messages configured with the \"when I'm no longer around\" option, the system periodically checks if you are still active. If you stop responding: first we try to contact you. If we receive no response, we can contact the trusted person you chose. If the situation is confirmed, the delivery process begins. This process exists to prevent accidental deliveries."
+        },
+        {
+          "q": "What is the difference between the Free and Pro plans?",
+          "a": "Free: 1 message, text only, specific date delivery, 1 trusted person. Pro: unlimited messages, text, audio and video, up to 3 trusted people, more delivery options."
+        },
+        {
+          "q": "Can I edit or delete my messages?",
+          "a": "Yes. As long as the delivery condition has not been met, you can edit, update or delete your messages at any time. Nothing is sent without your consent."
+        },
+        {
+          "q": "What is a trusted person?",
+          "a": "It is someone you choose to help confirm your situation if the system cannot reach you. This person cannot read or modify your messages. Their only role is to help confirm if you are still active."
+        },
+        {
+          "q": "Can my trusted person see my messages?",
+          "a": "No. Your trusted person does not have access to the content of your messages. Messages remain private and are only delivered when the condition you defined is met."
+        },
+        {
+          "q": "What types of messages can I create?",
+          "a": "Depending on the plan you choose, you can create written, audio or video messages. These can be sent to one or multiple recipients."
+        },
+        {
+          "q": "When are messages actually sent?",
+          "a": "Messages are only delivered when the condition you chose is met. Until that moment, they remain private and under your control."
+        },
+        {
+          "q": "Why would someone use Carry My Words?",
+          "a": "People use it for different reasons. Some write messages for birthdays, anniversaries or important future moments. Others want to leave words for their family or loved ones to ensure those messages arrive someday. It's simply a way to ensure that important words are never left unsaid."
+        },
+        {
+          "q": "Can I cancel my account?",
+          "a": "Yes. You can cancel your account at any time. If you do, your messages will not be sent, unless the delivery condition has already been triggered."
+        },
+        {
+          "q": "How can I contact you if I have questions?",
+          "a": "You can write to us using the contact form available on the site and we will respond as soon as possible."
+        }
+      ]
+    },
     "pricing": {
       "title": "Simple Pricing",
       "justification": "USD 10 a year. Less than you imagine for something that lasts forever.",

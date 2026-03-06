@@ -4,6 +4,7 @@ import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/
 import { Metadata } from "next";
 import { LandingContactForm } from "@/components/landing-contact-form";
 import { LandingScenarios } from "@/components/landing-scenarios";
+import { LandingFaq } from "@/components/landing-faq";
 
 export async function generateMetadata({
     params,
@@ -292,6 +293,9 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
+            {/* FAQ */}
+            <LandingFaq t={(dict.landing as any).faq} />
+
             {/* Pricing */}
             <section className="py-24 px-6 border-b border-border/50">
                 <div className="max-w-5xl mx-auto text-center">
@@ -377,6 +381,6 @@ export default async function LocaleHomePage({
                     </div>
                 </div>
             </footer>
-        </div>
+        </div >
     );
 }
