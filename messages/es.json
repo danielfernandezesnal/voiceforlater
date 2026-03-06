@@ -142,11 +142,12 @@
       "item1": "Vos decidís qué se envía, a quién y cuándo",
       "item2": "Podés modificar o borrar tus mensajes mientras estés activo",
       "item3": "Nada se envía sin que vos lo hayas definido antes",
-      "clarification": "Carry My Words solo entrega lo que vos grabaste, exactamente como lo dejaste."
+      "clarification": "Carry My Words solo entrega lo que vos grabaste, exactamente como lo dejaste.",
+      "encryption": "Tus mensajes están encriptados y nunca los leemos. Solo vos y tus destinatarios tienen acceso."
     },
     "pricing": {
       "title": "Precios Simples",
-      "justification": "Menos que un café al mes, para algo que realmente importa.",
+      "justification": "USD 10 al año. Menos de lo que imaginás para algo que dura para siempre.",
       "recommended": "RECOMENDADO",
       "free": {
         "title": "Gratis",

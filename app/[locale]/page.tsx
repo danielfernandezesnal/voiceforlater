@@ -275,9 +275,20 @@ export default async function LocaleHomePage({
                             <span className="font-medium">{dict.landing.trust.item3}</span>
                         </li>
                     </ul>
-                    <p className="text-center text-sm text-muted-foreground mt-10 max-w-xl mx-auto italic">
-                        {(dict.landing.trust as any).clarification}
-                    </p>
+                    <div className="mt-12 inline-flex items-center gap-3 bg-card border border-border/50 shadow-sm rounded-full px-6 py-3 max-w-3xl mx-auto text-left">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        <span className="font-medium text-[hsl(var(--ink))]">
+                            {(dict.landing.trust as any).encryption}
+                        </span>
+                    </div>
+                    {(dict.landing.trust as any).clarification && (
+                        <p className="text-center text-sm text-muted-foreground mt-10 max-w-xl mx-auto italic">
+                            {(dict.landing.trust as any).clarification}
+                        </p>
+                    )}
                 </div>
             </section>
 
