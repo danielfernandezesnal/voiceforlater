@@ -18,6 +18,9 @@
     "sentAt": "Sent on "
   },
   "landing": {
+    "nav": {
+      "login": "Sign in"
+    },
     "hero": {
       "tag": "Messages that travel through time",
       "title_plain": "Your words, when ",
