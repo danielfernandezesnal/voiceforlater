@@ -14,7 +14,7 @@
     "confirm": "Confirmar",
     "getStarted": "Crear mi primer mensaje",
     "seeHow": "Cómo funciona",
-    "price": "USD {amount}",
+    "price": "USD {amount} / año",
     "sentAt": "Enviado el "
   },
   "landing": {
@@ -233,7 +233,7 @@
           "Elige fecha exacta de envío",
           "Hasta 3 personas de confianza para garantizar la entrega"
         ],
-        "cta": "Pasar a plan PRO"
+        "cta": "Comenzar con plan PRO"
       }
     },
     "closing": "",
