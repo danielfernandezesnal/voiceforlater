@@ -21,14 +21,14 @@ export function LandingFaq({ t }: { t: any }) {
                     {t.title}
                 </h2>
 
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-0">
                     {visibleItems.map((item, i) => {
                         const isOpen = openIndex === i;
                         return (
                             <div
                                 key={i}
                                 className={[
-                                    "border rounded-2xl overflow-hidden transition-colors duration-300",
+                                    "border-x border-t last:border-b rounded-none first:rounded-t-2xl last:rounded-b-2xl overflow-hidden transition-colors duration-300",
                                     isOpen ? "bg-white border-border shadow-sm" : "bg-transparent border-border/60 hover:border-border"
                                 ].filter(Boolean).join(" ")}
                             >
