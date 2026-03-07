@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 export function LandingContactForm({ dict }: { dict: any }) {
-    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error' | 'invalid' | 'rateLimit'>('idle');
 
     return (
         <form
@@ -24,13 +24,25 @@ export function LandingContactForm({ dict }: { dict: any }) {
                         setStatus('success');
                         form.reset();
                     } else {
-                        setStatus('error');
+                        const errorData = await res.json().catch(() => ({}));
+                        if (errorData.error === 'invalid') setStatus('invalid');
+                        else if (errorData.error === 'rate_limit') setStatus('rateLimit');
+                        else setStatus('error');
                     }
                 } catch (error) {
                     setStatus('error');
                 }
             }}
         >
+            {/* Honeypot field for spam prevention */}
+            <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+                <input
+                    type="text"
+                    name="bot_field"
+                    tabIndex={-1}
+                    autoComplete="off"
+                />
+            </div>
             <div>
                 <label className="block text-sm font-medium mb-2 text-foreground/80">{dict.contact.emailLabel}</label>
                 <input
@@ -70,6 +82,18 @@ export function LandingContactForm({ dict }: { dict: any }) {
             {status === 'error' && (
                 <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-600 rounded-md text-sm">
                     {dict.contact.error}
+                </div>
+            )}
+
+            {status === 'invalid' && (
+                <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-600 rounded-md text-sm">
+                    {dict.contact.invalid}
+                </div>
+            )}
+
+            {status === 'rateLimit' && (
+                <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-600 rounded-md text-sm">
+                    {dict.contact.rateLimit}
                 </div>
             )}
 

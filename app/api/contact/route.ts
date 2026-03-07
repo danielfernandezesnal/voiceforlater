@@ -4,17 +4,57 @@ import { createClient } from "@/lib/supabase/server";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Simple in-memory rate limiter for serverless instance
+const rateLimits = new Map<string, { count: number; resetAt: number }>();
+const LIMIT = 5; // Max 5 requests per window
+const WINDOW_MS = 5 * 60 * 1000; // 5 minutes window
+
 export async function POST(request: NextRequest) {
     try {
+        const ipHeader = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
+        const clientIp = ipHeader.includes(',') ? ipHeader.split(',')[0].trim() : ipHeader;
+
+        // Rate Limiting
+        if (clientIp !== "unknown") {
+            const now = Date.now();
+            const record = rateLimits.get(clientIp);
+
+            if (record && now > record.resetAt) {
+                rateLimits.delete(clientIp);
+            }
+
+            if (!rateLimits.has(clientIp)) {
+                rateLimits.set(clientIp, { count: 1, resetAt: now + WINDOW_MS });
+            } else {
+                const current = rateLimits.get(clientIp)!;
+                if (current.count >= LIMIT) {
+                    return NextResponse.json({ error: "rate_limit" }, { status: 429 });
+                }
+                current.count++;
+            }
+        }
+
         const supabase = await createClient();
 
         // Attempt to get user if authenticated (optional for contact form)
         const { data: { user } } = await supabase.auth.getUser();
 
-        const { email, subject, message } = await request.json();
+        const { email, subject, message, bot_field } = await request.json();
 
-        if (!email || !message) {
-            return NextResponse.json({ error: "Email and message are required" }, { status: 400 });
+        // Honeypot check
+        if (bot_field) {
+            return NextResponse.json({ error: "invalid" }, { status: 400 });
+        }
+
+        // Basic formatting Validations
+        if (!email || typeof email !== 'string' || !email.includes('@') || email.length > 255) {
+            return NextResponse.json({ error: "invalid" }, { status: 400 });
+        }
+        if (subject && (typeof subject !== 'string' || subject.length > 200)) {
+            return NextResponse.json({ error: "invalid" }, { status: 400 });
+        }
+        if (!message || typeof message !== 'string' || message.length < 5 || message.length > 5000) {
+            return NextResponse.json({ error: "invalid" }, { status: 400 });
         }
 
         // Insert using service role since anon/auth direct inserts are denied by RLS
