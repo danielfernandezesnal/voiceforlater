@@ -53,7 +53,7 @@ export default async function ContactPage({
                     <h1 className="text-4xl md:text-5xl font-serif font-light text-center mb-12">
                         {dict.contact.title}
                     </h1>
-                    <LandingContactForm />
+                    <LandingContactForm dict={dict} />
                 </div>
             </main>
 
