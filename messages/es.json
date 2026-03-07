@@ -121,6 +121,9 @@
         "description": "Una fecha, un cumpleaños, o cuando ya no estés presente."
       }
     },
+    "videoTestimonial": {
+      "caption": "Una historia real de alguien que eligió no quedarse callado."
+    },
     "delivery": {
       "title": "Vos elegís el momento",
       "date": {

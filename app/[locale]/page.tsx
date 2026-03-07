@@ -192,6 +192,23 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
+            {/* Video Testimonial */}
+            <section className="py-24 px-6 md:py-32 flex flex-col items-center" style={{ background: 'hsl(var(--cream))' }}>
+                <div className="w-full max-w-[360px] md:max-w-[380px] mx-auto overflow-hidden rounded-2xl shadow-md">
+                    <video
+                        src="https://nrbnmuqjzyghwqlzbxts.supabase.co/storage/v1/object/public/videos/testimonio.mp4"
+                        className="w-full h-auto aspect-[9/16] object-cover"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                    />
+                </div>
+                <p className="mt-6 text-sm text-muted-foreground/80 text-center max-w-sm mx-auto">
+                    {(dict.landing as any).videoTestimonial?.caption || "Una historia real de alguien que eligió no quedarse callado."}
+                </p>
+            </section>
+
             {/* Delivery Options — "Vos elegís el momento" */}
             <section className="py-32 px-6 max-w-5xl mx-auto w-full">
                 <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">{dict.landing.delivery.title}</h2>
