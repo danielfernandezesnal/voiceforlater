@@ -125,7 +125,8 @@
       "caption": "A real story from someone who chose not to stay silent."
     },
     "delivery": {
-      "title": "Every message, at its exact time",
+      "title": "Every message,",
+      "titleEm": "at its exact time",
       "date": {
         "title": "On a specific date",
         "description": "Birthdays, anniversaries, or any moment you choose."

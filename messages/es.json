@@ -125,7 +125,8 @@
       "caption": "Una historia real de alguien que eligió no quedarse callado."
     },
     "delivery": {
-      "title": "Cada mensaje, a su tiempo exacto",
+      "title": "Cada mensaje,",
+      "titleEm": "a su tiempo exacto",
       "date": {
         "title": "En una fecha específica",
         "description": "Definís cuándo debe llegar. Y llega exactamente ese día, a esa hora."
@@ -136,7 +137,7 @@
       }
     },
     "audio": {
-      "title": "Elegí cómo querés recordarse",
+      "title": "Elegí tu forma de decirlo",
       "description": "Tu voz, tu cara, tus palabras escritas. Cada persona tiene su manera de decir lo que siente. Usá la tuya.",
       "pills": {
         "text": "Texto",
