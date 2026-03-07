@@ -20,7 +20,8 @@
   "landing": {
     "hero": {
       "tag": "Messages that travel through time",
-      "title": "Your words, when they matter most.",
+      "title_plain": "Your words, when ",
+      "title_em": "they matter most.",
       "subtitle": "Record voice, text, or video messages for your loved ones. You choose when they arrive.",
       "cta": "Create my first message",
       "microcopy": "Takes you to the message creator. No card. No commitment."

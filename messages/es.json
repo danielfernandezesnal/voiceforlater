@@ -20,7 +20,8 @@
   "landing": {
     "hero": {
       "tag": "Mensajes que viajan en el tiempo",
-      "title": "Tus palabras cuando más importan",
+      "title_plain": "Tus palabras cuando ",
+      "title_em": "más importan",
       "subtitle": "Grabá mensajes de voz, texto o video para tus seres queridos. Vos elegís cuándo llegan.",
       "cta": "Crear mi primer mensaje",
       "microcopy": "Te lleva al creador de mensajes. Sin tarjeta. Sin compromiso."
