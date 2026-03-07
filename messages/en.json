@@ -121,6 +121,9 @@
         "description": "A date, a birthday, or when you are no longer present."
       }
     },
+    "videoTestimonial": {
+      "caption": "A real story from someone who chose not to stay silent."
+    },
     "delivery": {
       "title": "You choose the moment",
       "date": {
