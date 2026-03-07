@@ -36,7 +36,10 @@ export default async function LocaleHomePage({
     const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
     const dict = await getDictionary(locale);
 
-    const ctaLabel = locale === 'es' ? 'Grabá tu primer mensaje' : 'Record your first message';
+    const ctaHero = (dict.landing as any).cta_hero as string;
+    const ctaAfterHow = (dict.landing as any).cta_after_how as string;
+    const ctaAfterDelivery = (dict.landing as any).cta_after_delivery as string;
+    const ctaFinal = (dict.landing as any).cta_final as string;
 
     return (
         <div className="min-h-screen flex flex-col" style={{ background: 'hsl(var(--cream))' }}>
@@ -56,7 +59,7 @@ export default async function LocaleHomePage({
                         href={`/${locale}/auth/login`}
                         className="nav-cta-pill"
                     >
-                        {ctaLabel}
+                        {ctaHero}
                     </Link>
                 </div>
             </nav>
@@ -89,7 +92,7 @@ export default async function LocaleHomePage({
                                 transition: 'background 0.2s, transform 0.2s',
                             }}
                         >
-                            {ctaLabel}
+                            {ctaHero}
                         </Link>
                     </div>
                 </div>
@@ -159,6 +162,25 @@ export default async function LocaleHomePage({
                         </div>
                     ))}
                 </div>
+
+                {/* CTA after How It Works */}
+                <div className="flex justify-center mt-14">
+                    <Link
+                        href={`/${locale}/auth/login`}
+                        style={{
+                            display: 'inline-block',
+                            background: TC,
+                            color: '#fff',
+                            borderRadius: '100px',
+                            padding: '14px 36px',
+                            fontSize: '1rem',
+                            fontWeight: 500,
+                            textDecoration: 'none',
+                        }}
+                    >
+                        {ctaAfterHow}
+                    </Link>
+                </div>
             </section>
 
             {/* Delivery Options — "Vos elegís el momento" */}
@@ -198,7 +220,7 @@ export default async function LocaleHomePage({
                     </div>
                 </div>
 
-                {/* Central CTA */}
+                {/* CTA after Delivery */}
                 <div className="flex justify-center py-4">
                     <Link
                         href={`/${locale}/auth/login`}
@@ -213,7 +235,7 @@ export default async function LocaleHomePage({
                             textDecoration: 'none',
                         }}
                     >
-                        {ctaLabel}
+                        {ctaAfterDelivery}
                     </Link>
                 </div>
             </section>
@@ -361,7 +383,7 @@ export default async function LocaleHomePage({
                         textDecoration: 'none',
                     }}
                 >
-                    {ctaLabel}
+                    {ctaFinal}
                 </Link>
             </section>
 

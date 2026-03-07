@@ -244,7 +244,10 @@
     },
     "closing": "",
     "final_thought": "Because some words aren't for now. They are for when they are needed most.",
-    "cta_final": "Start with one message",
+    "cta_hero": "Record your first message",
+    "cta_after_how": "Get started now",
+    "cta_after_delivery": "Leave something that lasts",
+    "cta_final": "Leave my words today",
     "footer": {
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",
