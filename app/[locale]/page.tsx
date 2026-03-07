@@ -198,15 +198,11 @@ export default async function LocaleHomePage({
                     <video
                         src="https://nrbnmuqjzyghwqlzbxts.supabase.co/storage/v1/object/public/videos/testimonio.mp4"
                         className="w-full h-auto aspect-[9/16] object-cover"
-                        autoPlay
-                        muted
-                        loop
+                        controls
+                        preload="metadata"
                         playsInline
                     />
                 </div>
-                <p className="mt-6 text-sm text-muted-foreground/80 text-center max-w-sm mx-auto">
-                    {(dict.landing as any).videoTestimonial?.caption || "Una historia real de alguien que eligió no quedarse callado."}
-                </p>
             </section>
 
             {/* Delivery Options — "Vos elegís el momento" */}
