@@ -21,7 +21,7 @@ export function LandingFaq({ t }: { t: any }) {
                     {t.title}
                 </h2>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
                     {visibleItems.map((item, i) => {
                         const isOpen = openIndex === i;
                         return (
