@@ -80,7 +80,7 @@ export default async function LocaleHomePage({
                     <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
                         <Link
                             href={`/${locale}/auth/login`}
-                            className="inline-block text-center"
+                            className="inline-flex justify-center items-center text-center"
                             style={{
                                 background: TC,
                                 color: '#fff',
@@ -92,7 +92,7 @@ export default async function LocaleHomePage({
                                 transition: 'background 0.2s, transform 0.2s',
                             }}
                         >
-                            <span className="block w-full text-center leading-snug">{ctaHero}</span>
+                            <span className="w-full text-center leading-snug">{ctaHero}</span>
                         </Link>
                     </div>
                 </div>
