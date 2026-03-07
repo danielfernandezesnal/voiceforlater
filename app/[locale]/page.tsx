@@ -80,8 +80,8 @@ export default async function LocaleHomePage({
                     <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
                         <Link
                             href={`/${locale}/auth/login`}
+                            className="inline-block text-center"
                             style={{
-                                display: 'inline-block',
                                 background: TC,
                                 color: '#fff',
                                 borderRadius: '100px',
@@ -89,11 +89,10 @@ export default async function LocaleHomePage({
                                 fontSize: '1rem',
                                 fontWeight: 500,
                                 textDecoration: 'none',
-                                textAlign: 'center',
                                 transition: 'background 0.2s, transform 0.2s',
                             }}
                         >
-                            {ctaHero}
+                            <span className="block w-full text-center leading-snug">{ctaHero}</span>
                         </Link>
                     </div>
                 </div>
