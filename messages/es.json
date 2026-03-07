@@ -235,7 +235,10 @@
     },
     "closing": "",
     "final_thought": "El momento importa.\nLas palabras también.",
-    "cta_final": "Crear mi primer mensaje",
+    "cta_hero": "Grabá tu primer mensaje",
+    "cta_after_how": "Empezar ahora",
+    "cta_after_delivery": "Dejar algo que dure",
+    "cta_final": "Dejar mis palabras hoy",
     "footer": {
       "privacy": "Privacidad",
       "terms": "Términos",
