@@ -211,7 +211,7 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Delivery Options — "Vos elegís el momento" */}
-            <section className="py-20 px-6 max-w-5xl mx-auto w-full">
+            <section className="py-16 px-6 max-w-5xl mx-auto w-full">
                 <p className="text-sm font-medium tracking-widest text-center uppercase mb-4" style={{ color: TC }}>
                     Vos elegís el momento
                 </p>
@@ -249,24 +249,6 @@ export default async function LocaleHomePage({
                     </div>
                 </div>
 
-                {/* CTA after Delivery */}
-                <div className="flex justify-center py-4">
-                    <Link
-                        href={`/${locale}/auth/login`}
-                        style={{
-                            display: 'inline-block',
-                            background: TC,
-                            color: '#fff',
-                            borderRadius: '100px',
-                            padding: '16px 40px',
-                            fontSize: '1.1rem',
-                            fontWeight: 500,
-                            textDecoration: 'none',
-                        }}
-                    >
-                        {ctaAfterDelivery}
-                    </Link>
-                </div>
             </section>
 
             {/* Audio Section */}
