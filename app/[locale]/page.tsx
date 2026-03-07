@@ -97,7 +97,7 @@ export default async function LocaleHomePage({
                     </div>
                 </div>
 
-                {/* Right: image — overflow-hidden contains the fill image */}
+                {/* Right: image */}
                 <div className="hero-img-col relative overflow-hidden">
                     <Image
                         src="/assets/rebrand/hero-editorial.png"
@@ -105,13 +105,22 @@ export default async function LocaleHomePage({
                         fill
                         priority
                         quality={95}
-                        className="object-cover object-center"
-                        style={{ filter: 'sepia(18%) saturate(0.9) brightness(1.05)' }}
+                        className="object-cover object-center md:object-center"
+                        style={{
+                            objectPosition: 'center 20%',
+                            filter: 'sepia(18%) saturate(0.9) brightness(1.05)'
+                        }}
                     />
-                    {/* Multi-edge fade blend: Left (30%) and Bottom (20%) */}
-                    <div className="absolute inset-0 pointer-events-none"
+                    {/* Desktop: Left + Bottom gradient blend */}
+                    <div className="absolute inset-0 pointer-events-none hidden md:block"
                         style={{
                             background: 'linear-gradient(to right, hsl(var(--cream)) 0%, transparent 30%), linear-gradient(to top, hsl(var(--cream)) 0%, transparent 20%)'
+                        }}
+                    />
+                    {/* Mobile: subtle bottom gradient only */}
+                    <div className="absolute inset-0 pointer-events-none md:hidden"
+                        style={{
+                            background: 'linear-gradient(to top, hsl(var(--cream)) 0%, transparent 40%)'
                         }}
                     />
                 </div>
@@ -365,11 +374,31 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
-            {/* Closing */}
-            <section className="py-32 px-6 text-center">
-                <p className="text-2xl md:text-4xl font-serif font-light italic text-muted-foreground leading-relaxed max-w-4xl mx-auto mb-16">
-                    &quot;{dict.landing.final_thought}&quot;
+            {/* Closing — dark dramatic block */}
+            <section
+                style={{
+                    background: 'hsl(var(--ink))',
+                    padding: '120px 24px',
+                    textAlign: 'center',
+                }}
+            >
+                <p
+                    className="font-serif font-light italic"
+                    style={{
+                        fontSize: 'clamp(2rem, 5vw, 4rem)',
+                        lineHeight: 1.2,
+                        color: 'rgba(253, 248, 240, 0.92)',
+                        maxWidth: '820px',
+                        margin: '0 auto',
+                        letterSpacing: '-0.01em',
+                    }}
+                >
+                    &ldquo;{dict.landing.final_thought}&rdquo;
                 </p>
+            </section>
+
+            {/* CTA final */}
+            <section className="py-20 px-6 text-center" style={{ background: 'hsl(var(--cream))' }}>
                 <Link
                     href={`/${locale}/auth/login`}
                     style={{
@@ -377,10 +406,11 @@ export default async function LocaleHomePage({
                         background: TC,
                         color: '#fff',
                         borderRadius: '100px',
-                        padding: '18px 44px',
+                        padding: '18px 48px',
                         fontSize: '1.15rem',
                         fontWeight: 500,
                         textDecoration: 'none',
+                        transition: 'background 0.2s, transform 0.15s',
                     }}
                 >
                     {ctaFinal}
