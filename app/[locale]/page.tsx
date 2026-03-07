@@ -211,7 +211,8 @@ export default async function LocaleHomePage({
                     Vos elegís el momento
                 </p>
                 <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">
-                    {dict.landing.delivery.title}
+                    {dict.landing.delivery.title}<br />
+                    <em style={{ color: TC }} className="italic font-serif">{(dict.landing.delivery as any).titleEm}</em>
                 </h2>
                 <div className="grid md:grid-cols-2 gap-8 md:gap-10 mb-20">
                     {/* Date delivery */}
