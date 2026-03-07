@@ -57,7 +57,7 @@ export default async function LocaleHomePage({
                     {/* Nav CTA — terracota pill */}
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="nav-cta-pill"
+                        className="nav-cta-pill hidden md:inline-block"
                     >
                         {ctaHero}
                     </Link>
