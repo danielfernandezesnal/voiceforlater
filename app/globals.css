@@ -533,7 +533,6 @@ html {
 
   /* ── Terracota CTA buttons ── */
   .nav-cta-pill {
-    display: inline-block;
     background: #C4623A;
     color: #fff;
     border-radius: 100px;
@@ -541,6 +540,7 @@ html {
     font-size: 0.875rem;
     font-weight: 500;
     text-decoration: none;
+    text-align: center;
     transition: background 0.2s, transform 0.15s;
   }
 
