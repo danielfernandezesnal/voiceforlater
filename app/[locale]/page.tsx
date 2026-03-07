@@ -68,9 +68,14 @@ export default async function LocaleHomePage({
             <section className="hero-grid">
                 {/* Left: text */}
                 <div className="flex flex-col justify-end px-[7%] pb-20 pt-16">
+                    <p className="animate-in fade-in slide-in-from-bottom-8 duration-1000 mb-5"
+                        style={{ fontSize: '0.78rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500, color: TC }}>
+                        {dict.landing.hero.tag}
+                    </p>
                     <h1 className="font-serif font-light tracking-tight leading-[1.06] mb-6 animate-in fade-in slide-in-from-bottom-8 duration-1000"
                         style={{ fontSize: 'clamp(3.4rem, 5.6vw, 5.6rem)', color: 'hsl(var(--ink))' }}>
-                        {dict.landing.hero.title}
+                        {(dict.landing.hero as any).title_plain}
+                        <em style={{ color: TC, fontStyle: 'italic' }}>{(dict.landing.hero as any).title_em}</em>
                     </h1>
                     <p className="font-light leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200 mb-10"
                         style={{ fontSize: 'clamp(1.1rem, 1.4vw, 1.35rem)', color: 'rgba(42, 37, 32, 0.65)', maxWidth: '500px' }}>
