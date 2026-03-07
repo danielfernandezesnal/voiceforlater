@@ -377,7 +377,7 @@ export default async function LocaleHomePage({
             {/* Closing — dark dramatic block */}
             <section
                 style={{
-                    background: 'hsl(var(--ink))',
+                    background: '#6E6862',
                     padding: '120px 24px',
                     textAlign: 'center',
                 }}
