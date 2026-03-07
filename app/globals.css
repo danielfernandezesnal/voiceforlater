@@ -210,9 +210,8 @@ html {
     }
 
     .hero-img-col {
-      min-height: 75vw;
-      max-height: 420px;
-      order: -1;
+      min-height: 200px;
+      max-height: 200px;
     }
   }
 
