@@ -297,7 +297,7 @@ html {
 
   /* ── CMW Scenarios Section (para-antigravity.html) ── */
   .cmw-scenarios-section {
-    padding: 120px 80px;
+    padding: 72px 80px;
     max-width: 1100px;
     margin: 0 auto;
   }
@@ -513,7 +513,7 @@ html {
 
   @media (max-width: 800px) {
     .cmw-scenarios-section {
-      padding: 80px 28px;
+      padding: 72px 28px;
     }
 
     .cmw-scenario {

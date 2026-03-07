@@ -130,7 +130,7 @@ export default async function LocaleHomePage({
             <LandingScenarios t={(dict.landing.uses as any).scenarios} />
 
             {/* How It Works - Propuesta D Timeline */}
-            <section id="how-it-works" className="py-[110px] px-[7%] bg-[hsl(var(--cream))]">
+            <section id="how-it-works" className="py-[72px] px-[7%] bg-[hsl(var(--cream))]">
                 <div className="text-center mb-[72px]">
                     <h2 className="font-serif font-normal text-[hsl(var(--ink))] mb-2.5"
                         style={{ fontSize: 'clamp(2.6rem, 4vw, 3.8rem)', lineHeight: 1.1 }}>
@@ -193,7 +193,7 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Video Testimonial */}
-            <section className="py-24 px-6 md:py-32 flex flex-col items-center" style={{ background: 'hsl(var(--cream))' }}>
+            <section className="py-12 px-6 md:py-16 flex flex-col items-center" style={{ background: 'hsl(var(--cream))' }}>
                 <div className="w-full max-w-[360px] md:max-w-[380px] mx-auto overflow-hidden rounded-2xl shadow-md">
                     <video
                         src="https://nrbnmuqjzyghwqlzbxts.supabase.co/storage/v1/object/public/videos/testimonio.mp4"
@@ -206,7 +206,7 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Delivery Options — "Vos elegís el momento" */}
-            <section className="py-32 px-6 max-w-5xl mx-auto w-full">
+            <section className="py-20 px-6 max-w-5xl mx-auto w-full">
                 <p className="text-sm font-medium tracking-widest text-center uppercase mb-4" style={{ color: TC }}>
                     Vos elegís el momento
                 </p>
@@ -265,7 +265,7 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Audio Section */}
-            <section className="py-24 px-6 bg-surface/50 border-t border-border/50">
+            <section className="py-16 px-6 bg-surface/50 border-t border-border/50">
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
                     <div className="order-1">
                         <h2 className="text-4xl md:text-5xl font-serif font-light mb-8 leading-tight">{dict.landing.audio.title}</h2>
@@ -404,7 +404,7 @@ export default async function LocaleHomePage({
             <section
                 style={{
                     background: '#6E6862',
-                    padding: '120px 24px',
+                    padding: '80px 24px',
                     textAlign: 'center',
                 }}
             >
@@ -424,7 +424,7 @@ export default async function LocaleHomePage({
             </section>
 
             {/* CTA final */}
-            <section className="py-20 px-6 text-center" style={{ background: 'hsl(var(--cream))' }}>
+            <section className="py-12 px-6 text-center" style={{ background: 'hsl(var(--cream))' }}>
                 <p style={{
                     fontSize: '1rem',
                     color: 'rgba(42,37,32,0.5)',
