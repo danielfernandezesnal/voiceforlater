@@ -89,6 +89,7 @@ export default async function LocaleHomePage({
                                 fontSize: '1rem',
                                 fontWeight: 500,
                                 textDecoration: 'none',
+                                textAlign: 'center',
                                 transition: 'background 0.2s, transform 0.2s',
                             }}
                         >
