@@ -136,8 +136,8 @@
       }
     },
     "audio": {
-      "title": "Your voice and image",
-      "description": "Sometimes words aren't enough. Record audio or video messages so your loved ones can see and hear you."
+      "title": "Choose how you want to be remembered",
+      "description": "Your voice, your face, your written words. Everyone has their own way of saying what they feel. Use yours."
     },
     "trust": {
       "title": "Private. Secure. Respectful.",
@@ -251,6 +251,7 @@
     "cta_after_how": "Get started now",
     "cta_after_delivery": "Leave something that lasts",
     "cta_final": "Leave my words today",
+    "cta_bridge": "Because some words can't wait forever.",
     "footer": {
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",

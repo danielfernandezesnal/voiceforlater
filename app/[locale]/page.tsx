@@ -412,6 +412,14 @@ export default async function LocaleHomePage({
 
             {/* CTA final */}
             <section className="py-20 px-6 text-center" style={{ background: 'hsl(var(--cream))' }}>
+                <p style={{
+                    fontSize: '1rem',
+                    color: 'rgba(42,37,32,0.5)',
+                    fontStyle: 'italic',
+                    marginBottom: '28px',
+                }}>
+                    {(dict.landing as any).cta_bridge}
+                </p>
                 <Link
                     href={`/${locale}/auth/login`}
                     style={{
