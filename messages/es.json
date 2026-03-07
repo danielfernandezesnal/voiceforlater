@@ -136,8 +136,8 @@
       }
     },
     "audio": {
-      "title": "Elegí el formato",
-      "description": "Enviá mensajes de texto, audio o video para tus seres queridos."
+      "title": "Elegí cómo querés recordarse",
+      "description": "Tu voz, tu cara, tus palabras escritas. Cada persona tiene su manera de decir lo que siente. Usá la tuya."
     },
     "trust": {
       "title": "Tranquilidad y control",
@@ -242,6 +242,7 @@
     "cta_after_how": "Empezar ahora",
     "cta_after_delivery": "Dejar algo que dure",
     "cta_final": "Dejar mis palabras hoy",
+    "cta_bridge": "Porque hay palabras que no pueden esperar para siempre.",
     "footer": {
       "privacy": "Privacidad",
       "terms": "Términos",
