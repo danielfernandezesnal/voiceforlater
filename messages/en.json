@@ -810,6 +810,8 @@
     "submit": "Send Message",
     "sending": "Sending...",
     "success": "Message sent successfully!",
-    "error": "Failed to send message. Please try again."
+    "error": "Failed to send message. Please try again.",
+    "invalid": "Invalid submission format. Please check your inputs.",
+    "rateLimit": "Too many requests. Please try again later."
   }
 }
