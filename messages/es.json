@@ -18,6 +18,9 @@
     "sentAt": "Enviado el "
   },
   "landing": {
+    "nav": {
+      "login": "Iniciar sesión"
+    },
     "hero": {
       "tag": "Mensajes que viajan en el tiempo",
       "title_plain": "Tus palabras cuando ",

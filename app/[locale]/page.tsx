@@ -54,12 +54,23 @@ export default async function LocaleHomePage({
                         <span className="text-border">/</span>
                         <Link href="/es" className={locale === 'es' ? 'text-primary' : 'text-muted-foreground hover:text-foreground transition-colors'}>ES</Link>
                     </div>
-                    {/* Nav CTA — terracota pill */}
+                    {/* Nav CTA */}
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="nav-cta-pill hidden md:inline-block"
+                        className="hidden md:inline-block"
+                        style={{
+                            border: `1.5px solid ${TC}`,
+                            color: TC,
+                            background: 'transparent',
+                            borderRadius: '100px',
+                            padding: '9px 22px',
+                            fontSize: '0.88rem',
+                            fontWeight: 500,
+                            textDecoration: 'none',
+                            transition: 'background 0.2s, color 0.2s',
+                        }}
                     >
-                        {ctaHero}
+                        {(dict.landing as any).nav?.login}
                     </Link>
                 </div>
             </nav>
