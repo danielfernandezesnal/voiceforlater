@@ -125,7 +125,7 @@
       "caption": "A real story from someone who chose not to stay silent."
     },
     "delivery": {
-      "title": "You choose the moment",
+      "title": "Every message, at its exact time",
       "date": {
         "title": "On a specific date",
         "description": "Birthdays, anniversaries, or any moment you choose."
@@ -136,8 +136,13 @@
       }
     },
     "audio": {
-      "title": "Your voice and image",
-      "description": "Sometimes words aren't enough. Record audio or video messages so your loved ones can see and hear you."
+      "title": "Choose how you want to be remembered",
+      "description": "Your voice, your face, your written words. Everyone has their own way of saying what they feel. Use yours.",
+      "pills": {
+        "text": "Text",
+        "audio": "Audio",
+        "video": "Video"
+      }
     },
     "trust": {
       "title": "Private. Secure. Respectful.",

@@ -125,7 +125,7 @@
       "caption": "Una historia real de alguien que eligió no quedarse callado."
     },
     "delivery": {
-      "title": "Vos elegís el momento",
+      "title": "Cada mensaje, a su tiempo exacto",
       "date": {
         "title": "En una fecha específica",
         "description": "Definís cuándo debe llegar. Y llega exactamente ese día, a esa hora."
@@ -136,8 +136,13 @@
       }
     },
     "audio": {
-      "title": "Elegí el formato",
-      "description": "Enviá mensajes de texto, audio o video para tus seres queridos."
+      "title": "Elegí cómo querés recordarse",
+      "description": "Tu voz, tu cara, tus palabras escritas. Cada persona tiene su manera de decir lo que siente. Usá la tuya.",
+      "pills": {
+        "text": "Texto",
+        "audio": "Audio",
+        "video": "Video"
+      }
     },
     "trust": {
       "title": "Tranquilidad y control",

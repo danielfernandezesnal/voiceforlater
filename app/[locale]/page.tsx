@@ -207,11 +207,16 @@ export default async function LocaleHomePage({
 
             {/* Delivery Options — "Vos elegís el momento" */}
             <section className="py-32 px-6 max-w-5xl mx-auto w-full">
-                <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">{dict.landing.delivery.title}</h2>
-                <div className="grid md:grid-cols-2 gap-12 md:gap-16 mb-20">
+                <p className="text-sm font-medium tracking-widest text-center uppercase mb-4" style={{ color: TC }}>
+                    Vos elegís el momento
+                </p>
+                <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">
+                    {dict.landing.delivery.title}
+                </h2>
+                <div className="grid md:grid-cols-2 gap-8 md:gap-10 mb-20">
                     {/* Date delivery */}
-                    <div className="flex flex-col items-center text-center gap-6 transition-colors group">
-                        <div className="mb-2" style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                    <div className="flex flex-col gap-5 p-10 rounded-2xl border border-border/60 transition-shadow hover:shadow-md">
+                        <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" />
                                 <line x1="3" y1="9" x2="21" y2="9" />
@@ -219,14 +224,12 @@ export default async function LocaleHomePage({
                                 <line x1="16" y1="2" x2="16" y2="6" />
                             </svg>
                         </div>
-                        <div>
-                            <h3 className="text-xl md:text-2xl font-serif font-light mb-4">{dict.landing.delivery.date.title}</h3>
-                            <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
-                        </div>
+                        <h3 className="text-xl md:text-2xl font-serif font-light">{dict.landing.delivery.date.title}</h3>
+                        <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
                     </div>
                     {/* Checkin delivery */}
-                    <div className="flex flex-col items-center text-center gap-6 transition-colors group">
-                        <div className="mb-2" style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                    <div className="flex flex-col gap-5 p-10 rounded-2xl border border-border/60 transition-shadow hover:shadow-md">
+                        <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M5 22h14" />
                                 <path d="M5 2h14" />
@@ -235,10 +238,8 @@ export default async function LocaleHomePage({
                                 <path d="M12 11v1" />
                             </svg>
                         </div>
-                        <div>
-                            <h3 className="text-xl md:text-2xl font-serif font-light mb-4">{dict.landing.delivery.checkin.title}</h3>
-                            <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.checkin.description}</p>
-                        </div>
+                        <h3 className="text-xl md:text-2xl font-serif font-light">{dict.landing.delivery.checkin.title}</h3>
+                        <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.checkin.description}</p>
                     </div>
                 </div>
 
@@ -267,9 +268,20 @@ export default async function LocaleHomePage({
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
                     <div className="order-1">
                         <h2 className="text-4xl md:text-5xl font-serif font-light mb-8 leading-tight">{dict.landing.audio.title}</h2>
-                        <p className="text-xl text-muted-foreground leading-relaxed">
+                        <p className="text-xl text-muted-foreground leading-relaxed mb-8">
                             {dict.landing.audio.description}
                         </p>
+                        <div className="flex flex-wrap gap-3">
+                            {[
+                                (dict.landing.audio as any).pills?.text,
+                                (dict.landing.audio as any).pills?.audio,
+                                (dict.landing.audio as any).pills?.video
+                            ].filter(Boolean).map((pill) => (
+                                <span key={pill} className="px-5 py-2 rounded-full text-sm font-medium" style={{ background: TC_BG, color: TC }}>
+                                    {pill}
+                                </span>
+                            ))}
+                        </div>
                     </div>
                     <div className="order-2">
                         <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-white/50 relative group">
