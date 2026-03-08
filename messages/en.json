@@ -14,7 +14,7 @@
     "edit": "Edit",
     "view": "View Message",
     "delete": "Delete",
-    "price": "USD {amount}",
+    "price": "USD {amount} / year",
     "sentAt": "Sent on "
   },
   "landing": {
@@ -129,6 +129,7 @@
       "caption": "A real story from someone who chose not to stay silent."
     },
     "delivery": {
+      "eyebrow": "You choose the moment",
       "title": "Every message,",
       "titleEm": "at just the right moment",
       "date": {
@@ -141,7 +142,7 @@
       }
     },
     "audio": {
-      "title": "Choose how you want to be remembered",
+      "title": "Choose how you want to say it",
       "description": "Your voice, your face, your written words. Everyone has their own way of saying what they feel. Use yours.",
       "pills": {
         "text": "Text",
@@ -155,7 +156,8 @@
       "item1": "Your messages are private.",
       "item2": "Only delivered when conditions are met.",
       "item3": "You stay in control at all times.",
-      "encryption": "Your messages are encrypted and we never read them. Only you and your recipients have access."
+      "encryption": "Your messages are encrypted and we never read them. Only you and your recipients have access.",
+      "clarification": "Carry My Words only delivers what you recorded, exactly as you left it."
     },
     "notWhat": {
       "title": "What Carry My Words is NOT",
@@ -256,7 +258,7 @@
       }
     },
     "closing": "",
-    "final_thought": "Because some words aren't for now. They are for when they are needed most.",
+    "final_thought": "The moment matters. So do the words.",
     "cta_hero": "Record your first message",
     "cta_after_how": "Get started now",
     "cta_after_delivery": "Leave something that lasts",

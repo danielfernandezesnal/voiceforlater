@@ -224,7 +224,7 @@ export default async function LocaleHomePage({
             {/* Delivery Options — "Vos elegís el momento" */}
             <section className="py-16 px-6 max-w-5xl mx-auto w-full">
                 <p className="text-sm font-medium tracking-widest text-center uppercase mb-4" style={{ color: TC }}>
-                    Vos elegís el momento
+                    {(dict.landing.delivery as any).eyebrow}
                 </p>
                 <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">
                     {dict.landing.delivery.title}<br />
