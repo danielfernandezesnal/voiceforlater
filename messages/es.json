@@ -219,15 +219,16 @@
       "justification": "USD 10 al año. Menos de lo que imaginás para algo que dura para siempre.",
       "recommended": "RECOMENDADO",
       "free": {
-        "title": "Gratis",
+        "title": "Free",
         "tagline": "Para probarlo",
         "features": [
           "1 mensaje",
-          "Solo texto",
-          "Elige fecha exacta de envío",
-          "1 persona de confianza (cómplice) para garantizar la entrega"
+          "Texto",
+          "Audio",
+          "1 persona de confianza"
         ],
-        "price": "USD 0"
+        "price": "USD 0",
+        "cta": "Probarlo ahora"
       },
       "pro": {
         "title": "Pro",
@@ -237,14 +238,13 @@
           "Texto",
           "Audio",
           "Video",
-          "Elige fecha exacta de envío",
-          "Hasta 3 personas de confianza para garantizar la entrega"
+          "Hasta 3 personas de confianza"
         ],
         "cta": "Comenzar con plan PRO"
       }
     },
     "closing": "",
-    "final_thought": "El momento importa.\nLas palabras también.",
+    "final_thought": "Las palabras importan, el momento también.",
     "cta_hero": "Grabá tu primer mensaje",
     "cta_after_how": "Empezar ahora",
     "cta_after_delivery": "Dejar algo que dure",
