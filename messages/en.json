@@ -341,6 +341,7 @@
         "audio": "🎙️ Audio Message",
         "video": "🎥 Video Message"
       },
+      "deliveryLabel": "📅 Delivery",
       "checkinModeStatus": "message is set to send automatically if you stop confirming your activity"
     }
   },

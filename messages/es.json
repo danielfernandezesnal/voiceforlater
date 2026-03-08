@@ -314,6 +314,7 @@
         "audio": "🎙️ Mensaje de Audio",
         "video": "🎥 Mensaje de Video"
       },
+      "deliveryLabel": "📅 Entrega",
       "checkinModeStatus": "el mensaje está configurado para enviarse automáticamente si dejas de confirmar tu actividad"
     },
     "limitReached": {
