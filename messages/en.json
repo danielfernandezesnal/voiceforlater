@@ -342,7 +342,17 @@
         "video": "🎥 Video Message"
       },
       "deliveryLabel": "📅 Delivery",
-      "checkinModeStatus": "message is set to send automatically if you stop confirming your activity"
+      "checkinModeStatus": "message is set to send automatically if you stop confirming your activity",
+      "labels": {
+        "to": "To",
+        "created": "Created",
+        "scheduledFor": "Scheduled for"
+      },
+      "whenNoLongerPresent": "When no longer present",
+      "noContactAssigned": "No contact assigned",
+      "noContactAssignedDesc": "Won't be sent automatically until you add one.",
+      "addContactShort": "+ Add",
+      "addContactLong": "+ Add contact"
     }
   },
   "nav": {
