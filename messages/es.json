@@ -130,7 +130,7 @@
     },
     "delivery": {
       "title": "Cada mensaje,",
-      "titleEm": "a su tiempo exacto",
+      "titleEm": "en su momento justo",
       "date": {
         "title": "En una fecha específica",
         "description": "Definís cuándo debe llegar. Y llega exactamente ese día, a esa hora."

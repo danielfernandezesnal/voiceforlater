@@ -177,7 +177,7 @@ export default async function LocaleHomePage({
                                     : <div className="tl-line" />}
                             </div>
                             <div className="px-2">
-                                <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2 leading-[1.2] text-[1.25rem]">
+                                <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2 leading-[1.2] text-2xl">
                                     {item.title}
                                 </h3>
                                 <p className="tl-desc">
