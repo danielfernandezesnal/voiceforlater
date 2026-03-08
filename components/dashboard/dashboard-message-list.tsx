@@ -9,7 +9,7 @@ import type { Plan } from "@/lib/plans";
 
 interface MessageWithRecipient {
     id: string;
-    type: 'text' | 'audio';
+    type: 'text' | 'audio' | 'video';
     status: 'draft' | 'scheduled' | 'delivered';
     text_content: string | null;
     created_at: string;
@@ -121,7 +121,10 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                                 <div className="font-medium mb-2">
                                     {message.type === 'text' && message.text_content
                                         ? message.text_content.substring(0, 80) + (message.text_content.length > 80 ? '...' : '')
-                                        : dict.dashboard.messageCard.type.audio
+                                        : (message.type === 'video'
+                                            ? dict.dashboard.messageCard.type.video
+                                            : dict.dashboard.messageCard.type.audio
+                                        )
                                     }
                                 </div>
 

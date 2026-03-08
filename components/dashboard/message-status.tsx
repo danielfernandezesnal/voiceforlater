@@ -33,19 +33,9 @@ export function MessageStatus({ status, deliverAt, deliveryMode, type, locale, d
         <div className="flex flex-wrap items-center gap-2">
             {/* Type Badge */}
             <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full bg-secondary text-muted-foreground">
-                {type === 'text' ? (
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                ) : (
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                    </svg>
-                )}
-                {type === 'text'
-                    ? dict.dashboard.messageCard.type.text
-                    : dict.dashboard.messageCard.type.audio
-                }
+                {type === 'text' && dict.dashboard.messageCard.type.text}
+                {type === 'audio' && dict.dashboard.messageCard.type.audio}
+                {type === 'video' && dict.dashboard.messageCard.type.video}
             </span>
 
             {/* Status Badge */}
