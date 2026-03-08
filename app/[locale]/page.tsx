@@ -370,6 +370,13 @@ export default async function LocaleHomePage({
                                     </li>
                                 ))}
                             </ul>
+                            <Link
+                                href={`/${locale}/auth/login`}
+                                className="w-full py-3 text-white font-semibold text-center transition-all duration-200"
+                                style={{ background: TC, borderRadius: '100px', display: 'block' }}
+                            >
+                                {(dict.landing.pricing.free as any).cta}
+                            </Link>
                         </div>
                         {/* Pro Plan */}
                         <div className="bg-card p-8 rounded-2xl shadow-xl card-hover relative flex flex-col" style={{ border: `2px solid ${TC}` }}>
@@ -421,38 +428,16 @@ export default async function LocaleHomePage({
                 </p>
             </section>
 
-            {/* CTA final */}
-            <section className="py-12 px-6 text-center" style={{ background: 'hsl(var(--cream))' }}>
-                <p style={{
-                    fontSize: '1rem',
-                    color: 'rgba(42,37,32,0.5)',
-                    fontStyle: 'italic',
-                    marginBottom: '28px',
-                }}>
-                    {(dict.landing as any).cta_bridge}
-                </p>
-                <Link
-                    href={`/${locale}/auth/login`}
-                    style={{
-                        display: 'inline-block',
-                        background: TC,
-                        color: '#fff',
-                        borderRadius: '100px',
-                        padding: '18px 48px',
-                        fontSize: '1.15rem',
-                        fontWeight: 500,
-                        textDecoration: 'none',
-                        transition: 'background 0.2s, transform 0.15s',
-                    }}
-                >
-                    {ctaFinal}
-                </Link>
-            </section>
 
             {/* Footer */}
             <footer className="py-12 px-6 border-t border-border mt-auto bg-card text-muted-foreground text-sm">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div className="font-serif font-bold text-foreground text-lg">Carry My Words</div>
+                    <div className="flex flex-col items-center">
+                        <div className="font-serif font-bold text-3xl" style={{ color: TC }}>Carry My Words</div>
+                        <p style={{ color: TC, fontSize: '0.65rem', letterSpacing: '0.14em', fontWeight: 500, marginTop: '4px', textAlign: 'center' }}>
+                            {locale === 'es' ? 'MENSAJES QUE VIAJAN EN EL TIEMPO' : 'MESSAGES THAT TRAVEL THROUGH TIME'}
+                        </p>
+                    </div>
                     <div className="flex gap-6">
                         <Link href={`/${locale}/privacy`} className="hover:text-foreground transition-colors">{dict.landing.footer.privacy}</Link>
                         <Link href={`/${locale}/terms`} className="hover:text-foreground transition-colors">{dict.landing.footer.terms}</Link>

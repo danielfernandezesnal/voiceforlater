@@ -237,11 +237,12 @@
         "tagline": "To try it out",
         "features": [
           "1 message",
-          "Text only",
-          "Choose the exact delivery date",
-          "1 trusted person (companion)"
+          "Text",
+          "Audio",
+          "1 trusted person"
         ],
-        "price": "USD 0"
+        "price": "USD 0",
+        "cta": "Try it now"
       },
       "pro": {
         "title": "Pro",
@@ -251,14 +252,13 @@
           "Text",
           "Audio",
           "Video",
-          "Choose the exact delivery date",
-          "Up to 3 trusted people to ensure delivery"
+          "Up to 3 trusted people"
         ],
         "cta": "Switch to PRO plan"
       }
     },
     "closing": "",
-    "final_thought": "The moment matters. So do the words.",
+    "final_thought": "Words matter, so does the moment.",
     "cta_hero": "Record your first message",
     "cta_after_how": "Get started now",
     "cta_after_delivery": "Leave something that lasts",
