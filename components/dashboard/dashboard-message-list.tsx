@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { CreateMessageButton } from "@/components/dashboard/create-message-button";
-import { MessageStatus } from "@/components/dashboard/message-status";
-import { MessageActions } from "@/components/dashboard/message-actions";
+import { MessageCard } from "@/components/dashboard/message-card";
 import type { Dictionary } from "@/lib/i18n";
 import type { Plan } from "@/lib/plans";
 
-interface MessageWithRecipient {
+export interface MessageWithRecipient {
     id: string;
     type: 'text' | 'audio' | 'video';
     status: 'draft' | 'scheduled' | 'delivered';
@@ -97,117 +96,13 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
     return (
         <div className="grid gap-4">
             {messages.map((message) => {
-                const deliveryRule = Array.isArray(message.delivery_rules)
-                    ? message.delivery_rules[0]
-                    : message.delivery_rules;
-                const deliverAt = deliveryRule?.deliver_at;
-
                 return (
-                    <div
+                    <MessageCard
                         key={message.id}
-                        className="p-4 bg-card border border-border rounded-xl hover:border-primary/50 transition-colors"
-                    >
-                        <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                                {/* Recipient */}
-                                <div className="text-sm text-muted-foreground mb-1">
-                                    {dict.dashboard.messageCard.recipient.replace(
-                                        '{name}',
-                                        message.recipients[0]?.name || 'Unknown'
-                                    )}
-                                </div>
-
-                                {/* Message Preview */}
-                                <div className="font-medium mb-2">
-                                    {message.type === 'text' && message.text_content
-                                        ? message.text_content.substring(0, 80) + (message.text_content.length > 80 ? '...' : '')
-                                        : (message.type === 'video'
-                                            ? dict.dashboard.messageCard.type.video
-                                            : dict.dashboard.messageCard.type.audio
-                                        )
-                                    }
-                                </div>
-
-                                <MessageStatus
-                                    status={message.status}
-                                    deliverAt={deliverAt || null}
-                                    deliveryMode={deliveryRule?.mode || null}
-                                    type={message.type}
-                                    locale={locale}
-                                    dict={dict}
-                                />
-
-                                {/* Trusted Contacts Logic */}
-                                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1.5" title="Contactos de confianza asignados">
-                                    {(() => {
-                                        const mtc = message.message_trusted_contacts || [];
-                                        const trustedList = mtc.map(item => item?.trusted_contacts).filter(Boolean);
-                                        const hasTrusted = trustedList.length > 0;
-
-                                        if (!hasTrusted) {
-                                            return (
-                                                <div className="flex flex-col gap-1 mt-1">
-                                                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200 w-fit">
-                                                        ⚠️ {locale === 'es' ? 'Sin contacto asignado' : 'No contact assigned'}
-                                                    </span>
-                                                    <span className="text-xs text-muted-foreground italic">
-                                                        {locale === 'es' ? 'No se enviará automáticamente hasta que agregues uno.' : 'Will not send automatically until you add one.'}
-                                                    </span>
-                                                </div>
-                                            );
-                                        }
-
-                                        if (trustedList.length === 1) {
-                                            const tc = trustedList[0]!;
-                                            return (
-                                                <>
-                                                    <svg className="w-3.5 h-3.5 text-primary/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                    </svg>
-                                                    <span className="font-medium text-foreground/80">
-                                                        {locale === 'es' ? 'Contacto de confianza: ' : 'Trusted Contact: '}
-                                                        <span className="font-normal text-muted-foreground">{tc.name || tc.email}</span>
-                                                    </span>
-                                                </>
-                                            );
-                                        }
-
-                                        // Multiple
-                                        return (
-                                            <>
-                                                <svg className="w-3.5 h-3.5 text-primary/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 11-8 0 4 4 0 018 0z" />
-                                                </svg>
-                                                <span className="font-medium text-foreground/80">
-                                                    {locale === 'es' ? `Contactos de confianza (${trustedList.length}): ` : `Trusted Contacts (${trustedList.length}): `}
-                                                    <span className="font-normal text-muted-foreground">
-                                                        {trustedList.map(t => t!.name || t!.email).join(' · ')}
-                                                    </span>
-                                                </span>
-                                            </>
-                                        );
-                                    })()}
-                                </div>
-                            </div>
-
-                            {/* Date & Actions */}
-                            <div className="flex flex-col items-end gap-3 ml-4">
-                                <div className="text-xs text-muted-foreground">
-                                    {new Date(message.created_at).toLocaleDateString()}
-                                </div>
-                                <MessageActions
-                                    messageId={message.id}
-                                    locale={locale}
-                                    status={message.status}
-                                    labels={{
-                                        edit: dict.common.edit,
-                                        delete: dict.common.delete,
-                                        view: dict.common.view
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    </div>
+                        message={message}
+                        locale={locale}
+                        dict={dict}
+                    />
                 );
             })}
         </div>

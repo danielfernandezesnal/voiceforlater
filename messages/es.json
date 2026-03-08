@@ -315,7 +315,17 @@
         "video": "🎥 Mensaje de Video"
       },
       "deliveryLabel": "📅 Entrega",
-      "checkinModeStatus": "el mensaje está configurado para enviarse automáticamente si dejas de confirmar tu actividad"
+      "checkinModeStatus": "el mensaje está configurado para enviarse automáticamente si dejas de confirmar tu actividad",
+      "labels": {
+        "to": "Para",
+        "created": "Creado",
+        "scheduledFor": "Programado para"
+      },
+      "whenNoLongerPresent": "Cuando ya no esté",
+      "noContactAssigned": "Sin contacto asignado",
+      "noContactAssignedDesc": "No se enviará automáticamente hasta que agregues uno.",
+      "addContactShort": "+ Agregar",
+      "addContactLong": "+ Agregar contacto"
     },
     "limitReached": {
       "title": "Límite de mensajes alcanzado",
