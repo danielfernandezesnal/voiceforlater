@@ -337,8 +337,9 @@
         "delivered": "Sent"
       },
       "type": {
-        "text": "Text Message",
-        "audio": "Audio Message"
+        "text": "📝 Text Message",
+        "audio": "🎙️ Audio Message",
+        "video": "🎥 Video Message"
       },
       "checkinModeStatus": "message is set to send automatically if you stop confirming your activity"
     }

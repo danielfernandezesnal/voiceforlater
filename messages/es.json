@@ -310,8 +310,9 @@
         "delivered": "Enviado"
       },
       "type": {
-        "text": "Mensaje de Texto",
-        "audio": "Mensaje de Audio"
+        "text": "📝 Mensaje de Texto",
+        "audio": "🎙️ Mensaje de Audio",
+        "video": "🎥 Mensaje de Video"
       },
       "checkinModeStatus": "el mensaje está configurado para enviarse automáticamente si dejas de confirmar tu actividad"
     },
