@@ -166,47 +166,43 @@
       "items": [
         {
           "q": "¿Qué es Carry My Words?",
-          "a": "Carry My Words es un servicio que te permite crear hoy mensajes que se entregarán en el futuro. Podés escribir un mensaje, grabar audio o video, elegir quién lo recibirá y decidir cuándo debe ser entregado. Algunas personas lo utilizan para enviar mensajes en fechas importantes. Otras lo usan para dejar palabras para sus seres queridos en caso de que algún día ya no puedan hacerlo."
+          "a": "Carry My Words es un servicio que te permite crear hoy mensajes que se entregarán en el futuro. Podés escribir un mensaje, grabar audio o video, elegir quién lo recibirá y decidir cuándo debe ser entregado. Algunas personas lo utilizan para enviar mensajes en fechas importantes, otras lo usan para dejar palabras para sus seres queridos en caso de que algún día ya no puedan hacerlo."
         },
         {
           "q": "¿Cómo funciona la entrega de los mensajes?",
-          "a": "Cuando creás un mensaje, elegís cómo debe entregarse. Podés seleccionar: una fecha y hora específicas, un momento en el futuro, o una condición en la que el mensaje se entregue si dejás de confirmar que estás activo. Hasta que llegue el momento de la entrega, siempre mantenés el control total sobre tus mensajes."
+          "a": "Cuando creás un mensaje, elegís cómo debe entregarse. Podés seleccionar: una fecha y hora específicas, o una condición en la que el mensaje se entregue si dejás de confirmar que estás activo. Hasta que llegue el momento de la entrega, siempre mantenés el control total sobre tus mensajes."
         },
         {
           "q": "¿Mis mensajes son privados?",
-          "a": "Sí. Tus mensajes son privados y están protegidos. Solo se entregan según las condiciones que vos hayas establecido. No leemos, vendemos ni compartimos tus mensajes personales."
+          "a": "Sí. Tus mensajes son privados y solo pueden ser accedidos desde tu cuenta o por las personas a quienes decidas enviarlos.\nUtilizamos conexiones seguras (HTTPS), controles estrictos de acceso a nivel de base de datos, y enlaces de entrega con tokens únicos que evitan accesos no autorizados.\nLa plataforma fue diseñada siguiendo buenas prácticas de seguridad recomendadas por OWASP."
         },
         {
-          "q": "¿Qué pasa si dejo de responder a las confirmaciones de actividad?",
-          "a": "Para los mensajes configurados con la opción \"cuando ya no esté\", el sistema verifica periódicamente si seguís activo. Si dejás de responder: primero intentamos contactarte. Si no recibimos respuesta, podemos contactar a la persona de confianza que elegiste. Si se confirma la situación, comienza el proceso de entrega. Este proceso existe para evitar entregas accidentales."
+          "q": "¿Cómo funcionan las confirmaciones de actividad?",
+          "a": "Para los mensajes configurados con la opción \"cuando ya no esté\", el sistema verifica periódicamente si seguís activo. Si dejás de responder primero intentamos contactarte. Si no recibimos respuesta, podemos contactar a la persona de confianza que elegiste. Si se confirma la situación, comienza la entrega de mensajes. Este proceso existe para evitar entregas accidentales."
         },
         {
           "q": "¿Cuál es la diferencia entre el plan Free y Pro?",
-          "a": "Free: 1 mensaje, solo texto, entrega en fecha específica, 1 persona de confianza. Pro: mensajes ilimitados, texto, audio y video, hasta 3 personas de confianza, más opciones de entrega."
+          "a": "Free: 1 mensaje, solo texto, 1 persona de confianza. PRO: mensajes ilimitados, texto, audio y video, hasta 3 personas de confianza."
         },
         {
           "q": "¿Puedo editar o eliminar mis mensajes?",
-          "a": "Sí. Mientras no se haya cumplido la condición de entrega, podés editar, actualizar o eliminar tus mensajes en cualquier momento. Nada se envía sin tu consentimiento."
+          "a": "Sí, podés editar, actualizar o eliminar tus mensajes en cualquier momento. Nada se envía sin tu consentimiento."
         },
         {
           "q": "¿Qué es una persona de confianza?",
           "a": "Es alguien que elegís para ayudar a confirmar tu situación si el sistema no logra comunicarse con vos. Esta persona no puede leer ni modificar tus mensajes. Su única función es ayudar a confirmar si seguís activo."
         },
         {
-          "q": "¿Mi persona de confianza puede ver mis mensajes?",
-          "a": "No. Tu persona de confianza no tiene acceso al contenido de tus mensajes. Los mensajes permanecen privados y solo se entregan cuando se cumple la condición que vos definiste."
-        },
-        {
           "q": "¿Qué tipos de mensajes puedo crear?",
-          "a": "Dependiendo del plan que elijas, podés crear mensajes escritos, de audio o de video. Estos pueden enviarse a uno o varios destinatarios."
+          "a": "Con el plan Free podés enviar 1 mensaje de texto. Con el plan PRO podés enviar mensajes de texto, audio o video."
         },
         {
           "q": "¿Cuándo se envían realmente los mensajes?",
           "a": "Los mensajes solo se entregan cuando se cumple la condición que elegiste. Hasta ese momento, permanecen privados y bajo tu control."
         },
         {
-          "q": "¿Por qué alguien usaría Carry My Words?",
-          "a": "Las personas lo utilizan por distintas razones. Algunos escriben mensajes para cumpleaños, aniversarios o momentos importantes del futuro. Otros quieren dejar palabras para su familia o seres queridos para asegurarse de que esos mensajes lleguen algún día. Es simplemente una forma de asegurarse de que las palabras importantes nunca queden sin decir."
+          "q": "¿Para qué usar Carry My Words?",
+          "a": "Las personas lo utilizan por distintas razones. Algunos escriben mensajes para cumpleaños, aniversarios o momentos importantes del futuro. Otros quieren dejar palabras para su familia o seres queridos para asegurarse de que esos mensajes lleguen algún día.\nEs simplemente una forma de tener la tranquilidad de que las palabras importantes siempre encontrarán su momento."
         },
         {
           "q": "¿Puedo cancelar mi cuenta?",
