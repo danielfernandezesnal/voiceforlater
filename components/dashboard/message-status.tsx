@@ -30,60 +30,59 @@ export function MessageStatus({ status, deliverAt, deliveryMode, type, locale, d
     const isSent = status === 'scheduled' && deliverAt && isPastDelivery;
 
     return (
-        <div className="flex flex-wrap items-center gap-2">
-            {/* Type Badge */}
-            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full bg-secondary text-muted-foreground">
-                {type === 'text' && dict.dashboard.messageCard.type.text}
-                {type === 'audio' && dict.dashboard.messageCard.type.audio}
-                {type === 'video' && dict.dashboard.messageCard.type.video}
-            </span>
+        <div className="flex flex-col gap-3">
+            {/* Badges Row */}
+            <div className="flex flex-wrap items-center gap-2">
+                {/* Type Badge */}
+                <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full bg-secondary text-muted-foreground">
+                    {type === 'text' && dict.dashboard.messageCard.type.text}
+                    {type === 'audio' && dict.dashboard.messageCard.type.audio}
+                    {type === 'video' && dict.dashboard.messageCard.type.video}
+                </span>
 
-            {/* Status Badge */}
-            {isSent ? (
-                // SENT STATUS VIRTUAL OVERRIDE
-                <span className="inline-flex items-center gap-1 px-3 py-1 text-xs rounded-full bg-[#34D399] text-white font-medium shadow-sm">
-                    <svg className="w-3 h-3 text-white fill-current" viewBox="0 0 24 24">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                    </svg>
-                    {dict.dashboard.messageCard.status.delivered}
-                </span>
-            ) : (
-                <span className={`inline-flex items-center px-2 py-1 text-xs rounded-full ${status === 'scheduled'
-                    ? 'bg-primary/10 text-primary'
-                    : status === 'delivered'
-                        ? 'bg-[#34D399] text-white'
-                        : 'bg-secondary text-muted-foreground'
-                    }`}>
-                    {dict.dashboard.messageCard.status[status]}
-                </span>
-            )}
+                {/* Status Badge */}
+                {isSent ? (
+                    // SENT STATUS VIRTUAL OVERRIDE
+                    <span className="inline-flex items-center gap-1 px-3 py-1 text-xs rounded-full bg-[#34D399] text-white font-medium shadow-sm">
+                        <svg className="w-3 h-3 text-white fill-current" viewBox="0 0 24 24">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                        </svg>
+                        {dict.dashboard.messageCard.status.delivered}
+                    </span>
+                ) : (
+                    <span className={`inline-flex items-center px-2 py-1 text-xs rounded-full ${status === 'scheduled'
+                        ? 'bg-primary/10 text-primary'
+                        : status === 'delivered'
+                            ? 'bg-[#34D399] text-white'
+                            : 'bg-secondary text-muted-foreground'
+                        }`}>
+                        {dict.dashboard.messageCard.status[status]}
+                    </span>
+                )}
+            </div>
 
-            {/* Scheduled Date / Sent Date Display */}
-            {status === 'scheduled' && deliverAt && (
-                <span className="text-xs text-muted-foreground">
-                    {isSent ? (
-                        // Sent date text
-                        <>
-                            {dict.common.sentAt}
-                            {new Date(deliverAt).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
-                            {locale === 'es' ? ' a las ' : ' at '}
-                            {new Date(deliverAt).toLocaleTimeString(locale === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' })}
-                        </>
-                    ) : (
-                        // Scheduled date text
-                        <>
-                            {locale === 'es' ? 'para el ' : 'for '}
-                            {new Date(deliverAt).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
-                            {locale === 'es' ? ' a las ' : ' at '}
-                            {new Date(deliverAt).toLocaleTimeString(locale === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' })}
-                        </>
-                    )}
-                </span>
+            {/* Delivery Section */}
+            {(status === 'scheduled' || status === 'delivered') && deliverAt && (
+                <div className="flex flex-col gap-0.5 mt-1 border-l-2 border-primary/20 pl-3">
+                    <span className="text-sm font-semibold text-muted-foreground">
+                        {(dict.dashboard.messageCard as any).deliveryLabel}
+                    </span>
+                    <span className="text-sm font-medium text-foreground">
+                        {new Date(deliverAt).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        {' · '}
+                        {new Date(deliverAt).toLocaleTimeString(locale === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                </div>
             )}
             {status === 'scheduled' && !deliverAt && deliveryMode === 'checkin' && (
-                <span className="text-xs text-muted-foreground">
-                    {dict.dashboard.messageCard.checkinModeStatus}
-                </span>
+                <div className="flex flex-col gap-0.5 mt-1 border-l-2 border-primary/20 pl-3">
+                    <span className="text-sm font-semibold text-muted-foreground">
+                        {(dict.dashboard.messageCard as any).deliveryLabel}
+                    </span>
+                    <span className="text-sm font-medium text-foreground">
+                        {dict.dashboard.messageCard.checkinModeStatus}
+                    </span>
+                </div>
             )}
         </div>
     );
