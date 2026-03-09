@@ -752,6 +752,27 @@
       "signature": "— El equipo de Carry My Words",
       "footerLogo": "Carry My Words",
       "footerLegal": "Recibiste este email porque alguien te eligió como contacto de confianza.<br>Si creés que es un error, podés ignorar este mensaje."
+    },
+    "messageSpecial": {
+      "subject": "Mensajes que viajan en el tiempo",
+      "preheader": "{{RECIPIENT_NAME}}, HOY ES UN DÍA ESPECIAL",
+      "heading": "Alguien que te quiere lo sabía de antemano",
+      "p1": "{{SENDER_NAME}} programó un mensaje para vos hace un tiempo, con la intención de que lo recibieras exactamente hoy.",
+      "p2": "Es algo pensado, elegido y guardado con cuidado hasta este momento.",
+      "button": "🎙 Acceder al mensaje",
+      "info": "Carry My Words es una plataforma que permite enviar mensajes de texto, voz o video para seres queridos, eligiendo cuándo quieren que lleguen: en una fecha importante, o en ese momento en que ya no estén para decirlo ellos mismos.",
+      "closing": "Porque algunas palabras merecen llegar en el momento justo.",
+      "signature": "— El equipo de Carry My Words"
+    },
+    "messagePosthumous": {
+      "subject": "Mensajes que viajan en el tiempo",
+      "preheader": "{{RECIPIENT_NAME}}, HAY UN MENSAJE PARA VOS",
+      "heading": "Hay personas que encuentran la manera de seguir presentes",
+      "p1": "{{SENDER_NAME}} preparó este mensaje para vos con tiempo. Lo guardó con cuidado, y pidió que te llegara en este momento.",
+      "p2": "Tenía cosas para decirte — aunque ya no pueda estar para decirlas en persona.",
+      "button": "🎙 Acceder al mensaje",
+      "closing": "Porque hay palabras que merecen llegar, sin importar cuándo.",
+      "footerLegal": "Recibiste este email porque alguien dejó un mensaje para vos. Si creés que es un error, podés ignorar este mensaje."
     }
   },
   "legal": {
@@ -894,5 +915,26 @@
     "sending": "Enviando...",
     "success": "¡Mensaje enviado con éxito!",
     "error": "Error al enviar el mensaje. Por favor intenta de nuevo."
+  },
+  "messageVisualizer": {
+    "specialLabel": "MENSAJE ESPECIAL",
+    "posthumousLabel": "MENSAJE PÓSTUMO",
+    "receivedLabel": "MENSAJE RECIBIDO",
+    "fromLabel": "De parte de",
+    "voiceLabel": "Mensaje de voz",
+    "videoOverlay": "Tocá para ver el mensaje",
+    "metaSent": "Enviado el",
+    "metaSaved": "Guardado para este momento",
+    "cta": {
+      "heading": "Porque tus palabras importan",
+      "text": "Llevá tus mensajes más allá del tiempo. Guardá lo que sentís hoy para que llegue mañana.",
+      "button": "Quiero enviar mis palabras",
+      "subtext": "Carry My Words — Mensajes que viajan en el tiempo"
+    },
+    "error": {
+      "title": "Mensaje no encontrado",
+      "text": "El enlace es inválido o ha expirado.",
+      "button": "Volver al inicio"
+    }
   }
 }

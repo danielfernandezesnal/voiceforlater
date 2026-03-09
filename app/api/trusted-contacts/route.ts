@@ -148,6 +148,7 @@ export async function POST(request: NextRequest) {
         }
         emailLocale = emailLocale || 'en';
         const dict = await getDictionary(emailLocale as Locale);
+        console.log('[DEBUG /api/trusted-contacts] Dictionary loaded. Has emails:', !!(dict as any).emails);
 
         // Subject and Body based on Locale
         const contactFirstName = name.trim().split(' ')[0];
@@ -162,7 +163,13 @@ export async function POST(request: NextRequest) {
             senderFirstName
         });
 
-        console.log('[POST /api/trusted-contacts] Sending email to:', email);
+        console.log('[POST /api/trusted-contacts] Email Template Generated:', {
+            subject,
+            from: fromAddress,
+            to: email,
+            senderName: senderFullName
+        });
+
         const { data: emailRes, error: emailErr } = await resend.emails.send({
             from: fromAddress,
             to: email,

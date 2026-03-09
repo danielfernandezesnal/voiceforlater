@@ -24,9 +24,14 @@ export function getDefaultSender() {
 
     // Use the ENV value but ensure the display name is 'Carry My Words'
     if (resendFromEnv.includes('<')) {
-        return resendFromEnv.replace(/^[^<]+(?=<)/, 'Carry My Words ');
+        // Extract the email part including brackets <email@domain.com>
+        const emailPart = resendFromEnv.match(/<[^>]+>/)?.[0];
+        if (emailPart) {
+            return `Carry My Words ${emailPart}`;
+        }
     }
 
+    // fallback for raw email strings or empty
     return `Carry My Words <${resendFromEnv}>`;
 }
 
