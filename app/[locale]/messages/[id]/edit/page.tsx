@@ -71,6 +71,7 @@ export default async function EditMessagePage({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const initialData: any = {
         messageType: message.type,
+        title: message.title || '',
         // If type is text, use text_content. If audio/video, textContent might be empty or transcript?
         textContent: message.text_content || '',
         audioBlob: null, // Can't pre-fill blob easily

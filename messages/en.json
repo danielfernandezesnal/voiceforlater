@@ -391,6 +391,8 @@
       "title": "Write your message",
       "titleAudio": "Record your message",
       "subtitle": "Take your time. This message is for someone special.",
+      "titleLabel": "Title",
+      "titlePlaceholder": "Give this message a name...",
       "textPlaceholder": "Write your message here...",
       "charLimit": "{count} / {max} characters",
       "recording": {
@@ -447,6 +449,7 @@
       "title": "Review your message",
       "subtitle": "Make sure everything is correct",
       "messageType": "Type",
+      "titleLabel": "Title",
       "content": "Content",
       "recipient": "Recipient",
       "deliveryRule": "Delivery",

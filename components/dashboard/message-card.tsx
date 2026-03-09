@@ -105,8 +105,11 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
 
     // Title / Preview
     const titleText = `${dict.dashboard.messageCard.recipient.replace('{name}', '')} ${recipientName}`;
-    const previewText = type === 'text' && text_content
-        ? text_content.substring(0, 60) + (text_content.length > 60 ? '...' : '')
+
+    // Custom Title Display
+    const hasTitle = Boolean(message.title && message.title.trim().length > 0);
+    const contentFallback = type === 'text' && text_content
+        ? text_content.substring(0, 50) + (text_content.length > 50 ? '...' : '')
         : (type === 'video' ? dict.dashboard.messageCard.type.video : dict.dashboard.messageCard.type.audio);
 
     // Alert Block
@@ -193,8 +196,8 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                 <div className="font-serif font-semibold text-base text-foreground truncate max-w-[380px] mt-1">
                     {titleText}
                 </div>
-                <div className="text-sm italic text-muted-foreground truncate max-w-[380px]">
-                    {previewText}
+                <div className={`truncate max-w-[380px] ${hasTitle ? 'font-serif font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
+                    {hasTitle ? message.title : contentFallback}
                 </div>
                 <ContactAlert />
             </div>
@@ -213,7 +216,9 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
             <div className="p-4 flex flex-col gap-2">
                 <BadgesRow />
                 <div className="font-serif font-semibold text-base text-foreground mt-1">{titleText}</div>
-                <div className="text-sm italic text-muted-foreground">{previewText}</div>
+                <div className={`truncate max-w-[380px] ${hasTitle ? 'font-serif font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
+                    {hasTitle ? message.title : contentFallback}
+                </div>
             </div>
 
             {/* Bloque 2 - Metadatos */}

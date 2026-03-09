@@ -7,6 +7,7 @@ interface Step5Props {
         title: string
         subtitle: string
         messageType: string
+        titleLabel: string
         content: string
         recipient: string
         deliveryRule: string
@@ -67,6 +68,11 @@ export function Step5Review({
             label: dictionary.messageType,
             value: typeDictionary[data.messageType as keyof typeof typeDictionary].title,
             step: 1
+        },
+        {
+            label: dictionary.titleLabel,
+            value: data.title,
+            step: 2
         },
         {
             label: dictionary.content,

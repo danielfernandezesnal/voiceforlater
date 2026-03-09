@@ -120,6 +120,7 @@ export async function POST(request: NextRequest) {
         // Parse form data
         const formData = await request.formData();
         const type = formData.get("type") as "text" | "audio" | "video";
+        const title = formData.get("title") as string | null;
         const recipientName = formData.get("recipientName") as string;
         const recipientEmail = formData.get("recipientEmail") as string;
         const deliveryMode = formData.get("deliveryMode") as "date" | "checkin";
@@ -131,8 +132,12 @@ export async function POST(request: NextRequest) {
         const trustedContactIds = formData.getAll("trustedContactIds") as string[];
 
         // Validate required fields
-        if (!type || !recipientName || !recipientEmail || !deliveryMode) {
+        if (!type || !recipientName || !recipientEmail || !deliveryMode || !title || title.trim().length === 0) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+        }
+
+        if (title.length > 80) {
+            return NextResponse.json({ error: "Title exceeds 80 characters" }, { status: 400 });
         }
 
         // Validate delivery date
@@ -260,6 +265,7 @@ export async function POST(request: NextRequest) {
             .insert({
                 owner_id: user.id,
                 type,
+                title: title.trim(),
                 status: "scheduled",
                 text_content: textContent || null,
                 audio_path: audioPath,
@@ -435,6 +441,7 @@ export async function PUT(request: NextRequest) {
 
         // Extract update data
         const type = formData.get("type") as "text" | "audio" | "video";
+        const title = formData.get("title") as string | null;
         const recipientName = formData.get("recipientName") as string;
         const recipientEmail = formData.get("recipientEmail") as string;
         const deliveryMode = formData.get("deliveryMode") as "date" | "checkin";
@@ -457,13 +464,18 @@ export async function PUT(request: NextRequest) {
         }
 
         // Validation (simplified vs POST, assuming valid input mostly)
-        if (!type || !recipientName || !recipientEmail || !deliveryMode) {
+        if (!type || !recipientName || !recipientEmail || !deliveryMode || !title || title.trim().length === 0) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+        }
+
+        if (title.length > 80) {
+            return NextResponse.json({ error: "Title exceeds 80 characters" }, { status: 400 });
         }
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const updates: any = {
             type,
+            title: title.trim(),
             text_content: type === 'text' ? textContent : null,
             status: 'scheduled' // Reset status if it was delivered? Or keep? Usually editing implies re-scheduling.
         };
