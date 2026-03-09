@@ -1,10 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { CheckinStatusWidget } from "@/components/dashboard/checkin-status";
-
 import { CreateMessageButton } from "@/components/dashboard/create-message-button";
 import { DashboardMessageList } from "@/components/dashboard/dashboard-message-list";
-import { UpgradeButton } from "@/components/stripe";
+import { TrustedContactCountCard } from "@/components/dashboard/trusted-contact-count-card";
 import { type Plan } from "@/lib/plans";
 
 export const dynamic = 'force-dynamic';
@@ -44,7 +43,6 @@ export default async function DashboardPage({
     let messages: MessageWithRecipient[] = [];
     let hasCheckinMessages = false;
     let userPlan: Plan = 'free';
-    let trustedContactCountFromQuery = 0;
 
     if (user) {
         // Get user profile for plan
@@ -86,22 +84,12 @@ export default async function DashboardPage({
             .eq('mode', 'checkin');
 
         hasCheckinMessages = (count || 0) > 0;
-
-        // Fetch actual trusted contacts for this user directly from the table
-        const { data: trustedContactsData } = await supabase
-            .from('trusted_contacts')
-            .select('id')
-            .eq('owner_id', user.id);
-
-        trustedContactCountFromQuery = trustedContactsData?.length || 0;
     }
 
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
     const userName = user?.user_metadata?.first_name || user?.email?.split('@')[0] || '';
     const messageCount = messages.length;
 
-    // Use the db-queried count for trusted contacts
-    const trustedContactCount = trustedContactCountFromQuery ?? 0;
     const maxTrustedContacts = userPlan === 'free' ? 1 : 3;
 
     // Next delivery calculation
@@ -211,17 +199,12 @@ export default async function DashboardPage({
                     </p>
                 </div>
 
-                {/* Card 3: Trusted contacts - highlighted */}
+                {/* Card 3: Trusted contacts - client-fetched count */}
                 <div className="rounded-2xl p-5" style={{ background: '#C4623A' }}>
-                    <p className="text-[0.65rem] font-[600] uppercase tracking-widest mb-1 truncate" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                        {dict.dashboard.stats.trustedContacts}
-                    </p>
-                    <p className="font-serif text-[1.9rem] font-semibold leading-none" style={{ color: 'white' }}>
-                        {trustedContactCount}
-                    </p>
-                    <p className="text-xs mt-1.5 truncate" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                        {trustedContactsSubtext}
-                    </p>
+                    <TrustedContactCountCard
+                        label={dict.dashboard.stats.trustedContacts}
+                        subtext={trustedContactsSubtext}
+                    />
                 </div>
             </div>
 
