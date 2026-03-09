@@ -556,6 +556,8 @@
   },
   "trustedContact": {
     "title": "Trusted Contact",
+    "pageSubtitle": "Your trusted people. They're the ones who ensure your messages are delivered when you can no longer confirm it.",
+    "sectionSubtitle": "When you stop confirming your activity, we'll notify them to coordinate the delivery of your messages.",
     "description": "This person will be contacted if you stop checking in.",
     "nameLabel": "Name",
     "namePlaceholder": "Jane Doe",
@@ -569,11 +571,17 @@
     "saved": "Contact saved!",
     "deleteConfirm": "Are you sure you want to remove this contact?",
     "remove": "Remove",
-    "addContact": "Add Contact",
+    "addContact": "Add contact",
     "noContact": "No trusted contact set",
     "proRequired": "Trusted contact requires Pro plan",
     "newContactTitle": "New Trusted Contact",
-    "errorCreating": "Error creating contact"
+    "errorCreating": "Error creating contact",
+    "howItWorks": {
+      "title": "How does it work?",
+      "item1": "You can add up to 3 trusted contacts with the Pro plan.",
+      "item2": "When you assign a contact to a message, we'll send them an email notification.",
+      "item3": "Your contacts cannot see the content of your messages."
+    }
   },
   "stripe": {
     "upgrade": "Upgrade to PRO",
