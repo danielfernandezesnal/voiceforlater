@@ -76,8 +76,14 @@ export default async function DashboardLayout({
             {/* Topbar */}
             <header className="h-16 border-b border-border/40 fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md transition-all">
                 <div className="flex items-center justify-between h-full px-4 sm:px-6">
-                    {/* Empty placeholder to keep right actions on the right */}
-                    <div className="hidden md:block"></div>
+                    <div className="hidden md:flex flex-col items-start justify-center">
+                        <Link href={`/${locale}/dashboard`} className="font-serif italic text-xl leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
+                            Carry My Words
+                        </Link>
+                        <p className="text-[0.55rem] font-medium uppercase tracking-widest mt-0.5" style={{ color: '#C4623A' }}>
+                            {labels.tagline}
+                        </p>
+                    </div>
 
                     {/* Mobile Nav Links */}
                     <nav className="flex items-center gap-4 md:hidden">
