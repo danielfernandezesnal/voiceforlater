@@ -310,9 +310,10 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                                 )}
 
                                                 {currentContacts.length === 0 && !isCreating && !loadingContacts && (
-                                                    <div className="mt-2 flex gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-xs leading-relaxed animate-in fade-in">
-                                                        <span className="text-base">⚠️</span>
-                                                        <span>{step4Dict.checkin.noContactWarning}</span>
+                                                    <div className="mt-2 flex items-start gap-2 rounded-xl p-3 text-sm animate-in fade-in"
+                                                        style={{ background: 'rgba(196,98,58,0.08)', border: '1px solid rgba(196,98,58,0.25)', color: '#C4623A' }}>
+                                                        <span className="text-base leading-none">⚠️</span>
+                                                        <span>{step4Dict.checkin.posthumousContactRequired}</span>
                                                     </div>
                                                 )}
                                             </div>

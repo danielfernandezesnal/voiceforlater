@@ -445,7 +445,7 @@
         "contactLabelNumbered": "Contacto de confianza {number}",
         "selectPlaceholder": "Seleccionar",
         "addNew": "+ Agregar nuevo contacto...",
-        "noContactWarning": "Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza. Puedes continuar y asignarlo luego desde el dashboard."
+        "posthumousContactRequired": "Para mensajes póstumos es obligatorio asignar al menos un contacto de confianza antes de continuar."
       }
     },
     "step5": {
