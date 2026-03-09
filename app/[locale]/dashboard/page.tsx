@@ -44,6 +44,7 @@ export default async function DashboardPage({
     let messages: MessageWithRecipient[] = [];
     let hasCheckinMessages = false;
     let userPlan: Plan = 'free';
+    let trustedContactCountFromQuery = 0;
 
     if (user) {
         // Get user profile for plan
@@ -85,23 +86,22 @@ export default async function DashboardPage({
             .eq('mode', 'checkin');
 
         hasCheckinMessages = (count || 0) > 0;
+
+        // Fetch actual trusted contacts for this user directly from the table
+        const { data: trustedContactsData } = await supabase
+            .from('trusted_contacts')
+            .select('id')
+            .eq('owner_id', user.id);
+
+        trustedContactCountFromQuery = trustedContactsData?.length || 0;
     }
 
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
     const userName = user?.user_metadata?.first_name || user?.email?.split('@')[0] || '';
     const messageCount = messages.length;
 
-    // Trusted contacts count calculation
-    const trustedContactIds = new Set<string>();
-    messages.forEach(msg => {
-        msg.message_trusted_contacts?.forEach(mtc => {
-            if (mtc?.trusted_contacts?.id) {
-                trustedContactIds.add(mtc.trusted_contacts.id)
-            }
-        })
-    })
-
-    const trustedContactCount = trustedContactIds.size;
+    // Use the db-queried count for trusted contacts
+    const trustedContactCount = trustedContactCountFromQuery ?? 0;
     const maxTrustedContacts = userPlan === 'free' ? 1 : 3;
 
     // Next delivery calculation
