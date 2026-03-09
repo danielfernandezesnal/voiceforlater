@@ -10,6 +10,7 @@ interface Step3Props {
         namePlaceholder: string
         emailLabel: string
         emailPlaceholder: string
+        posthumousContactWarning?: string
     }
 }
 
@@ -51,6 +52,11 @@ export function Step3Recipient({ dictionary }: Step3Props) {
                         className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-all placeholder:text-muted-foreground"
                     />
                 </div>
+                {data.deliveryMode === 'checkin' && data.trustedContactIds.length === 0 && dictionary.posthumousContactWarning && (
+                    <div className="text-sm font-medium text-muted-foreground mt-4 flex items-start gap-2 max-w-md">
+                        <span>{dictionary.posthumousContactWarning}</span>
+                    </div>
+                )}
             </div>
         </div>
     )

@@ -403,7 +403,8 @@
       "nameLabel": "Nombre del destinatario",
       "namePlaceholder": "Juan Pérez",
       "emailLabel": "Email del destinatario",
-      "emailPlaceholder": "juan@ejemplo.com"
+      "emailPlaceholder": "juan@ejemplo.com",
+      "posthumousContactWarning": "⚠️ Este tipo de mensaje requiere un contacto de confianza. Podrás asignarlo en el paso siguiente."
     },
     "step4": {
       "title": "¿Cuándo querés que se entregue?",
@@ -450,6 +451,7 @@
       "audioContent": "🎤 {seconds}s audio",
       "videoContent": "📹 {seconds}s video",
       "noContactWarning": "Este mensaje no se enviará automáticamente hasta que asignes un contacto de confianza.",
+      "posthumousSaveWarning": "Para mensajes de tipo 'Cuando ya no esté', es obligatorio asignar un contacto de confianza antes de guardar.",
       "agreeTerms": "Acepto los ",
       "termsLink": "términos y condiciones"
     },
