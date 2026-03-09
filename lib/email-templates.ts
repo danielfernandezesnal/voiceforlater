@@ -2,74 +2,74 @@
 // Helper type for the dictionary structure we expect
 // Ideally this should be inferred from the JSON files, but for now we define the shape we need
 export type EmailDictionary = {
-    emails: {
-        common: {
-            footerSignature: string;
-        };
-        magicLink: {
-            subject: string;
-            subjectAdmin: string;
-            title: string;
-            adminBadge: string;
-            intro: string;
-            button: string;
-            ignore: string;
-        };
-        messageDelivery: {
-            subject: string;
-            title: string;
-            intro: string;
-            footer: string;
-            viewVideo: string;
-            listenAudio: string;
-            linkValid: string;
-            linkError: string;
-        };
-        checkinReminder: {
-            subject: string;
-            title: string;
-            intro: string;
-            attempt: string;
-            button: string;
-            warning: string;
-        };
-        trustedContactVerify: {
-            subject: string;
-            greeting: string;
-            greetingUnknown: string;
-            title: string;
-            intro: string;
-            explanation: string;
-            boxTitle: string;
-            boxText: string;
-            button: string;
-            falseAlarm: string;
-            expiry: string;
-        };
-        trustedContactInvitation: {
-            subject: string;
-            preheader: string;
-            heading: string;
-            p1: string;
-            p2: string;
-            roleTitle: string;
-            roleP1: string;
-            roleP2: string;
-            moreTitle: string;
-            moreText: string;
-            thanks: string;
-            signature: string;
-            footerLogo: string;
-            footerLegal: string;
-        };
+  emails: {
+    common: {
+      footerSignature: string;
     };
+    magicLink: {
+      subject: string;
+      subjectAdmin: string;
+      title: string;
+      adminBadge: string;
+      intro: string;
+      button: string;
+      ignore: string;
+    };
+    messageDelivery: {
+      subject: string;
+      title: string;
+      intro: string;
+      footer: string;
+      viewVideo: string;
+      listenAudio: string;
+      linkValid: string;
+      linkError: string;
+    };
+    checkinReminder: {
+      subject: string;
+      title: string;
+      intro: string;
+      attempt: string;
+      button: string;
+      warning: string;
+    };
+    trustedContactVerify: {
+      subject: string;
+      greeting: string;
+      greetingUnknown: string;
+      title: string;
+      intro: string;
+      explanation: string;
+      boxTitle: string;
+      boxText: string;
+      button: string;
+      falseAlarm: string;
+      expiry: string;
+    };
+    trustedContactInvitation: {
+      subject: string;
+      preheader: string;
+      heading: string;
+      p1: string;
+      p2: string;
+      roleTitle: string;
+      roleP1: string;
+      roleP2: string;
+      moreTitle: string;
+      moreText: string;
+      thanks: string;
+      signature: string;
+      footerLogo: string;
+      footerLegal: string;
+    };
+  };
 };
 
 export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: string, isAdminLogin: boolean }) => {
-    const t = dict.emails.magicLink;
-    const subject = data.isAdminLogin ? t.subjectAdmin : t.subject;
+  const t = dict.emails.magicLink;
+  const subject = data.isAdminLogin ? t.subjectAdmin : t.subject;
 
-    const html = `
+  const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
         <h2 style="color: #3A4D3F;">${t.title}</h2>
         ${data.isAdminLogin ? `<p style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; margin: 10px 0;"><strong>${t.adminBadge}</strong></p>` : ''}
@@ -89,12 +89,12 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
       </div>
     `;
 
-    return { subject, html };
+  return { subject, html };
 };
 
 export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { contentHtml: string }) => {
-    const t = dict.emails.messageDelivery;
-    const html = `
+  const t = dict.emails.messageDelivery;
+  const html = `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <h2 style="color: #333;">${t.title}</h2>
             <p>${t.intro}</p>
@@ -104,12 +104,12 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
             </p>
         </div>
     `;
-    return { subject: t.subject, html };
+  return { subject: t.subject, html };
 };
 
 export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attempts: number, confirmUrl: string }) => {
-    const t = dict.emails.checkinReminder;
-    const html = `
+  const t = dict.emails.checkinReminder;
+  const html = `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <h2>${t.title}</h2>
             <p>${t.intro}</p>
@@ -123,18 +123,18 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
             </p>
         </div>
     `;
-    return { subject: t.subject, html };
+  return { subject: t.subject, html };
 };
 
 export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { name: string, userEmail: string, verifyUrl: string }) => {
-    const t = dict.emails.trustedContactVerify;
-    const subject = t.subject.replace('{email}', data.userEmail);
+  const t = dict.emails.trustedContactVerify;
+  const subject = t.subject.replace('{email}', data.userEmail);
 
-    const greeting = data.name
-        ? t.greeting.replace('{name}', data.name)
-        : t.greetingUnknown;
+  const greeting = data.name
+    ? t.greeting.replace('{name}', data.name)
+    : t.greetingUnknown;
 
-    const html = `
+  const html = `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <h2>${greeting}</h2>
             <h3 style="color: #3A4D3F;">${t.title}</h3>
@@ -160,31 +160,32 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
             <strong>Carry My Words</strong></p>
         </div>
     `;
-    return { subject, html };
+  return { subject, html };
 };
 
 export const getTrustedContactInvitationTemplate = (
-    dict: EmailDictionary,
-    data: {
-        contactFirstName: string;
-        senderFullName: string;
-        senderFirstName: string;
-    }
+  dict: EmailDictionary,
+  data: {
+    contactFirstName: string;
+    senderFullName: string;
+    senderFirstName: string;
+  }
 ) => {
-    const t = dict.emails.trustedContactInvitation;
+  const t = dict.emails.trustedContactInvitation;
 
-    // Use regular replace for the placeholders in the translations
-    const replaceAll = (text: string) => {
-        return text
-            .replace(/{{contactFirstName}}/g, data.contactFirstName)
-            .replace(/{{senderFullName}}/g, data.senderFullName)
-            .replace(/{{senderFirstName}}/g, data.senderFirstName)
-            .replace(/{{firstName}}/g, data.contactFirstName); // Handle the subject format
-    };
+  // Use regular replace for the placeholders in the translations
+  const replaceAll = (text: string) => {
+    if (!text) return '';
+    return text
+      .replace(/{{contactFirstName}}/g, data.contactFirstName || '')
+      .replace(/{{senderFullName}}/g, data.senderFullName || '')
+      .replace(/{{senderFirstName}}/g, data.senderFirstName || '')
+      .replace(/{{firstName}}/g, data.contactFirstName || ''); // Handle the subject format
+  };
 
-    const subject = replaceAll(t.subject);
+  const subject = replaceAll(t?.subject);
 
-    const html = `
+  const html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -219,10 +220,10 @@ export const getTrustedContactInvitationTemplate = (
               <tr>
                 <td style="background:#C4623A;padding:32px 40px 28px;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
-                    ${replaceAll(t.preheader)}
+                    ${replaceAll(t?.preheader)}
                   </div>
                   <div style="font-family:Georgia,serif;font-size:26px;font-weight:600;color:#ffffff;line-height:1.25;">
-                    ${t.heading}
+                    ${t?.heading || ''}
                   </div>
                 </td>
               </tr>
@@ -234,44 +235,44 @@ export const getTrustedContactInvitationTemplate = (
                 <td style="padding:36px 40px 0;">
 
                   <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#2A2520;">
-                    ${replaceAll(t.p1)}
+                    ${replaceAll(t?.p1)}
                   </p>
                   <p style="margin:0 0 28px;font-size:15px;line-height:1.7;color:#2A2520;">
-                    ${replaceAll(t.p2)}
+                    ${replaceAll(t?.p2)}
                   </p>
 
                   <div style="height:1px;background:#F0EBE3;margin-bottom:28px;"></div>
 
                   <!-- BLOQUE ¿QUÉ SIGNIFICA? -->
                   <div style="background:#FAF7F3;border-left:3px solid #C4623A;border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:28px;">
-                    <div style="font-family:Georgia,serif;font-size:13px;font-weight:600;color:#C4623A;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">
-                      ${t.roleTitle}
+                    <div style="font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">
+                      ${t?.roleTitle || ''}
                     </div>
                     <p style="margin:0 0 10px;font-size:14px;line-height:1.65;color:#4A4540;">
-                      ${replaceAll(t.roleP1)}
+                      ${replaceAll(t?.roleP1)}
                     </p>
                     <p style="margin:0;font-size:14px;line-height:1.65;color:#4A4540;">
-                      ${replaceAll(t.roleP2)}
+                      ${replaceAll(t?.roleP2)}
                     </p>
                   </div>
 
                   <!-- BLOQUE VERIFICACIÓN -->
                   <div style="background:#F5F0E8;border-radius:12px;padding:20px 24px;margin-bottom:28px;">
-                    <div style="font-size:13px;font-weight:500;color:#2A2520;margin-bottom:8px;">
-                      ${t.moreTitle}
+                    <div style="font-size:13px;font-weight:600;color:#2A2520;margin-bottom:8px;">
+                      ${t?.moreTitle || ''}
                     </div>
                     <p style="margin:0;font-size:14px;line-height:1.65;color:#6A6560;">
-                      ${replaceAll(t.moreText)}
+                      ${replaceAll(t?.moreText)}
                     </p>
                   </div>
 
                   <div style="height:1px;background:#F0EBE3;margin-bottom:28px;"></div>
 
                   <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#2A2520;">
-                    ${t.thanks}
+                    ${t?.thanks || ''}
                   </p>
                   <p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:#6A6560;font-style:italic;">
-                    ${t.signature}
+                    ${t?.signature || ''}
                   </p>
 
                 </td>
@@ -285,10 +286,10 @@ export const getTrustedContactInvitationTemplate = (
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
             <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C4623A;">
-              ${t.footerLogo}
+              ${t?.footerLogo || ''}
             </p>
             <p style="margin:0;font-size:11px;color:#A09890;line-height:1.6;">
-              ${t.footerLegal}
+              ${t?.footerLegal || ''}
             </p>
           </td>
         </tr>
@@ -302,5 +303,5 @@ export const getTrustedContactInvitationTemplate = (
 </html>
     `;
 
-    return { subject, html };
+  return { subject, html };
 };
