@@ -19,6 +19,7 @@ interface Step5Props {
         audioContent: string
         videoContent: string
         noContactWarning: string
+        posthumousSaveWarning?: string
         agreeTerms: string
         termsLink: string
     }
@@ -128,9 +129,9 @@ export function Step5Review({
             </div>
 
             {data.deliveryMode === 'checkin' && data.trustedContactIds.length === 0 && !isReadOnly && (
-                <div className="max-w-md mx-auto p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-sm flex gap-2 animate-in fade-in">
-                    <span className="text-base">⚠️</span>
-                    <span>{dictionary.noContactWarning}</span>
+                <div className="max-w-md mx-auto px-4 py-3 bg-[#C4623A]/10 border border-[#C4623A]/40 rounded-lg text-[#C4623A] text-sm flex gap-2.5 items-start mt-6 animate-in fade-in">
+                    <span className="text-base mt-0.5">⚠️</span>
+                    <span className="leading-5">{dictionary.posthumousSaveWarning}</span>
                 </div>
             )}
 
@@ -181,7 +182,7 @@ export function Step5Review({
                     </button>
                     <button
                         onClick={onSubmit}
-                        disabled={isSubmitting || !tosAccepted}
+                        disabled={isSubmitting || !tosAccepted || (data.deliveryMode === 'checkin' && data.trustedContactIds.length === 0)}
                         className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-primary/25 font-sans"
                     >
                         {isSubmitting ? dictionary.submitting : dictionary.submit}

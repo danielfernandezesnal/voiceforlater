@@ -419,7 +419,8 @@
       "nameLabel": "Recipient's name",
       "namePlaceholder": "John Doe",
       "emailLabel": "Recipient's email",
-      "emailPlaceholder": "john@example.com"
+      "emailPlaceholder": "john@example.com",
+      "posthumousContactWarning": "⚠️ This message type requires a trusted contact. You'll be able to assign one in the next step."
     },
     "step4": {
       "title": "When should this message be delivered?",
@@ -466,6 +467,7 @@
       "audioContent": "🎤 {seconds}s audio",
       "videoContent": "📹 {seconds}s video",
       "noContactWarning": "This message will not be sent automatically until you assign a trusted contact.",
+      "posthumousSaveWarning": "For 'When no longer present' messages, you must assign a trusted contact before saving.",
       "agreeTerms": "I agree to the ",
       "termsLink": "terms and conditions"
     },
