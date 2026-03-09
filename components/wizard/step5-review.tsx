@@ -7,6 +7,9 @@ interface Step5Props {
         title: string
         subtitle: string
         messageType: string
+        formatText: string
+        formatAudio: string
+        formatVideo: string
         titleLabel: string
         content: string
         recipient: string
@@ -50,24 +53,43 @@ export function Step5Review({
 
     const formatDate = (dateString: string) => {
         if (!dateString) return ''
-        return new Date(dateString).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        })
+        const date = new Date(dateString)
+        const isES = locale === 'es'
+
+        // Date segment
+        const dateOptions: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short', year: 'numeric' }
+        let datePart = new Intl.DateTimeFormat(locale, dateOptions).format(date)
+        if (isES) {
+            datePart = datePart.toLowerCase()
+        }
+
+        // Time segment
+        const timeOptions: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit', hour12: !isES }
+        let timePart = new Intl.DateTimeFormat(locale, timeOptions).format(date)
+        if (isES) {
+            const h24 = date.getHours().toString().padStart(2, '0')
+            const m = date.getMinutes().toString().padStart(2, '0')
+            timePart = `${h24}:${m}hs`
+        }
+
+        return `${datePart} · ${timePart}`
     }
 
     const getDeliveryText = () => {
         if (data.deliveryMode === 'date') {
             return dictionary.deliveryDate.replace('{date}', formatDate(data.deliverAt))
         }
-        return dictionary.deliveryCheckin.replace('{days}', String(data.checkinIntervalDays))
+        return dictionary.deliveryCheckin
     }
 
     const reviewItems = [
         {
             label: dictionary.messageType,
-            value: typeDictionary[data.messageType as keyof typeof typeDictionary].title,
+            value: data.messageType === 'text'
+                ? dictionary.formatText
+                : data.messageType === 'audio'
+                    ? dictionary.formatAudio
+                    : dictionary.formatVideo,
             step: 1
         },
         {

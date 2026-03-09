@@ -55,15 +55,8 @@ export function SideNav({ locale, labels, user, plan }: SideNavProps) {
             className="hidden md:flex flex-col w-64 fixed inset-y-0 z-40 pt-16 transition-all duration-300 bg-background border-r border-border/50"
         >
             <div className="flex-1 px-5 py-8 overflow-y-auto scrollbar-none">
-                {/* Logo + Tagline block */}
-                <div className="text-center mb-7 px-2">
-                    <Link href={`/${locale}/dashboard`} className="font-serif italic text-2xl hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
-                        Carry My Words
-                    </Link>
-                    <p className="text-[0.6rem] font-medium uppercase tracking-widest mt-1" style={{ color: '#C4623A' }}>
-                        {labels.tagline}
-                    </p>
-                </div>
+                {/* Space for top of sidebar */}
+                <div className="h-4"></div>
 
                 {/* Items de navegación */}
                 <nav className="space-y-1.5">
