@@ -736,6 +736,22 @@
       "button": "Verificar Estado Ahora",
       "falseAlarm": "Si es una falsa alarma o sabes que están bien, por favor usa el enlace de arriba para reportarlo de forma segura.",
       "expiry": "El enlace expira en 48 horas."
+    },
+    "trustedContactInvitation": {
+      "subject": "{{firstName}}, alguien pensó en vos",
+      "preheader": "{{contactFirstName}}, alguien pensó en vos",
+      "heading": "Te eligieron para<br>algo importante",
+      "p1": "Hay personas que piensan en los demás incluso antes de que el momento llegue. <strong>{{senderFullName}}</strong> es una de ellas.",
+      "p2": "{{senderFirstName}} te eligió como su <strong>persona de confianza</strong> en Carry My Words — una plataforma para dejar mensajes que llegarán en el momento justo, o cuando ya no pueda enviarlos él mismo.",
+      "roleTitle": "¿Qué significa este rol?",
+      "roleP1": "Si en algún momento {{senderFirstName}} deja de responder las confirmaciones de actividad de la plataforma, es posible que te contactemos para verificar su situación antes de proceder con el envío de sus mensajes programados.",
+      "roleP2": "<strong>No tenés que hacer nada por ahora.</strong> Solo queríamos que supieras que {{senderFirstName}} confió en vos para este rol.",
+      "moreTitle": "¿Querés saber más?",
+      "moreText": "{{senderFirstName}} es la mejor persona para contarte por qué te eligió a vos. Una conversación con él va a explicar mejor que cualquier email lo que esto significa.",
+      "thanks": "Gracias por ser parte de esto.",
+      "signature": "— El equipo de Carry My Words",
+      "footerLogo": "Carry My Words",
+      "footerLegal": "Recibiste este email porque alguien te eligió como contacto de confianza.<br>Si creés que es un error, podés ignorar este mensaje."
     }
   },
   "legal": {

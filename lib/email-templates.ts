@@ -46,6 +46,22 @@ export type EmailDictionary = {
             falseAlarm: string;
             expiry: string;
         };
+        trustedContactInvitation: {
+            subject: string;
+            preheader: string;
+            heading: string;
+            p1: string;
+            p2: string;
+            roleTitle: string;
+            roleP1: string;
+            roleP2: string;
+            moreTitle: string;
+            moreText: string;
+            thanks: string;
+            signature: string;
+            footerLogo: string;
+            footerLegal: string;
+        };
     };
 };
 
@@ -144,5 +160,147 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
             <strong>Carry My Words</strong></p>
         </div>
     `;
+    return { subject, html };
+};
+
+export const getTrustedContactInvitationTemplate = (
+    dict: EmailDictionary,
+    data: {
+        contactFirstName: string;
+        senderFullName: string;
+        senderFirstName: string;
+    }
+) => {
+    const t = dict.emails.trustedContactInvitation;
+
+    // Use regular replace for the placeholders in the translations
+    const replaceAll = (text: string) => {
+        return text
+            .replace(/{{contactFirstName}}/g, data.contactFirstName)
+            .replace(/{{senderFullName}}/g, data.senderFullName)
+            .replace(/{{senderFirstName}}/g, data.senderFirstName)
+            .replace(/{{firstName}}/g, data.contactFirstName); // Handle the subject format
+    };
+
+    const subject = replaceAll(t.subject);
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#F0EBE3;font-family:Georgia,serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F0EBE3;padding:40px 16px;">
+  <tr>
+    <td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+        <!-- LOGO -->
+        <tr>
+          <td align="center" style="padding-bottom:28px;">
+            <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C4623A;letter-spacing:-0.3px;">
+              Carry My Words
+            </div>
+            <div style="font-size:9px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#C4623A;margin-top:3px;">
+              Mensajes que viajan en el tiempo
+            </div>
+          </td>
+        </tr>
+
+        <!-- CARD -->
+        <tr>
+          <td style="background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(42,37,32,0.08);">
+
+            <!-- FRANJA TERRACOTA -->
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="background:#C4623A;padding:32px 40px 28px;">
+                  <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
+                    ${replaceAll(t.preheader)}
+                  </div>
+                  <div style="font-family:Georgia,serif;font-size:26px;font-weight:600;color:#ffffff;line-height:1.25;">
+                    ${t.heading}
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <!-- CUERPO -->
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding:36px 40px 0;">
+
+                  <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#2A2520;">
+                    ${replaceAll(t.p1)}
+                  </p>
+                  <p style="margin:0 0 28px;font-size:15px;line-height:1.7;color:#2A2520;">
+                    ${replaceAll(t.p2)}
+                  </p>
+
+                  <div style="height:1px;background:#F0EBE3;margin-bottom:28px;"></div>
+
+                  <!-- BLOQUE ¿QUÉ SIGNIFICA? -->
+                  <div style="background:#FAF7F3;border-left:3px solid #C4623A;border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:28px;">
+                    <div style="font-family:Georgia,serif;font-size:13px;font-weight:600;color:#C4623A;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;">
+                      ${t.roleTitle}
+                    </div>
+                    <p style="margin:0 0 10px;font-size:14px;line-height:1.65;color:#4A4540;">
+                      ${replaceAll(t.roleP1)}
+                    </p>
+                    <p style="margin:0;font-size:14px;line-height:1.65;color:#4A4540;">
+                      ${replaceAll(t.roleP2)}
+                    </p>
+                  </div>
+
+                  <!-- BLOQUE VERIFICACIÓN -->
+                  <div style="background:#F5F0E8;border-radius:12px;padding:20px 24px;margin-bottom:28px;">
+                    <div style="font-size:13px;font-weight:500;color:#2A2520;margin-bottom:8px;">
+                      ${t.moreTitle}
+                    </div>
+                    <p style="margin:0;font-size:14px;line-height:1.65;color:#6A6560;">
+                      ${replaceAll(t.moreText)}
+                    </p>
+                  </div>
+
+                  <div style="height:1px;background:#F0EBE3;margin-bottom:28px;"></div>
+
+                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#2A2520;">
+                    ${t.thanks}
+                  </p>
+                  <p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:#6A6560;font-style:italic;">
+                    ${t.signature}
+                  </p>
+
+                </td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="padding:28px 16px 8px;" align="center">
+            <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C4623A;">
+              ${t.footerLogo}
+            </p>
+            <p style="margin:0;font-size:11px;color:#A09890;line-height:1.6;">
+              ${t.footerLegal}
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
+    `;
+
     return { subject, html };
 };
