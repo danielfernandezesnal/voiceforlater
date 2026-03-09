@@ -73,14 +73,17 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
 
     const recipientName = formatName(recipients[0]?.name);
     const createdDate = formatDate(created_at);
+
+    const labels = (dict.dashboard.messageCard as any).labels;
     let scheduledDate = '';
+    let scheduledLabel = labels?.scheduledFor;
+
     if (deliveryMode === 'checkin') {
-        scheduledDate = (dict.dashboard.messageCard as any).whenNoLongerPresent;
+        scheduledDate = '—';
+        scheduledLabel = labels?.delivery;
     } else if (deliverAt) {
         scheduledDate = formatDateTime(deliverAt);
     }
-
-    const labels = (dict.dashboard.messageCard as any).labels;
 
     // Badges Row
     const BadgesRow = () => (
@@ -100,12 +103,20 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                     {dict.dashboard.messageCard.status[status as 'draft' | 'scheduled' | 'delivered']}
                 </span>
             )}
+            {deliveryMode === 'date' && (
+                <span className="inline-flex items-center px-2 py-1 text-xs rounded-full bg-[#2A2520]/[0.07] text-[#2A2520] font-medium">
+                    {(dict.dashboard.messageCard as any).deliveryType?.date}
+                </span>
+            )}
+            {deliveryMode === 'checkin' && (
+                <span className="inline-flex items-center px-2 py-1 text-xs rounded-full bg-[#C4623A]/[0.08] text-[#C4623A] font-medium">
+                    {(dict.dashboard.messageCard as any).deliveryType?.checkin}
+                </span>
+            )}
         </div>
     );
 
     // Title / Preview
-    const titleText = `${dict.dashboard.messageCard.recipient.replace('{name}', '')} ${recipientName}`;
-
     // Custom Title Display
     const hasTitle = Boolean(message.title && message.title.trim().length > 0);
     const contentFallback = type === 'text' && text_content
@@ -185,7 +196,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                 </div>
                 <div className="border-t border-border/40 my-3" />
                 <div className="flex flex-col gap-[3px]">
-                    <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground">{labels?.scheduledFor}</span>
+                    <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground">{scheduledLabel}</span>
                     <span className="text-sm font-medium text-foreground">{scheduledDate}</span>
                 </div>
             </div>
@@ -193,10 +204,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
             {/* Columna Central - Contenido */}
             <div className="flex-1 px-6 py-5 flex flex-col justify-center gap-2">
                 <BadgesRow />
-                <div className="font-serif font-semibold text-base text-foreground truncate max-w-[380px] mt-1">
-                    {titleText}
-                </div>
-                <div className={`truncate max-w-[380px] ${hasTitle ? 'font-serif font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
+                <div className={`truncate max-w-[380px] mt-1 ${hasTitle ? 'font-serif font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
                     {hasTitle ? message.title : contentFallback}
                 </div>
                 <ContactAlert />
@@ -215,8 +223,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
             {/* Bloque 1 - Header */}
             <div className="p-4 flex flex-col gap-2">
                 <BadgesRow />
-                <div className="font-serif font-semibold text-base text-foreground mt-1">{titleText}</div>
-                <div className={`truncate max-w-[380px] ${hasTitle ? 'font-serif font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
+                <div className={`truncate max-w-[380px] mt-1 ${hasTitle ? 'font-serif font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
                     {hasTitle ? message.title : contentFallback}
                 </div>
             </div>
@@ -232,7 +239,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                     <span className="text-sm font-medium text-foreground">{createdDate}</span>
                 </div>
                 <div className="flex items-baseline gap-2">
-                    <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground min-w-[72px]">{labels?.scheduledFor}</span>
+                    <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground min-w-[72px]">{scheduledLabel}</span>
                     <span className="text-sm font-medium text-foreground">{scheduledDate}</span>
                 </div>
             </div>
