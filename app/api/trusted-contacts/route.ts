@@ -7,6 +7,7 @@ import { trackServerEvent } from '@/lib/analytics/trackEvent';
 import { getErrorMessage } from '@/lib/errors';
 import { trackEmail } from '@/lib/email-tracking';
 import { getDictionary, type Locale } from '@/lib/i18n';
+import { getTrustedContactInvitationTemplate } from '@/lib/email-templates';
 
 export const dynamic = 'force-dynamic';
 
@@ -146,31 +147,20 @@ export async function POST(request: NextRequest) {
             }
         }
         emailLocale = emailLocale || 'en';
-
         const dict = await getDictionary(emailLocale as Locale);
-        const t = dict.checkin.contactNotification;
 
         // Subject and Body based on Locale
-        const subject = (t.subject || '').replace('{name}', userDisplayName);
+        const contactFirstName = name.trim().split(' ')[0];
+        const senderFirstName = profile?.first_name || 'Alguien';
+        const senderFullName = profile?.first_name
+            ? `${profile.first_name} ${profile.last_name || ''}`.trim()
+            : user.user_metadata?.full_name || user.email;
 
-        const html = `
-            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
-                <h2 style="color: #2c3e50;">${t.title || 'Fuiste elegido como contacto de confianza'}</h2>
-                <p>${(t.intro || '').replace('{name}', `<strong>${userDisplayName}</strong>`)}</p>
-                
-                <div style="background: #f4f4f5; padding: 25px; border-radius: 12px; margin: 25px 0; border: 1px solid #e4e4e7;">
-                    <h3 style="margin-top: 0; color: #18181b;">¿Qué significa esto?</h3>
-                    <p style="line-height: 1.6;">${(t.explanation || '').replace('{name}', userDisplayName)}</p>
-                </div>
-                
-                <p style="line-height: 1.6;">${(t.noAction || '').replace('{name}', userDisplayName)}</p>
-                
-                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; font-size: 14px; color: #71717a;">
-                    <p style="margin-bottom: 4px;"><strong>${t.signature || 'Carry My Words'}</strong></p>
-                    <p style="margin-top: 0; font-style: italic;">${t.tagline || 'Para que tus palabras lleguen cuando tengan que llegar.'}</p>
-                </div>
-            </div>
-        `;
+        const { subject, html } = getTrustedContactInvitationTemplate(dict as any, {
+            contactFirstName,
+            senderFullName: senderFullName || '',
+            senderFirstName
+        });
 
         console.log('[POST /api/trusted-contacts] Sending email to:', email);
         const { data: emailRes, error: emailErr } = await resend.emails.send({

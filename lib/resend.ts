@@ -24,7 +24,7 @@ export function getDefaultSender() {
 
     // Use the ENV value but ensure the display name is 'Carry My Words'
     if (resendFromEnv.includes('<')) {
-        return resendFromEnv.replace(/^[A-Za-z0-9\s"']+(?=<)/, 'Carry My Words ');
+        return resendFromEnv.replace(/^[^<]+(?=<)/, 'Carry My Words ');
     }
 
     return `Carry My Words <${resendFromEnv}>`;
