@@ -59,7 +59,6 @@ export default async function DashboardPage({
             .from('messages')
             .select(`
                 id,
-                type,
                 title,
                 status,
                 text_content,
@@ -89,14 +88,92 @@ export default async function DashboardPage({
     }
 
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
+    const userName = user?.user_metadata?.first_name || user?.email?.split('@')[0] || '';
+    const messageCount = messages.length;
+
+    // Trusted contacts count calculation
+    const trustedContactIds = new Set<string>();
+    messages.forEach(msg => {
+        msg.message_trusted_contacts?.forEach(mtc => {
+            if (mtc?.trusted_contacts?.id) {
+                trustedContactIds.add(mtc.trusted_contacts.id)
+            }
+        })
+    })
+
+    const trustedContactCount = trustedContactIds.size;
+    const maxTrustedContacts = userPlan === 'free' ? 1 : 3;
+
+    // Next delivery calculation
+    let nextDeliveryDateStr = '—';
+    let nextDeliveryRecipient = '';
+
+    if (messageCount > 0) {
+        // Collect specific delivery dates
+        const dateMessages = messages.filter(msg => {
+            if (Array.isArray(msg.delivery_rules)) return false; // Not expecting array, but handle safely
+            return msg.delivery_rules && msg.delivery_rules.mode === 'date' && msg.delivery_rules.deliver_at;
+        });
+
+        if (dateMessages.length > 0) {
+            // Sort by nearest date
+            dateMessages.sort((a, b) => {
+                const dateA = new Date((a.delivery_rules as any).deliver_at).getTime();
+                const dateB = new Date((b.delivery_rules as any).deliver_at).getTime();
+                return dateA - dateB;
+            });
+
+            const nextMsg = dateMessages[0];
+            const deliverAt = (nextMsg.delivery_rules as any).deliver_at;
+
+            const date = new Date(deliverAt);
+            const formatter = new Intl.DateTimeFormat(locale, {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            nextDeliveryDateStr = formatter.format(date).toLowerCase();
+            // Capitalize month if english:
+            if (locale === 'en') {
+                nextDeliveryDateStr = formatter.format(date)
+            }
+
+            if (nextMsg.recipients && nextMsg.recipients[0]) {
+                nextDeliveryRecipient = `${dict.dashboard.messageCard.labels.to} ${nextMsg.recipients[0].name.split(' ')[0]}`
+            }
+
+        } else if (hasCheckinMessages) {
+            nextDeliveryDateStr = (dict.dashboard.messageCard as any).deliveryType?.checkin || 'When no longer present';
+        }
+    }
+
+    // Dynamic strings processing
+    const greetingText = dict.dashboard.greeting.replace('{name}', userName);
+    const statusText = dict.dashboard.status
+        .replace('{count}', messageCount.toString())
+        .replace('{plan}', userPlan === 'free' ? 'Free' : 'Pro')
+        .replace('(s)', messageCount !== 1 ? 's' : '') // Handle En plural
+        .replace('(s)', messageCount !== 1 ? 's' : '') // Handle Es plural
+        ;
+    const savedMsgSubtext = userPlan === 'free' ? dict.dashboard.stats.ofOne : dict.dashboard.stats.ofUnlimited;
+    const trustedContactsSubtext = dict.dashboard.stats.ofMax.replace('{max}', maxTrustedContacts.toString());
+
 
     return (
         <div>
-            {/* Page Header */}
-            <div className="flex items-center justify-between mb-8">
+            {/* New Header */}
+            <div className="flex justify-between items-start mb-7">
                 <div>
-                    <h1 className="text-3xl font-bold">{dict.dashboard.title}</h1>
-                    <p className="text-muted-foreground mt-1">{dict.dashboard.subtitle}</p>
+                    <p className="text-[0.72rem] font-medium uppercase tracking-widest mb-1" style={{ color: '#C4623A' }}>
+                        {greetingText}
+                    </p>
+                    <h1 className="font-serif font-semibold text-[1.9rem] leading-tight text-foreground">
+                        {dict.dashboard.title}
+                    </h1>
+                    <p className="text-sm text-muted-foreground mt-1.5">
+                        {statusText}
+                    </p>
                 </div>
                 <CreateMessageButton
                     isLimitReached={isLimitReached}
@@ -106,40 +183,49 @@ export default async function DashboardPage({
                 />
             </div>
 
-            {/* Upgrade Banner for Free users */}
-            {userPlan === 'free' && (
-                <div className="mb-8 p-4 rounded-xl border border-primary/10 bg-gradient-to-r from-primary/5 to-purple-500/5 hover:border-primary/20 transition-colors">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p className="font-semibold">{dict.stripe.proFeatures}</p>
-                                <p className="text-sm text-muted-foreground">{dict.stripe.proPrice}</p>
-                            </div>
-                        </div>
-                        <UpgradeButton dictionary={dict.stripe} isPro={false} />
-                    </div>
+            {/* Stats Row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                {/* Card 1: Saved messages */}
+                <div className="bg-card border border-border/60 rounded-2xl p-5">
+                    <p className="text-[0.65rem] font-[600] uppercase tracking-widest text-muted-foreground mb-1">
+                        {dict.dashboard.stats.savedMessages}
+                    </p>
+                    <p className="font-serif text-[1.9rem] font-semibold text-foreground leading-none">
+                        {messageCount}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1.5">
+                        {savedMsgSubtext}
+                    </p>
                 </div>
-            )}
 
-            {/* Plan Badge for Pro users */}
-            {userPlan === 'pro' && (
-                <div className="mb-8 flex items-center justify-between p-4 rounded-xl border border-success/10 bg-success/5">
-                    <div className="flex items-center gap-3">
-                        <span className="px-3 py-1 text-sm font-semibold rounded-full bg-success/10 text-success">
-                            {dict.stripe.proBadge}
-                        </span>
-                        <span className="text-muted-foreground text-sm">
-                            {locale === 'es' ? 'Tu plan Pro te permite enviar mensajes ilimitados.' : 'Your Pro plan allows unlimited messages.'}
-                        </span>
-                    </div>
-                    {/* Manage subscription moved to /dashboard/plan */}
+                {/* Card 2: Next delivery */}
+                <div className="bg-card border border-border/60 rounded-2xl p-5 overflow-hidden">
+                    <p className="text-[0.65rem] font-[600] uppercase tracking-widest text-muted-foreground mb-1 truncate">
+                        {dict.dashboard.stats.nextDelivery}
+                    </p>
+                    <p className="font-serif text-base font-semibold text-foreground leading-snug mt-1 truncate">
+                        {nextDeliveryDateStr}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1 truncate">
+                        {nextDeliveryRecipient}
+                    </p>
                 </div>
-            )}
+
+                {/* Card 3: Trusted contacts - highlighted */}
+                <div className="rounded-2xl p-5" style={{ background: '#C4623A' }}>
+                    <p className="text-[0.65rem] font-[600] uppercase tracking-widest mb-1 truncate" style={{ color: 'rgba(255,255,255,0.75)' }}>
+                        {dict.dashboard.stats.trustedContacts}
+                    </p>
+                    <p className="font-serif text-[1.9rem] font-semibold leading-none" style={{ color: 'white' }}>
+                        {trustedContactCount}
+                    </p>
+                    <p className="text-xs mt-1.5 truncate" style={{ color: 'rgba(255,255,255,0.75)' }}>
+                        {trustedContactsSubtext}
+                    </p>
+                </div>
+            </div>
+
+
 
             {/* Check-in status widget (only show if user has check-in messages AND is Pro) */}
             {hasCheckinMessages && userPlan === 'pro' && (
