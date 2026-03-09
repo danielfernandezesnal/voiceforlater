@@ -500,7 +500,7 @@
   },
   "profile": {
     "title": "My Profile",
-    "subtitle": "Your account settings and personal information.",
+    "subtitle": "Your name will appear in the messages you send. Your country helps us format dates correctly.",
     "onboardingBanner": {
       "heading": "Complete your profile to get started",
       "body": "To create your first message, we need to know a little more about you. Please fill in the required fields."
@@ -513,8 +513,8 @@
       "lastNamePlaceholder": "Your last name",
       "email": "Email",
       "emailPlaceholder": "you@email.com",
-      "emailChangeNotice": "When you change your email, you will receive a confirmation email at the new address.",
-      "locationContact": "Location and contact",
+      "emailNote": "Your email cannot be changed. It's the one you used to create your account.",
+      "locationContact": "Location",
       "country": "Country",
       "countryPlaceholder": "Select country",
       "city": "City",

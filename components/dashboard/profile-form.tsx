@@ -34,6 +34,10 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
     const [dialCode, setDialCode] = useState(parsedPhone.dialCode)
     const [localNumber, setLocalNumber] = useState(parsedPhone.localNumber)
 
+    const initials = useMemo(() => {
+        return `${form.first_name?.[0] || ''}${form.last_name?.[0] || ''}`.toUpperCase()
+    }, [form.first_name, form.last_name])
+
     function handleChange(field: keyof ProfileData, value: string) {
         setForm(prev => ({ ...prev, [field]: value }))
         if (message) setMessage(null)
@@ -113,6 +117,20 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
             <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-5">
                 <h2 className="text-lg font-semibold mb-1">{t.personalData}</h2>
 
+                {/* Avatar with initials */}
+                <div className="flex items-center gap-4 mb-6">
+                    <div
+                        className="w-14 h-14 rounded-full flex items-center justify-center text-lg font-semibold flex-shrink-0"
+                        style={{ background: 'rgba(196,98,58,0.12)', color: '#C4623A' }}
+                    >
+                        {initials || '?'}
+                    </div>
+                    <div>
+                        <p className="font-medium text-foreground">{form.first_name} {form.last_name}</p>
+                        <p className="text-sm text-muted-foreground">{form.email}</p>
+                    </div>
+                </div>
+
                 {/* Name row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -152,14 +170,16 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
                         id="email"
                         type="email"
                         value={form.email}
-                        onChange={e => handleChange('email', e.target.value)}
+                        readOnly
+                        disabled
                         placeholder={t.emailPlaceholder}
-                        required
-                        className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
+                        className="w-full px-3 py-2 bg-muted/50 border border-border rounded-lg text-muted-foreground cursor-not-allowed opacity-80"
                     />
-                    {form.email !== initialData.email && (
-                        <p className="text-xs text-amber-600 mt-1">
-                            {t.emailChangeNotice}
+                    {/* @ts-ignore */}
+                    {t.emailNote && (
+                        <p className="text-xs text-muted-foreground mt-1.5">
+                            {/* @ts-ignore */}
+                            {t.emailNote}
                         </p>
                     )}
                 </div>

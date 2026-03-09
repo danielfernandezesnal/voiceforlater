@@ -484,7 +484,7 @@
   },
   "profile": {
     "title": "Mi Perfil",
-    "subtitle": "Configuración de tu cuenta y datos personales.",
+    "subtitle": "Tu nombre aparecerá en los mensajes que enviés. Tu país nos ayuda a formatear fechas correctamente.",
     "onboardingBanner": {
       "heading": "Completá tu perfil para comenzar",
       "body": "Para crear tu primer mensaje, necesitamos conocerte un poco mejor. Por favor, completá los campos obligatorios."
@@ -497,8 +497,8 @@
       "lastNamePlaceholder": "Tu apellido",
       "email": "Email",
       "emailPlaceholder": "tu@email.com",
-      "emailChangeNotice": "Al cambiar tu email, recibirás un correo de confirmación en la nueva dirección.",
-      "locationContact": "Ubicación y contacto",
+      "emailNote": "El email no puede modificarse. Es el que usaste para crear tu cuenta.",
+      "locationContact": "Ubicación",
       "country": "País",
       "countryPlaceholder": "Seleccionar país",
       "city": "Ciudad",
