@@ -296,9 +296,21 @@
   "dashboard": {
     "title": "Tus mensajes",
     "subtitle": "Acá podés crear, editar o eliminar los mensajes que dejaste grabados.",
+    "greeting": "Hola, {name} 👋",
+    "status": "Tenés {count} mensaje(s) guardado(s) · Plan {plan} activo",
+    "stats": {
+      "savedMessages": "Mensajes guardados",
+      "ofOne": "de 1 en tu plan",
+      "ofUnlimited": "de ilimitados en tu plan",
+      "nextDelivery": "Próxima entrega",
+      "trustedContacts": "Contactos de confianza",
+      "ofMax": "de {max} posibles en tu plan"
+    },
+    "sectionTitle": "Mensajes guardados",
+    "quote": "Las palabras que más importan merecen llegar en el momento justo.",
     "empty": {
-      "title": "Todavía no creaste ningún mensaje.",
-      "description": "Cuando lo hagas, aparecerán acá.",
+      "title": "Todavía no tenés mensajes guardados",
+      "description": "Grabá tu primer mensaje y elegí cuándo y a quién llegará.",
       "cta": "Crear Tu Primer Mensaje"
     },
     "createMessage": "Nuevo mensaje",

@@ -309,11 +309,23 @@
     }
   },
   "dashboard": {
-    "title": "Your Messages",
+    "title": "Your messages",
     "subtitle": "Messages you've created for your loved ones",
+    "greeting": "Hello, {name} 👋",
+    "status": "You have {count} saved message(s) · {plan} plan active",
+    "stats": {
+      "savedMessages": "Saved messages",
+      "ofOne": "of 1 in your plan",
+      "ofUnlimited": "unlimited in your plan",
+      "nextDelivery": "Next delivery",
+      "trustedContacts": "Trusted contacts",
+      "ofMax": "of {max} possible in your plan"
+    },
+    "sectionTitle": "Saved messages",
+    "quote": "The words that matter most deserve to arrive at just the right moment.",
     "empty": {
-      "title": "No messages yet",
-      "description": "Create your first message to leave for someone special.",
+      "title": "You don't have any saved messages yet",
+      "description": "Record your first message and choose when and to whom it will arrive.",
       "cta": "Create Your First Message"
     },
     "limitReached": {

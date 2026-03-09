@@ -72,40 +72,57 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
 
     if (messages.length === 0) {
         return (
-            <div className="text-center py-16 px-4">
-                <div className="max-w-md mx-auto">
-                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center">
-                        <svg className="w-12 h-12 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                        </svg>
+            <div className="mt-8">
+                <div className="bg-card border-2 border-dashed border-border/40 rounded-2xl py-12 px-6 text-center flex flex-col items-center gap-3">
+                    <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-xl"
+                        style={{ background: 'rgba(196,98,58,0.08)' }}>
+                        ✉️
                     </div>
-
-                    <h2 className="text-xl font-semibold mb-2">{dict.dashboard.empty.title}</h2>
-                    <p className="text-muted-foreground mb-8">{dict.dashboard.empty.description}</p>
-
-                    <CreateMessageButton
-                        isLimitReached={isLimitReached}
-                        dictionary={dict}
-                        locale={locale}
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/25"
-                    />
+                    <p className="font-serif font-semibold text-lg text-foreground">
+                        {dict.dashboard.empty.title}
+                    </p>
+                    <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+                        {dict.dashboard.empty.description}
+                    </p>
+                </div>
+                {/* Quote strip */}
+                <div className="mt-10 rounded-2xl p-5 flex items-center gap-4"
+                    style={{ background: 'rgba(196,98,58,0.06)', border: '1px solid rgba(196,98,58,0.15)' }}>
+                    <div className="w-[3px] h-10 rounded-full flex-shrink-0" style={{ background: '#C4623A' }} />
+                    <p className="font-serif italic text-[0.95rem] text-foreground leading-relaxed">
+                        {dict.dashboard.quote}
+                    </p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="grid gap-4">
-            {messages.map((message) => {
-                return (
-                    <MessageCard
-                        key={message.id}
-                        message={message}
-                        locale={locale}
-                        dict={dict}
-                    />
-                );
-            })}
+        <div className="mt-8">
+            <h2 className="font-serif font-semibold text-lg text-foreground mb-4">
+                {dict.dashboard.sectionTitle}
+            </h2>
+            <div className="grid gap-4">
+                {messages.map((message) => {
+                    return (
+                        <MessageCard
+                            key={message.id}
+                            message={message}
+                            locale={locale}
+                            dict={dict}
+                        />
+                    );
+                })}
+            </div>
+
+            {/* Quote strip */}
+            <div className="mt-10 rounded-2xl p-5 flex items-center gap-4"
+                style={{ background: 'rgba(196,98,58,0.06)', border: '1px solid rgba(196,98,58,0.15)' }}>
+                <div className="w-[3px] h-10 rounded-full flex-shrink-0" style={{ background: '#C4623A' }} />
+                <p className="font-serif italic text-[0.95rem] text-foreground leading-relaxed">
+                    {dict.dashboard.quote}
+                </p>
+            </div>
         </div>
     );
 }
