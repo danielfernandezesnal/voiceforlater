@@ -768,6 +768,27 @@
       "signature": "— The Carry My Words team",
       "footerLogo": "Carry My Words",
       "footerLegal": "You received this email because someone chose you as a trusted contact.<br>If you believe this is an error, you can ignore this message."
+    },
+    "messageSpecial": {
+      "subject": "Messages that travel through time",
+      "preheader": "{{RECIPIENT_NAME}}, TODAY IS A SPECIAL DAY",
+      "heading": "Someone who loves you knew in advance",
+      "p1": "{{SENDER_NAME}} scheduled a message for you some time ago, with the intention that you would receive it exactly today.",
+      "p2": "It is something thought out, chosen, and carefully kept until this moment.",
+      "button": "🎙 Access the message",
+      "info": "Carry My Words is a platform that allows you to send text, voice, or video messages to loved ones, choosing when you want them to arrive: on an important date, or at that moment when you are no longer there to say it yourself.",
+      "closing": "Because some words deserve to arrive at the right time.",
+      "signature": "— The Carry My Words team"
+    },
+    "messagePosthumous": {
+      "subject": "Messages that travel through time",
+      "preheader": "{{RECIPIENT_NAME}}, THERE IS A MESSAGE FOR YOU",
+      "heading": "There are people who find a way to stay present",
+      "p1": "{{SENDER_NAME}} prepared this message for you with time. They kept it carefully, and asked that it reach you at this moment.",
+      "p2": "They had things to tell you — even if they can no longer be there to say them in person.",
+      "button": "🎙 Access the message",
+      "closing": "Because there are words that deserve to arrive, no matter when.",
+      "footerLegal": "You received this email because someone left a message for you. If you believe this is an error, you can ignore this message."
     }
   },
   "legal": {
@@ -906,5 +927,26 @@
     "sending": "Sending...",
     "success": "Message sent successfully!",
     "error": "Failed to send message. Please try again."
+  },
+  "messageVisualizer": {
+    "specialLabel": "SPECIAL MESSAGE",
+    "posthumousLabel": "POSTHUMOUS MESSAGE",
+    "receivedLabel": "MESSAGE RECEIVED",
+    "fromLabel": "From",
+    "voiceLabel": "Voice message",
+    "videoOverlay": "Tap to see the message",
+    "metaSent": "Sent on",
+    "metaSaved": "Saved for this moment",
+    "cta": {
+      "heading": "Because your words matter",
+      "text": "Carry your messages beyond time. Save what you feel today so it reaches tomorrow.",
+      "button": "I want to send my words",
+      "subtext": "Carry My Words — Messages that travel through time"
+    },
+    "error": {
+      "title": "Message not found",
+      "text": "The link is invalid or has expired.",
+      "button": "Back to home"
+    }
   }
 }
