@@ -540,6 +540,8 @@
   },
   "trustedContact": {
     "title": "Contacto de Confianza",
+    "pageSubtitle": "Tus personas de confianza. Son quienes garantizan que tus mensajes lleguen cuando vos ya no puedas confirmarlo.",
+    "sectionSubtitle": "Cuando dejes de confirmar tu actividad, les avisaremos para coordinar la entrega de tus mensajes.",
     "description": "Esta persona será contactada si dejas de confirmar.",
     "nameLabel": "Nombre",
     "namePlaceholder": "María García",
@@ -553,11 +555,17 @@
     "saved": "¡Contacto guardado!",
     "deleteConfirm": "¿Estás seguro de que quieres eliminar este contacto?",
     "remove": "Eliminar",
-    "addContact": "Agregar Contacto",
+    "addContact": "Agregar contacto",
     "noContact": "Sin contacto de confianza",
     "proRequired": "Contacto de confianza requiere plan Pro",
     "newContactTitle": "Nuevo Contacto de Confianza",
-    "errorCreating": "Error al guardar el contacto"
+    "errorCreating": "Error al guardar el contacto",
+    "howItWorks": {
+      "title": "¿Cómo funciona?",
+      "item1": "Podés agregar hasta 3 contactos de confianza con el plan Pro.",
+      "item2": "Cuando asignes un contacto a un mensaje, le enviaremos un correo para notificarle.",
+      "item3": "Tus contactos no pueden ver el contenido de tus mensajes."
+    }
   },
   "stripe": {
     "upgrade": "Mejorar a PRO",

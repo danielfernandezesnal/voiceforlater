@@ -104,7 +104,7 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts }
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h2 className="text-xl font-bold">{dictionary.trustedContact.title}</h2>
-                    <p className="text-muted-foreground text-sm mt-1">{dictionary.trustedContact.description}</p>
+                    <p className="text-muted-foreground text-sm mt-1">{dictionary.trustedContact.sectionSubtitle}</p>
                 </div>
 
                 {!isAddingMode && (
@@ -198,7 +198,7 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts }
                     contacts.map(contact => (
                         <div key={contact.id} className="flex items-center justify-between p-4 bg-card border border-border rounded-lg shadow-sm hover:border-primary/20 transition-colors">
                             <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: 'rgba(196,98,58,0.12)', color: '#C4623A' }}>
                                     {contact.name ? contact.name[0].toUpperCase() : contact.email[0].toUpperCase()}
                                 </div>
                                 <div>
@@ -225,47 +225,17 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts }
                 )}
             </div>
 
-            {/* Info Note — plan + contact count aware */}
-            <div className="bg-amber-50/50 p-4 rounded-lg border border-amber-100 text-sm text-amber-900 leading-relaxed">
-                {plan === 'free' && contacts.length === 0 && (
-                    <p>
-                        Puedes agregar hasta <strong>1 contacto</strong> de confianza.
-                        Este contacto formará tu &quot;grupo de confianza&quot; y podrás asignarlo a tus mensajes individuales más adelante.
-                        Al agregar un contacto, le enviaremos un correo para notificarle.
-                        <br /><br />
-                        <span className="text-amber-700">
-                            ✨ La función de agregar más contactos de confianza se encuentra en la opción <strong>Pro</strong>.
-                        </span>
-                    </p>
-                )}
-                {plan === 'free' && contacts.length >= 1 && (
-                    <p>
-                        Este contacto formará tu &quot;grupo de confianza&quot; y podrás asignarlo a tus mensajes individuales más adelante.
-                        <br />
-                        Cuando lo selecciones para alguno de tus mensajes, le enviaremos un correo para notificarle (no en este momento).
-                        <br /><br />
-                        <span className="text-amber-700">
-                            ✨ La función de agregar más contactos de confianza se encuentra en la opción <strong>Pro</strong>.
-                        </span>
-                    </p>
-                )}
-                {plan === 'pro' && contacts.length <= 1 && (
-                    <p>
-                        <span className="text-amber-700">
-                            ✨ Tu suscripción <strong>PRO</strong> te permite agregar hasta <strong>3 contactos</strong> de confianza.
-                        </span>
-                        {' '}Estos contactos formarán tu &quot;grupo de confianza&quot; y podrás asignarlos a tus mensajes individuales más adelante.
-                        <br />
-                        Cuando lo selecciones para alguno de tus mensajes, le enviaremos un correo para notificarle (no en este momento).
-                    </p>
-                )}
-                {plan === 'pro' && contacts.length >= 2 && (
-                    <p>
-                        Estos contactos formarán tu &quot;grupo de confianza&quot; y podrás asignarlos a tus mensajes individuales más adelante.
-                        <br />
-                        Cuando lo selecciones para alguno de tus mensajes, le enviaremos un correo para notificarle (no en este momento).
-                    </p>
-                )}
+            {/* Info Note — How it works */}
+            <div className="rounded-xl p-4 mt-2 text-sm leading-relaxed"
+                style={{ background: 'rgba(196,98,58,0.07)', border: '1px solid rgba(196,98,58,0.18)' }}>
+                <p style={{ color: '#C4623A' }} className="font-medium mb-1">
+                    {dictionary.trustedContact.howItWorks.title}
+                </p>
+                <ul className="space-y-1 text-muted-foreground">
+                    <li>· {dictionary.trustedContact.howItWorks.item1}</li>
+                    <li>· {dictionary.trustedContact.howItWorks.item2}</li>
+                    <li>· {dictionary.trustedContact.howItWorks.item3}</li>
+                </ul>
             </div>
         </div>
     )
