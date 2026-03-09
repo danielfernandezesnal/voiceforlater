@@ -1,77 +1,81 @@
 'use client'
 
-const features = [
-    {
-        name: 'Mensajes programados',
-        free: true,
-        pro: true,
-        freeNote: null,
-        proNote: null,
-    },
-    {
-        name: 'Mensaje de texto',
-        free: true,
-        pro: true,
-        freeNote: null,
-        proNote: null,
-    },
-    {
-        name: 'Mensaje de audio',
-        free: true,
-        pro: true,
-        freeNote: null,
-        proNote: null,
-    },
-    {
-        name: 'Mensaje de video',
-        free: false,
-        pro: true,
-        freeNote: null,
-        proNote: null,
-    },
-    {
-        name: 'Contactos de confianza',
-        free: true,
-        pro: true,
-        freeNote: 'Hasta 1',
-        proNote: 'Hasta 3',
-    },
-    {
-        name: 'Mensajes sellados e inalterables',
-        free: false,
-        pro: true,
-        freeNote: null,
-        proNote: null,
-    },
-    {
-        name: 'Confirmación de entrega',
-        free: false,
-        pro: true,
-        freeNote: null,
-        proNote: null,
-    },
-
-]
-
 interface PlanCompareProps {
     currentPlan: string
+    comparisonData?: {
+        title: string
+        free: string
+        pro: string
+        features: {
+            messages: string
+            messagesFree: string
+            messagesPro: string
+            text: string
+            audio: string
+            video: string
+            trustedContacts: string
+            trustedContactsFree: string
+            trustedContactsPro: string
+        }
+    }
 }
 
-export function PlanCompare({ currentPlan }: PlanCompareProps) {
+export function PlanCompare({ currentPlan, comparisonData }: PlanCompareProps) {
     const isFree = currentPlan.toLowerCase() !== 'pro'
+    const t = comparisonData?.features
+
+    if (!t) return null
+
+    const features = [
+        {
+            name: t.messages,
+            free: true,
+            pro: true,
+            freeNote: t.messagesFree,
+            proNote: t.messagesPro,
+        },
+        {
+            name: t.text,
+            free: true,
+            pro: true,
+            freeNote: null,
+            proNote: null,
+        },
+        {
+            name: t.audio,
+            free: true,
+            pro: true,
+            freeNote: null,
+            proNote: null,
+        },
+        {
+            name: t.video,
+            free: false,
+            pro: true,
+            freeNote: null,
+            proNote: null,
+        },
+        {
+            name: t.trustedContacts,
+            free: true,
+            pro: true,
+            freeNote: t.trustedContactsFree,
+            proNote: t.trustedContactsPro,
+        },
+    ]
 
     return (
         <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
             {/* Column Headers */}
             <div className="grid grid-cols-[1fr_100px_100px] sm:grid-cols-[1fr_120px_120px] border-b-2 border-stone-200 bg-stone-100 rounded-t-xl">
                 <div className="py-5 px-4 sm:px-5">
-                    <span className="text-sm font-semibold text-stone-500 uppercase tracking-wide">Funcionalidad</span>
+                    <span className="text-sm font-semibold text-stone-500 uppercase tracking-wide">{comparisonData.title}</span>
                 </div>
                 <div className={`py-5 px-4 sm:px-5 text-center ${isFree ? 'bg-stone-200/40' : ''}`}>
-                    <span className="text-sm font-bold text-stone-700">Free</span>
+                    <span className="text-sm font-bold text-stone-700">{comparisonData.free}</span>
                 </div>
                 <div className="py-5 px-4 sm:px-5 text-center bg-primary rounded-tr-xl">
-                    <span className="text-sm font-bold text-white uppercase tracking-wider">✨ PRO</span>
+                    <span className="text-sm font-bold text-white uppercase tracking-wider">✨ {comparisonData.pro}</span>
                 </div>
             </div>
 

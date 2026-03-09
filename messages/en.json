@@ -371,6 +371,24 @@
       "noContactAssignedDesc": "Won't be sent automatically until you add one.",
       "addContactShort": "+ Add",
       "addContactLong": "+ Add contact"
+    },
+    "plan": {
+      "compare": {
+        "title": "Feature",
+        "free": "Free",
+        "pro": "Pro",
+        "features": {
+          "messages": "Messages",
+          "messagesFree": "1 message",
+          "messagesPro": "Unlimited",
+          "text": "Text message",
+          "audio": "Audio message",
+          "video": "Video message",
+          "trustedContacts": "Trusted people",
+          "trustedContactsFree": "Up to 1",
+          "trustedContactsPro": "Up to 3"
+        }
+      }
     }
   },
   "nav": {

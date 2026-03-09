@@ -5,13 +5,15 @@ import { PlanUpgradeSuccess } from "@/components/dashboard/plan/plan-upgrade-suc
 import { PlanCurrentCard } from "@/components/dashboard/plan/plan-current-card";
 import { PlanCompare } from "@/components/dashboard/plan/plan-compare";
 import { PlanCTA } from "@/components/dashboard/plan/plan-cta";
+import { getDictionary, isValidLocale, defaultLocale, type Locale } from "@/lib/i18n";
 
 export default async function PlanPage({
     params,
 }: {
     params: Promise<{ locale: string }>;
 }) {
-    const { locale } = await params;
+    const { locale: localeParam } = await params;
+    const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
 
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -21,8 +23,8 @@ export default async function PlanPage({
     }
 
     // --- Authoritative plan resolution ---
-    // getEffectivePlan() reads user_subscriptions first, falls back to profiles.plan.
     const effectivePlan = await getEffectivePlan(supabase, user.id);
+    const dict = await getDictionary(locale);
 
     // --- Live subscription status from source of truth ---
     // Read status and cancel_at_period_end directly from user_subscriptions.
@@ -60,7 +62,10 @@ export default async function PlanPage({
             <PlanCTA planName={planName} locale={locale} />
 
             {/* E) Feature Comparison */}
-            <PlanCompare currentPlan={planName} />
+            <PlanCompare
+                currentPlan={planName}
+                comparisonData={dict.dashboard.plan?.compare}
+            />
         </div>
     );
 }
