@@ -22,6 +22,7 @@ export interface Message {
     type: MessageType
     status: MessageStatus
     text_content: string | null
+    title: string | null
     audio_path: string | null
     created_at: string
 }

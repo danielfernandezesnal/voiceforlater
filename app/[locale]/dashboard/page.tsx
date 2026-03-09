@@ -12,8 +12,9 @@ export const revalidate = 0;
 
 interface MessageWithRecipient {
     id: string;
-    type: 'text' | 'audio';
+    type: 'text' | 'audio' | 'video';
     status: 'draft' | 'scheduled' | 'delivered';
+    title: string | null;
     text_content: string | null;
     created_at: string;
     recipients: { name: string; email: string }[];
@@ -59,6 +60,7 @@ export default async function DashboardPage({
             .select(`
                 id,
                 type,
+                title,
                 status,
                 text_content,
                 created_at,

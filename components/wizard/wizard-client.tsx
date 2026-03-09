@@ -101,6 +101,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                 formData.append('id', messageId)
             }
             formData.append('type', data.messageType!)
+            formData.append('title', data.title)
 
             formData.append('recipientName', data.recipientName)
             formData.append('recipientEmail', data.recipientEmail)

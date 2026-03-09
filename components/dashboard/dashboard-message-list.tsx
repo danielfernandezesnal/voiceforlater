@@ -10,6 +10,7 @@ export interface MessageWithRecipient {
     id: string;
     type: 'text' | 'audio' | 'video';
     status: 'draft' | 'scheduled' | 'delivered';
+    title: string | null;
     text_content: string | null;
     created_at: string;
     recipients: { name: string; email: string }[];

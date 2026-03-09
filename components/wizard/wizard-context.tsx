@@ -11,6 +11,7 @@ export interface WizardData {
     messageType: MessageType | null
 
     // Step 2: Content
+    title: string
     textContent: string
     audioBlob: Blob | null
     existingAudioUrl?: string | null
@@ -40,6 +41,7 @@ interface WizardContextType {
 
 const initialData: WizardData = {
     messageType: null,
+    title: '',
     textContent: '',
     audioBlob: null,
     existingAudioUrl: null,
@@ -165,6 +167,9 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
             case 1:
                 return data.messageType !== null
             case 2:
+                const validTitle = data.title.trim().length > 0 && data.title.length <= 80
+                if (!validTitle) return false
+
                 if (data.messageType === 'text') {
                     return data.textContent.trim().length > 0
                 }

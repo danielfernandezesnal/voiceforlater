@@ -375,6 +375,8 @@
       "title": "Escribe tu mensaje",
       "titleAudio": "Graba tu mensaje",
       "subtitle": "Tomate tu tiempo. Este mensaje es para alguien especial.",
+      "titleLabel": "Título",
+      "titlePlaceholder": "Dale un nombre a este mensaje...",
       "textPlaceholder": "Escribe aquí tu mensaje…",
       "charLimit": "{count} / {max} caracteres",
       "recording": {
@@ -431,6 +433,7 @@
       "title": "Revisá tu mensaje",
       "subtitle": "Antes de guardar, asegurate de que todo esté como querés.\nPodés modificarlo o eliminarlo mientras estés activo.",
       "messageType": "Tipo",
+      "titleLabel": "Título",
       "content": "Contenido",
       "recipient": "Destinatario",
       "deliveryRule": "Entrega",
