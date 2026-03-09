@@ -356,6 +356,24 @@
         "Designar a una(s) persona(s) de confianza para garantizar la entrega"
       ],
       "cancel": "Cancelar"
+    },
+    "plan": {
+      "compare": {
+        "title": "Funcionalidad",
+        "free": "Free",
+        "pro": "Pro",
+        "features": {
+          "messages": "Mensajes",
+          "messagesFree": "1 mensaje",
+          "messagesPro": "Ilimitados",
+          "text": "Mensaje de texto",
+          "audio": "Mensaje de audio",
+          "video": "Mensaje de video",
+          "trustedContacts": "Personas de confianza",
+          "trustedContactsFree": "Hasta 1",
+          "trustedContactsPro": "Hasta 3"
+        }
+      }
     }
   },
   "nav": {
