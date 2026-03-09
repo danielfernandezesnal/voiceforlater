@@ -76,12 +76,8 @@ export default async function DashboardLayout({
             {/* Topbar */}
             <header className="h-16 border-b border-border/40 fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md transition-all">
                 <div className="flex items-center justify-between h-full px-4 sm:px-6">
-                    {/* Brand */}
-                    <div className="flex items-center gap-2">
-                        <Link href={`/${locale}/dashboard`} className="font-serif italic text-2xl hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
-                            {dict.common.appName}
-                        </Link>
-                    </div>
+                    {/* Empty placeholder to keep right actions on the right */}
+                    <div className="hidden md:block"></div>
 
                     {/* Mobile Nav Links */}
                     <nav className="flex items-center gap-4 md:hidden">
