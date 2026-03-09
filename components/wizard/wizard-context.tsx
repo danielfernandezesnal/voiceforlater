@@ -181,7 +181,11 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                 if (data.deliveryMode === 'date') {
                     return data.deliverAt !== ''
                 }
-                return data.deliveryMode === 'checkin'
+                if (data.deliveryMode === 'checkin') {
+                    // Requires at least one valid trusted contact
+                    return !!data.trustedContactIds && data.trustedContactIds.some(id => id && id.trim() !== '')
+                }
+                return false
             case 5:
                 return true // Review step
             default:

@@ -39,7 +39,7 @@ describe('i18n Dictionary Smoke Test', () => {
                 expect(checkin.contactLabelNumbered).toBeDefined()
                 expect(checkin.selectPlaceholder).toBeDefined()
                 expect(checkin.addNew).toBeDefined()
-                expect(checkin.noContactWarning).toBeDefined()
+                expect(checkin.posthumousContactRequired).toBeDefined();
             })
 
             test('should have review content and warning keys (step 5)', () => {
@@ -58,7 +58,7 @@ describe('i18n Dictionary Smoke Test', () => {
             test('no keys should be empty strings', () => {
                 // Sampling a few crucial ones
                 expect(dictionary.wizard.title.length).toBeGreaterThan(0)
-                expect(dictionary.wizard.step4.checkin.noContactWarning.length).toBeGreaterThan(0)
+                expect(dictionary.wizard.step4.checkin.posthumousContactRequired.length).toBeGreaterThan(0)
             })
         })
     })

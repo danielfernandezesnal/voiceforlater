@@ -461,7 +461,7 @@
         "contactLabelNumbered": "Trusted contact {number}",
         "selectPlaceholder": "Select",
         "addNew": "+ Add new contact...",
-        "noContactWarning": "This message will not be sent automatically until you assign a trusted contact. You can continue and assign it later from the dashboard."
+        "posthumousContactRequired": "A trusted contact is required for posthumous messages before you can continue."
       }
     },
     "step5": {
