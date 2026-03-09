@@ -539,10 +539,11 @@
     }
   },
   "trustedContact": {
+    "pageTitle": "Contactos de confianza",
+    "pageDescription1": "Son tus personas de confianza.",
+    "pageDescription2": "En caso de que dejes de responder las confirmaciones de actividad, la persona de confianza que selecciones en cada mensaje será la que contactaremos para verificar tu ausencia antes de comenzar el envío de los mensajes programados.",
     "title": "Personas de confianza",
-    "pageSubtitle": "Tus personas de confianza.",
-    "pageSubtitle2": "Son quienes garantizan que tus mensajes lleguen cuando vos ya no puedas confirmarlo.",
-    "sectionSubtitle": "Si dejás de responder las confirmaciones de actividad, les avisaremos para que sepan que tus mensajes deben entregarse.",
+    "sectionSubtitle": "",
     "description": "Esta persona será contactada si dejas de confirmar.",
     "nameLabel": "Nombre",
     "namePlaceholder": "María García",
