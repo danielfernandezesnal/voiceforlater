@@ -555,9 +555,10 @@
     }
   },
   "trustedContact": {
-    "title": "Trusted Contact",
-    "pageSubtitle": "Your trusted people. They're the ones who ensure your messages are delivered when you can no longer confirm it.",
-    "sectionSubtitle": "When you stop confirming your activity, we'll notify them to coordinate the delivery of your messages.",
+    "title": "Trusted people",
+    "pageSubtitle": "Your trusted people.",
+    "pageSubtitle2": "They ensure your messages are delivered when you can no longer confirm it.",
+    "sectionSubtitle": "If you stop responding to activity confirmations, we'll notify them so they know your messages should be delivered.",
     "description": "This person will be contacted if you stop checking in.",
     "nameLabel": "Name",
     "namePlaceholder": "Jane Doe",
