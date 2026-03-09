@@ -4,6 +4,7 @@ import { CheckinStatusWidget } from "@/components/dashboard/checkin-status";
 import { CreateMessageButton } from "@/components/dashboard/create-message-button";
 import { DashboardMessageList } from "@/components/dashboard/dashboard-message-list";
 import { TrustedContactCountCard } from "@/components/dashboard/trusted-contact-count-card";
+import { AutoCheckin } from "@/components/dashboard/auto-checkin";
 import { type Plan } from "@/lib/plans";
 
 export const dynamic = 'force-dynamic';
@@ -225,6 +226,7 @@ export default async function DashboardPage({
                 locale={locale}
                 dict={dict}
             />
+            {user && <AutoCheckin />}
         </div>
     );
 }
