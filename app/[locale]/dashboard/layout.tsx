@@ -56,7 +56,8 @@ export default async function DashboardLayout({
         contacts: 'Contactos',
         profile: 'Perfil',
         plan: 'Plan',
-        workspace: 'Mi espacio'
+        workspace: 'Mi espacio',
+        tagline: (dict.dashboard as any).sidebarTagline || ''
     }
 
     // Prepare user object for client component
@@ -77,7 +78,7 @@ export default async function DashboardLayout({
                 <div className="flex items-center justify-between h-full px-4 sm:px-6">
                     {/* Brand */}
                     <div className="flex items-center gap-2">
-                        <Link href={`/${locale}/dashboard`} className="font-bold text-lg tracking-tight hover:opacity-80 transition-opacity">
+                        <Link href={`/${locale}/dashboard`} className="font-serif italic text-2xl hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
                             {dict.common.appName}
                         </Link>
                     </div>

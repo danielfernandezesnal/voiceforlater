@@ -79,7 +79,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
     let scheduledLabel = labels?.scheduledFor;
 
     if (deliveryMode === 'checkin') {
-        scheduledDate = '—';
+        scheduledDate = (dict.dashboard.messageCard as any).deliveryType?.checkin;
         scheduledLabel = labels?.delivery;
     } else if (deliverAt) {
         scheduledDate = formatDateTime(deliverAt);
@@ -101,16 +101,6 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
             ) : (
                 <span className={`inline-flex items-center px-2 py-1 text-xs rounded-full ${status === 'scheduled' ? 'bg-primary/10 text-primary' : status === 'delivered' ? 'bg-[#34D399] text-white' : 'bg-secondary text-muted-foreground'}`}>
                     {dict.dashboard.messageCard.status[status as 'draft' | 'scheduled' | 'delivered']}
-                </span>
-            )}
-            {deliveryMode === 'date' && (
-                <span className="inline-flex items-center px-2 py-1 text-xs rounded-full bg-[#2A2520]/[0.07] text-[#2A2520] font-medium">
-                    {(dict.dashboard.messageCard as any).deliveryType?.date}
-                </span>
-            )}
-            {deliveryMode === 'checkin' && (
-                <span className="inline-flex items-center px-2 py-1 text-xs rounded-full bg-[#C4623A]/[0.08] text-[#C4623A] font-medium">
-                    {(dict.dashboard.messageCard as any).deliveryType?.checkin}
                 </span>
             )}
         </div>
