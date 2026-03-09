@@ -124,7 +124,7 @@ export async function GET(request: NextRequest) {
                     // Send reminder to user
                     const resendClient = getResendClient();
                     if (userEmail && resendClient) {
-                        const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/checkin/confirm`;
+                        const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/confirmar-actividad`;
                         const { subject, html } = getCheckinReminderTemplate(dict as unknown as EmailDictionary, { attempts: attempts + 1, confirmUrl });
 
                         await resendClient.emails.send({
