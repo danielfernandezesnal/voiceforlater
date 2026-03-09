@@ -46,9 +46,11 @@ export default async function ContactsPage({
             <div className="bg-card border border-border rounded-xl p-8 shadow-sm">
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 <h1 className="text-3xl font-bold mb-6">{(dict.nav as any)?.contacts || 'Contactos'}</h1>
-                <p className="text-muted-foreground mb-8">
-                    {dict.trustedContact?.pageSubtitle || 'Tus personas de confianza. Son quienes garantizan que tus mensajes lleguen cuando vos ya no puedas confirmarlo.'}
-                </p>
+                <div className="text-muted-foreground mb-8">
+                    {dict.trustedContact?.pageSubtitle}
+                    <br />
+                    {dict.trustedContact?.pageSubtitle2}
+                </div>
 
                 <TrustedContactList
                     dictionary={dict}
