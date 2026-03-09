@@ -45,11 +45,14 @@ export default async function ContactsPage({
         <div className="max-w-4xl mx-auto space-y-8">
             <div className="bg-card border border-border rounded-xl p-8 shadow-sm">
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                <h1 className="text-3xl font-bold mb-6">{(dict.nav as any)?.contacts || 'Contactos'}</h1>
-                <div className="text-muted-foreground mb-8">
-                    {dict.trustedContact?.pageSubtitle}
-                    <br />
-                    {dict.trustedContact?.pageSubtitle2}
+                <h1 className="text-3xl font-bold mb-6">{dict.trustedContact?.pageTitle || 'Contactos de confianza'}</h1>
+                <div className="mb-8 leading-relaxed">
+                    <p className="font-medium text-foreground">
+                        {dict.trustedContact?.pageDescription1}
+                    </p>
+                    <p className="text-muted-foreground mt-2 text-sm">
+                        {dict.trustedContact?.pageDescription2}
+                    </p>
                 </div>
 
                 <TrustedContactList

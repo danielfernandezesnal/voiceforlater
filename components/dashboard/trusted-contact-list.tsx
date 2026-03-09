@@ -104,7 +104,9 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts }
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <h2 className="text-xl font-bold">{dictionary.trustedContact.title}</h2>
-                    <p className="text-muted-foreground text-sm mt-1">{dictionary.trustedContact.sectionSubtitle}</p>
+                    {dictionary.trustedContact.sectionSubtitle && (
+                        <p className="text-muted-foreground text-sm mt-1">{dictionary.trustedContact.sectionSubtitle}</p>
+                    )}
                 </div>
 
                 {!isAddingMode && (
