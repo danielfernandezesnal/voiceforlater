@@ -346,7 +346,12 @@
       "labels": {
         "to": "To",
         "created": "Created",
-        "scheduledFor": "Scheduled for"
+        "scheduledFor": "Scheduled for",
+        "delivery": "Delivery"
+      },
+      "deliveryType": {
+        "date": "Specific date",
+        "checkin": "When no longer present"
       },
       "whenNoLongerPresent": "When no longer present",
       "noContactAssigned": "No contact assigned",

@@ -319,7 +319,12 @@
       "labels": {
         "to": "Para",
         "created": "Creado",
-        "scheduledFor": "Programado para"
+        "scheduledFor": "Programado para",
+        "delivery": "Entrega"
+      },
+      "deliveryType": {
+        "date": "Fecha específica",
+        "checkin": "Para cuando ya no esté"
       },
       "whenNoLongerPresent": "Cuando ya no esté",
       "noContactAssigned": "Sin contacto asignado",
