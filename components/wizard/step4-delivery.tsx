@@ -162,8 +162,24 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
         if (data.deliverAt && data.deliverAt.includes('T')) {
             return data.deliverAt.split('T')[1].substring(0, 5)
         }
-        return '00:00'
+        return '12:00' // Default to noon if not set
     }, [data.deliverAt])
+
+    const weekday = useMemo(() => {
+        if (!currentDate) return ''
+        try {
+            const dateObj = new Date(currentDate + 'T12:00:00')
+            return new Intl.DateTimeFormat(locale, { weekday: 'long' }).format(dateObj)
+        } catch (e) {
+            return ''
+        }
+    }, [currentDate, locale])
+
+    const formattedDateDisplay = useMemo(() => {
+        if (!currentDate) return ''
+        const [y, m, d] = currentDate.split('-')
+        return `${d}/${m}/${y}`
+    }, [currentDate])
 
     const handleIntervalChange = (e: ChangeEvent<HTMLSelectElement>) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -207,17 +223,23 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <div className="flex-1">
                                             <label className="block text-sm font-medium mb-2">{step4Dict.date.label}</label>
-                                            <input
-                                                type="date"
-                                                min={minDate}
-                                                value={currentDate}
-                                                onChange={(e) => {
-                                                    if (!e.target.value) return;
-                                                    const localDate = new Date(e.target.value + 'T' + currentTime + ':00');
-                                                    updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
-                                                }}
-                                                className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
-                                            />
+                                            <div className="relative group">
+                                                <input
+                                                    type="date"
+                                                    min={minDate}
+                                                    value={currentDate}
+                                                    onChange={(e) => {
+                                                        if (!e.target.value) return;
+                                                        const localDate = new Date(e.target.value + 'T' + currentTime + ':00');
+                                                        updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
+                                                    }}
+                                                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+                                                />
+                                                <div className="w-full h-20 px-4 flex flex-col justify-center bg-input border border-border rounded-xl transition-all group-hover:border-primary/50 group-focus-within:ring-2 group-focus-within:ring-primary">
+                                                    <span className="text-xl font-medium text-primary">{formattedDateDisplay}</span>
+                                                    <span className="text-xs text-muted-foreground capitalize mt-0.5">{weekday}</span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="w-full sm:w-64">
                                             <label className="block text-sm font-medium mb-2">{step4Dict.date.timeLabel}</label>
@@ -392,7 +414,7 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
     )
 
     const ValueDisplay = ({ val }: { val: string | number }) => (
-        <div className="w-16 h-14 flex items-center justify-center bg-cream/10 border border-border/40 rounded-xl text-4xl font-serif italic text-primary">
+        <div className="w-16 h-20 flex items-center justify-center bg-cream/10 border border-border/40 rounded-xl text-3xl font-medium text-primary">
             {typeof val === 'number' ? String(val).padStart(2, '0') : val}
         </div>
     )
@@ -414,7 +436,7 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
                 </SpinnerButton>
             </div>
 
-            <div className="text-2xl font-serif italic text-primary/30 mt-1">:</div>
+            <div className="text-xl font-medium text-primary/30 mt-1">:</div>
 
             {/* Minutes */}
             <div className="flex flex-col items-center gap-1.5">
@@ -431,12 +453,11 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
                 </SpinnerButton>
             </div>
 
-            {/* AM/PM */}
-            <div className="flex flex-col gap-1 ml-1 h-full pt-12 items-center justify-center">
+            <div className="flex flex-col gap-1.5 ml-1 h-full pt-[30px] items-center justify-center">
                 <button
                     type="button"
                     onClick={() => togglePeriod('AM')}
-                    className={`w-14 h-11 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'AM'
+                    className={`w-14 h-9 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'AM'
                         ? 'bg-primary text-white border-primary shadow-sm'
                         : 'bg-cream/20 text-muted-foreground border-border hover:border-primary/30'
                         }`}
@@ -446,7 +467,7 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
                 <button
                     type="button"
                     onClick={() => togglePeriod('PM')}
-                    className={`w-14 h-11 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'PM'
+                    className={`w-14 h-9 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'PM'
                         ? 'bg-primary text-white border-primary shadow-sm'
                         : 'bg-cream/20 text-muted-foreground border-border hover:border-primary/30'
                         }`}
