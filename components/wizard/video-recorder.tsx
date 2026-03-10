@@ -53,45 +53,51 @@ export function VideoRecorder({
         }
     }, [videoBlob])
 
+    const [isInitializing, setIsInitializing] = useState(false)
+
+    // Memoize initCamera so it can be called safely from effects and buttons
+    const initCamera = useCallback(async () => {
+        // If we already have a blob (reviewing), don't start camera
+        if (videoBlob || existingVideoUrl) return
+
+        setIsInitializing(true)
+        try {
+            // Stop any existing tracks first
+            if (streamRef.current) {
+                streamRef.current.getTracks().forEach(track => track.stop())
+            }
+
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { width: { ideal: 1280 }, height: { ideal: 720 } }, // Request HD if possible
+                audio: true
+            })
+
+            streamRef.current = stream
+
+            if (videoPreviewRef.current) {
+                videoPreviewRef.current.srcObject = stream
+                // Mute preview to prevent feedback loop
+                videoPreviewRef.current.muted = true
+                try {
+                    await videoPreviewRef.current.play()
+                } catch (e) {
+                    console.error('Error playing preview:', e)
+                }
+            }
+
+            setIsStreamReady(true)
+            setError(null)
+        } catch (err) {
+            console.error('Error accessing camera/microphone:', err)
+            setError(dictionary.errorCamera)
+            setIsStreamReady(false)
+        } finally {
+            setIsInitializing(false)
+        }
+    }, [dictionary.errorCamera, existingVideoUrl, videoBlob])
+
     // Initialize camera on mount
     useEffect(() => {
-        const initCamera = async () => {
-            // If we already have a blob (reviewing), don't start camera
-            if (videoBlob || existingVideoUrl) return
-
-            try {
-                // Stop any existing tracks first
-                if (streamRef.current) {
-                    streamRef.current.getTracks().forEach(track => track.stop())
-                }
-
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { width: { ideal: 1280 }, height: { ideal: 720 } }, // Request HD if possible
-                    audio: true
-                })
-
-                streamRef.current = stream
-
-                if (videoPreviewRef.current) {
-                    videoPreviewRef.current.srcObject = stream
-                    // Mute preview to prevent feedback loop
-                    videoPreviewRef.current.muted = true
-                    try {
-                        await videoPreviewRef.current.play()
-                    } catch (e) {
-                        console.error('Error playing preview:', e)
-                    }
-                }
-
-                setIsStreamReady(true)
-                setError(null)
-            } catch (err) {
-                console.error('Error accessing camera/microphone:', err)
-                setError(dictionary.errorCamera)
-                setIsStreamReady(false)
-            }
-        }
-
         initCamera()
 
         // Cleanup function
@@ -104,7 +110,7 @@ export function VideoRecorder({
                 clearInterval(timerRef.current)
             }
         }
-    }, [videoBlob, existingVideoUrl]) // Re-run if videoBlob changes (e.g. deleted)
+    }, [initCamera]) // Re-run if initCamera changes (which depends on videoBlob/existingVideoUrl)
 
     // Re-attach stream to video element if ref changes or state updates
     useEffect(() => {
@@ -226,8 +232,15 @@ export function VideoRecorder({
     return (
         <div className="p-6 bg-card border border-border rounded-xl space-y-6">
             {error && (
-                <div className="p-3 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center">
-                    {error}
+                <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3">
+                    <p>{error}</p>
+                    <button
+                        onClick={() => initCamera()}
+                        disabled={isInitializing}
+                        className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors disabled:opacity-50"
+                    >
+                        {isInitializing ? 'Cargando...' : 'Autorizar / Intentar de nuevo'}
+                    </button>
                 </div>
             )}
 
