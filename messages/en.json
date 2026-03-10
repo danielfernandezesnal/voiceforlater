@@ -408,27 +408,27 @@
     },
     "step1": {
       "title": "Choose message type",
-      "subtitle": "How would you like to leave your message?",
+      "subtitle": "Choose the format that feels most natural to you. You can write, record your voice, or record a video. It doesn't have to be perfect — you can edit or delete it whenever you want.",
       "text": {
         "title": "Text Message",
-        "description": "Write a heartfelt message"
+        "description": "Put into words what you feel. You can write as much or as little as you want."
       },
       "audio": {
         "title": "Audio Message",
-        "description": "Record your voice"
+        "description": "Let them hear your voice. An audio has a warmth that written words don't always convey."
       },
       "video": {
         "title": "Video Message",
-        "description": "Leave a video message",
+        "description": "The most complete way to be present. Your face, your voice, your gaze.",
         "upgradeToPro": "Upgrade to PRO"
       }
     },
     "step2": {
       "title": "Write your message",
       "titleAudio": "Record your message",
-      "subtitle": "Take your time. This message is for someone special.",
+      "subtitle": "There's no rush. This message will wait until the exact moment you choose. Write calmly.",
       "titleLabel": "Title",
-      "titlePlaceholder": "Give this message a name...",
+      "titlePlaceholder": "E.g.: For the day you turn 18, For when you need it most...",
       "textPlaceholder": "Write your message here...",
       "charLimit": "{count} / {max} characters",
       "recording": {
@@ -446,7 +446,7 @@
     },
     "step3": {
       "title": "Who is this message for?",
-      "subtitle": "Enter the recipient's information",
+      "subtitle": "Who is this message for? Only that person will receive it, at the exact moment you define in the next step.",
       "nameLabel": "Recipient's name",
       "namePlaceholder": "John Doe",
       "emailLabel": "Recipient's email",
@@ -455,10 +455,10 @@
     },
     "step4": {
       "title": "When should this message be delivered?",
-      "subtitle": "Choose when your message will reach its destination",
+      "subtitle": "This is the heart of Carry My Words. Choose if you want it to arrive on a special date or to be saved for when you are no longer here.",
       "date": {
         "title": "On a specific date",
-        "description": "Birthdays, anniversaries, graduations, things that are hard to say in person, a message for your future self...",
+        "description": "Birthday, graduation, anniversary, or simply something you want to say today but that must arrive at the right moment.",
         "label": "Delivery date",
         "timeLabel": "Delivery time",
         "timeError": "Enter a valid time (e.g., 14:30)",
@@ -485,7 +485,7 @@
     },
     "step5": {
       "title": "Review your message",
-      "subtitle": "Make sure everything is correct",
+      "subtitle": "Review that everything is as you want before saving it. Once saved, the message remains protected and waiting. You can edit or delete it at any time while you are active.",
       "messageType": "Format",
       "formatText": "Text message",
       "formatAudio": "Audio message",

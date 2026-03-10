@@ -392,27 +392,27 @@
     },
     "step1": {
       "title": "¿Qué querés grabar?",
-      "subtitle": "Podés grabar un mensaje en audio, video o escribirlo.\nNo tiene que ser perfecto. Podés editarlo o borrarlo más adelante.",
+      "subtitle": "Elegí el formato que te resulte más natural. Podés escribir, grabar tu voz o grabar un video. No tiene que ser perfecto — podés editarlo o borrarlo cuando quieras.",
       "text": {
         "title": "Escribir mensaje",
-        "description": "Escribe un mensaje desde el corazón"
+        "description": "Poné en palabras lo que sentís. Podés escribir tanto o tan poco como quieras."
       },
       "audio": {
         "title": "Grabar audio",
-        "description": "Graba tu voz"
+        "description": "Que escuchen tu voz. Un audio tiene una calidez que las palabras escritas no siempre transmiten."
       },
       "video": {
         "title": "Grabar video",
-        "description": "Deja un mensaje en video",
+        "description": "La forma más completa de estar presente. Tu cara, tu voz, tu mirada.",
         "upgradeToPro": "Actualizar a PRO"
       }
     },
     "step2": {
       "title": "Escribe tu mensaje",
       "titleAudio": "Graba tu mensaje",
-      "subtitle": "Tomate tu tiempo. Este mensaje es para alguien especial.",
+      "subtitle": "No hay apuro. Este mensaje va a esperar hasta el momento exacto que vos elijas. Escribí con calma.",
       "titleLabel": "Título",
-      "titlePlaceholder": "Dale un nombre a este mensaje...",
+      "titlePlaceholder": "Ej: Para el día que cumplas 18, Para cuando más lo necesites...",
       "textPlaceholder": "Escribe aquí tu mensaje…",
       "charLimit": "{count} / {max} caracteres",
       "recording": {
@@ -430,7 +430,7 @@
     },
     "step3": {
       "title": "¿A quién va dirigido este mensaje?",
-      "subtitle": "Agregá una o más personas que deberían recibirlo.\nSolo se va a enviar cuando se cumpla la condición que definas.",
+      "subtitle": "¿A quién va dirigido este mensaje? Solo esa persona lo va a recibir, en el momento exacto que vos definás en el siguiente paso.",
       "nameLabel": "Nombre del destinatario",
       "namePlaceholder": "Juan Pérez",
       "emailLabel": "Email del destinatario",
@@ -439,10 +439,10 @@
     },
     "step4": {
       "title": "¿Cuándo querés que se entregue?",
-      "subtitle": "Elegí cuándo o bajo qué condición querés que este mensaje se envíe.",
+      "subtitle": "Este es el corazón de Carry My Words. Elegí si querés que llegue en una fecha especial o que quede guardado para cuando ya no estés.",
       "date": {
         "title": "En una fecha específica",
-        "description": "Cumpleaños, aniversario, graduación, lo que cuesta decir en persona, un mensaje para vos mismo en el futuro...",
+        "description": "Cumpleaños, graduación, aniversario, o simplemente algo que hoy querés decir pero que tiene que llegar en el momento justo.",
         "label": "Fecha de entrega",
         "timeLabel": "Hora de entrega",
         "timeError": "Ingresá una hora válida (ej: 14:30)",
@@ -469,7 +469,7 @@
     },
     "step5": {
       "title": "Revisá tu mensaje",
-      "subtitle": "Antes de guardar, asegurate de que todo esté como querés.\nPodés modificarlo o eliminarlo mientras estés activo.",
+      "subtitle": "Revisá que todo esté como querés antes de guardarlo. Una vez guardado, el mensaje queda protegido y esperando. Podés editarlo o eliminarlo en cualquier momento mientras estés activo.",
       "messageType": "Formato",
       "formatText": "Mensaje de texto",
       "formatAudio": "Mensaje de audio",
