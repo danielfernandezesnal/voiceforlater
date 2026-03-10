@@ -219,16 +219,15 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                                 className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
                                             />
                                         </div>
-                                        <div className="w-full sm:w-40">
+                                        <div className="w-full sm:w-48">
                                             <label className="block text-sm font-medium mb-2">{step4Dict.date.timeLabel}</label>
-                                            <input
-                                                type="time"
+                                            <TimeInput
                                                 value={currentTime}
-                                                onChange={(e) => {
-                                                    const localDate = new Date(currentDate + 'T' + e.target.value + ':00');
+                                                errorLabel={step4Dict.date.timeError}
+                                                onChange={(newTime) => {
+                                                    const localDate = new Date(currentDate + 'T' + newTime + ':00');
                                                     updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
                                                 }}
-                                                className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
                                             />
                                         </div>
                                     </div>
@@ -331,6 +330,77 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                     </div>
                 ))}
             </div>
+        </div>
+    )
+}
+
+function TimeInput({ value, onChange, errorLabel }: { value: string, onChange: (val: string) => void, errorLabel: string }) {
+    const [inputValue, setInputValue] = useState(value)
+    const [isValid, setIsValid] = useState(true)
+
+    useEffect(() => {
+        setInputValue(value)
+    }, [value])
+
+    const validate = (val: string) => {
+        if (val.length === 0) return true
+        if (val.length !== 5) return false
+        const [h, m] = val.split(':').map(Number)
+        return h >= 0 && h < 24 && m >= 0 && m < 60
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let val = e.target.value.replace(/\D/g, '') // Keep only digits
+
+        if (val.length > 4) val = val.substring(0, 4)
+
+        let formatted = val
+        if (val.length > 2) {
+            formatted = val.substring(0, 2) + ':' + val.substring(2)
+        }
+
+        setInputValue(formatted)
+
+        const valid = validate(formatted)
+        setIsValid(valid)
+
+        if (formatted.length === 5 && valid) {
+            onChange(formatted)
+        }
+    }
+
+    const handleBlur = () => {
+        if (inputValue.length < 5) {
+            setInputValue('')
+            setIsValid(true)
+        } else {
+            const valid = validate(inputValue)
+            setIsValid(valid)
+            if (valid) {
+                onChange(inputValue)
+            }
+        }
+    }
+
+    return (
+        <div className="space-y-1">
+            <input
+                type="text"
+                placeholder="HH:MM"
+                value={inputValue}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`w-full px-4 py-3 bg-input border rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all ${!isValid ? 'border-error ring-error/20' : 'border-border'
+                    }`}
+                style={{ fontSize: '16px' }}
+                maxLength={5}
+                inputMode="numeric"
+            />
+            {!isValid && (
+                <p className="text-[11px] text-error font-medium animate-in fade-in slide-in-from-top-1">
+                    {errorLabel}
+                </p>
+            )}
         </div>
     )
 }

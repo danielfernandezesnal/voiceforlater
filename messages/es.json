@@ -445,6 +445,7 @@
         "description": "Cumpleaños, aniversario, graduación, lo que cuesta decir en persona, un mensaje para vos mismo en el futuro...",
         "label": "Fecha de entrega",
         "timeLabel": "Hora de entrega",
+        "timeError": "Ingresá una hora válida (ej: 14:30)",
         "optionalContactNote": "No se requiere un contacto de confianza para esta modalidad. El mensaje se enviará automáticamente en la fecha y hora elegidas."
       },
       "checkin": {
