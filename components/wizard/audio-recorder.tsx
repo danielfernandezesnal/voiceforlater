@@ -141,8 +141,14 @@ export function AudioRecorder({
     return (
         <div className="p-6 bg-card border border-border rounded-xl space-y-6">
             {error && (
-                <div className="p-3 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center">
-                    {error}
+                <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3">
+                    <p>{error}</p>
+                    <button
+                        onClick={() => startRecording()}
+                        className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors"
+                    >
+                        Autorizar / Intentar de nuevo
+                    </button>
                 </div>
             )}
 
