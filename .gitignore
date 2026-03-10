@@ -39,6 +39,9 @@ next-env.d.ts
 
 # environment variables and secrets
 .env
+.env.local
+.env*.local
+.env.vercel*
 .env.*
 !.env.local.example
 *.txt
@@ -48,6 +51,7 @@ next-env.d.ts
 scripts/write-keys.js
 
 # logs and temporary files
+tmp/
 logs.txt
 production_logs.txt
 build_log.txt
