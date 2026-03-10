@@ -385,7 +385,7 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
         <button
             onClick={onClick}
             type="button"
-            className="w-12 h-11 flex items-center justify-center rounded-lg border border-border bg-cream/50 text-primary hover:bg-primary/10 transition-colors"
+            className="w-14 h-[28px] flex items-center justify-center rounded-md border border-border/50 bg-cream/30 text-primary/70 hover:bg-primary/5 hover:text-primary transition-all active:scale-95"
         >
             {children}
         </button>
@@ -402,14 +402,14 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
             {/* Hours */}
             <div className="flex flex-col items-center gap-1">
                 <SpinnerButton onClick={() => adjustHour(1)}>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M5 15l7-7 7 7" />
                     </svg>
                 </SpinnerButton>
                 <ValueDisplay val={h12} />
                 <SpinnerButton onClick={() => adjustHour(-1)}>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 9l-7 7-7-7" />
                     </svg>
                 </SpinnerButton>
             </div>
@@ -419,14 +419,14 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
             {/* Minutes */}
             <div className="flex flex-col items-center gap-1">
                 <SpinnerButton onClick={() => adjustMinute(5)}>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M5 15l7-7 7 7" />
                     </svg>
                 </SpinnerButton>
                 <ValueDisplay val={m} />
                 <SpinnerButton onClick={() => adjustMinute(-5)}>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 9l-7 7-7-7" />
                     </svg>
                 </SpinnerButton>
             </div>
