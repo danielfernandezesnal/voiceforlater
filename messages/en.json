@@ -461,6 +461,7 @@
         "description": "Birthdays, anniversaries, graduations, things that are hard to say in person, a message for your future self...",
         "label": "Delivery date",
         "timeLabel": "Delivery time",
+        "timeError": "Enter a valid time (e.g., 14:30)",
         "optionalContactNote": "No trusted contact is required for this mode. The message will be sent automatically at the chosen date and time."
       },
       "checkin": {
