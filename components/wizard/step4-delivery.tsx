@@ -235,9 +235,9 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                                     }}
                                                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
                                                 />
-                                                <div className="w-full h-20 px-4 flex flex-col justify-center bg-input border border-border rounded-xl transition-all group-hover:border-primary/50 group-focus-within:ring-2 group-focus-within:ring-primary">
+                                                <div className="w-full h-24 px-4 flex flex-col items-center justify-center bg-input border border-border rounded-xl transition-all group-hover:border-primary/50 group-focus-within:ring-2 group-focus-within:ring-primary">
                                                     <span className="text-xl font-medium text-primary">{formattedDateDisplay}</span>
-                                                    <span className="text-xs text-muted-foreground capitalize mt-0.5">{weekday}</span>
+                                                    <span className="text-sm text-muted-foreground capitalize mt-1">{weekday}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -407,14 +407,14 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
         <button
             onClick={onClick}
             type="button"
-            className="w-16 h-6 flex items-center justify-center rounded-[6px] border border-border/30 bg-cream/20 text-primary/60 hover:bg-primary/5 hover:text-primary transition-all active:scale-95 p-0"
+            className="w-14 h-6 flex items-center justify-center rounded-[6px] border border-border/30 bg-cream/20 text-primary/60 hover:bg-primary/5 hover:text-primary transition-all active:scale-95 p-0"
         >
             {children}
         </button>
     )
 
     const ValueDisplay = ({ val }: { val: string | number }) => (
-        <div className="w-16 h-20 flex items-center justify-center bg-cream/10 border border-border/40 rounded-xl text-3xl font-medium text-primary">
+        <div className="w-14 h-12 flex items-center justify-center bg-cream/10 border border-border/40 rounded-xl text-xl font-medium text-primary">
             {typeof val === 'number' ? String(val).padStart(2, '0') : val}
         </div>
     )
@@ -453,11 +453,11 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
                 </SpinnerButton>
             </div>
 
-            <div className="flex flex-col gap-1.5 ml-1 h-full pt-[30px] items-center justify-center">
+            <div className="flex flex-col gap-1 ml-1 h-full pt-[33px] items-center justify-center">
                 <button
                     type="button"
                     onClick={() => togglePeriod('AM')}
-                    className={`w-14 h-9 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'AM'
+                    className={`w-14 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'AM'
                         ? 'bg-primary text-white border-primary shadow-sm'
                         : 'bg-cream/20 text-muted-foreground border-border hover:border-primary/30'
                         }`}
@@ -467,7 +467,7 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
                 <button
                     type="button"
                     onClick={() => togglePeriod('PM')}
-                    className={`w-14 h-9 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'PM'
+                    className={`w-14 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'PM'
                         ? 'bg-primary text-white border-primary shadow-sm'
                         : 'bg-cream/20 text-muted-foreground border-border hover:border-primary/30'
                         }`}
