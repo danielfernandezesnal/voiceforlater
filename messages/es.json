@@ -452,6 +452,7 @@
         "title": "Cuando ya no estés presente",
         "description": "Tus palabras llegan igual, en el momento y a la persona que vos elegiste, respetando tu voluntad.",
         "interval": "Intervalo de confirmación",
+        "intervalHelp": "Cada cierto tiempo te vamos a pedir que confirmes que estás activo. Si no respondés, comenzamos el proceso de entrega.",
         "days7": "Cada 7 días",
         "days30": "Cada 30 días",
         "days60": "Cada 60 días",
@@ -462,9 +463,9 @@
         "freeLimit": "Límite Free: 1",
         "contactLabel": "Contacto de confianza",
         "contactLabelNumbered": "Contacto de confianza {number}",
-        "selectPlaceholder": "Seleccionar",
+        "selectPlaceholder": "Seleccionar o crear uno nuevo",
         "addNew": "+ Agregar nuevo contacto...",
-        "posthumousContactRequired": "Para mensajes póstumos es obligatorio asignar al menos un contacto de confianza antes de continuar."
+        "posthumousContactRequired": "Para continuar, asigná al menos un contacto de confianza. Ellos serán contactados si no respondés los check-ins."
       }
     },
     "step5": {

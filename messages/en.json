@@ -468,6 +468,7 @@
         "title": "When you are no longer present",
         "description": "Your words arrive anyway, at the moment and to the person you chose, respecting your will.",
         "interval": "Check-in interval",
+        "intervalHelp": "Every now and then we'll ask you to confirm that you're active. If you don't respond, we'll start the delivery process.",
         "days7": "Every 7 days",
         "days30": "Every 30 days",
         "days60": "Every 60 days",
@@ -478,9 +479,9 @@
         "freeLimit": "Free Limit: 1",
         "contactLabel": "Trusted contact",
         "contactLabelNumbered": "Trusted contact {number}",
-        "selectPlaceholder": "Select",
+        "selectPlaceholder": "Select or create new",
         "addNew": "+ Add new contact...",
-        "posthumousContactRequired": "A trusted contact is required for posthumous messages before you can continue."
+        "posthumousContactRequired": "To continue, assign at least one trusted contact. They will be contacted if you don't respond to check-ins."
       }
     },
     "step5": {
