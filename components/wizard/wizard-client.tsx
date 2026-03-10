@@ -28,7 +28,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
     const router = useRouter()
     const searchParams = useSearchParams()
     const isReadOnly = searchParams.get('readonly') === 'true'
-    const { step, setStep, canProceed, data, updateData, clearDrafts, clearStorageOnly } = useWizard()
+    const { step, setStep, maxStep, canProceed, data, updateData, clearDrafts, clearStorageOnly } = useWizard()
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -176,7 +176,14 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                 <div className="w-20" />
             </div>
 
-            {!isReadOnly && <StepIndicator currentStep={step} steps={steps} />}
+            {!isReadOnly && (
+                <StepIndicator
+                    currentStep={step}
+                    maxStep={maxStep}
+                    steps={steps}
+                    onStepClick={setStep}
+                />
+            )}
 
             {error && (
                 <div className="max-w-md mx-auto mb-6 p-4 bg-error/10 border border-error/20 rounded-lg text-error text-center">

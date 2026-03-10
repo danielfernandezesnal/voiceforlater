@@ -35,6 +35,7 @@ interface WizardContextType {
     updateData: (updates: Partial<WizardData>) => void
     canProceed: boolean
     reset: () => void
+    maxStep: number
     clearDrafts: () => Promise<void>
     clearStorageOnly: () => Promise<void>
 }
@@ -61,9 +62,17 @@ const WizardContext = createContext<WizardContextType | null>(null)
 export function WizardProvider({ children, initialData: propInitialData }: { children: ReactNode; initialData?: Partial<WizardData> }) {
     // If editing, start at Step 2 (Content) or Step 5 (Review), skipping Step 1 (Type)
     const [step, setStep] = useState(propInitialData?.messageType ? 2 : 1)
+    const [maxStep, setMaxStep] = useState(step)
     const [data, setData] = useState<WizardData>({ ...initialData, ...propInitialData })
     // If editing, we consider it loaded immediately (server data), otherwise wait for client hydration
     const [isLoaded, setIsLoaded] = useState(!!propInitialData)
+
+    // Sync maxStep with step
+    useEffect(() => {
+        if (step > maxStep) {
+            setMaxStep(step)
+        }
+    }, [step, maxStep])
 
     // Load drafts on mount
     useEffect(() => {
@@ -99,6 +108,7 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
 
                 setData(loadedData)
                 setStep(loadedStep)
+                setMaxStep(loadedStep)
             } catch (err) {
                 console.error('Failed to load drafts:', err)
             } finally {
@@ -158,6 +168,7 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
     const reset = () => {
         // This is just in-memory reset, for full cleanup use clearDrafts
         setStep(1)
+        setMaxStep(1)
         setData(initialData)
     }
 
@@ -199,7 +210,7 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
     }
 
     return (
-        <WizardContext.Provider value={{ step, data, setStep, updateData, canProceed, reset, clearDrafts, clearStorageOnly }}>
+        <WizardContext.Provider value={{ step, data, setStep, maxStep, updateData, canProceed, reset, clearDrafts, clearStorageOnly }}>
             {children}
         </WizardContext.Provider>
     )
