@@ -325,12 +325,6 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                             </div>
                                         </div>
 
-                                        <div className="pt-4 border-t border-border/50">
-                                            <p className="text-[11px] text-muted-foreground flex gap-2">
-                                                <span className="shrink-0">ℹ️</span>
-                                                {step4Dict.checkin.note}
-                                            </p>
-                                        </div>
                                     </div>
                                 )}
 
