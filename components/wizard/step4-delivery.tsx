@@ -243,11 +243,14 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                     <div className="space-y-6">
                                         {/* Interval Selector */}
                                         <div>
-                                            <label className="block text-sm font-medium mb-2">{step4Dict.checkin.interval}</label>
+                                            <label className="block text-sm font-medium mb-1">{step4Dict.checkin.interval}</label>
+                                            <p className="text-[11px] leading-relaxed text-muted-foreground mb-3">
+                                                {step4Dict.checkin.intervalHelp}
+                                            </p>
                                             <select
                                                 value={data.checkinIntervalDays}
                                                 onChange={handleIntervalChange}
-                                                className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
+                                                className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all cursor-pointer"
                                             >
                                                 {/* All Options Available for All Plans */}
                                                 {/* <option value={7}>{step4Dict.checkin.days7 || '7 days'}</option> Removed per request */}
@@ -289,7 +292,7 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                                                 <select
                                                                     value={currentContacts[index] || ''}
                                                                     onChange={(e) => handleContactChange(index, e.target.value)}
-                                                                    className="w-full px-4 py-2.5 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary text-sm"
+                                                                    className="w-full px-4 py-2.5 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary text-sm cursor-pointer outline-none transition-all"
                                                                 >
                                                                     <option value="">-- {step4Dict.checkin.selectPlaceholder} --</option>
                                                                     {contacts.map(c => (
@@ -309,18 +312,19 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                                 )}
 
                                                 {currentContacts.length === 0 && !isCreating && !loadingContacts && (
-                                                    <div className="mt-2 flex items-start gap-2 rounded-xl p-3 text-sm animate-in fade-in"
-                                                        style={{ background: 'rgba(196,98,58,0.08)', border: '1px solid rgba(196,98,58,0.25)', color: '#C4623A' }}>
-                                                        <span className="text-base leading-none">⚠️</span>
+                                                    <div className="mt-4 flex items-start gap-3 rounded-xl p-4 text-[13px] leading-relaxed animate-in fade-in slide-in-from-top-1"
+                                                        style={{ background: 'rgba(196,98,58,0.06)', border: '1px solid rgba(196,98,58,0.15)', color: '#A34F2E' }}>
+                                                        <div className="shrink-0 mt-0.5">
+                                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                            </svg>
+                                                        </div>
                                                         <span>{step4Dict.checkin.posthumousContactRequired}</span>
                                                     </div>
                                                 )}
                                             </div>
                                         </div>
 
-                                        <p className="text-xs text-muted-foreground pt-2 border-t border-border">
-                                            {step4Dict.checkin.note}
-                                        </p>
                                     </div>
                                 )}
 
