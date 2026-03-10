@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react'
 import { saveAudioDraft, getAudioDraft, clearAudioDraft } from '@/lib/indexed-db'
 
 export type MessageType = 'text' | 'audio' | 'video'
@@ -148,9 +148,9 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
         }
     }, [data.audioBlob, isLoaded])
 
-    const updateData = (updates: Partial<WizardData>) => {
+    const updateData = useCallback((updates: Partial<WizardData>) => {
         setData((prev) => ({ ...prev, ...updates }))
-    }
+    }, [])
 
     const clearDrafts = async () => {
         localStorage.removeItem(STORAGE_KEY)
@@ -209,8 +209,20 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
         return null
     }
 
+    const contextValue = useMemo(() => ({
+        step,
+        data,
+        setStep,
+        maxStep,
+        updateData,
+        canProceed,
+        reset,
+        clearDrafts,
+        clearStorageOnly
+    }), [step, data, maxStep, updateData, canProceed, clearDrafts])
+
     return (
-        <WizardContext.Provider value={{ step, data, setStep, maxStep, updateData, canProceed, reset, clearDrafts, clearStorageOnly }}>
+        <WizardContext.Provider value={contextValue}>
             {children}
         </WizardContext.Provider>
     )

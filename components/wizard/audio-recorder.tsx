@@ -31,6 +31,7 @@ export function AudioRecorder({
     const [recordingTime, setRecordingTime] = useState(0)
     const [audioUrl, setAudioUrl] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
+    const [isInitializing, setIsInitializing] = useState(false)
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
     const chunksRef = useRef<Blob[]>([])
@@ -67,6 +68,7 @@ export function AudioRecorder({
     }, [isRecording])
 
     const startRecording = async () => {
+        setIsInitializing(true)
         try {
             setError(null)
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -107,6 +109,8 @@ export function AudioRecorder({
         } catch (err) {
             console.error('Error accessing microphone:', err)
             setError(dictionary.errorMicrophone)
+        } finally {
+            setIsInitializing(false)
         }
     }
 
@@ -145,9 +149,10 @@ export function AudioRecorder({
                     <p>{error}</p>
                     <button
                         onClick={() => startRecording()}
-                        className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors"
+                        disabled={isInitializing}
+                        className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors disabled:opacity-50"
                     >
-                        Autorizar / Intentar de nuevo
+                        {isInitializing ? 'Intentando...' : 'Autorizar / Intentar de nuevo'}
                     </button>
                 </div>
             )}
