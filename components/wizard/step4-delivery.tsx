@@ -1,7 +1,7 @@
 'use client'
 
 import { useWizard, DeliveryMode, WizardData } from './wizard-context'
-import { useState, useEffect, useCallback, useMemo, type ChangeEvent } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef, type ChangeEvent } from 'react'
 import Link from 'next/link'
 import { type Plan, getPlanLimits } from '@/lib/plans'
 import { CreateContactForm } from './create-contact-form'
@@ -235,9 +235,14 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                                     }}
                                                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
                                                 />
-                                                <div className="w-full h-20 px-4 flex flex-col justify-center bg-input border border-border rounded-xl transition-all group-hover:border-primary/50 group-focus-within:ring-2 group-focus-within:ring-primary">
+                                                <div className="w-full h-[108px] px-4 flex flex-col items-center justify-center bg-input border border-border rounded-xl transition-all group-hover:border-primary/50 group-focus-within:ring-2 group-focus-within:ring-primary relative">
                                                     <span className="text-xl font-medium text-primary">{formattedDateDisplay}</span>
-                                                    <span className="text-xs text-muted-foreground capitalize mt-0.5">{weekday}</span>
+                                                    <span className="text-sm text-muted-foreground capitalize mt-1">{weekday}</span>
+                                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+                                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                        </svg>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -371,6 +376,7 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
     const [h12, setH12] = useState(initialH12)
     const [m, setM] = useState(initialM)
     const [period, setPeriod] = useState(initialPeriod)
+    const minuteInputRef = useRef<HTMLInputElement>(null)
 
     // Notify parent on any change
     const updateParent = (newH12: number, newM: number, newPeriod: string) => {
@@ -398,6 +404,48 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
         updateParent(h12, next, period)
     }
 
+    const handleHourChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value.replace(/\D/g, '').slice(-2)
+        const num = Number(val)
+        if (val.length > 0) {
+            setH12(num)
+            if (val.length === 2) {
+                if (num > 12) setH12(12)
+                if (num === 0) setH12(1)
+                minuteInputRef.current?.focus()
+                updateParent(num > 12 ? 12 : (num === 0 ? 1 : num), m, period)
+            }
+        } else {
+            setH12(0)
+        }
+    }
+
+    const handleMinuteChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value.replace(/\D/g, '').slice(-2)
+        const num = Number(val)
+        if (val.length > 0) {
+            setM(num)
+            if (val.length === 2) {
+                if (num > 59) setM(59)
+                updateParent(h12, num > 59 ? 59 : num, period)
+            }
+        } else {
+            setM(0)
+        }
+    }
+
+    const handleBlur = () => {
+        // Validation on blur
+        let finalH = h12
+        let finalM = m
+        if (h12 > 12) finalH = 12
+        if (h12 < 1) finalH = 1
+        if (m > 59) finalM = 59
+        setH12(finalH)
+        setM(finalM)
+        updateParent(finalH, finalM, period)
+    }
+
     const togglePeriod = (p: string) => {
         setPeriod(p)
         updateParent(h12, m, p)
@@ -407,17 +455,12 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
         <button
             onClick={onClick}
             type="button"
-            className="w-16 h-6 flex items-center justify-center rounded-[6px] border border-border/30 bg-cream/20 text-primary/60 hover:bg-primary/5 hover:text-primary transition-all active:scale-95 p-0"
+            className="w-14 h-6 flex items-center justify-center rounded-[6px] border border-border/30 bg-cream/20 text-primary/60 hover:bg-primary/5 hover:text-primary transition-all active:scale-95 p-0"
         >
             {children}
         </button>
     )
 
-    const ValueDisplay = ({ val }: { val: string | number }) => (
-        <div className="w-16 h-20 flex items-center justify-center bg-cream/10 border border-border/40 rounded-xl text-3xl font-medium text-primary">
-            {typeof val === 'number' ? String(val).padStart(2, '0') : val}
-        </div>
-    )
 
     return (
         <div className="flex items-center gap-2 select-none">
@@ -428,7 +471,14 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 15l7-7 7 7" />
                     </svg>
                 </SpinnerButton>
-                <ValueDisplay val={h12} />
+                <input
+                    type="text"
+                    inputMode="numeric"
+                    value={h12 === 0 ? '' : String(h12).padStart(2, '0')}
+                    onChange={handleHourChange}
+                    onBlur={handleBlur}
+                    className="w-14 h-12 flex items-center justify-center bg-cream/10 border border-border/40 rounded-xl text-xl font-medium text-primary text-center focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all"
+                />
                 <SpinnerButton onClick={() => adjustHour(-1)}>
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
@@ -445,7 +495,15 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 15l7-7 7 7" />
                     </svg>
                 </SpinnerButton>
-                <ValueDisplay val={m} />
+                <input
+                    ref={minuteInputRef}
+                    type="text"
+                    inputMode="numeric"
+                    value={String(m).padStart(2, '0')}
+                    onChange={handleMinuteChange}
+                    onBlur={handleBlur}
+                    className="w-14 h-12 flex items-center justify-center bg-cream/10 border border-border/40 rounded-xl text-xl font-medium text-primary text-center focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all"
+                />
                 <SpinnerButton onClick={() => adjustMinute(-5)}>
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
@@ -453,11 +511,11 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
                 </SpinnerButton>
             </div>
 
-            <div className="flex flex-col gap-1.5 ml-1 h-full pt-[30px] items-center justify-center">
+            <div className="flex flex-col gap-1 ml-1 h-full pt-[33px] items-center justify-center">
                 <button
                     type="button"
                     onClick={() => togglePeriod('AM')}
-                    className={`w-14 h-9 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'AM'
+                    className={`w-14 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'AM'
                         ? 'bg-primary text-white border-primary shadow-sm'
                         : 'bg-cream/20 text-muted-foreground border-border hover:border-primary/30'
                         }`}
@@ -467,7 +525,7 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
                 <button
                     type="button"
                     onClick={() => togglePeriod('PM')}
-                    className={`w-14 h-9 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'PM'
+                    className={`w-14 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'PM'
                         ? 'bg-primary text-white border-primary shadow-sm'
                         : 'bg-cream/20 text-muted-foreground border-border hover:border-primary/30'
                         }`}
