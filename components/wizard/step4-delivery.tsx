@@ -219,11 +219,10 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                                 className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary"
                                             />
                                         </div>
-                                        <div className="w-full sm:w-48">
+                                        <div className="w-full sm:w-64">
                                             <label className="block text-sm font-medium mb-2">{step4Dict.date.timeLabel}</label>
-                                            <TimeInput
+                                            <TimePickerSpinner
                                                 value={currentTime}
-                                                errorLabel={step4Dict.date.timeError}
                                                 onChange={(newTime) => {
                                                     const localDate = new Date(currentDate + 'T' + newTime + ':00');
                                                     updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
@@ -338,73 +337,123 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
     )
 }
 
-function TimeInput({ value, onChange, errorLabel }: { value: string, onChange: (val: string) => void, errorLabel: string }) {
-    const [inputValue, setInputValue] = useState(value)
-    const [isValid, setIsValid] = useState(true)
+function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val: string) => void }) {
+    // value is HH:MM in 24h
+    const [h24, m24] = value.split(':').map(Number)
 
-    useEffect(() => {
-        setInputValue(value)
-    }, [value])
+    // Convert to 12h internal state
+    const initialPeriod = h24 >= 12 ? 'PM' : 'AM'
+    const initialH12 = h24 % 12 === 0 ? 12 : h24 % 12
+    const initialM = Math.floor(m24 / 5) * 5 // Round to nearest 5 for the spinner
 
-    const validate = (val: string) => {
-        if (val.length === 0) return true
-        if (val.length !== 5) return false
-        const [h, m] = val.split(':').map(Number)
-        return h >= 0 && h < 24 && m >= 0 && m < 60
+    const [h12, setH12] = useState(initialH12)
+    const [m, setM] = useState(initialM)
+    const [period, setPeriod] = useState(initialPeriod)
+
+    // Notify parent on any change
+    const updateParent = (newH12: number, newM: number, newPeriod: string) => {
+        let h24_final = newH12 % 12
+        if (newPeriod === 'PM') h24_final += 12
+
+        const h_str = String(h24_final).padStart(2, '0')
+        const m_str = String(newM).padStart(2, '0')
+        onChange(`${h_str}:${m_str}`)
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let val = e.target.value.replace(/\D/g, '') // Keep only digits
-
-        if (val.length > 4) val = val.substring(0, 4)
-
-        let formatted = val
-        if (val.length > 2) {
-            formatted = val.substring(0, 2) + ':' + val.substring(2)
-        }
-
-        setInputValue(formatted)
-
-        const valid = validate(formatted)
-        setIsValid(valid)
-
-        if (formatted.length === 5 && valid) {
-            onChange(formatted)
-        }
+    const adjustHour = (delta: number) => {
+        let next = h12 + delta
+        if (next > 12) next = 1
+        if (next < 1) next = 12
+        setH12(next)
+        updateParent(next, m, period)
     }
 
-    const handleBlur = () => {
-        if (inputValue.length < 5) {
-            setInputValue('')
-            setIsValid(true)
-        } else {
-            const valid = validate(inputValue)
-            setIsValid(valid)
-            if (valid) {
-                onChange(inputValue)
-            }
-        }
+    const adjustMinute = (delta: number) => {
+        let next = m + delta
+        if (next >= 60) next = 0
+        if (next < 0) next = 55
+        setM(next)
+        updateParent(h12, next, period)
     }
+
+    const togglePeriod = (p: string) => {
+        setPeriod(p)
+        updateParent(h12, m, p)
+    }
+
+    const SpinnerButton = ({ onClick, children }: { onClick: () => void, children: React.ReactNode }) => (
+        <button
+            onClick={onClick}
+            type="button"
+            className="w-12 h-11 flex items-center justify-center rounded-lg border border-border bg-cream/50 text-primary hover:bg-primary/10 transition-colors"
+        >
+            {children}
+        </button>
+    )
+
+    const ValueDisplay = ({ val }: { val: string | number }) => (
+        <div className="w-16 h-16 flex items-center justify-center bg-cream/30 border border-border/50 rounded-xl text-4xl font-serif italic text-primary">
+            {typeof val === 'number' ? String(val).padStart(2, '0') : val}
+        </div>
+    )
 
     return (
-        <div className="space-y-1">
-            <input
-                type="text"
-                placeholder="HH:MM"
-                value={inputValue}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`w-full px-4 py-3 bg-input border rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all ${!isValid ? 'border-error ring-error/20' : 'border-border'
-                    }`}
-                style={{ fontSize: '16px' }}
-                maxLength={5}
-                inputMode="numeric"
-            />
-            {!isValid && (
-                <p className="text-[11px] text-error font-medium animate-in fade-in slide-in-from-top-1">
-                    {errorLabel}
-                </p>
-            )}
+        <div className="flex items-center gap-2 select-none">
+            {/* Hours */}
+            <div className="flex flex-col items-center gap-1">
+                <SpinnerButton onClick={() => adjustHour(1)}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+                    </svg>
+                </SpinnerButton>
+                <ValueDisplay val={h12} />
+                <SpinnerButton onClick={() => adjustHour(-1)}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                    </svg>
+                </SpinnerButton>
+            </div>
+
+            <div className="text-2xl font-serif italic text-primary/50 mt-1">:</div>
+
+            {/* Minutes */}
+            <div className="flex flex-col items-center gap-1">
+                <SpinnerButton onClick={() => adjustMinute(5)}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+                    </svg>
+                </SpinnerButton>
+                <ValueDisplay val={m} />
+                <SpinnerButton onClick={() => adjustMinute(-5)}>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                    </svg>
+                </SpinnerButton>
+            </div>
+
+            {/* AM/PM */}
+            <div className="flex flex-col gap-1 ml-1 h-full pt-12 items-center justify-center">
+                <button
+                    type="button"
+                    onClick={() => togglePeriod('AM')}
+                    className={`w-14 h-11 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'AM'
+                        ? 'bg-primary text-white border-primary shadow-sm'
+                        : 'bg-cream/20 text-muted-foreground border-border hover:border-primary/30'
+                        }`}
+                >
+                    AM
+                </button>
+                <button
+                    type="button"
+                    onClick={() => togglePeriod('PM')}
+                    className={`w-14 h-11 flex items-center justify-center rounded-lg text-xs font-bold transition-all border ${period === 'PM'
+                        ? 'bg-primary text-white border-primary shadow-sm'
+                        : 'bg-cream/20 text-muted-foreground border-border hover:border-primary/30'
+                        }`}
+                >
+                    PM
+                </button>
+            </div>
         </div>
     )
 }
