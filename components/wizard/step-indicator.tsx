@@ -10,7 +10,7 @@ interface StepIndicatorProps {
 export function StepIndicator({ currentStep, maxStep, steps, onStepClick }: StepIndicatorProps) {
     return (
         <nav className="flex items-center justify-center mb-10 overflow-x-auto pb-4 sm:pb-0 no-scrollbar">
-            <div className="flex items-center">
+            <div className="flex items-center gap-1 sm:gap-0">
                 {steps.map((label, index) => {
                     const stepNumber = index + 1
                     const isActive = stepNumber === currentStep
@@ -50,7 +50,7 @@ export function StepIndicator({ currentStep, maxStep, steps, onStepClick }: Step
                                     )}
                                 </div>
                                 <span
-                                    className={`relative z-10 mt-3 text-[10px] sm:text-xs uppercase tracking-widest whitespace-nowrap transition-colors duration-300 ${isActive
+                                    className={`relative z-10 mt-3 text-[10px] sm:text-xs uppercase tracking-normal sm:tracking-widest whitespace-nowrap transition-colors duration-300 ${isActive
                                         ? 'text-foreground font-bold'
                                         : isClickable
                                             ? 'text-muted-foreground hover:text-primary'
@@ -64,7 +64,7 @@ export function StepIndicator({ currentStep, maxStep, steps, onStepClick }: Step
                             {/* Connector Line */}
                             {!isLast && (
                                 <div
-                                    className={`w-8 sm:w-16 h-[2px] mx-1 sm:mx-4 rounded-full transition-colors duration-500 ${stepNumber < currentStep ? 'bg-success/40' : 'bg-border/20'
+                                    className={`hidden sm:block w-10 h-[2px] mx-2 rounded-full transition-colors duration-500 ${stepNumber < currentStep ? 'bg-success/40' : 'bg-border/20'
                                         }`}
                                 />
                             )}
