@@ -774,6 +774,14 @@
       "button": "🎙 Acceder al mensaje",
       "closing": "Porque hay palabras que merecen llegar, sin importar cuándo.",
       "footerLegal": "Recibiste este email porque alguien dejó un mensaje para vos. Si creés que es un error, podés ignorar este mensaje."
+    },
+    "resetPassword": {
+      "subject": "Tu nueva contraseña de Carry My Words",
+      "title": "Contraseña restablecida",
+      "intro": "Has solicitado restablecer tu contraseña. Aquí tienes una nueva contraseña temporal:",
+      "passwordLabel": "Tu contraseña temporal:",
+      "warning": "Te recomendamos cambiarla apenas inicies sesión.",
+      "footer": "Si no solicitaste esto, por favor contactá a soporte."
     }
   },
   "legal": {

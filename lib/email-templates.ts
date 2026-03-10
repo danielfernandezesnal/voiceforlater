@@ -83,6 +83,14 @@ export type EmailDictionary = {
       closing: string;
       footerLegal: string;
     };
+    resetPassword: {
+      subject: string;
+      title: string;
+      intro: string;
+      passwordLabel: string;
+      warning: string;
+      footer: string;
+    };
   };
 };
 
@@ -734,4 +742,110 @@ export const getMessagePosthumousTemplate = (
     `;
 
   return { subject, html };
+};
+
+export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password: string }) => {
+  const t = dict.emails.resetPassword;
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#F0ECE4;font-family:Georgia,serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
+  <tr>
+    <td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+        <!-- LOGO -->
+        <tr>
+          <td align="center" style="padding-bottom:28px;">
+            <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
+              Carry My Words
+            </div>
+            <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
+              MENSAJES QUE VIAJAN EN EL TIEMPO
+            </div>
+          </td>
+        </tr>
+
+        <!-- CARD -->
+        <tr>
+          <td style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(42,37,32,0.08);">
+
+            <!-- HERO BLOCK -->
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="background:#C0522A;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
+                  <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
+                    CARRY MY WORDS
+                  </div>
+                  <div style="font-family:Georgia,serif;font-size:30px;font-weight:600;color:#ffffff;line-height:1.25;">
+                    ${t.title}
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <!-- CUERPO -->
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding:36px;">
+                  
+                  <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#2A2520;">
+                    ${t.intro}
+                  </p>
+
+                  <!-- BLOQUE CONTRASEÑA -->
+                  <div style="background:#f4f4f5;border-radius:8px;padding:24px;margin-bottom:24px;text-align:center;border:1px solid #e4e4e7;">
+                    <p style="margin:0 0 12px;font-size:13px;color:#71717a;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">
+                      ${t.passwordLabel}
+                    </p>
+                    <div style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:32px;font-weight:700;color:#18181b;letter-spacing:0.1em;">
+                      ${data.password}
+                    </div>
+                  </div>
+
+                  <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#C0522A;font-weight:600;text-align:center;">
+                    ${t.warning}
+                  </p>
+
+                  <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
+
+                  <!-- INFO TEXT -->
+                  <p style="margin:0;font-style:italic;font-size:13px;line-height:1.6;color:#7A6050;">
+                    ${t.footer}
+                  </p>
+
+                </td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="padding:28px 16px 8px;" align="center">
+            <div style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
+              Carry My Words
+            </div>
+            <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
+              <a href="https://voiceforlater.vercel.app" style="color:#A08878;text-decoration:underline;">voiceforlater.vercel.app</a>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
+`;
+  return { subject: t.subject, html };
 };

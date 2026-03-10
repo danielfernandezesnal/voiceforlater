@@ -790,6 +790,14 @@
       "button": "🎙 Access the message",
       "closing": "Because there are words that deserve to arrive, no matter when.",
       "footerLegal": "You received this email because someone left a message for you. If you believe this is an error, you can ignore this message."
+    },
+    "resetPassword": {
+      "subject": "Your new Carry My Words password",
+      "title": "Password reset",
+      "intro": "You requested a password reset. Here is your new temporary password:",
+      "passwordLabel": "Your temporary password:",
+      "warning": "We recommend changing it as soon as you log in.",
+      "footer": "If you didn't request this, contact support."
     }
   },
   "legal": {
