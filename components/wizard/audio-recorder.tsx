@@ -69,13 +69,25 @@ export function AudioRecorder({
 
     const startRecording = async () => {
         setIsInitializing(true)
+        setError(null)
+        
+        let stream: MediaStream
         try {
-            setError(null)
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                throw new Error("navigator.mediaDevices no está disponible. ¿Estás usando HTTP sin localhost?")
+            }
+            stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        } catch (err) {
+            console.error('Error accessing microphone:', err)
+            const msg = err instanceof Error ? err.message : String(err)
+            setError(`Error de micrófono: ${msg}`)
+            setTimeout(() => setIsInitializing(false), 800)
+            return
+        }
 
-            const mediaRecorder = new MediaRecorder(stream, {
-                mimeType: MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4'
-            })
+        try {
+            // Eliminar la restricción dura de mimeType para que el navegador elija su formato nativo soportado automático
+            const mediaRecorder = new MediaRecorder(stream)
 
             mediaRecorderRef.current = mediaRecorder
             chunksRef.current = []
@@ -106,11 +118,12 @@ export function AudioRecorder({
                     return next
                 })
             }, 1000)
-        } catch (err) {
-            console.error('Error accessing microphone:', err)
-            setError(dictionary.errorMicrophone)
-        } finally {
             setIsInitializing(false)
+        } catch (err) {
+            console.error('Error starting MediaRecorder:', err)
+            const msg = err instanceof Error ? err.message : String(err)
+            setError(`Error interno de grabación: ${msg}`)
+            setTimeout(() => setIsInitializing(false), 800)
         }
     }
 
@@ -145,14 +158,18 @@ export function AudioRecorder({
     return (
         <div className="p-6 bg-card border border-border rounded-xl space-y-6">
             {error && (
-                <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3">
-                    <p>{error}</p>
+                <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3 flex flex-col items-center">
+                    <p className="font-medium break-words max-w-full">{error}</p>
+                    <p className="text-xs opacity-90 max-w-[280px]">
+                        Si bloqueaste el acceso antes, habilitalo desde el ícono del candado 🔒 en la barra de direcciones y recargá la página.
+                    </p>
                     <button
+                        type="button"
                         onClick={() => startRecording()}
                         disabled={isInitializing}
-                        className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors disabled:opacity-50"
+                        className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors disabled:opacity-50 mt-1"
                     >
-                        {isInitializing ? 'Intentando...' : 'Autorizar / Intentar de nuevo'}
+                        {isInitializing ? 'Intentando...' : 'Intentar de nuevo'}
                     </button>
                 </div>
             )}
