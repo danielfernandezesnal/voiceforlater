@@ -79,7 +79,7 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
             if (!data.deliverAt) {
                 const tomorrow = new Date()
                 tomorrow.setDate(tomorrow.getDate() + 1)
-                tomorrow.setHours(0, 0, 0, 0)
+                tomorrow.setHours(12, 0, 0, 0)
                 updates.deliverAt = tomorrow.toISOString()
             }
             updateData(updates)
@@ -240,6 +240,13 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                                         if (!e.target.value) return;
                                                         const localDate = new Date(e.target.value + 'T' + currentTime + ':00');
                                                         updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
+                                                    }}
+                                                    onClick={(e) => {
+                                                        try {
+                                                            if ('showPicker' in e.currentTarget) {
+                                                                (e.currentTarget as HTMLInputElement).showPicker();
+                                                            }
+                                                        } catch (err) {}
                                                     }}
                                                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
                                                     title={step4Dict.date.label}
