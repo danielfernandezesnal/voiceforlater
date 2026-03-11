@@ -204,11 +204,6 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
         }
     })()
 
-    if (!isLoaded) {
-        // Optional: Render nothing or a loader while hydrating
-        return null
-    }
-
     const contextValue = useMemo(() => ({
         step,
         data,
@@ -220,6 +215,11 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
         clearDrafts,
         clearStorageOnly
     }), [step, data, maxStep, updateData, canProceed, clearDrafts])
+
+    if (!isLoaded) {
+        // Optional: Render nothing or a loader while hydrating
+        return null
+    }
 
     return (
         <WizardContext.Provider value={contextValue}>
