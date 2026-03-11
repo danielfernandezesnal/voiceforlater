@@ -121,8 +121,6 @@ export async function POST(request: NextRequest) {
         const formData = await request.formData();
         const type = formData.get("type") as "text" | "audio" | "video";
         const title = formData.get("title") as string | null;
-        const recipientName = formData.get("recipientName") as string;
-        const recipientEmail = formData.get("recipientEmail") as string;
         const deliveryMode = formData.get("deliveryMode") as "date" | "checkin";
         const textContent = formData.get("textContent") as string | null;
         const audioFile = formData.get("audio") as File | null;
@@ -131,8 +129,19 @@ export async function POST(request: NextRequest) {
         const checkinIntervalDays = formData.get("checkinIntervalDays") as string | null;
         const trustedContactIds = formData.getAll("trustedContactIds") as string[];
 
+        // Parse recipients (up to 10)
+        const recipientsData: Array<{ name: string; email: string }> = []
+        for (let i = 0; i < 10; i++) {
+            const name = formData.get(`recipients[${i}][name]`) as string | null
+            const email = formData.get(`recipients[${i}][email]`) as string | null
+            if (name && email) recipientsData.push({ name, email })
+        }
+        if (recipientsData.length === 0) {
+            return NextResponse.json({ error: "At least one recipient is required" }, { status: 400 });
+        }
+
         // Validate required fields
-        if (!type || !recipientName || !recipientEmail || !deliveryMode || !title || title.trim().length === 0) {
+        if (!type || recipientsData.length === 0 || !deliveryMode || !title || title.trim().length === 0) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
@@ -289,18 +298,15 @@ export async function POST(request: NextRequest) {
             }, { status: 500 });
         }
 
-        // Create recipient
-        const { error: recipientError } = await supabase.from("recipients").insert({
-            message_id: message.id,
-            name: recipientName,
-            email: recipientEmail,
-        });
+        // Create recipients (bulk insert)
+        const recipientRows = recipientsData.map(r => ({ message_id: message.id, name: r.name, email: r.email }))
+        const { error: recipientError } = await supabase.from("recipients").insert(recipientRows);
 
         if (recipientError) {
             console.error("Recipient error:", recipientError);
             // Rollback message
             await supabase.from("messages").delete().eq("id", message.id);
-            return NextResponse.json({ error: "Failed to create recipient" }, { status: 500 });
+            return NextResponse.json({ error: "Failed to create recipients" }, { status: 500 });
         }
 
         // Create delivery rule
@@ -442,14 +448,20 @@ export async function PUT(request: NextRequest) {
         // Extract update data
         const type = formData.get("type") as "text" | "audio" | "video";
         const title = formData.get("title") as string | null;
-        const recipientName = formData.get("recipientName") as string;
-        const recipientEmail = formData.get("recipientEmail") as string;
         const deliveryMode = formData.get("deliveryMode") as "date" | "checkin";
         const textContent = formData.get("textContent") as string | null;
         const audioFile = formData.get("audio") as File | null;
         const deliverAt = formData.get("deliverAt") as string | null;
         const checkinIntervalDays = formData.get("checkinIntervalDays") as string | null;
         const trustedContactIds = formData.getAll("trustedContactIds") as string[];
+
+        // Parse recipients (up to 10)
+        const recipientsData: Array<{ name: string; email: string }> = []
+        for (let i = 0; i < 10; i++) {
+            const name = formData.get(`recipients[${i}][name]`) as string | null
+            const email = formData.get(`recipients[${i}][email]`) as string | null
+            if (name && email) recipientsData.push({ name, email })
+        }
 
         // Validate type change for plan
         if (type && !limits.allowedTypes.includes(type)) {
@@ -463,8 +475,8 @@ export async function PUT(request: NextRequest) {
             );
         }
 
-        // Validation (simplified vs POST, assuming valid input mostly)
-        if (!type || !recipientName || !recipientEmail || !deliveryMode || !title || title.trim().length === 0) {
+        // Validation
+        if (!type || recipientsData.length === 0 || !deliveryMode || !title || title.trim().length === 0) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
@@ -512,13 +524,10 @@ export async function PUT(request: NextRequest) {
 
         if (messageError) throw messageError;
 
-        // Update Recipient
-        // Assuming 1 recipient per message for now
-        const { error: recipientError } = await supabase
-            .from("recipients")
-            .update({ name: recipientName, email: recipientEmail })
-            .eq("message_id", messageId);
-
+        // Update Recipients — delete existing and reinsert new set
+        await supabase.from("recipients").delete().eq("message_id", messageId);
+        const recipientRows = recipientsData.map(r => ({ message_id: messageId, name: r.name, email: r.email }))
+        const { error: recipientError } = await supabase.from("recipients").insert(recipientRows);
         if (recipientError) throw recipientError;
 
         // Update Delivery Rule

@@ -108,7 +108,7 @@ export function Step5Review({
         },
         {
             label: dictionary.recipient,
-            value: `${data.recipientName} (${data.recipientEmail})`,
+            value: data.recipients.map(r => `${r.name} (${r.email})`).join('\n'),
             step: 3
         },
         {

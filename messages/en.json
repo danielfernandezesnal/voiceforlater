@@ -446,11 +446,13 @@
     },
     "step3": {
       "title": "Who is this message for?",
-      "subtitle": "Who is this message for? Only that person will receive it, at the exact moment you define in the next step.",
+      "subtitle": "You can add up to 10 people. All of them will receive the same message.",
       "nameLabel": "Recipient's name",
       "namePlaceholder": "John Doe",
       "emailLabel": "Recipient's email",
       "emailPlaceholder": "john@example.com",
+      "addRecipient": "Add recipient",
+      "recipientN": "Recipient {n}",
       "posthumousContactWarning": "⚠️ This message type requires a trusted contact. You'll be able to assign one in the next step."
     },
     "step4": {
