@@ -798,12 +798,19 @@
       "passwordLabel": "Your temporary password:",
       "warning": "We recommend changing it as soon as you log in.",
       "footer": "If you didn't request this, contact support."
+    },
+    "paymentFailed": {
+      "subject": "Payment issue with your Carry My Words subscription",
+      "title": "Payment unsuccessful",
+      "intro": "We were unable to process the payment for your subscription. To ensure your messages remain protected and ready for delivery, your plan status has been updated to: {planStatus}.",
+      "action": "Update Payment Method",
+      "footer": "If you have any questions, please contact our support team."
     }
   },
   "legal": {
     "terms": {
       "version": "Version 1.0",
-      "lastUpdated": "Last updated: October 2026",
+      "lastUpdated": "Last updated: March 2026",
       "title": "Terms of Service",
       "sections": [
         {
@@ -866,7 +873,7 @@
     },
     "privacy": {
       "version": "Version 1.0",
-      "lastUpdated": "Last updated: October 2026",
+      "lastUpdated": "Last updated: March 2026",
       "title": "Privacy Policy",
       "sections": [
         {

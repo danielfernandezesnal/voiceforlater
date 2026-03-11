@@ -91,6 +91,13 @@ export type EmailDictionary = {
       warning: string;
       footer: string;
     };
+    paymentFailed: {
+      subject: string;
+      title: string;
+      intro: string;
+      action: string;
+      footer: string;
+    };
   };
 };
 
@@ -832,6 +839,105 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
           <td style="padding:28px 16px 8px;" align="center">
             <div style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
               Carry My Words
+            </div>
+            <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
+              <a href="https://voiceforlater.vercel.app" style="color:#A08878;text-decoration:underline;">voiceforlater.vercel.app</a>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
+`;
+  return { subject: t.subject, html };
+};
+
+export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStatus: string }) => {
+  const t = dict.emails.paymentFailed;
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#F0ECE4;font-family:Georgia,serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
+  <tr>
+    <td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+        <!-- LOGO -->
+        <tr>
+          <td align="center" style="padding-bottom:28px;">
+            <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
+              ${dict.emails.common.footerSignature}
+            </div>
+            <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
+              MENSAJES QUE VIAJAN EN EL TIEMPO
+            </div>
+          </td>
+        </tr>
+
+        <!-- CARD -->
+        <tr>
+          <td style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(42,37,32,0.08);">
+
+            <!-- HERO BLOCK -->
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="background:#C0522A;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
+                  <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
+                    CARRY MY WORDS
+                  </div>
+                  <div style="font-family:Georgia,serif;font-size:30px;font-weight:600;color:#ffffff;line-height:1.25;">
+                    ${t.title}
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <!-- CUERPO -->
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding:36px;">
+                  
+                  <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#2A2520;">
+                    ${t.intro.replace('{planStatus}', data.planStatus)}
+                  </p>
+
+                  <!-- BOTÓN -->
+                  <div style="margin-bottom:32px;text-align:center;">
+                    <a href="https://voiceforlater.vercel.app/dashboard" style="display:inline-block;padding:14px 28px;background:#C0522A;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;">
+                      ${t.action}
+                    </a>
+                  </div>
+
+                  <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
+
+                  <!-- INFO TEXT -->
+                  <p style="margin:0;font-style:italic;font-size:13px;line-height:1.6;color:#7A6050;">
+                    ${t.footer}
+                  </p>
+
+                </td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="padding:28px 16px 8px;" align="center">
+            <div style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
+              ${dict.emails.common.footerSignature}
             </div>
             <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
               <a href="https://voiceforlater.vercel.app" style="color:#A08878;text-decoration:underline;">voiceforlater.vercel.app</a>
