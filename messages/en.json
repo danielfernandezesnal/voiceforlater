@@ -192,7 +192,7 @@
         },
         {
           "q": "What is the difference between the Free and Pro plans?",
-          "a": "Free: 1 message, text only, specific date delivery, 1 trusted person. Pro: unlimited messages, text, audio and video, up to 3 trusted people, more delivery options."
+          "a": "Free: 1 message, text and audio, specific date delivery, 1 trusted person. Pro: unlimited messages, text, audio and video, up to 3 trusted people, more delivery options."
         },
         {
           "q": "Can I edit or delete my messages?",
@@ -778,7 +778,7 @@
       "p2": "It is something thought out, chosen, and carefully kept until this moment.",
       "button": "🎙 Access the message",
       "info": "Carry My Words is a platform that allows you to send text, voice, or video messages to loved ones, choosing when you want them to arrive: on an important date, or at that moment when you are no longer there to say it yourself.",
-      "closing": "Because some words deserve to arrive at the right time.",
+      "closing": "Because some words deserve to arrive at just the right moment.",
       "signature": "— The Carry My Words team"
     },
     "messagePosthumous": {
@@ -790,12 +790,27 @@
       "button": "🎙 Access the message",
       "closing": "Because there are words that deserve to arrive, no matter when.",
       "footerLegal": "You received this email because someone left a message for you. If you believe this is an error, you can ignore this message."
+    },
+    "resetPassword": {
+      "subject": "Your new Carry My Words password",
+      "title": "Password reset",
+      "intro": "You requested a password reset. Here is your new temporary password:",
+      "passwordLabel": "Your temporary password:",
+      "warning": "We recommend changing it as soon as you log in.",
+      "footer": "If you didn't request this, contact support."
+    },
+    "paymentFailed": {
+      "subject": "Payment issue with your Carry My Words subscription",
+      "title": "Payment unsuccessful",
+      "intro": "We were unable to process the payment for your subscription. To ensure your messages remain protected and ready for delivery, your plan status has been updated to: {planStatus}.",
+      "action": "Update Payment Method",
+      "footer": "If you have any questions, please contact our support team."
     }
   },
   "legal": {
     "terms": {
       "version": "Version 1.0",
-      "lastUpdated": "Last updated: October 2026",
+      "lastUpdated": "Last updated: March 2026",
       "title": "Terms of Service",
       "sections": [
         {
@@ -858,7 +873,7 @@
     },
     "privacy": {
       "version": "Version 1.0",
-      "lastUpdated": "Last updated: October 2026",
+      "lastUpdated": "Last updated: March 2026",
       "title": "Privacy Policy",
       "sections": [
         {

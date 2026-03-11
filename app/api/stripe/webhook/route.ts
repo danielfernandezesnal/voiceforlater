@@ -3,6 +3,9 @@ import { createClient as createAdminClient } from "@supabase/supabase-js";
 import Stripe from "stripe";
 import { trackServerEvent } from "@/lib/analytics/trackEvent";
 import { getResourceId, mapSubscriptionToPlan } from "@/lib/stripe/utils";
+import { getResend, DEFAULT_SENDER } from "@/lib/resend";
+import { getPaymentFailedTemplate } from "@/lib/email-templates";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 
 // Use service role for webhook operations (bypasses RLS)
 function getAdminSupabase() {
@@ -336,7 +339,7 @@ export async function POST(request: NextRequest) {
 
                 const { data: profile } = await supabase
                     .from("profiles")
-                    .select("id")
+                    .select("id, email")
                     .eq("stripe_customer_id", customerId)
                     .single();
 
@@ -361,6 +364,28 @@ export async function POST(request: NextRequest) {
                             plan_ends_at: mappedPlan.effectiveUntil
                         })
                         .eq("id", profile.id);
+
+                    // --- Send Email Notification ---
+                    try {
+                        const email = profile.email;
+                        if (email) {
+                            const dict = await getDictionary('es'); // Fallback locale
+                            const resend = getResend();
+                            const { subject, html } = getPaymentFailedTemplate(dict, {
+                                planStatus: mappedPlan.effectiveStatus
+                            });
+
+                            await resend.emails.send({
+                                from: DEFAULT_SENDER,
+                                to: email,
+                                subject,
+                                html
+                            });
+                            console.info("[stripe:webhook] payment_failed email sent to", email);
+                        }
+                    } catch (emailErr) {
+                        console.error("[stripe:webhook] failed to send payment_failed email", emailErr);
+                    }
 
                     // Log event
                     await supabase.from("events").insert({

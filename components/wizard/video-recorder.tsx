@@ -61,6 +61,7 @@ export function VideoRecorder({
         if (videoBlob || existingVideoUrl) return
 
         setIsInitializing(true)
+        setError(null)
         try {
             // Stop any existing tracks first
             if (streamRef.current) {

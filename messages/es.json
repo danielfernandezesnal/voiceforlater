@@ -182,7 +182,7 @@
         },
         {
           "q": "¿Cuál es la diferencia entre el plan Free y Pro?",
-          "a": "Free: 1 mensaje, solo texto, 1 persona de confianza. PRO: mensajes ilimitados, texto, audio y video, hasta 3 personas de confianza."
+          "a": "Free: 1 mensaje, texto y audio, 1 persona de confianza. PRO: mensajes ilimitados, texto, audio y video, hasta 3 personas de confianza."
         },
         {
           "q": "¿Puedo editar o eliminar mis mensajes?",
@@ -253,7 +253,8 @@
     "footer": {
       "privacy": "Privacidad",
       "terms": "Términos",
-      "contact": "Contacto"
+      "contact": "Contacto",
+      "cancel": "Cancelar"
     }
   },
   "auth": {
@@ -774,12 +775,27 @@
       "button": "🎙 Acceder al mensaje",
       "closing": "Porque hay palabras que merecen llegar, sin importar cuándo.",
       "footerLegal": "Recibiste este email porque alguien dejó un mensaje para vos. Si creés que es un error, podés ignorar este mensaje."
+    },
+    "resetPassword": {
+      "subject": "Tu nueva contraseña de Carry My Words",
+      "title": "Contraseña restablecida",
+      "intro": "Has solicitado restablecer tu contraseña. Aquí tienes una nueva contraseña temporal:",
+      "passwordLabel": "Tu contraseña temporal:",
+      "warning": "Te recomendamos cambiarla apenas inicies sesión.",
+      "footer": "Si no solicitaste esto, por favor contactá a soporte."
+    },
+    "paymentFailed": {
+      "subject": "Problema con el pago de tu suscripción en Carry My Words",
+      "title": "Pago no procesado",
+      "intro": "No hemos podido procesar el pago de tu suscripción. Para asegurar que tus mensajes sigan protegidos y listos para su entrega, el estado de tu plan se ha actualizado a: {planStatus}.",
+      "action": "Actualizar medio de pago",
+      "footer": "Si tenés alguna duda, por favor contactá a nuestro equipo de soporte."
     }
   },
   "legal": {
     "terms": {
       "version": "Versión 1.0",
-      "lastUpdated": "Última actualización: Octubre 2026",
+      "lastUpdated": "Última actualización: Marzo 2026",
       "title": "Términos de Servicio",
       "sections": [
         {
@@ -846,7 +862,7 @@
     },
     "privacy": {
       "version": "Versión 1.0",
-      "lastUpdated": "Última actualización: Octubre 2026",
+      "lastUpdated": "Última actualización: Marzo 2026",
       "title": "Política de Privacidad",
       "sections": [
         {

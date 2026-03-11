@@ -150,19 +150,27 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
     const [minDate] = useState(() => {
         const tomorrow = new Date()
         tomorrow.setDate(tomorrow.getDate() + 1)
-        return tomorrow.toISOString().split('T')[0]
+        const y = tomorrow.getFullYear()
+        const m = String(tomorrow.getMonth() + 1).padStart(2, '0')
+        const d = String(tomorrow.getDate()).padStart(2, '0')
+        return `${y}-${m}-${d}`
     })
 
     const currentDate = useMemo(() => {
-        if (data.deliverAt) return data.deliverAt.split('T')[0]
-        return minDate
+        if (!data.deliverAt) return minDate
+        const d = new Date(data.deliverAt)
+        const year = d.getFullYear()
+        const month = String(d.getMonth() + 1).padStart(2, '0')
+        const day = String(d.getDate()).padStart(2, '0')
+        return `${year}-${month}-${day}`
     }, [data.deliverAt, minDate])
 
     const currentTime = useMemo(() => {
-        if (data.deliverAt && data.deliverAt.includes('T')) {
-            return data.deliverAt.split('T')[1].substring(0, 5)
-        }
-        return '12:00' // Default to noon if not set
+        if (!data.deliverAt) return '12:00'
+        const d = new Date(data.deliverAt)
+        const h = String(d.getHours()).padStart(2, '0')
+        const m = String(d.getMinutes()).padStart(2, '0')
+        return `${h}:${m}`
     }, [data.deliverAt])
 
     const weekday = useMemo(() => {
@@ -234,8 +242,9 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                                         updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
                                                     }}
                                                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+                                                    title={step4Dict.date.label}
                                                 />
-                                                <div className="w-full h-[108px] px-4 flex flex-col items-center justify-center bg-input border border-border rounded-xl transition-all group-hover:border-primary/50 group-focus-within:ring-2 group-focus-within:ring-primary relative">
+                                                <div className="w-full h-[108px] px-4 flex flex-col items-center justify-center bg-input border border-border rounded-xl transition-all group-hover:border-primary/50 group-focus-within:ring-2 group-focus-within:ring-primary relative pointer-events-none">
                                                     <span className="text-xl font-medium text-primary">{formattedDateDisplay}</span>
                                                     <span className="text-sm text-muted-foreground capitalize mt-1">{weekday}</span>
                                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground/50">
