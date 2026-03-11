@@ -217,56 +217,61 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
 
     // Mobile Layout Block
     const MobileLayout = (
-        <div className="flex md:hidden flex-col border border-border/60 rounded-2xl bg-card shadow-sm w-full">
+        <div className="flex md:hidden flex-col border border-border/60 rounded-[1rem] bg-card shadow-sm w-full">
             {/* Bloque 1 - Header */}
-            <div className="p-4 flex flex-col gap-2">
+            <div className="p-3.5 pb-2.5 flex flex-col gap-2">
                 <BadgesRow />
-                <div className={`truncate max-w-[380px] mt-1 ${hasTitle ? 'font-serif font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
+                <div className={`truncate max-w-[380px] mt-1 ${hasTitle ? 'font-serif font-semibold text-[0.95rem] text-foreground' : 'text-[0.85rem] italic text-muted-foreground'}`}>
                     {hasTitle ? message.title : contentFallback}
                 </div>
             </div>
 
-            {/* Bloque 2 - Metadatos */}
-            <div className="px-4 py-3 flex flex-col gap-2 border-t border-border/50 bg-secondary/20">
-                <div className="flex items-baseline gap-2">
-                    <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground min-w-[72px]">{labels?.to}</span>
-                    <div className="flex flex-col">
-                        {visibleRecipients.map((r: any, i: number) => (
-                            <span key={i} className="text-sm font-medium text-foreground">{formatName(r.name)}</span>
-                        ))}
-                        {extraCount > 0 && (
-                            <span className="text-xs text-muted-foreground">+{extraCount} más</span>
-                        )}
+            {/* Bloque 2 - Metadatos (condensado, valores a la derecha) */}
+            <div className="px-3.5 py-2.5 flex flex-col gap-2 border-t border-border/30 bg-secondary/10">
+                <div className="flex justify-between items-baseline text-xs gap-4">
+                    <span className="font-semibold tracking-wide text-muted-foreground shrink-0">{labels?.to}</span>
+                    <div className="flex gap-1 text-foreground font-medium text-right overflow-hidden">
+                        <span className="truncate">{visibleRecipients.map((r: any) => formatName(r.name)).join(', ')}</span>
+                        {extraCount > 0 && <span className="text-muted-foreground shrink-0">+{extraCount}</span>}
                     </div>
                 </div>
-                <div className="flex items-baseline gap-2">
-                    <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground min-w-[72px]">{labels?.created}</span>
-                    <span className="text-sm font-medium text-foreground">{createdDate}</span>
+                <div className="flex justify-between items-baseline text-xs gap-4">
+                    <span className="font-semibold tracking-wide text-muted-foreground shrink-0">{labels?.created}</span>
+                    <span className="font-medium text-foreground text-right">{createdDate}</span>
                 </div>
-                <div className="flex items-baseline gap-2">
-                    <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground min-w-[72px]">{scheduledLabel}</span>
-                    <span className="text-sm font-medium text-foreground">{scheduledDate}</span>
+                <div className="flex justify-between items-baseline text-xs gap-4">
+                    <span className="font-semibold tracking-wide text-muted-foreground shrink-0">{scheduledLabel}</span>
+                    <span className="font-medium text-foreground text-right">{scheduledDate}</span>
                 </div>
             </div>
 
-            {/* Bloque 3 - Alerta (Condicional) */}
+            {/* Bloque 3 - Alerta */}
             {!hasTrusted && deliveryMode === 'checkin' && (
-                <div className="px-4 py-3 bg-[#FFF8E6] flex flex-col gap-1 border-t border-border/50">
-                    <div className="text-sm font-medium text-[#8A6A00] flex items-center gap-1">
+                <div className="px-3.5 py-2.5 bg-[#FFF8E6] flex flex-col gap-0.5 border-t border-border/30">
+                    <div className="text-xs font-semibold text-[#8A6A00] flex items-center gap-1">
                         ⚠️ {(dict.dashboard.messageCard as any).noContactAssigned}
                     </div>
-                    <div className="text-xs text-[#8A6A00] opacity-80">
-                        {(dict.dashboard.messageCard as any).noContactAssignedDesc}
-                    </div>
-                    <Link href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`} className="text-xs font-semibold text-primary underline cursor-pointer mt-1 w-fit">
+                    <Link href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`} className="text-[0.65rem] font-bold text-primary underline cursor-pointer mt-0.5 w-fit">
                         {(dict.dashboard.messageCard as any).addContactLong}
                     </Link>
                 </div>
             )}
 
-            {/* Bloque 4 - Acciones */}
-            <div className="px-4 py-3 flex justify-end gap-2 border-t border-border/50">
-                <ActionButtonsMobile />
+            {/* Bloque 4 - Acciones (Centrados, peso visual igual) */}
+            <div className="p-2 flex justify-center items-center gap-2 border-t border-border/30">
+                <button
+                    onClick={handleDelete}
+                    disabled={isLoading}
+                    className="flex-1 text-xs font-bold py-2.5 rounded-lg bg-destructive/[0.05] text-destructive hover:bg-destructive/[0.1] transition-colors flex items-center justify-center gap-1.5"
+                >
+                    {isLoading ? '...' : `🗑️ ${dict.common.delete}`}
+                </button>
+                <Link
+                    href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`}
+                    className="flex-1 text-xs font-bold py-2.5 rounded-lg bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08] transition-colors flex items-center justify-center gap-1.5"
+                >
+                    ✏️ {isDelivered ? dict.common.view : dict.common.edit}
+                </Link>
             </div>
         </div>
     );

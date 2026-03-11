@@ -44,16 +44,18 @@ export default async function DashboardPage({
     let messages: MessageWithRecipient[] = [];
     let hasCheckinMessages = false;
     let userPlan: Plan = 'free';
+    let userFirstName = '';
 
     if (user) {
         // Get user profile for plan
         const { data: profile } = await supabase
             .from('profiles')
-            .select('plan')
+            .select('plan, first_name')
             .eq('id', user.id)
             .single();
 
         userPlan = (profile?.plan as Plan) || 'free';
+        userFirstName = profile?.first_name || '';
 
         const { data } = await supabase
             .from('messages')
@@ -88,7 +90,7 @@ export default async function DashboardPage({
     }
 
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
-    const userName = user?.user_metadata?.first_name || user?.email?.split('@')[0] || '';
+    const userName = userFirstName || user?.user_metadata?.first_name || user?.email?.split('@')[0] || '';
     const messageCount = messages.length;
 
     const maxTrustedContacts = userPlan === 'free' ? 1 : 3;
@@ -168,7 +170,7 @@ export default async function DashboardPage({
                     isLimitReached={isLimitReached}
                     dictionary={dict}
                     locale={locale}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/25"
+                    className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 text-xs md:text-sm bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/25"
                 />
             </div>
 
