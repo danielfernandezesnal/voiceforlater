@@ -9,7 +9,7 @@ interface StepIndicatorProps {
 
 export function StepIndicator({ currentStep, maxStep, steps, onStepClick }: StepIndicatorProps) {
     return (
-        <nav className="flex items-center justify-center mb-10 overflow-x-auto pb-4 sm:pb-0 no-scrollbar">
+        <nav className="flex items-center justify-center mb-10 overflow-x-hidden sm:overflow-x-visible pb-4 sm:pb-0">
             <div className="flex items-center gap-1 sm:gap-0">
                 {steps.map((label, index) => {
                     const stepNumber = index + 1

@@ -71,7 +71,9 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
         return `${d.toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' })} · ${d.toLocaleTimeString(locale === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' })}`;
     };
 
-    const recipientName = formatName(recipients[0]?.name);
+    const allRecipients = recipients || []
+    const visibleRecipients = allRecipients.slice(0, 3)
+    const extraCount = allRecipients.length - 3
     const createdDate = formatDate(created_at);
 
     const labels = (dict.dashboard.messageCard as any).labels;
@@ -177,7 +179,12 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
             <div className="w-[190px] shrink-0 border-r border-border/50 py-5 pr-5 pl-5 flex flex-col justify-center gap-0">
                 <div className="flex flex-col gap-[3px]">
                     <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground">{labels?.to}</span>
-                    <span className="text-sm font-medium text-foreground">{recipientName}</span>
+                    {visibleRecipients.map((r: any, i: number) => (
+                        <span key={i} className="text-sm font-medium text-foreground">{formatName(r.name)}</span>
+                    ))}
+                    {extraCount > 0 && (
+                        <span className="text-xs text-muted-foreground">+{extraCount} más</span>
+                    )}
                 </div>
                 <div className="border-t border-border/40 my-3" />
                 <div className="flex flex-col gap-[3px]">
@@ -222,7 +229,14 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
             <div className="px-4 py-3 flex flex-col gap-2 border-t border-border/50 bg-secondary/20">
                 <div className="flex items-baseline gap-2">
                     <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground min-w-[72px]">{labels?.to}</span>
-                    <span className="text-sm font-medium text-foreground">{recipientName}</span>
+                    <div className="flex flex-col">
+                        {visibleRecipients.map((r: any, i: number) => (
+                            <span key={i} className="text-sm font-medium text-foreground">{formatName(r.name)}</span>
+                        ))}
+                        {extraCount > 0 && (
+                            <span className="text-xs text-muted-foreground">+{extraCount} más</span>
+                        )}
+                    </div>
                 </div>
                 <div className="flex items-baseline gap-2">
                     <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground min-w-[72px]">{labels?.created}</span>

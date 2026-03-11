@@ -50,7 +50,11 @@ export default async function EditMessagePage({
     const dict = await getDictionary(locale);
 
     // Construct initialData from message
-    const recipient = message.recipients?.[0] || { name: '', email: '' };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const dbRecipients = (message.recipients || []) as Array<{ name: string; email: string }>;
+    const recipients = dbRecipients.length > 0
+        ? dbRecipients.map(r => ({ name: r.name, email: r.email }))
+        : [{ name: '', email: '' }];
     const deliveryRule = message.delivery_rules?.[0]; // Assuming 1 rule for now
 
     // Extract trusted contacts
@@ -72,13 +76,11 @@ export default async function EditMessagePage({
     const initialData: any = {
         messageType: message.type,
         title: message.title || '',
-        // If type is text, use text_content. If audio/video, textContent might be empty or transcript?
         textContent: message.text_content || '',
-        audioBlob: null, // Can't pre-fill blob easily
+        audioBlob: null,
         existingAudioUrl,
-        audioDuration: 0, // Unknown?
-        recipientName: recipient.name,
-        recipientEmail: recipient.email,
+        audioDuration: 0,
+        recipients,
         deliveryMode: deliveryRule?.mode || null,
         deliverAt: deliveryRule?.deliver_at || '',
         checkinIntervalDays: deliveryRule?.checkin_interval_days || 30,

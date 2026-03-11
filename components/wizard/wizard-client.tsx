@@ -103,8 +103,10 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
             formData.append('type', data.messageType!)
             formData.append('title', data.title)
 
-            formData.append('recipientName', data.recipientName)
-            formData.append('recipientEmail', data.recipientEmail)
+            data.recipients.forEach((r, i) => {
+                formData.append(`recipients[${i}][name]`, r.name)
+                formData.append(`recipients[${i}][email]`, r.email)
+            })
             formData.append('deliveryMode', data.deliveryMode!)
 
             if (data.messageType === 'text') {
