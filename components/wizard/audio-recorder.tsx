@@ -69,13 +69,25 @@ export function AudioRecorder({
 
     const startRecording = async () => {
         setIsInitializing(true)
+        setError(null)
+        
+        let stream: MediaStream
         try {
-            setError(null)
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                throw new Error("navigator.mediaDevices no está disponible. ¿Estás usando HTTP sin localhost?")
+            }
+            stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        } catch (err) {
+            console.error('Error accessing microphone:', err)
+            const msg = err instanceof Error ? err.message : String(err)
+            setError(`Error de micrófono: ${msg}`)
+            setTimeout(() => setIsInitializing(false), 800)
+            return
+        }
 
-            const mediaRecorder = new MediaRecorder(stream, {
-                mimeType: MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4'
-            })
+        try {
+            // Eliminar la restricción dura de mimeType para que el navegador elija su formato nativo soportado automático
+            const mediaRecorder = new MediaRecorder(stream)
 
             mediaRecorderRef.current = mediaRecorder
             chunksRef.current = []
@@ -108,9 +120,9 @@ export function AudioRecorder({
             }, 1000)
             setIsInitializing(false)
         } catch (err) {
-            console.error('Error accessing microphone:', err)
-            setError(dictionary.errorMicrophone)
-            // Add a small delay so the user sees the button reacted
+            console.error('Error starting MediaRecorder:', err)
+            const msg = err instanceof Error ? err.message : String(err)
+            setError(`Error interno de grabación: ${msg}`)
             setTimeout(() => setIsInitializing(false), 800)
         }
     }
@@ -147,9 +159,9 @@ export function AudioRecorder({
         <div className="p-6 bg-card border border-border rounded-xl space-y-6">
             {error && (
                 <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3 flex flex-col items-center">
-                    <p>{error}</p>
+                    <p className="font-medium break-words max-w-full">{error}</p>
                     <p className="text-xs opacity-90 max-w-[280px]">
-                        Si bloqueaste el acceso antes, tenés que habilitarlo desde el ícono del candado 🔒 en la barra de direcciones.
+                        Si bloqueaste el acceso antes, habilitalo desde el ícono del candado 🔒 en la barra de direcciones y recargá la página.
                     </p>
                     <button
                         type="button"

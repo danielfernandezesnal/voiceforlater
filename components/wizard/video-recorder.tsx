@@ -63,6 +63,10 @@ export function VideoRecorder({
         setIsInitializing(true)
         setError(null)
         try {
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                throw new Error("navigator.mediaDevices no está disponible. ¿Estás usando HTTP sin localhost?")
+            }
+
             // Stop any existing tracks first
             if (streamRef.current) {
                 streamRef.current.getTracks().forEach(track => track.stop())
@@ -91,7 +95,8 @@ export function VideoRecorder({
             setIsInitializing(false)
         } catch (err) {
             console.error('Error accessing camera/microphone:', err)
-            setError(dictionary.errorCamera)
+            const msg = err instanceof Error ? err.message : String(err)
+            setError(`Error de dispositivos: ${msg}`)
             setIsStreamReady(false)
             // Delay so 'Cargando...' is visible when clicked again
             setTimeout(() => setIsInitializing(false), 800)
@@ -160,9 +165,8 @@ export function VideoRecorder({
                 }
             }
 
-            const mediaRecorder = new MediaRecorder(stream!, {
-                mimeType: MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus') ? 'video/webm;codecs=vp8,opus' : 'video/webm'
-            })
+            // Let browser decide best mime type instead of forcing it
+            const mediaRecorder = new MediaRecorder(stream!)
 
             mediaRecorderRef.current = mediaRecorder
             chunksRef.current = []
@@ -203,7 +207,8 @@ export function VideoRecorder({
             }, 1000)
         } catch (err) {
             console.error('Error starting recording:', err)
-            setError(dictionary.errorStart)
+            const msg = err instanceof Error ? err.message : String(err)
+            setError(`Error iniciando grabación: ${msg}`)
             setIsRecording(false)
         }
     }
@@ -235,9 +240,9 @@ export function VideoRecorder({
         <div className="p-6 bg-card border border-border rounded-xl space-y-6">
             {error && (
                 <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3 flex flex-col items-center">
-                    <p>{error}</p>
+                    <p className="font-medium break-words max-w-full">{error}</p>
                     <p className="text-xs opacity-90 max-w-[280px]">
-                        Si bloqueaste el acceso antes, tenés que habilitarlo desde el ícono del candado 🔒 en la barra de direcciones.
+                        Si bloqueaste el acceso antes, habilitalo desde el ícono del candado 🔒 en la barra de direcciones y recargá la página.
                     </p>
                     <button
                         type="button"
@@ -249,6 +254,7 @@ export function VideoRecorder({
                     </button>
                 </div>
             )}
+
 
             {/* Timer Display */}
             <div className="text-center">
