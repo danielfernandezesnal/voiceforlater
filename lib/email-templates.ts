@@ -268,7 +268,7 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
 <body>
 <div class="email-wrapper">
   <div class="top-header">
-    <div class="logo-title">Carry My Words</div>
+    <div class="logo-title">${dict.emails.common.footerSignature}</div>
     <div class="logo-subtitle">Mensajes que viajan en el tiempo</div>
   </div>
   <div class="card">
@@ -299,7 +299,7 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
     </div>
   </div>
   <div class="footer">
-    <div class="footer-logo">Carry My Words</div>
+    <div class="footer-logo">${dict.emails.common.footerSignature}</div>
     <p>Recibiste este email porque tenés un check-in programado activo.<br>
     <a href="${dashboardUrl}">Configurar frecuencia de check-ins</a> · <a href="${supportUrl}">Soporte</a></p>
   </div>
@@ -340,7 +340,7 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
             <p style="font-size:12px; color:#999;">${t.expiry}</p>
             <br/>
             <p>—<br/>
-            <strong>Carry My Words</strong></p>
+            <strong>${dict.emails.common.footerSignature}</strong></p>
         </div>
     `;
   return { subject, html };
@@ -527,7 +527,7 @@ export const getMessageSpecialTemplate = (
         <tr>
           <td align="center" style="padding-bottom:28px;">
             <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
-              Carry My Words
+              ${dict.emails.common.footerSignature}
             </div>
             <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
               MENSAJES QUE VIAJAN EN EL TIEMPO
@@ -599,7 +599,7 @@ export const getMessageSpecialTemplate = (
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
             <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
-              Carry My Words
+              ${dict.emails.common.footerSignature}
             </p>
             <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
               Recibiste este email porque alguien programó un mensaje especial para vos.<br>
@@ -658,7 +658,7 @@ export const getMessagePosthumousTemplate = (
         <tr>
           <td align="center" style="padding-bottom:28px;">
             <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
-              Carry My Words
+              ${dict.emails.common.footerSignature}
             </div>
             <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
               MENSAJES QUE VIAJAN EN EL TIEMPO
@@ -709,7 +709,7 @@ export const getMessagePosthumousTemplate = (
                     ${t?.closing || ''}
                   </p>
                   <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#6A6560;font-style:italic;">
-                    — El equipo de Carry My Words
+                    — ${dict.emails.common.footerSignature}
                   </p>
 
                 </td>
@@ -723,7 +723,7 @@ export const getMessagePosthumousTemplate = (
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
             <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
-              Carry My Words
+              ${dict.emails.common.footerSignature}
             </p>
             <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
               ${t?.footerLegal || ''}<br>
