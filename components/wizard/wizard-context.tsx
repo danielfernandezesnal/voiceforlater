@@ -18,8 +18,7 @@ export interface WizardData {
     audioDuration: number
 
     // Step 3: Recipient
-    recipientName: string
-    recipientEmail: string
+    recipients: Array<{ name: string; email: string }>
 
     // Step 4: Delivery
     deliveryMode: DeliveryMode | null
@@ -47,8 +46,7 @@ const initialData: WizardData = {
     audioBlob: null,
     existingAudioUrl: null,
     audioDuration: 0,
-    recipientName: '',
-    recipientEmail: '',
+    recipients: [{ name: '', email: '' }],
     deliveryMode: null,
     deliverAt: '',
     checkinIntervalDays: 30, // Default to 30
@@ -186,8 +184,8 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                 }
                 return data.audioBlob !== null || (!!data.existingAudioUrl && data.messageType === 'audio')
             case 3:
-                return data.recipientName.trim().length > 0 &&
-                    data.recipientEmail.includes('@')
+                return data.recipients.length > 0 &&
+                    data.recipients.every(r => r.name.trim().length > 0 && r.email.includes('@'))
             case 4:
                 if (data.deliveryMode === 'date') {
                     return data.deliverAt !== ''

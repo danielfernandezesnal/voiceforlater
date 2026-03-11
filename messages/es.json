@@ -431,11 +431,13 @@
     },
     "step3": {
       "title": "¿A quién va dirigido este mensaje?",
-      "subtitle": "¿A quién va dirigido este mensaje? Solo esa persona lo va a recibir, en el momento exacto que vos definás en el siguiente paso.",
+      "subtitle": "Podés agregar hasta 10 personas. Todas recibirán el mismo mensaje.",
       "nameLabel": "Nombre del destinatario",
       "namePlaceholder": "Juan Pérez",
       "emailLabel": "Email del destinatario",
       "emailPlaceholder": "juan@ejemplo.com",
+      "addRecipient": "Agregar destinatario",
+      "recipientN": "Destinatario {n}",
       "posthumousContactWarning": "⚠️ Este tipo de mensaje requiere un contacto de confianza. Podrás asignarlo en el paso siguiente."
     },
     "step4": {
