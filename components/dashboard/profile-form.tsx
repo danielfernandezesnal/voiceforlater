@@ -28,6 +28,8 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
     const [form, setForm] = useState<ProfileData>(initialData)
     const [isSaving, setIsSaving] = useState(false)
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+    const [isResettingPassword, setIsResettingPassword] = useState(false)
+    const [passwordResetMessage, setPasswordResetMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
     // Parse phone into dial code + local number
     const parsedPhone = useMemo(() => parsePhone(initialData.phone), [initialData.phone])
@@ -48,6 +50,27 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
         const cleaned = value.replace(/[^\d\s]/g, '')
         setLocalNumber(cleaned)
         if (message) setMessage(null)
+    }
+
+    async function handlePasswordReset() {
+        setIsResettingPassword(true)
+        setPasswordResetMessage(null)
+        try {
+            const res = await fetch('/api/auth/request-password-reset', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: form.email }),
+            })
+            const data = await res.json()
+            if (!res.ok) throw new Error(data.error)
+            // @ts-ignore
+            setPasswordResetMessage({ type: 'success', text: t.security?.resetEmailSent || 'Te enviamos un email para cambiar tu contraseña.' })
+        } catch {
+            // @ts-ignore
+            setPasswordResetMessage({ type: 'error', text: t.security?.resetError || 'No se pudo enviar el email. Intentá de nuevo.' })
+        } finally {
+            setIsResettingPassword(false)
+        }
     }
 
     async function handleSubmit(e: React.FormEvent) {
@@ -252,6 +275,33 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
                         />
                     </div>
                 </div>
+            </div>
+
+            <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-4">
+                {/* @ts-ignore */}
+                <h2 className="text-lg font-semibold mb-1">{t.security?.title || 'Seguridad'}</h2>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        {/* @ts-ignore */}
+                        <p className="text-sm font-medium">{t.security?.changePassword || 'Contraseña'}</p>
+                        {/* @ts-ignore */}
+                        <p className="text-xs text-muted-foreground mt-0.5">{t.security?.changePasswordDesc || 'Te enviaremos un email para que puedas cambiarla.'}</p>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={handlePasswordReset}
+                        disabled={isResettingPassword}
+                        className="px-4 py-2 text-sm font-medium border border-border rounded-lg hover:bg-secondary/50 transition-colors disabled:opacity-50 whitespace-nowrap"
+                    >
+                        {/* @ts-ignore */}
+                        {isResettingPassword ? (t.security?.sending || 'Enviando...') : (t.security?.sendResetEmail || 'Cambiar contraseña')}
+                    </button>
+                </div>
+                {passwordResetMessage && (
+                    <div className={`p-3 rounded-lg text-sm border ${passwordResetMessage.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-100' : 'bg-red-50 text-red-600 border-red-100'}`}>
+                        {passwordResetMessage.text}
+                    </div>
+                )}
             </div>
 
             {/* Submit */}

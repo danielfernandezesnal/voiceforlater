@@ -554,6 +554,15 @@
       "success": {
         "saved": "Profile saved successfully.",
         "emailConfirmation": " A confirmation email has been sent to your new address."
+      },
+      "security": {
+        "title": "Security",
+        "changePassword": "Password",
+        "changePasswordDesc": "We'll send you an email so you can change it.",
+        "sendResetEmail": "Change password",
+        "sending": "Sending...",
+        "resetEmailSent": "We sent you an email. Check your inbox.",
+        "resetError": "Couldn't send the email. Please try again."
       }
     }
   },

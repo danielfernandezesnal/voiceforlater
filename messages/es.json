@@ -539,6 +539,15 @@
       "success": {
         "saved": "Perfil guardado correctamente.",
         "emailConfirmation": " Se envió un correo de confirmación a tu nueva dirección de email."
+      },
+      "security": {
+        "title": "Seguridad",
+        "changePassword": "Contraseña",
+        "changePasswordDesc": "Te enviaremos un email para que puedas cambiarla.",
+        "sendResetEmail": "Cambiar contraseña",
+        "sending": "Enviando...",
+        "resetEmailSent": "Te enviamos un email. Revisá tu bandeja de entrada.",
+        "resetError": "No se pudo enviar el email. Intentá de nuevo."
       }
     }
   },
