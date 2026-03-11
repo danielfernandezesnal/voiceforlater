@@ -192,7 +192,7 @@
         },
         {
           "q": "What is the difference between the Free and Pro plans?",
-          "a": "Free: 1 message, text only, specific date delivery, 1 trusted person. Pro: unlimited messages, text, audio and video, up to 3 trusted people, more delivery options."
+          "a": "Free: 1 message, text and audio, specific date delivery, 1 trusted person. Pro: unlimited messages, text, audio and video, up to 3 trusted people, more delivery options."
         },
         {
           "q": "Can I edit or delete my messages?",
@@ -778,7 +778,7 @@
       "p2": "It is something thought out, chosen, and carefully kept until this moment.",
       "button": "🎙 Access the message",
       "info": "Carry My Words is a platform that allows you to send text, voice, or video messages to loved ones, choosing when you want them to arrive: on an important date, or at that moment when you are no longer there to say it yourself.",
-      "closing": "Because some words deserve to arrive at the right time.",
+      "closing": "Because some words deserve to arrive at just the right moment.",
       "signature": "— The Carry My Words team"
     },
     "messagePosthumous": {

@@ -182,7 +182,7 @@
         },
         {
           "q": "¿Cuál es la diferencia entre el plan Free y Pro?",
-          "a": "Free: 1 mensaje, solo texto, 1 persona de confianza. PRO: mensajes ilimitados, texto, audio y video, hasta 3 personas de confianza."
+          "a": "Free: 1 mensaje, texto y audio, 1 persona de confianza. PRO: mensajes ilimitados, texto, audio y video, hasta 3 personas de confianza."
         },
         {
           "q": "¿Puedo editar o eliminar mis mensajes?",
@@ -253,7 +253,8 @@
     "footer": {
       "privacy": "Privacidad",
       "terms": "Términos",
-      "contact": "Contacto"
+      "contact": "Contacto",
+      "cancel": "Cancelar"
     }
   },
   "auth": {
