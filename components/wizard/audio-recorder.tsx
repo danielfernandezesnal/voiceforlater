@@ -106,11 +106,12 @@ export function AudioRecorder({
                     return next
                 })
             }, 1000)
+            setIsInitializing(false)
         } catch (err) {
             console.error('Error accessing microphone:', err)
             setError(dictionary.errorMicrophone)
-        } finally {
-            setIsInitializing(false)
+            // Add a small delay so the user sees the button reacted
+            setTimeout(() => setIsInitializing(false), 800)
         }
     }
 
@@ -145,14 +146,18 @@ export function AudioRecorder({
     return (
         <div className="p-6 bg-card border border-border rounded-xl space-y-6">
             {error && (
-                <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3">
+                <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3 flex flex-col items-center">
                     <p>{error}</p>
+                    <p className="text-xs opacity-90 max-w-[280px]">
+                        Si bloqueaste el acceso antes, tenés que habilitarlo desde el ícono del candado 🔒 en la barra de direcciones.
+                    </p>
                     <button
+                        type="button"
                         onClick={() => startRecording()}
                         disabled={isInitializing}
-                        className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors disabled:opacity-50"
+                        className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors disabled:opacity-50 mt-1"
                     >
-                        {isInitializing ? 'Intentando...' : 'Autorizar / Intentar de nuevo'}
+                        {isInitializing ? 'Intentando...' : 'Intentar de nuevo'}
                     </button>
                 </div>
             )}
