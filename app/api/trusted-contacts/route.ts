@@ -61,6 +61,13 @@ export async function POST(request: NextRequest) {
 
         const normalizedEmail = email.trim().toLowerCase();
 
+        if (normalizedEmail === user.email?.toLowerCase()) {
+            return NextResponse.json({
+                error: 'No podés agregarte a vos mismo como contacto de confianza.',
+                code: 'SELF_CONTACT'
+            }, { status: 400 });
+        }
+
         // 1. Get user plan and check limit
         const plan = await getEffectivePlan(supabase, user.id);
         const limits = getPlanLimits(plan);
@@ -217,15 +224,20 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ error: 'ID is required' }, { status: 400 });
         }
 
-        // 1. Explicitly delete relations first (Safety against FK constraints if CASCADE isn't enough)
-        const { error: relationError } = await supabase
+        // 1. Check if assigned to any active message
+        const { data: assignments, error: assignmentError } = await supabase
             .from('message_trusted_contacts')
-            .delete()
-            .eq('trusted_contact_id', id);
+            .select('message_id')
+            .eq('trusted_contact_id', id)
+            .limit(1);
 
-        if (relationError) {
-            console.error('[DELETE /api/trusted-contacts] Relation delete error:', relationError);
-            // We continue anyway, as the main delete might still work
+        if (assignmentError) {
+             console.error('[DELETE /api/trusted-contacts] Relation delete error:', assignmentError);
+        } else if (assignments && assignments.length > 0) {
+            return NextResponse.json({
+                error: 'Este contacto esta asignado a un mensaje. Debes cargar un nuevo contacto para ese mensaje primero.',
+                code: 'CONTACT_IN_USE'
+            }, { status: 409 });
         }
 
         // 2. Delete the contact

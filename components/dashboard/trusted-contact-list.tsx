@@ -87,12 +87,18 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts }
                 credentials: 'include',
             })
 
+            if (res.status === 409) {
+                const data = await res.json()
+                alert(data.error)
+                return
+            }
+
             if (!res.ok) throw new Error('Failed to delete')
 
             // Refresh to get fresh server-side data
             router.refresh()
         } catch {
-            alert('Error deleting contact')
+            alert('Error al eliminar contacto')
         } finally {
             setIsDeleting(null)
         }

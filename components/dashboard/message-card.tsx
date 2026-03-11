@@ -117,6 +117,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
 
     // Alert Block
     const ContactAlert = () => {
+        if (deliveryMode !== 'checkin') return null;
         if (hasTrusted) return null;
         return (
             <div className="bg-[#FFF8E6] border border-[#F5C842] text-[#8A6A00] text-xs font-medium px-3 py-2 rounded-xl inline-flex flex-col sm:flex-row sm:items-center gap-1 w-fit mt-1">
@@ -249,7 +250,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
             </div>
 
             {/* Bloque 3 - Alerta (Condicional) */}
-            {!hasTrusted && (
+            {!hasTrusted && deliveryMode === 'checkin' && (
                 <div className="px-4 py-3 bg-[#FFF8E6] flex flex-col gap-1 border-t border-border/50">
                     <div className="text-sm font-medium text-[#8A6A00] flex items-center gap-1">
                         ⚠️ {(dict.dashboard.messageCard as any).noContactAssigned}
