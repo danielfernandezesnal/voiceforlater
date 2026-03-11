@@ -115,6 +115,16 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                 })}
             </div>
 
+            {/* Mobile floating CTA */}
+            <div className="flex md:hidden justify-center mt-8 mb-4">
+                <CreateMessageButton
+                    isLimitReached={isLimitReached}
+                    dictionary={dict}
+                    locale={locale}
+                    className="inline-flex items-center gap-2 px-6 py-3 text-sm bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/25"
+                />
+            </div>
+
             {/* Quote strip */}
             <div className="mt-10 rounded-2xl p-5 flex items-center gap-4"
                 style={{ background: 'rgba(196,98,58,0.06)', border: '1px solid rgba(196,98,58,0.15)' }}>

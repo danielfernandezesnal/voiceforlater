@@ -86,12 +86,18 @@ export default async function DashboardLayout({
                     </div>
 
                     {/* Mobile Nav Links */}
-                    <nav className="flex items-center gap-4 md:hidden">
-                        <Link href={`/${locale}/dashboard`} className="text-sm font-medium text-muted-foreground hover:text-primary">
+                    <nav className="flex md:hidden items-center gap-5 overflow-x-auto pb-1 flex-1 px-1 min-w-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                        <Link href={`/${locale}/dashboard`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
                             {labels.dashboard}
                         </Link>
-                        <Link href={`/${locale}/dashboard/contacts`} className="text-sm font-medium text-muted-foreground hover:text-primary">
+                        <Link href={`/${locale}/dashboard/contacts`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
                             {labels.contacts}
+                        </Link>
+                        <Link href={`/${locale}/dashboard/profile`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
+                            {labels.profile}
+                        </Link>
+                        <Link href={`/${locale}/dashboard/plan`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
+                            {labels.plan}
                         </Link>
                     </nav>
 

@@ -48,7 +48,7 @@ export default async function LocaleHomePage({
                 <div className="font-serif italic font-normal text-5xl tracking-tight" style={{ color: TC }}>
                     Carry My Words
                 </div>
-                <div className="flex gap-6 items-center">
+                <div className="flex flex-col md:flex-row gap-2 md:gap-6 items-end md:items-center">
                     <div className="flex items-center gap-2 text-sm font-medium">
                         <Link href="/en" className={locale === 'en' ? 'text-primary' : 'text-muted-foreground hover:text-foreground transition-colors'}>EN</Link>
                         <span className="text-border">/</span>
@@ -57,7 +57,7 @@ export default async function LocaleHomePage({
                     {/* Nav CTA */}
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="hidden md:inline-block"
+                        className="inline-block"
                         style={{
                             border: `1.5px solid ${TC}`,
                             color: TC,
@@ -93,7 +93,7 @@ export default async function LocaleHomePage({
                         {dict.landing.hero.subtitle}
                     </p>
                     {/* Hero CTA */}
-                    <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+                    <div className="hidden md:block animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
                         <Link
                             href={`/${locale}/auth/login`}
                             className="inline-flex justify-center items-center text-center"
@@ -331,7 +331,7 @@ export default async function LocaleHomePage({
                             <span className="font-medium">{dict.landing.trust.item3}</span>
                         </li>
                     </ul>
-                    <div className="mt-12 inline-flex items-center gap-3 bg-card border border-border/50 shadow-sm rounded-full px-6 py-3 max-w-3xl mx-auto text-left">
+                    <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-3 bg-card border border-border/50 shadow-sm rounded-2xl md:rounded-full px-6 py-4 max-w-3xl mx-auto text-center md:text-left">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
