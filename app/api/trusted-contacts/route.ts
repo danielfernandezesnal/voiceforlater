@@ -124,8 +124,6 @@ export async function POST(request: NextRequest) {
         const resend = getResend();
         const fromAddress = DEFAULT_SENDER;
 
-        console.log('[POST /api/trusted-contacts] Using From Address:', fromAddress);
-
         const fullName = profile?.first_name
             ? `${profile.first_name} ${profile.last_name || ''}`.trim()
             : user.user_metadata?.full_name;
@@ -148,7 +146,6 @@ export async function POST(request: NextRequest) {
         }
         emailLocale = emailLocale || 'en';
         const dict = await getDictionary(emailLocale as Locale);
-        console.log('[DEBUG /api/trusted-contacts] Dictionary loaded. Has emails:', !!(dict as any).emails);
 
         // Subject and Body based on Locale
         const contactFirstName = name.trim().split(' ')[0];
@@ -161,13 +158,6 @@ export async function POST(request: NextRequest) {
             contactFirstName,
             senderFullName: senderFullName || '',
             senderFirstName
-        });
-
-        console.log('[POST /api/trusted-contacts] Email Template Generated:', {
-            subject,
-            from: fromAddress,
-            to: email,
-            senderName: senderFullName
         });
 
         const { data: emailRes, error: emailErr } = await resend.emails.send({
@@ -187,7 +177,6 @@ export async function POST(request: NextRequest) {
                 errorMessage: JSON.stringify(emailErr)
             });
         } else {
-            console.log('[POST /api/trusted-contacts] Invitation email sent successfully. ID:', emailRes?.id);
             await trackEmail({
                 userId: user.id,
                 toEmail: email,
@@ -228,8 +217,6 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ error: 'ID is required' }, { status: 400 });
         }
 
-        console.log(`[DELETE /api/trusted-contacts] Attempting to delete contact ${id} for user ${user.id}`);
-
         // 1. Explicitly delete relations first (Safety against FK constraints if CASCADE isn't enough)
         const { error: relationError } = await supabase
             .from('message_trusted_contacts')
@@ -253,7 +240,6 @@ export async function DELETE(request: NextRequest) {
             throw error;
         }
 
-        console.log(`[DELETE /api/trusted-contacts] Contact ${id} deleted successfully`);
         return NextResponse.json({ success: true });
     } catch (error: unknown) {
         return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
