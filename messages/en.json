@@ -397,11 +397,14 @@
       "from": "From: {name}",
       "delivered": "Delivered on",
       "view": "View Message",
-      "someoneSpecial": "Someone special"
+      "someoneSpecial": "Someone special",
+      "messageCount_one": "message received",
+      "messageCount_other": "messages received"
     }
   },
   "nav": {
-    "dashboard": "Dashboard",
+    "dashboard": "Sent",
+    "received": "Received",
     "settings": "Settings",
     "contacts": "Contacts",
     "upgrade": "Upgrade to Pro"

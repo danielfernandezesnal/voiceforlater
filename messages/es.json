@@ -393,11 +393,14 @@
       "from": "De: {name}",
       "delivered": "Entregado el",
       "view": "Ver mensaje",
-      "someoneSpecial": "Alguien especial"
+      "someoneSpecial": "Alguien especial",
+      "messageCount_one": "mensaje recibido",
+      "messageCount_other": "mensajes recibidos"
     }
   },
   "nav": {
-    "dashboard": "Panel",
+    "dashboard": "Enviados",
+    "received": "Recibidos",
     "settings": "Configuración",
     "upgrade": "Actualizar a Pro",
     "contacts": "Contactos"

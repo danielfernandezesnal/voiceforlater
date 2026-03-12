@@ -52,11 +52,12 @@ export default async function DashboardLayout({
     const dict = await getDictionary(locale);
 
     const labels = {
-        dashboard: dict.nav.dashboard || 'Mensajes',
-        contacts: 'Contactos',
-        profile: 'Perfil',
-        plan: 'Plan',
-        workspace: 'Mi espacio',
+        dashboard: dict.nav.dashboard || 'Enviados',
+        received: dict.nav.received || 'Recibidos',
+        contacts: dict.nav.contacts || 'Contactos',
+        profile: locale === 'es' ? 'Perfil' : 'Profile',
+        plan: locale === 'es' ? 'Plan' : 'Plan',
+        workspace: locale === 'es' ? 'Mi espacio' : 'My workspace',
         tagline: (dict.dashboard as any).sidebarTagline || ''
     }
 
@@ -89,6 +90,9 @@ export default async function DashboardLayout({
                     <nav className="flex md:hidden items-center gap-5 overflow-x-auto pb-1 flex-1 px-1 min-w-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         <Link href={`/${locale}/dashboard`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
                             {labels.dashboard}
+                        </Link>
+                        <Link href={`/${locale}/dashboard/received`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
+                            {labels.received}
                         </Link>
                         <Link href={`/${locale}/dashboard/contacts`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
                             {labels.contacts}
