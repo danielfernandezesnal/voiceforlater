@@ -88,8 +88,8 @@ export function Step5Review({
             value: data.messageType === 'text'
                 ? dictionary.formatText
                 : data.messageType === 'audio'
-                    ? dictionary.formatAudio
-                    : dictionary.formatVideo,
+                    ? `🎤 ${dictionary.formatAudio} (${Math.round(data.audioDuration)}s)`
+                    : `📹 ${dictionary.formatVideo} (${Math.round(data.audioDuration)}s)`,
             step: 1
         },
         {
@@ -97,15 +97,11 @@ export function Step5Review({
             value: data.title,
             step: 2
         },
-        {
+        ...(data.messageType === 'text' ? [{
             label: dictionary.content,
-            value: data.messageType === 'text'
-                ? (data.textContent.substring(0, 100) + (data.textContent.length > 100 ? '...' : ''))
-                : data.messageType === 'video'
-                    ? dictionary.videoContent.replace('{seconds}', String(Math.round(data.audioDuration)))
-                    : dictionary.audioContent.replace('{seconds}', String(Math.round(data.audioDuration))),
+            value: data.textContent.substring(0, 100) + (data.textContent.length > 100 ? '...' : ''),
             step: 2
-        },
+        }] : []),
         {
             label: dictionary.recipient,
             value: data.recipients.map(r => `${r.name} (${r.email})`).join('\n'),
