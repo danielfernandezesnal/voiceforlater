@@ -104,7 +104,9 @@ export default async function DashboardLayout({
                     {/* Right Actions */}
                     <div className="flex items-center gap-4">
                         {/* Language Switcher */}
-                        <LocaleSwitcher currentLocale={locale} />
+                        <div className="hidden md:block">
+                            <LocaleSwitcher currentLocale={locale} />
+                        </div>
 
                         {/* Logout */}
                         <form action={`/${locale}/auth/signout`} method="POST">
