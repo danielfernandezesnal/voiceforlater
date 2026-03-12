@@ -191,7 +191,7 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts }
             )}
 
             {/* List */}
-            <div className="grid gap-4">
+            <div className="grid gap-4 w-full max-w-full box-border px-0 sm:px-0">
                 {contacts.length === 0 && !isAddingMode ? (
                     <div className="text-center py-12 bg-card/50 border border-border border-dashed rounded-xl">
                         <p className="text-muted-foreground">{dictionary.trustedContact.noContact}</p>
@@ -204,20 +204,20 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts }
                     </div>
                 ) : (
                     contacts.map(contact => (
-                        <div key={contact.id} className="flex items-center justify-between p-4 bg-card border border-border rounded-lg shadow-sm hover:border-primary/20 transition-colors">
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold" style={{ backgroundColor: 'rgba(196,98,58,0.12)', color: '#C4623A' }}>
+                        <div key={contact.id} className="flex items-center justify-between p-3 sm:p-4 bg-card border border-border rounded-lg shadow-sm hover:border-primary/20 transition-colors w-full box-border overflow-hidden">
+                            <div className="flex items-center gap-3 sm:gap-4 overflow-hidden w-full min-w-0">
+                                <div className="w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-bold border border-primary/10" style={{ backgroundColor: 'rgba(196,98,58,0.12)', color: '#C4623A' }}>
                                     {contact.name ? contact.name[0].toUpperCase() : contact.email[0].toUpperCase()}
                                 </div>
-                                <div>
-                                    <h4 className="font-medium text-foreground">{contact.name || 'Sin nombre'}</h4>
-                                    <p className="text-sm text-muted-foreground">{contact.email}</p>
+                                <div className="min-w-0 flex-1 overflow-hidden pr-2">
+                                    <h4 className="font-medium text-foreground truncate block w-full">{contact.name || 'Sin nombre'}</h4>
+                                    <p className="text-xs sm:text-sm text-muted-foreground truncate block w-full">{contact.email}</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => handleDelete(contact.id)}
                                 disabled={isDeleting === contact.id}
-                                className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                className="shrink-0 p-2 text-muted-foreground hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors ml-1"
                                 title={dictionary.trustedContact.remove}
                             >
                                 {isDeleting === contact.id ? (
