@@ -10,14 +10,14 @@ interface Contact {
 }
 
 interface TrustedContactListProps {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     locale: string
     plan: string
     initialContacts: Contact[]
+    userEmail: string
 }
 
-export function TrustedContactList({ dictionary, locale, plan, initialContacts }: TrustedContactListProps) {
+export function TrustedContactList({ dictionary, locale, plan, initialContacts, userEmail }: TrustedContactListProps) {
     const [contacts, setContacts] = useState<Contact[]>(initialContacts)
 
     // Sync state with props when router.refresh() is called
@@ -44,6 +44,12 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts }
         e.preventDefault()
         setIsSaving(true)
         setError(null)
+
+        if (newEmail.trim().toLowerCase() === userEmail.toLowerCase()) {
+            setError(dictionary.trustedContact.ownEmailError)
+            setIsSaving(false)
+            return
+        }
 
         try {
             const res = await fetch('/api/trusted-contacts', {

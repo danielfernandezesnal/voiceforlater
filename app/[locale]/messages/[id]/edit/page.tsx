@@ -95,6 +95,7 @@ export default async function EditMessagePage({
                 userPlan={userPlan}
                 initialData={initialData}
                 messageId={id}
+                userEmail={user.email ?? ''}
             />
         </div>
     );
