@@ -397,7 +397,8 @@
     }
   },
   "nav": {
-    "dashboard": "Panel",
+    "dashboard": "Enviados",
+    "received": "Recibidos",
     "settings": "Configuración",
     "upgrade": "Actualizar a Pro",
     "contacts": "Contactos"

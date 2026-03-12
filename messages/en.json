@@ -401,7 +401,8 @@
     }
   },
   "nav": {
-    "dashboard": "Dashboard",
+    "dashboard": "Sent",
+    "received": "Received",
     "settings": "Settings",
     "contacts": "Contacts",
     "upgrade": "Upgrade to Pro"
