@@ -42,7 +42,6 @@ export default async function DashboardPage({
     const { data: { user } } = await supabase.auth.getUser();
 
     let messages: MessageWithRecipient[] = [];
-    let receivedMessages: any[] = [];
     let hasCheckinMessages = false;
     let userPlan: Plan = 'free';
     let userFirstName = '';
@@ -88,37 +87,6 @@ export default async function DashboardPage({
             .eq('mode', 'checkin');
 
         hasCheckinMessages = (count || 0) > 0;
-
-        // Fetch received messages
-        const { data: receivedData } = await supabase
-            .from('messages')
-            .select(`
-                id,
-                type,
-                status,
-                title,
-                created_at,
-                owner_id,
-                profiles (
-                   first_name,
-                   last_name
-                ),
-                delivery_tokens (
-                    token
-                ),
-                recipients!inner (
-                    email
-                )
-            `)
-            .eq('status', 'delivered')
-            .eq('recipients.email', user.email)
-            .order('created_at', { ascending: false });
-
-        receivedMessages = (receivedData || []).map((msg: any) => ({
-            ...msg,
-            sender_name: `${msg.profiles?.first_name || ''} ${msg.profiles?.last_name || ''}`.trim() || null,
-            token: msg.delivery_tokens?.[0]?.token || null
-        }));
     }
 
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
@@ -250,7 +218,6 @@ export default async function DashboardPage({
             {/* Messages List or Empty State */}
             <DashboardMessageList
                 initialMessages={messages}
-                initialReceivedMessages={receivedMessages}
                 userPlan={userPlan}
                 locale={locale}
                 dict={dict}
