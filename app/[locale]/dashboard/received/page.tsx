@@ -62,7 +62,7 @@ export default async function ReceivedMessagesPage({
                     {title}
                 </h1>
                 <p className="text-sm text-muted-foreground mt-1.5">
-                    {receivedMessages.length} {receivedMessages.length === 1 ? 'mensaje recibido' : 'mensajes recibidos'}
+                    {receivedMessages.length} {receivedMessages.length === 1 ? (dict.dashboard as any).receivedMessages?.messageCount_one : (dict.dashboard as any).receivedMessages?.messageCount_other}
                 </p>
             </div>
 

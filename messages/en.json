@@ -397,7 +397,9 @@
       "from": "From: {name}",
       "delivered": "Delivered on",
       "view": "View Message",
-      "someoneSpecial": "Someone special"
+      "someoneSpecial": "Someone special",
+      "messageCount_one": "message received",
+      "messageCount_other": "messages received"
     }
   },
   "nav": {
