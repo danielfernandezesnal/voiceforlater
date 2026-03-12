@@ -32,13 +32,13 @@ export async function GET() {
             .order('name', { ascending: true }); // Mantener order
 
         if (error) {
-            console.error('[GET /api/trusted-contacts] DB error:', error);
+            if (process.env.NODE_ENV !== 'production') console.error('[GET /api/trusted-contacts] DB error:', error);
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
 
         return NextResponse.json(data);
     } catch (e: unknown) {
-        console.error('[GET /api/trusted-contacts] Error:', e);
+        if (process.env.NODE_ENV !== 'production') console.error('[GET /api/trusted-contacts] Error:', e);
         return NextResponse.json({ error: getErrorMessage(e) }, { status: 500 });
     }
 }
@@ -175,7 +175,7 @@ export async function POST(request: NextRequest) {
         });
 
         if (emailErr) {
-            console.error('[POST /api/trusted-contacts] Resend error:', JSON.stringify(emailErr));
+            if (process.env.NODE_ENV !== 'production') console.error('[POST /api/trusted-contacts] Resend error:', JSON.stringify(emailErr));
             await trackEmail({
                 userId: user.id,
                 toEmail: email,
@@ -202,7 +202,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(contact);
 
     } catch (error: unknown) {
-        console.error('Error creating contact:', error);
+        if (process.env.NODE_ENV !== 'production') console.error('Error creating contact:', error);
         return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
     }
 }
@@ -232,7 +232,7 @@ export async function DELETE(request: NextRequest) {
             .limit(1);
 
         if (assignmentError) {
-             console.error('[DELETE /api/trusted-contacts] Relation delete error:', assignmentError);
+             if (process.env.NODE_ENV !== 'production') console.error('[DELETE /api/trusted-contacts] Relation delete error:', assignmentError);
         } else if (assignments && assignments.length > 0) {
             return NextResponse.json({
                 error: 'Este contacto esta asignado a un mensaje. Debes cargar un nuevo contacto para ese mensaje primero.',
@@ -248,7 +248,7 @@ export async function DELETE(request: NextRequest) {
             .eq('user_id', user.id);
 
         if (error) {
-            console.error('[DELETE /api/trusted-contacts] Contact delete error:', error);
+            if (process.env.NODE_ENV !== 'production') console.error('[DELETE /api/trusted-contacts] Contact delete error:', error);
             throw error;
         }
 

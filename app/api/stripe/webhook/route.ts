@@ -44,19 +44,19 @@ export async function POST(request: NextRequest) {
 
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     if (!webhookSecret) {
-        console.error("STRIPE_WEBHOOK_SECRET not configured");
+        if (process.env.NODE_ENV !== 'production') console.error("STRIPE_WEBHOOK_SECRET not configured");
         return NextResponse.json({ error: "Webhook not configured" }, { status: 500 });
     }
 
     let event: Stripe.Event;
     const stripe = getStripe();
 
-    console.info("[stripe:webhook] received", { type: "(verifying)" });
+    if (process.env.NODE_ENV !== 'production') console.info("[stripe:webhook] received", { type: "(verifying)" });
     try {
         event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-        console.info("[stripe:webhook]", event.type);
+        if (process.env.NODE_ENV !== 'production') console.info("[stripe:webhook]", event.type);
     } catch (err) {
-        console.error("Webhook signature verification failed:", err);
+        if (process.env.NODE_ENV !== 'production') console.error("Webhook signature verification failed:", err);
         return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
     }
 
@@ -73,10 +73,10 @@ export async function POST(request: NextRequest) {
     if (idempotencyError) {
         // Postgres unique violation code
         if (idempotencyError.code === '23505') {
-            console.warn("Stripe event already processed:", event.id);
+            if (process.env.NODE_ENV !== 'production') console.warn("Stripe event already processed:", event.id);
             return NextResponse.json({ received: true, status: "already_processed" });
         }
-        console.error("Idempotency check failed:", idempotencyError);
+        if (process.env.NODE_ENV !== 'production') console.error("Idempotency check failed:", idempotencyError);
         return NextResponse.json({ error: "Database error during idempotency check" }, { status: 500 });
     }
 
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
                 const userId = session.metadata?.user_id;
 
                 if (!userId) {
-                    console.error("No user_id in session metadata");
+                    if (process.env.NODE_ENV !== 'production') console.error("No user_id in session metadata");
                     break;
                 }
 
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
                     });
 
                 if (subError) {
-                    console.error("Failed to update user_subscriptions:", subError);
+                    if (process.env.NODE_ENV !== 'production') console.error("Failed to update user_subscriptions:", subError);
                     return NextResponse.json({ error: "Database error" }, { status: 500 });
                 }
 
@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
 
                 // Fallback for missing columns (plan_status)
                 if (error && error.code === 'PGRST204') {
-                    console.warn("Fallback: Missing plan_status column, trying basic update");
+                    if (process.env.NODE_ENV !== 'production') console.warn("Fallback: Missing plan_status column, trying basic update");
                     const { error: retryError } = await supabase
                         .from("profiles")
                         .update({
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
                 }
 
                 if (error) {
-                    console.error("Failed to update profile:", error);
+                    if (process.env.NODE_ENV !== 'production') console.error("Failed to update profile:", error);
                     return NextResponse.json({ error: "Database error" }, { status: 500 });
                 }
 
@@ -159,7 +159,7 @@ export async function POST(request: NextRequest) {
                         metadata: { subscription_id: subId }
                     });
                 } catch (e) {
-                    console.error("Failed to log event:", e);
+                    if (process.env.NODE_ENV !== 'production') console.error("Failed to log event:", e);
                 }
 
                 break;
@@ -221,9 +221,9 @@ export async function POST(request: NextRequest) {
                         })
                         .eq("id", targetUserId);
 
-                    console.info("[stripe:webhook] subscription.updated", { plan, effectiveStatus });
+                    if (process.env.NODE_ENV !== 'production') console.info("[stripe:webhook] subscription.updated", { plan, effectiveStatus });
                 } else {
-                    console.warn("[stripe:webhook] could not find user for subscription update");
+                    if (process.env.NODE_ENV !== 'production') console.warn("[stripe:webhook] could not find user for subscription update");
                 }
                 break;
             }
@@ -292,7 +292,7 @@ export async function POST(request: NextRequest) {
                         metadata: { subscription_id: subscription.id }
                     });
 
-                    console.info("[stripe:webhook] subscription.deleted → downgraded to free");
+                    if (process.env.NODE_ENV !== 'production') console.info("[stripe:webhook] subscription.deleted → downgraded to free");
                 }
                 break;
             }
@@ -327,13 +327,13 @@ export async function POST(request: NextRequest) {
                         currentPeriodEndStr = new Date(freshSubTyped.current_period_end * 1000).toISOString();
                         cancelAtPeriodEndVal = freshSub.cancel_at_period_end;
                     } catch (fetchErr) {
-                        console.error("[stripe:webhook] failed to fetch subscription in payment_failed", fetchErr);
+                        if (process.env.NODE_ENV !== 'production') console.error("[stripe:webhook] failed to fetch subscription in payment_failed", fetchErr);
                         // Fallback: stay on defaults (free/past_due)
                     }
                 }
 
                 if (!customerId) {
-                    console.error("No customer ID in invoice");
+                    if (process.env.NODE_ENV !== 'production') console.error("No customer ID in invoice");
                     break;
                 }
 
@@ -381,10 +381,10 @@ export async function POST(request: NextRequest) {
                                 subject,
                                 html
                             });
-                            console.info("[stripe:webhook] payment_failed email sent to", email);
+                            if (process.env.NODE_ENV !== 'production') console.info("[stripe:webhook] payment_failed email sent to", email);
                         }
                     } catch (emailErr) {
-                        console.error("[stripe:webhook] failed to send payment_failed email", emailErr);
+                        if (process.env.NODE_ENV !== 'production') console.error("[stripe:webhook] failed to send payment_failed email", emailErr);
                     }
 
                     // Log event
@@ -394,18 +394,18 @@ export async function POST(request: NextRequest) {
                         metadata: { invoice_id: invoice.id, subscription_id: subId },
                     });
 
-                    console.info("[stripe:webhook] invoice.payment_failed processed", { plan: mappedPlan.plan, status: mappedPlan.effectiveStatus });
+                    if (process.env.NODE_ENV !== 'production') console.info("[stripe:webhook] invoice.payment_failed processed", { plan: mappedPlan.plan, status: mappedPlan.effectiveStatus });
                 }
                 break;
             }
 
             default:
-                console.warn("[stripe:webhook] unhandled event type", event.type);
+                if (process.env.NODE_ENV !== 'production') console.warn("[stripe:webhook] unhandled event type", event.type);
         }
 
         return NextResponse.json({ received: true });
     } catch (error) {
-        console.error("Webhook handler error:", error);
+        if (process.env.NODE_ENV !== 'production') console.error("Webhook handler error:", error);
         return NextResponse.json({ error: "Handler error" }, { status: 500 });
     }
 }

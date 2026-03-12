@@ -725,7 +725,8 @@
   },
   "emails": {
     "common": {
-      "footerSignature": "Carry My Words"
+      "footerSignature": "Carry My Words",
+      "tagline": "MESSAGES THAT TRAVEL THROUGH TIME"
     },
     "magicLink": {
       "subject": "Your Carry My Words Login Link",
