@@ -331,12 +331,12 @@ export default async function LocaleHomePage({
                             <span className="font-medium">{dict.landing.trust.item3}</span>
                         </li>
                     </ul>
-                    <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-3 bg-card border border-border/50 shadow-sm rounded-2xl md:rounded-full px-6 py-4 max-w-3xl mx-auto text-center md:text-left">
+                    <div className="mt-12 flex flex-col items-center gap-3 bg-card border border-border/50 shadow-sm rounded-2xl md:rounded-full px-4 md:px-6 py-4 w-full max-w-[95%] md:max-w-3xl mx-auto text-center break-words">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
-                        <span className="font-medium text-[hsl(var(--ink))]">
+                        <span className="font-medium text-[hsl(var(--ink))] text-sm md:text-base leading-snug">
                             {(dict.landing.trust as any).encryption}
                         </span>
                     </div>

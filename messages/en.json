@@ -586,7 +586,7 @@
   },
   "trustedContact": {
     "pageTitle": "Trusted contacts",
-    "pageDescription1": "These are your trusted people.",
+    "pageDescription1": "They'll help confirm you're okay.",
     "pageDescription2": "If you stop responding to activity confirmations, the trusted person you assign to each message is who we'll contact to verify your absence before starting the delivery of your scheduled messages.",
     "title": "Trusted people",
     "sectionSubtitle": "",

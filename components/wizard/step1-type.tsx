@@ -97,7 +97,7 @@ export function Step1TypeSelect({ dictionary, userPlan }: Step1Props) {
                         <button
                             key={option.type}
                             onClick={() => handleTypeSelect(option.type)}
-                            className={`relative p-6 rounded-xl border-2 text-left transition-all group overflow-hidden ${data.messageType === option.type
+                            className={`relative p-4 sm:p-6 rounded-xl border-2 text-left transition-all group overflow-hidden ${data.messageType === option.type
                                 ? 'border-primary bg-primary/5 shadow-md shadow-primary/20'
                                 : 'border-border bg-card shadow-sm hover:shadow-md hover:border-primary/50'
                                 }`}
@@ -108,11 +108,11 @@ export function Step1TypeSelect({ dictionary, userPlan }: Step1Props) {
                                 </div>
                             )}
 
-                            <div className={`mb-4 transition-colors ${data.messageType === option.type ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}>
+                            <div className={`mb-2 sm:mb-4 transition-colors ${data.messageType === option.type ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'}`}>
                                 {option.icon}
                             </div>
-                            <h3 className="font-semibold mb-1">{option.title}</h3>
-                            <p className="text-sm text-muted-foreground">{option.description}</p>
+                            <h3 className="font-semibold mb-1 w-full text-base sm:text-lg">{option.title}</h3>
+                            <p className="text-xs sm:text-sm text-muted-foreground leading-snug">{option.description}</p>
 
                             {isLocked && (
                                 <div className="mt-4 pt-4 border-t border-border/50 w-full">
