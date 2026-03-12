@@ -11,6 +11,7 @@ interface Step4Props {
     dictionary: any // Using specific type earlier, but simplifying for flexibility with new structure
     userPlan: Plan
     locale: string
+    userEmail: string
 }
 
 interface Contact {
@@ -19,7 +20,7 @@ interface Contact {
     email: string
 }
 
-export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
+export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4Props) {
     const { data, updateData } = useWizard()
     const step4Dict = dictionary.wizard.step4
     const limits = getPlanLimits(userPlan)
@@ -317,9 +318,11 @@ export function Step4Delivery({ dictionary, userPlan, locale }: Step4Props) {
                                                             cancel: dictionary.common.cancel,
                                                             save: dictionary.trustedContact.save,
                                                             saving: dictionary.trustedContact.saving,
-                                                            errorCreating: dictionary.trustedContact.errorCreating
+                                                            errorCreating: dictionary.trustedContact.errorCreating,
+                                                            ownEmailError: dictionary.trustedContact.ownEmailError
                                                         }}
                                                         locale={locale}
+                                                        userEmail={userEmail}
                                                         onCancel={() => setIsCreating(false)}
                                                         onSuccess={handleContactCreated}
                                                     />

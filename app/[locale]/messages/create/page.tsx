@@ -43,7 +43,7 @@ export default async function CreateMessagePage({
 
     return (
         <div className="container max-w-3xl mx-auto px-4">
-            <WizardClient locale={locale} dictionary={dict} userPlan={userPlan} />
+            <WizardClient locale={locale} dictionary={dict} userPlan={userPlan} userEmail={user.email ?? ''} />
         </div>
     );
 }

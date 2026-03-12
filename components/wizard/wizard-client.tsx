@@ -22,9 +22,10 @@ interface WizardClientProps {
     userPlan: 'free' | 'pro'
     initialData?: Partial<WizardData>
     messageId?: string
+    userEmail: string
 }
 
-function WizardContent({ locale, dictionary, userPlan, initialData, messageId }: WizardClientProps) {
+function WizardContent({ locale, dictionary, userPlan, initialData, messageId, userEmail }: WizardClientProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
     const isReadOnly = searchParams.get('readonly') === 'true'
@@ -203,7 +204,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId }:
                     />
                 )}
                 {!isReadOnly && step === 3 && <Step3Recipient dictionary={dictionary.wizard.step3} />}
-                {!isReadOnly && step === 4 && <Step4Delivery dictionary={dictionary} userPlan={userPlan} locale={locale} />}
+                {!isReadOnly && step === 4 && <Step4Delivery dictionary={dictionary} userPlan={userPlan} locale={locale} userEmail={userEmail} />}
                 {(step === 5 || isReadOnly) && (
                     <Step5Review
                         dictionary={dictionary.wizard.step5}

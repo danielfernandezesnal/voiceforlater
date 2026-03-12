@@ -334,7 +334,8 @@
         "to": "Para",
         "created": "Creado",
         "scheduledFor": "Programado para",
-        "delivery": "Entrega"
+        "delivery": "Entrega",
+        "contact": "Contacto"
       },
       "deliveryType": {
         "date": "Fecha específica",
@@ -583,6 +584,7 @@
     "confirmEmailLabel": "Confirmar correo electrónico",
     "confirmEmailPlaceholder": "maria@ejemplo.com",
     "emailMismatch": "Los correos electrónicos no coinciden",
+    "ownEmailError": "No podés usar tu propio correo como contacto de confianza.",
     "save": "Guardar Contacto",
     "saving": "Guardando...",
     "saved": "¡Contacto guardado!",
