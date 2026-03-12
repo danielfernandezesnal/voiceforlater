@@ -393,7 +393,9 @@
       "from": "De: {name}",
       "delivered": "Entregado el",
       "view": "Ver mensaje",
-      "someoneSpecial": "Alguien especial"
+      "someoneSpecial": "Alguien especial",
+      "messageCount_one": "mensaje recibido",
+      "messageCount_other": "mensajes recibidos"
     }
   },
   "nav": {
