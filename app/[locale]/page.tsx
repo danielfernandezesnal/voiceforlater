@@ -57,18 +57,7 @@ export default async function LocaleHomePage({
                     {/* Nav CTA */}
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="inline-block"
-                        style={{
-                            border: `1.5px solid ${TC}`,
-                            color: TC,
-                            background: 'transparent',
-                            borderRadius: '100px',
-                            padding: '9px 22px',
-                            fontSize: '0.88rem',
-                            fontWeight: 500,
-                            textDecoration: 'none',
-                            transition: 'background 0.2s, color 0.2s',
-                        }}
+                        className="inline-block rounded-full px-5 py-2 text-sm font-medium no-underline bg-[#C4623A] text-white md:bg-transparent md:text-[#C4623A] md:border md:border-[#C4623A]"
                     >
                         {(dict.landing as any).nav?.login}
                     </Link>
