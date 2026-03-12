@@ -57,7 +57,7 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds }: Step
                                     }
                                 }}
                                 placeholder={dictionary.titlePlaceholder}
-                                className="w-full px-4 py-3 bg-input border border-border rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all placeholder:text-muted-foreground"
+                                className="w-full px-4 py-3 pr-16 bg-input border border-border rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all placeholder:text-muted-foreground"
                             />
                             <div className="absolute top-3 right-4 text-xs text-muted-foreground">
                                 {data.title.length} / 80
@@ -113,7 +113,7 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds }: Step
                                 }
                             }}
                             placeholder={dictionary.titlePlaceholder}
-                            className="w-full px-4 py-3 bg-input border border-border rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all placeholder:text-muted-foreground"
+                            className="w-full px-4 py-3 pr-16 bg-input border border-border rounded-xl focus:ring-2 focus:ring-ring focus:border-transparent transition-all placeholder:text-muted-foreground"
                         />
                         <div className="absolute top-3 right-4 text-xs text-muted-foreground">
                             {data.title.length} / 80
