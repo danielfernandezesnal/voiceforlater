@@ -20,7 +20,8 @@ export async function GET() {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const { data: messages, error } = await supabase
+        // Fetch sent messages
+        const { data: sentMessages, error: sentError } = await supabase
             .from("messages")
             .select(`
                 *,
@@ -33,12 +34,49 @@ export async function GET() {
             .eq("owner_id", user.id)
             .order("created_at", { ascending: false });
 
-        if (error) {
-            console.error("Error fetching messages:", error);
-            return NextResponse.json({ error: error.message }, { status: 500 });
+        if (sentError) {
+            console.error("Error fetching sent messages:", sentError);
+            return NextResponse.json({ error: sentError.message }, { status: 500 });
         }
 
-        return NextResponse.json(messages || [], {
+        // Fetch received messages
+        const { data: receivedMessages, error: receivedError } = await supabase
+            .from("messages")
+            .select(`
+                id,
+                type,
+                status,
+                title,
+                created_at,
+                owner_id,
+                profiles (
+                   first_name,
+                   last_name
+                ),
+                delivery_tokens (
+                    token
+                ),
+                recipients!inner (
+                    email
+                )
+            `)
+            .eq("status", "delivered")
+            .eq("recipients.email", user.email)
+            .order("created_at", { ascending: false });
+
+        if (receivedError) {
+            console.error("Error fetching received messages:", receivedError);
+            // Don't fail the whole request if received messages fail, but log it
+        }
+
+        return NextResponse.json({
+            sent: sentMessages || [],
+            received: (receivedMessages || []).map((msg: any) => ({
+                ...msg,
+                sender_name: `${msg.profiles?.first_name || ''} ${msg.profiles?.last_name || ''}`.trim() || null,
+                token: msg.delivery_tokens?.[0]?.token || null
+            }))
+        }, {
             headers: {
                 'Cache-Control': 'no-store, max-age=0',
             }

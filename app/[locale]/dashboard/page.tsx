@@ -42,6 +42,7 @@ export default async function DashboardPage({
     const { data: { user } } = await supabase.auth.getUser();
 
     let messages: MessageWithRecipient[] = [];
+    let receivedMessages: any[] = [];
     let hasCheckinMessages = false;
     let userPlan: Plan = 'free';
     let userFirstName = '';
@@ -87,12 +88,42 @@ export default async function DashboardPage({
             .eq('mode', 'checkin');
 
         hasCheckinMessages = (count || 0) > 0;
+
+        // Fetch received messages
+        const { data: receivedData } = await supabase
+            .from('messages')
+            .select(`
+                id,
+                type,
+                status,
+                title,
+                created_at,
+                owner_id,
+                profiles (
+                   first_name,
+                   last_name
+                ),
+                delivery_tokens (
+                    token
+                ),
+                recipients!inner (
+                    email
+                )
+            `)
+            .eq('status', 'delivered')
+            .eq('recipients.email', user.email)
+            .order('created_at', { ascending: false });
+
+        receivedMessages = (receivedData || []).map((msg: any) => ({
+            ...msg,
+            sender_name: `${msg.profiles?.first_name || ''} ${msg.profiles?.last_name || ''}`.trim() || null,
+            token: msg.delivery_tokens?.[0]?.token || null
+        }));
     }
 
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
     const userName = userFirstName || user?.user_metadata?.first_name || user?.email?.split('@')[0] || '';
     const messageCount = messages.length;
-
     const maxTrustedContacts = userPlan === 'free' ? 1 : 3;
 
     // Next delivery calculation
@@ -102,7 +133,7 @@ export default async function DashboardPage({
     if (messageCount > 0) {
         // Collect specific delivery dates
         const dateMessages = messages.filter(msg => {
-            if (Array.isArray(msg.delivery_rules)) return false; // Not expecting array, but handle safely
+            if (Array.isArray(msg.delivery_rules)) return false; 
             return msg.delivery_rules && msg.delivery_rules.mode === 'date' && msg.delivery_rules.deliver_at;
         });
 
@@ -125,7 +156,6 @@ export default async function DashboardPage({
             });
 
             nextDeliveryDateStr = formatter.format(date).toLowerCase();
-            // Capitalize month if english:
             if (locale === 'en') {
                 nextDeliveryDateStr = formatter.format(date)
             }
@@ -144,12 +174,11 @@ export default async function DashboardPage({
     const statusText = dict.dashboard.status
         .replace('{count}', messageCount.toString())
         .replace('{plan}', userPlan === 'free' ? 'Free' : 'Pro')
-        .replace('(s)', messageCount !== 1 ? 's' : '') // Handle En plural
-        .replace('(s)', messageCount !== 1 ? 's' : '') // Handle Es plural
-        ;
+        .replace('(s)', messageCount !== 1 ? 's' : '')
+        .replace('(s)', messageCount !== 1 ? 's' : '');
+        
     const savedMsgSubtext = userPlan === 'free' ? dict.dashboard.stats.ofOne : dict.dashboard.stats.ofUnlimited;
     const trustedContactsSubtext = dict.dashboard.stats.ofMax.replace('{max}', maxTrustedContacts.toString());
-
 
     return (
         <div>
@@ -211,8 +240,6 @@ export default async function DashboardPage({
                 </div>
             </div>
 
-
-
             {/* Check-in status widget (only show if user has check-in messages AND is Pro) */}
             {hasCheckinMessages && userPlan === 'pro' && (
                 <div className="mb-8">
@@ -221,9 +248,9 @@ export default async function DashboardPage({
             )}
 
             {/* Messages List or Empty State */}
-            {/* Messages List or Empty State */}
             <DashboardMessageList
                 initialMessages={messages}
+                initialReceivedMessages={receivedMessages}
                 userPlan={userPlan}
                 locale={locale}
                 dict={dict}
