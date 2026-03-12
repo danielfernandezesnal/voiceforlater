@@ -82,49 +82,39 @@ export function DashboardMessageList({ initialMessages, initialReceivedMessages 
 
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
 
-    if (messages.length === 0) {
-        return (
-            <div className="mt-8">
-                <div className="bg-card border-2 border-dashed border-border/40 rounded-2xl py-12 px-6 text-center flex flex-col items-center gap-3">
-                    <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-xl"
-                        style={{ background: 'rgba(196,98,58,0.08)' }}>
-                        ✉️
-                    </div>
-                    <p className="font-serif font-semibold text-lg text-foreground">
-                        {dict.dashboard.empty.title}
-                    </p>
-                    <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-                        {dict.dashboard.empty.description}
-                    </p>
-                </div>
-                {/* Quote strip */}
-                <div className="mt-10 rounded-2xl p-5 flex items-center gap-4"
-                    style={{ background: 'rgba(196,98,58,0.06)', border: '1px solid rgba(196,98,58,0.15)' }}>
-                    <div className="w-[3px] h-10 rounded-full flex-shrink-0" style={{ background: '#C4623A' }} />
-                    <p className="font-serif italic text-[0.95rem] text-foreground leading-relaxed">
-                        {dict.dashboard.quote}
-                    </p>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className="mt-8">
-            <h2 className="font-serif font-semibold text-lg text-foreground mb-4">
-                {dict.dashboard.sectionTitle}
-            </h2>
-            <div className="grid gap-4">
-                {messages.map((message) => {
-                    return (
-                        <MessageCard
-                            key={message.id}
-                            message={message}
-                            locale={locale}
-                            dict={dict}
-                        />
-                    );
-                })}
+            {/* Sent Messages Section */}
+            <div>
+                <h2 className="font-serif font-semibold text-lg text-foreground mb-4">
+                    {dict.dashboard.sectionTitle}
+                </h2>
+                
+                {messages.length === 0 ? (
+                    <div className="bg-card border-2 border-dashed border-border/40 rounded-2xl py-12 px-6 text-center flex flex-col items-center gap-3">
+                        <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-xl"
+                            style={{ background: 'rgba(196,98,58,0.08)' }}>
+                            ✉️
+                        </div>
+                        <p className="font-serif font-semibold text-lg text-foreground">
+                            {dict.dashboard.empty.title}
+                        </p>
+                        <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
+                            {dict.dashboard.empty.description}
+                        </p>
+                    </div>
+                ) : (
+                    <div className="grid gap-4">
+                        {messages.map((message) => (
+                            <MessageCard
+                                key={message.id}
+                                message={message}
+                                locale={locale}
+                                dict={dict}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* Mobile floating CTA */}
