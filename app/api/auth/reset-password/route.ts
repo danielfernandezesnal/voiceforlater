@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
         let finalUserId: string;
 
         if (rpcError) {
-            console.error('RPC Error searching user:', rpcError);
+            if (process.env.NODE_ENV !== 'production') console.error('RPC Error searching user:', rpcError);
             // Fallback to listUsers if RPC fails (e.g. not yet deployed in all envs)
             const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
             if (listError) throw listError;
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
         );
 
         if (updateError) {
-            console.error('Failed to update password:', updateError);
+            if (process.env.NODE_ENV !== 'production') console.error('Failed to update password:', updateError);
             throw updateError;
         }
 
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true });
 
     } catch (error) {
-        console.error('Reset password error:', error);
+        if (process.env.NODE_ENV !== 'production') console.error('Reset password error:', error);
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
 }

@@ -159,6 +159,16 @@
       "clarification": "Carry My Words solo entrega lo que vos grabaste, exactamente como lo dejaste.",
       "encryption": "Tus mensajes están encriptados y nunca los leemos. Solo vos y tus destinatarios tienen acceso."
     },
+    "notWhat": {
+      "title": "Lo que Carry My Words NO es",
+      "items": [
+        "No es un testamento",
+        "No es asesoramiento legal",
+        "No es un reemplazo de ninguna persona",
+        "No toma decisiones por vos"
+      ],
+      "clarification": "Carry My Words solo entrega los mensajes que dejaste, exactamente como los grabaste."
+    },
     "faq": {
       "title": "Preguntas Frecuentes",
       "showMore": "Ver todas las preguntas",
@@ -194,7 +204,7 @@
         },
         {
           "q": "¿Qué tipos de mensajes puedo crear?",
-          "a": "Con el plan Free podés enviar 1 mensaje de texto. Con el plan PRO podés enviar mensajes de texto, audio o video."
+          "a": "Con el plan Free podés enviar 1 mensaje de texto o audio. Con el plan PRO podés enviar mensajes de texto, audio o video, sin límite de cantidad."
         },
         {
           "q": "¿Cuándo se envían realmente los mensajes?",
@@ -381,7 +391,8 @@
   "nav": {
     "dashboard": "Panel",
     "settings": "Configuración",
-    "upgrade": "Actualizar a Pro"
+    "upgrade": "Actualizar a Pro",
+    "contacts": "Contactos"
   },
   "wizard": {
     "title": "Crear Mensaje",
@@ -710,7 +721,8 @@
   },
   "emails": {
     "common": {
-      "footerSignature": "Carry My Words"
+      "footerSignature": "Carry My Words",
+      "tagline": "MENSAJES QUE VIAJAN EN EL TIEMPO"
     },
     "magicLink": {
       "subject": "Tu enlace de acceso a Carry My Words",

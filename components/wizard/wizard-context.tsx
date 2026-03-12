@@ -108,7 +108,7 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                 setStep(loadedStep)
                 setMaxStep(loadedStep)
             } catch (err) {
-                console.error('Failed to load drafts:', err)
+                if (process.env.NODE_ENV !== 'production') console.error('Failed to load drafts:', err)
             } finally {
                 setIsLoaded(true)
             }
@@ -138,7 +138,7 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
         if (!isLoaded) return
 
         if (data.audioBlob) {
-            saveAudioDraft(data.audioBlob).catch(err => console.error('Failed to save audio draft:', err))
+            saveAudioDraft(data.audioBlob).catch(err => { if (process.env.NODE_ENV !== 'production') console.error('Failed to save audio draft:', err) })
         } else {
             // Only clear if we explicitly set it to null AND it's not the initial load
             // (But here we just save what we have. If null, we might want to clear, 
