@@ -74,4 +74,3 @@ export function StepIndicator({ currentStep, maxStep, steps, onStepClick }: Step
         </nav>
     )
 }
-
