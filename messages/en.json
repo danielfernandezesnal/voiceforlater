@@ -390,6 +390,14 @@
           "trustedContactsPro": "Up to 3"
         }
       }
+    },
+    "receivedMessages": {
+      "title": "Received Messages",
+      "empty": "You haven't received any messages yet.",
+      "from": "From: {name}",
+      "delivered": "Delivered on",
+      "view": "View Message",
+      "someoneSpecial": "Someone special"
     }
   },
   "nav": {

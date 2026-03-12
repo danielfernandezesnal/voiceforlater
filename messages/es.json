@@ -386,6 +386,14 @@
           "trustedContactsPro": "Hasta 3"
         }
       }
+    },
+    "receivedMessages": {
+      "title": "Mensajes recibidos",
+      "empty": "Todavía no has recibido ningún mensaje.",
+      "from": "De: {name}",
+      "delivered": "Entregado el",
+      "view": "Ver mensaje",
+      "someoneSpecial": "Alguien especial"
     }
   },
   "nav": {
