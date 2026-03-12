@@ -205,6 +205,14 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                 <div className={`truncate max-w-[380px] mt-1 ${hasTitle ? 'font-serif font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
                     {hasTitle ? message.title : contentFallback}
                 </div>
+                {deliveryMode === 'checkin' && hasTrusted && (
+                    <div className="flex items-center gap-1 mt-1 text-sm">
+                        <span className="text-muted-foreground">{labels?.contact}:</span>
+                        <span className="font-medium text-foreground truncate max-w-[280px]">
+                            {trustedList.map((c: any) => formatName(c.name)).join(', ')}
+                        </span>
+                    </div>
+                )}
                 <ContactAlert />
             </div>
 
@@ -243,6 +251,14 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                     <span className="font-semibold tracking-wide text-muted-foreground shrink-0">{scheduledLabel}</span>
                     <span className="font-medium text-foreground text-right">{scheduledDate}</span>
                 </div>
+                {deliveryMode === 'checkin' && hasTrusted && (
+                    <div className="flex justify-between items-baseline text-xs gap-4">
+                        <span className="font-semibold tracking-wide text-muted-foreground shrink-0">{labels?.contact}</span>
+                        <div className="flex gap-1 text-foreground font-medium text-right overflow-hidden">
+                            <span className="truncate">{trustedList.map((c: any) => formatName(c.name)).join(', ')}</span>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Bloque 3 - Alerta */}

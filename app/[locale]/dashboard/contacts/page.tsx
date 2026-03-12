@@ -60,6 +60,7 @@ export default async function ContactsPage({
                     locale={locale}
                     plan={currentPlan}
                     initialContacts={contacts || []}
+                    userEmail={user.email ?? ''}
                 />
             </div>
         </div>

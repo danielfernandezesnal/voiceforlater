@@ -360,7 +360,8 @@
         "to": "To",
         "created": "Created",
         "scheduledFor": "Scheduled for",
-        "delivery": "Delivery"
+        "delivery": "Delivery",
+        "contact": "Contact"
       },
       "deliveryType": {
         "date": "Specific date",
@@ -598,6 +599,7 @@
     "confirmEmailLabel": "Confirm email address",
     "confirmEmailPlaceholder": "jane@example.com",
     "emailMismatch": "Email addresses do not match",
+    "ownEmailError": "You can't use your own email as a trusted contact.",
     "save": "Save Contact",
     "saving": "Saving...",
     "saved": "Contact saved!",

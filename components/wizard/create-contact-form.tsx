@@ -14,13 +14,15 @@ interface CreateContactFormProps {
         save: string
         saving: string
         errorCreating: string
+        ownEmailError: string
     }
     locale: string
+    userEmail: string
     onCancel: () => void
     onSuccess: (newContact: { id: string, name: string, email: string }) => void
 }
 
-export function CreateContactForm({ dictionary, locale, onCancel, onSuccess }: CreateContactFormProps) {
+export function CreateContactForm({ dictionary, locale, userEmail, onCancel, onSuccess }: CreateContactFormProps) {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
@@ -30,6 +32,12 @@ export function CreateContactForm({ dictionary, locale, onCancel, onSuccess }: C
         e.preventDefault()
         setLoading(true)
         setError('')
+
+        if (email.trim().toLowerCase() === userEmail.toLowerCase()) {
+            setError(dictionary.ownEmailError)
+            setLoading(false)
+            return
+        }
 
         try {
             const res = await fetch('/api/trusted-contacts', {
