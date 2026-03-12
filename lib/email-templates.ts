@@ -5,6 +5,7 @@ export type EmailDictionary = {
   emails: {
     common: {
       footerSignature: string;
+      tagline: string;
     };
     magicLink: {
       subject: string;
@@ -148,10 +149,10 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
         <tr>
           <td align="center" style="padding-bottom:28px;">
             <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
-              Carry My Words
+              ${dict.emails.common.footerSignature}
             </div>
             <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
-              MENSAJES QUE VIAJAN EN EL TIEMPO
+              ${dict.emails.common.tagline}
             </div>
           </td>
         </tr>
@@ -276,7 +277,7 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
 <div class="email-wrapper">
   <div class="top-header">
     <div class="logo-title">${dict.emails.common.footerSignature}</div>
-    <div class="logo-subtitle">Mensajes que viajan en el tiempo</div>
+    <div class="logo-subtitle"></div>
   </div>
   <div class="card">
     <div class="hero">
@@ -396,7 +397,7 @@ export const getTrustedContactInvitationTemplate = (
               Carry My Words
             </div>
             <div style="font-size:9px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#C4623A;margin-top:3px;">
-              Mensajes que viajan en el tiempo
+              
             </div>
           </td>
         </tr>
@@ -537,7 +538,7 @@ export const getMessageSpecialTemplate = (
               ${dict.emails.common.footerSignature}
             </div>
             <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
-              MENSAJES QUE VIAJAN EN EL TIEMPO
+              
             </div>
           </td>
         </tr>
@@ -668,7 +669,7 @@ export const getMessagePosthumousTemplate = (
               ${dict.emails.common.footerSignature}
             </div>
             <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
-              MENSAJES QUE VIAJAN EN EL TIEMPO
+              
             </div>
           </td>
         </tr>
@@ -771,10 +772,10 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
         <tr>
           <td align="center" style="padding-bottom:28px;">
             <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
-              Carry My Words
+              ${dict.emails.common.footerSignature}
             </div>
             <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
-              MENSAJES QUE VIAJAN EN EL TIEMPO
+              ${dict.emails.common.tagline}
             </div>
           </td>
         </tr>
@@ -788,7 +789,7 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
               <tr>
                 <td style="background:#C0522A;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
-                    CARRY MY WORDS
+                    ${dict.emails.common.footerSignature.toUpperCase()}
                   </div>
                   <div style="font-family:Georgia,serif;font-size:30px;font-weight:600;color:#ffffff;line-height:1.25;">
                     ${t.title}
@@ -880,7 +881,7 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
               ${dict.emails.common.footerSignature}
             </div>
             <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
-              MENSAJES QUE VIAJAN EN EL TIEMPO
+              
             </div>
           </td>
         </tr>
