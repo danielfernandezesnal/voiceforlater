@@ -50,13 +50,10 @@ export default async function DashboardLayout({
         redirect(`/${locale}/auth/set-password`);
     }
 
-    // --- New Locale Persistence Logic ---
+    // --- Locale Syncing ---
+    // We trust the URL locale for the current render (SSR), 
+    // and let LocaleSyncer ensure the cookie/profile match on the client.
     const profileLocale: Locale = (profile?.locale && isValidLocale(profile.locale)) ? profile.locale : defaultLocale;
-
-    // 1. Enforce Profile Locale -> Redirect if mismatch
-    if (profileLocale !== localeParam) {
-        redirect(`/${profileLocale}/dashboard`);
-    }
 
     const dict = await getDictionary(locale);
 
@@ -79,8 +76,8 @@ export default async function DashboardLayout({
 
     return (
         <div className="min-h-screen flex flex-col bg-background">
-            {/* Sync Cookie Client Side */}
-            <LocaleSyncer locale={profileLocale} />
+            {/* Sync Cookie and Profile Client Side */}
+            <LocaleSyncer locale={locale} />
 
             {/* Topbar */}
             <header className="h-16 border-b border-border/40 fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md transition-all">
