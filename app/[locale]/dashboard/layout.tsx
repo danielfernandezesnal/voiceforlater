@@ -6,6 +6,8 @@ import { SideNav } from "@/components/dashboard/side-nav";
 import { LocaleSyncer } from "@/components/profile/sync-locale";
 import { LocaleSwitcher } from "@/components/profile/locale-switcher";
 
+import { getEffectivePlan } from "@/lib/plan-resolver";
+
 // Force dynamic rendering - this layout checks auth on every request
 export const dynamic = 'force-dynamic'
 
@@ -31,11 +33,18 @@ export default async function DashboardLayout({
     }
 
     const supabase = await createClient();
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('auth_password_set, plan, locale')
-        .eq('id', user.id)
-        .single();
+    
+    // Fetch profile and effective plan in parallel for better performance
+    const [profileResult, currentPlan] = await Promise.all([
+        supabase
+            .from('profiles')
+            .select('auth_password_set, locale')
+            .eq('id', user.id)
+            .single(),
+        getEffectivePlan(supabase, user.id)
+    ]);
+
+    const profile = profileResult.data;
 
     if (profile && profile.auth_password_set === false) {
         redirect(`/${locale}/auth/set-password`);
@@ -67,7 +76,6 @@ export default async function DashboardLayout({
         full_name: user.user_metadata?.full_name
     }
 
-    const currentPlan = profile?.plan || 'free';
 
     return (
         <div className="min-h-screen flex flex-col bg-background">

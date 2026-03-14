@@ -5,6 +5,7 @@ import { CreateMessageButton } from "@/components/dashboard/create-message-butto
 import { DashboardMessageList } from "@/components/dashboard/dashboard-message-list";
 import { TrustedContactCountCard } from "@/components/dashboard/trusted-contact-count-card";
 import { AutoCheckin } from "@/components/dashboard/auto-checkin";
+import { getEffectivePlan } from "@/lib/plan-resolver";
 import { type Plan } from "@/lib/plans";
 
 export const dynamic = 'force-dynamic';
@@ -47,14 +48,18 @@ export default async function DashboardPage({
     let userFirstName = '';
 
     if (user) {
-        // Get user profile for plan
-        const { data: profile } = await supabase
-            .from('profiles')
-            .select('plan, first_name')
-            .eq('id', user.id)
-            .single();
+        // Parallel fetch for profile and plan
+        const [profileResult, effectivePlan] = await Promise.all([
+            supabase
+                .from('profiles')
+                .select('first_name')
+                .eq('id', user.id)
+                .single(),
+            getEffectivePlan(supabase, user.id)
+        ]);
 
-        userPlan = (profile?.plan as Plan) || 'free';
+        const profile = profileResult.data;
+        userPlan = effectivePlan as Plan;
         userFirstName = profile?.first_name || '';
 
         const { data } = await supabase

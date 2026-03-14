@@ -113,7 +113,7 @@ export function SideNav({ locale, labels, user, plan }: SideNavProps) {
                                     className="inline-block w-1.5 h-1.5 rounded-full bg-accent"
                                 ></span>
                             )}
-                            Plan {plan}
+                            {labels.plan} {plan}
                         </span>
                     </div>
                 </div>
