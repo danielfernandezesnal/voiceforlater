@@ -54,6 +54,10 @@ export async function releaseCheckinMessages(userId: string) {
             .select(`
                 *,
                 recipients (*),
+                profiles (
+                   first_name,
+                   last_name
+                ),
                 delivery_rules!inner (
                     mode
                 )
@@ -71,15 +75,9 @@ export async function releaseCheckinMessages(userId: string) {
             return { ...results, message: "No messages to release" };
         }
 
-        // 3. Process each message (already marked processing)
-        // No need to map ID or update status again here
-
-
         // 3. Process each message 
         // We use Optimistic Concurrency Control by re-checking status inside the loop.
         for (const message of messages) {
-
-            // FASTEST SAFE PATH: 
             // Double-check status 'scheduled' immediately before sending (Optimistic Concurrency Control).
             const { data: currentMsg, error: staleCheck } = await supabase
                 .from("messages")
@@ -93,14 +91,12 @@ export async function releaseCheckinMessages(userId: string) {
 
             results.processed++;
 
+            const senderName = `${message.profiles?.first_name || ''} ${message.profiles?.last_name || ''}`.trim() || 'Someone special';
+            const senderFirstName = message.profiles?.first_name || 'Someone';
+
             const recipient = message.recipients?.[0];
             if (!recipient || !recipient.email) {
                 results.errors.push(`Message ${message.id}: No recipient`);
-                // Mark failed?
-                await supabase.from("messages").update({ status: "draft" }).eq("id", message.id); // Revert to draft? Or failed status isn't allowed? 
-                // DB constraint: draft, scheduled, delivered. 'failed' is NOT allowed.
-                // We leave it as 'scheduled' (retry later) or move to 'draft' (needs intervention).
-                // Let's leave as scheduled for retry, or draft to stop loop.
                 continue;
             }
 
@@ -110,45 +106,9 @@ export async function releaseCheckinMessages(userId: string) {
             }
 
             try {
-                // Ensure locale string is valid
                 const localeRaw = locale || 'en';
                 const validLocale = (['en', 'es'].includes(localeRaw) ? localeRaw : 'en') as Locale;
                 const dict = await getDictionary(validLocale);
-                const t = dict.emails.messageDelivery;
-
-                let contentHtml = "";
-
-                if (message.type === 'text' && message.text_content) {
-                    contentHtml += `
-                        <div style="padding: 20px; background-color: #f3f4f6; border-radius: 8px; margin: 20px 0;">
-                            <p style="white-space: pre-wrap; font-family: sans-serif;">${message.text_content}</p>
-                        </div>
-                    `;
-                } else if (message.type === 'audio' || message.type === 'video') {
-                    if (message.audio_path) {
-                        const { data: signedUrl } = await supabase
-                            .storage
-                            .from('audio')
-                            .createSignedUrl(message.audio_path, 60 * 60 * 24 * 7); // 7 days
-
-                        if (signedUrl?.signedUrl) {
-                            const label = message.type === 'video' ? t.viewVideo : t.listenAudio;
-
-                            contentHtml += `
-                                <div style="margin: 20px 0;">
-                                    <a href="${signedUrl.signedUrl}" style="display: inline-block; padding: 12px 24px; background-color: #000; color: #fff; text-decoration: none; border-radius: 6px;">
-                                        ${label}
-                                    </a>
-                                </div>
-                                <p style="font-size: 12px; color: #666;">
-                                    ${t.linkValid}
-                                </p>
-                            `;
-                        } else {
-                            contentHtml += `<p>${t.linkError}</p>`;
-                        }
-                    }
-                }
 
                 // Generate magic link for recipient
                 const { data: linkData } = await supabase.auth.admin.generateLink({
@@ -158,25 +118,31 @@ export async function releaseCheckinMessages(userId: string) {
                         redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/${validLocale}/dashboard/received`
                     }
                 });
-                const magicLink = linkData?.properties?.action_link ?? '';
+                
+                if (!linkData?.properties?.action_link) {
+                    console.error(`Failed to generate magic link for ${recipient.email}`);
+                    results.errors.push(`Message ${message.id}: Magic link generation failed`);
+                    continue;
+                }
+
+                const magicLink = linkData.properties.action_link;
 
                 // Use template
-                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml, magicLink });
+                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml: "", magicLink, senderName });
 
                 await resend.emails.send({
-                    from: "Carry My Words <noreply@carrymywords.com>",
+                    from: `${senderFirstName} via Carry My Words <no-reply@voiceforlater.com>`,
                     to: recipient.email,
                     subject: template.subject,
                     html: template.html
                 });
 
                 // Update status to delivered
-                // We use another check here to ensure we don't overwrite if it changed (though unlikely with single thread logic)
                 const { error: updateError } = await supabase
                     .from("messages")
                     .update({ status: "delivered" })
                     .eq("id", message.id)
-                    .eq("status", "scheduled"); // Optimistic lock
+                    .eq("status", "scheduled");
 
                 if (updateError) {
                     results.errors.push(`Message ${message.id}: Failed to update status after sending.`);
@@ -187,7 +153,6 @@ export async function releaseCheckinMessages(userId: string) {
             } catch (sendError) {
                 console.error(`Error sending message ${message.id}:`, sendError);
                 results.errors.push(`Message ${message.id}: ${String(sendError)}`);
-                // Leave as scheduled to retry
             }
         }
 

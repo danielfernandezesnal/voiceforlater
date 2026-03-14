@@ -759,11 +759,13 @@
         "footer": "Carry My Words - Mensajes para cuando realmente importa.",
         "viewVideo": "Ver Video",
         "listenAudio": "Escuchar Audio",
-        "linkValid": "Link válido por 7 días.",
+        "linkValid": "Link válido por 15 días.",
         "linkError": "Error generando link.",
-        "ctaButton": "Ver tu mensaje",
+        "ctaButton": "Ver mi mensaje",
         "ctaIntro": "Alguien te dejó un mensaje especial. Creá tu cuenta para acceder a él.",
-        "ctaSubject": "Tenés un mensaje esperándote en Carry My Words"
+        "ctaSubject": "{senderName} te dejó un mensaje",
+        "preheader": "Este mensaje estuvo esperando el momento justo para llegar.",
+        "contentHidden": "Este mensaje fue guardado especialmente para vos.<br>Solo vos podés leerlo."
       },
     "checkinReminder": {
       "subject": "⏰ Recordatorio de check-in - Carry My Words",
