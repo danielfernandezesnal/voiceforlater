@@ -25,6 +25,9 @@ export type EmailDictionary = {
       listenAudio: string;
       linkValid: string;
       linkError: string;
+      ctaButton: string;
+      ctaIntro: string;
+      ctaSubject: string;
     };
     checkinReminder: {
       subject: string;
@@ -129,7 +132,7 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
   return { subject, html };
 };
 
-export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { contentHtml: string }) => {
+export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { contentHtml: string, magicLink: string }) => {
   const t = dict.emails.messageDelivery;
   const html = `
 <!DOCTYPE html>
@@ -137,82 +140,69 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap');
+</style>
 </head>
-<body style="margin:0;padding:0;background:#F0ECE4;font-family:Georgia,serif;">
+<body style="margin:0;padding:0;background:#F5F0E8;font-family:sans-serif;">
 
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 10px 40px rgba(196,98,58,0.08);">
 
-        <!-- LOGO -->
+        <!-- HEADER -->
         <tr>
-          <td align="center" style="padding-bottom:28px;">
-            <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
-              ${dict.emails.common.footerSignature}
-            </div>
-            <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
-              ${dict.emails.common.tagline}
+          <td align="center" style="background:#C4623A;padding:32px 40px;">
+            <div style="font-family:Georgia,serif;font-weight:700;font-size:24px;color:#ffffff;letter-spacing:-0.01em;">
+              Carry My Words
             </div>
           </td>
         </tr>
 
-        <!-- CARD -->
+        <!-- BODY -->
         <tr>
-          <td style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(42,37,32,0.08);">
+          <td style="padding:40px;">
+            <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:#2D2D2D;line-height:1.3;margin-bottom:16px;">
+              ${t.ctaSubject}
+            </div>
+            
+            <p style="font-size:16px;line-height:1.6;color:#555555;margin:0 0 32px 0;">
+              ${t.ctaIntro}
+            </p>
 
-            <!-- HERO BLOCK -->
+            <!-- CTA BUTTON -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#C0522A;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
-                  <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
-                    ${t.intro}
-                  </div>
-                  <div style="font-family:Georgia,serif;font-size:30px;font-weight:600;color:#ffffff;line-height:1.25;">
-                    ${t.title}
-                  </div>
+                <td align="center" style="padding:32px 0;">
+                  <a href="${data.magicLink}" style="background-color:#C4623A;color:#ffffff;padding:18px 48px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
+                    ${t.ctaButton}
+                  </a>
                 </td>
               </tr>
             </table>
 
-            <!-- CUERPO -->
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="padding:36px;">
-                  
-                  <!-- BLOQUE CONTENIDO -->
-                  <div style="background:#FAF7F2;border-radius:8px;padding:20px;margin-bottom:24px;">
-                    <div style="font-family:Georgia,serif;font-size:15px;line-height:1.7;color:#2A2520;">
-                      ${data.contentHtml}
-                    </div>
-                  </div>
+            <div style="height:1px;background:#EAE4D9;margin:40px 0;"></div>
 
-                  <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
-
-                  <!-- TEXTO AUXILIAR -->
-                  <p style="margin:0 0 6px;font-style:italic;font-size:13px;line-height:1.6;color:#7A6050;">
-                    ${t.viewVideo} • ${t.listenAudio}
-                  </p>
-                  <p style="margin:0;font-style:italic;font-size:13px;line-height:1.6;color:#7A6050;">
-                    ${t.linkValid} • ${t.linkError}
-                  </p>
-
-                </td>
-              </tr>
-            </table>
+            <!-- PREVIEW CARD (Optional but looks nice) -->
+            <div style="background:#FAF8F5;border-radius:16px;padding:24px;">
+              <div style="font-family:Georgia,serif;font-size:16px;line-height:1.8;color:#444444;font-style:italic;">
+                ${data.contentHtml}
+              </div>
+            </div>
 
           </td>
         </tr>
 
         <!-- FOOTER -->
         <tr>
-          <td style="padding:28px 16px 8px;" align="center">
-            <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
+          <td style="padding:0 40px 40px;" align="center">
+            <p style="margin:0 0 12px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
               Carry My Words
             </p>
-            <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
+            <p style="margin:0;font-size:12px;color:#9B8B7E;line-height:1.6;max-width:300px;">
               ${t.footer}<br>
-              <a href="https://voiceforlater.vercel.app" style="color:#A08878;text-decoration:underline;">voiceforlater.vercel.app</a>
+              <a href="https://carrymywords.com" style="color:#C4623A;text-decoration:none;font-weight:600;">carrymywords.com</a>
             </p>
           </td>
         </tr>
@@ -225,7 +215,7 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 </body>
 </html>
 `;
-  return { subject: t.subject, html };
+  return { subject: t.ctaSubject, html };
 };
 
 

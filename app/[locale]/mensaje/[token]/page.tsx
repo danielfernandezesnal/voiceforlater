@@ -3,6 +3,7 @@ import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/
 import Link from 'next/link';
 import { Viewport } from "next";
 import { AudioPlayer, VideoPlayer } from "@/components/messages/MediaPlayers";
+import { getMessageAvailability } from "@/lib/message-availability";
 
 // Force dynamic and skip caching for token validation
 export const dynamic = "force-dynamic";
@@ -53,6 +54,8 @@ export default async function MessagePage({ params }: PageProps) {
                 text_content,
                 audio_path,
                 created_at,
+                delivered_at,
+                updated_at,
                 owner_id,
                 profiles (
                    first_name,
@@ -97,6 +100,72 @@ export default async function MessagePage({ params }: PageProps) {
         month: 'long',
         year: 'numeric'
     });
+
+    // Check Availability
+    const deliveredAt = message.delivered_at || message.updated_at || message.created_at;
+    const { status } = getMessageAvailability(deliveredAt);
+
+    if (status === 'expired') {
+        return (
+            <div className="min-h-screen bg-[#FAF7F2] font-sans flex flex-col items-center justify-center p-8 text-center">
+                <div className="max-w-md w-full bg-white p-12 rounded-[2.5rem] shadow-[0_10px_40px_rgba(42,37,32,0.04)] border border-black/[0.03] space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                    <div className="w-16 h-16 bg-[#F5F0E8] rounded-full flex items-center justify-center mx-auto">
+                        <svg className="w-8 h-8 text-[#C4623A]/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div className="space-y-3">
+                        <h1 className="text-3xl font-playfair italic text-[#1A1510]">
+                            {dict.dashboard.receivedMessages?.expired || "Este mensaje ya no está disponible"}
+                        </h1>
+                        <p className="text-[#9B8B7E] text-sm leading-relaxed">
+                            {locale === 'es' 
+                                ? "Por seguridad y privacidad, los mensajes expiran después de 30 días de haber sido entregados."
+                                : "For security and privacy reasons, messages expire 30 days after being delivered."
+                            }
+                        </p>
+                    </div>
+                    <Link href={`/${locale}`} className="inline-block px-10 py-4 bg-[#C4623A] text-white rounded-full font-medium transition-all hover:opacity-90 active:scale-95">
+                        {dict.common.backToHome || "Volver al inicio"}
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    if (status === 'download_only') {
+        return (
+            <div className="min-h-screen bg-[#FAF7F2] font-sans flex flex-col items-center justify-center p-8 text-center">
+                <div className="max-w-md w-full bg-white p-12 rounded-[2.5rem] shadow-[0_10px_40px_rgba(42,37,32,0.04)] border border-black/[0.03] space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                    <div className="w-16 h-16 bg-[#F5F0E8] rounded-full flex items-center justify-center mx-auto">
+                        <svg className="w-8 h-8 text-[#C4623A]/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                    </div>
+                    <div className="space-y-3">
+                        <h1 className="text-2xl font-playfair italic text-[#1A1510]">
+                             {dict.dashboard.receivedMessages?.downloadButton || "Descargar mensaje"}
+                        </h1>
+                        <p className="text-[#9B8B7E] text-sm leading-relaxed">
+                            {locale === 'es' 
+                                ? "El periodo de visualización ha terminado, pero aún puedes descargar el mensaje por unos días más."
+                                : "The viewing period has ended, but you can still download the message for a few more days."
+                            }
+                        </p>
+                    </div>
+                    <a 
+                        href={`/api/messages/download?token=${token}`}
+                        className="inline-block w-full px-10 py-5 bg-[#C4623A] text-white rounded-full font-medium transition-all hover:opacity-90 active:scale-95 shadow-md"
+                    >
+                         {dict.dashboard.receivedMessages?.downloadButton || "Descargar ahora"}
+                    </a>
+                    <Link href={`/${locale}/dashboard/received`} className="block text-sm text-[#C4623A] font-medium hover:underline">
+                        {dict.common.backToDashboard || "Volver al panel"}
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 
     let mediaUrl = '';
     if (messageType === 'audio' || messageType === 'video') {

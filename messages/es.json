@@ -15,7 +15,9 @@
     "getStarted": "Crear mi primer mensaje",
     "seeHow": "Cómo funciona",
     "price": "USD {amount} / año",
-    "sentAt": "Enviado el "
+    "sentAt": "Enviado el ",
+    "backToHome": "Volver al inicio",
+    "backToDashboard": "Volver al panel"
   },
   "landing": {
     "nav": {
@@ -393,6 +395,12 @@
       "from": "De: {name}",
       "delivered": "Entregado el",
       "view": "Ver mensaje",
+      "viewAudio": "Escuchar mensaje",
+      "viewVideo": "Ver video",
+      "availableDays": "Disponible por {days} días más",
+      "downloadOnly": "Solo descarga · {days} más",
+      "expired": "Este mensaje ya no está disponible",
+      "downloadButton": "Descargar mensaje",
       "someoneSpecial": "Alguien especial",
       "messageCount_one": "mensaje recibido",
       "messageCount_other": "mensajes recibidos"
@@ -744,16 +752,19 @@
       "button": "Entrar ahora",
       "ignore": "Si no solicitaste este enlace, podés ignorar este correo."
     },
-    "messageDelivery": {
-      "subject": "Tienes un mensaje vía Carry My Words",
-      "title": "Tienes un mensaje de Carry My Words",
-      "intro": "Ha llegado un mensaje programado para vos.",
-      "footer": "Carry My Words - Mensajes para cuando realmente importa.",
-      "viewVideo": "Ver Video",
-      "listenAudio": "Escuchar Audio",
-      "linkValid": "Link válido por 7 días.",
-      "linkError": "Error generando link."
-    },
+      "messageDelivery": {
+        "subject": "Tienes un mensaje vía Carry My Words",
+        "title": "Tienes un mensaje de Carry My Words",
+        "intro": "Ha llegado un mensaje programado para vos.",
+        "footer": "Carry My Words - Mensajes para cuando realmente importa.",
+        "viewVideo": "Ver Video",
+        "listenAudio": "Escuchar Audio",
+        "linkValid": "Link válido por 7 días.",
+        "linkError": "Error generando link.",
+        "ctaButton": "Ver tu mensaje",
+        "ctaIntro": "Alguien te dejó un mensaje especial. Creá tu cuenta para acceder a él.",
+        "ctaSubject": "Tenés un mensaje esperándote en Carry My Words"
+      },
     "checkinReminder": {
       "subject": "⏰ Recordatorio de check-in - Carry My Words",
       "title": "¡Es hora de reportarse!",
