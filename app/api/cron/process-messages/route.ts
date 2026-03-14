@@ -62,6 +62,8 @@ export async function GET(request: NextRequest) {
                 ),
                 profiles:owner_id (
                   id,
+                  first_name,
+                  last_name,
                   locale
                 )
             `)
@@ -81,9 +83,9 @@ export async function GET(request: NextRequest) {
         for (const message of messages) {
             results.processed++;
 
-            // Get owner email for "From" name or context
-            // (Optional, but nice to have 'You have a message from X')
-            // For now, we'll use a generic sender to avoid complexity
+            const profile = message.profiles as { id: string, first_name?: string, last_name?: string, locale?: string } | null;
+            const senderName = `${profile?.first_name || ''} ${profile?.last_name || ''}`.trim() || 'Someone special';
+            const senderFirstName = profile?.first_name || 'Someone';
 
             const recipient = message.recipients?.[0];
             if (!recipient || !recipient.email) {
@@ -97,44 +99,9 @@ export async function GET(request: NextRequest) {
             }
 
             try {
-                const localeRaw = (message.profiles as { locale?: string } | null)?.locale || 'en';
+                const localeRaw = profile?.locale || 'en';
                 const locale = (['en', 'es'].includes(localeRaw) ? localeRaw : 'en') as Locale;
                 const dict = await getDictionary(locale);
-                const t = dict.emails.messageDelivery;
-
-                let contentHtml = "";
-
-                if (message.type === 'text' && message.text_content) {
-                    contentHtml += `
-                        <div style="padding: 20px; background-color: #f3f4f6; border-radius: 8px; margin: 20px 0;">
-                            <p style="white-space: pre-wrap; font-family: sans-serif;">${message.text_content}</p>
-                        </div>
-                    `;
-                } else if (message.type === 'audio' || message.type === 'video') {
-                    if (message.audio_path) {
-                        const { data: signedUrl } = await supabase
-                            .storage
-                            .from('audio')
-                            .createSignedUrl(message.audio_path, 60 * 60 * 24 * 7); // 7 days
-
-                        if (signedUrl?.signedUrl) {
-                            const label = message.type === 'video' ? t.viewVideo : t.listenAudio;
-
-                            contentHtml += `
-                                <div style="margin: 20px 0;">
-                                    <a href="${signedUrl.signedUrl}" style="display: inline-block; padding: 12px 24px; background-color: #000; color: #fff; text-decoration: none; border-radius: 6px;">
-                                        ${label}
-                                    </a>
-                                </div>
-                                <p style="font-size: 12px; color: #666;">
-                                    ${t.linkValid}
-                                </p>
-                            `;
-                        } else {
-                            contentHtml += `<p>${t.linkError}</p>`;
-                        }
-                    }
-                }
 
                 // Generate magic link for recipient
                 const { data: linkData } = await supabase.auth.admin.generateLink({
@@ -144,13 +111,20 @@ export async function GET(request: NextRequest) {
                         redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/dashboard/received`
                     }
                 });
-                const magicLink = linkData?.properties?.action_link ?? '';
+
+                if (!linkData?.properties?.action_link) {
+                    console.error(`Failed to generate magic link for ${recipient.email}`);
+                    results.errors.push(`Message ${message.id}: Magic link generation failed`);
+                    continue;
+                }
+
+                const magicLink = linkData.properties.action_link;
 
                 // Use template
-                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml, magicLink });
+                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml: "", magicLink, senderName });
 
                 await resend.emails.send({
-                    from: DEFAULT_SENDER,
+                    from: `${senderFirstName} via Carry My Words <no-reply@voiceforlater.com>`,
                     to: recipient.email,
                     subject: template.subject,
                     html: template.html

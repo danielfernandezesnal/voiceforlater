@@ -763,11 +763,13 @@
         "footer": "Carry My Words - Messages for when it truly matters.",
         "viewVideo": "View Video",
         "listenAudio": "Listen to Audio",
-        "linkValid": "Link valid for 7 days.",
+        "linkValid": "Link valid for 15 days.",
         "linkError": "Error generating link.",
-        "ctaButton": "See your message",
+        "ctaButton": "See my message",
         "ctaIntro": "Someone left a special message for you. Create your account to access it.",
-        "ctaSubject": "You have a message waiting for you on Carry My Words"
+        "ctaSubject": "{senderName} left you a message",
+        "preheader": "This message was waiting for just the right moment to arrive.",
+        "contentHidden": "This message was kept especially for you.<br>Only you can read it."
       },
     "checkinReminder": {
       "subject": "⏰ Check-in reminder - Carry My Words",

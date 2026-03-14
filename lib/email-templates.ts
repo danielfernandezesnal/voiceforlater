@@ -28,6 +28,8 @@ export type EmailDictionary = {
       ctaButton: string;
       ctaIntro: string;
       ctaSubject: string;
+      preheader: string;
+      contentHidden: string;
     };
     checkinReminder: {
       subject: string;
@@ -132,8 +134,10 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
   return { subject, html };
 };
 
-export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { contentHtml: string, magicLink: string }) => {
+export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { contentHtml: string, magicLink: string, senderName: string }) => {
   const t = dict.emails.messageDelivery;
+  const subject = t.ctaSubject.replace('{senderName}', data.senderName);
+  
   const html = `
 <!DOCTYPE html>
 <html>
@@ -145,6 +149,11 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 </style>
 </head>
 <body style="margin:0;padding:0;background:#F5F0E8;font-family:sans-serif;">
+
+<!-- PREHEADER -->
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
+  ${t.preheader}
+</div>
 
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
   <tr>
@@ -164,17 +173,22 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
         <tr>
           <td style="padding:40px;">
             <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:#2D2D2D;line-height:1.3;margin-bottom:16px;">
-              ${t.ctaSubject}
+              ${subject}
             </div>
             
             <p style="font-size:16px;line-height:1.6;color:#555555;margin:0 0 32px 0;">
               ${t.ctaIntro}
             </p>
 
+            <!-- CONTENT PLACEHOLDER (Hidden Content) -->
+            <div style="background:#f5f0e8;border-radius:12px;padding:28px 32px;text-align:center;font-family:Georgia,serif;color:#6b5e52;font-style:italic;font-size:1.05rem;line-height:1.6;margin-bottom:32px;">
+              ${t.contentHidden}
+            </div>
+
             <!-- CTA BUTTON -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td align="center" style="padding:32px 0;">
+                <td align="center" style="padding:10px 0;">
                   <a href="${data.magicLink}" style="background-color:#C4623A;color:#ffffff;padding:18px 48px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
                     ${t.ctaButton}
                   </a>
@@ -182,14 +196,9 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
               </tr>
             </table>
 
-            <div style="height:1px;background:#EAE4D9;margin:40px 0;"></div>
-
-            <!-- PREVIEW CARD (Optional but looks nice) -->
-            <div style="background:#FAF8F5;border-radius:16px;padding:24px;">
-              <div style="font-family:Georgia,serif;font-size:16px;line-height:1.8;color:#444444;font-style:italic;">
-                ${data.contentHtml}
-              </div>
-            </div>
+            <p style="text-align:center;font-size:12px;color:#9B8B7E;margin-top:16px;">
+              ${t.linkValid}
+            </p>
 
           </td>
         </tr>
@@ -197,6 +206,7 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
         <!-- FOOTER -->
         <tr>
           <td style="padding:0 40px 40px;" align="center">
+            <div style="height:1px;background:#EAE4D9;margin-bottom:32px;"></div>
             <p style="margin:0 0 12px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
               Carry My Words
             </p>
@@ -215,7 +225,7 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 </body>
 </html>
 `;
-  return { subject: t.ctaSubject, html };
+  return { subject, html };
 };
 
 
@@ -601,7 +611,7 @@ export const getMessageSpecialTemplate = (
             </p>
             <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
               Recibiste este email porque alguien programó un mensaje especial para vos.<br>
-              <a href="https://voiceforlater.vercel.app" style="color:#A08878;text-decoration:underline;">voiceforlater.vercel.app</a>
+              <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
             </p>
           </td>
         </tr>
@@ -725,7 +735,7 @@ export const getMessagePosthumousTemplate = (
             </p>
             <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
               ${t?.footerLegal || ''}<br>
-              <a href="https://voiceforlater.vercel.app" style="color:#A08878;text-decoration:underline;">voiceforlater.vercel.app</a>
+              <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
             </p>
           </td>
         </tr>
@@ -832,7 +842,7 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
               Carry My Words
             </div>
             <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
-              <a href="https://voiceforlater.vercel.app" style="color:#A08878;text-decoration:underline;">voiceforlater.vercel.app</a>
+              <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
             </p>
           </td>
         </tr>
@@ -905,7 +915,7 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
 
                   <!-- BOTÓN -->
                   <div style="margin-bottom:32px;text-align:center;">
-                    <a href="https://voiceforlater.vercel.app/dashboard" style="display:inline-block;padding:14px 28px;background:#C0522A;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;">
+                    <a href="https://carrymywords.com/dashboard" style="display:inline-block;padding:14px 28px;background:#C0522A;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;">
                       ${t.action}
                     </a>
                   </div>
@@ -931,7 +941,7 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
               ${dict.emails.common.footerSignature}
             </div>
             <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
-              <a href="https://voiceforlater.vercel.app" style="color:#A08878;text-decoration:underline;">voiceforlater.vercel.app</a>
+              <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
             </p>
           </td>
         </tr>
