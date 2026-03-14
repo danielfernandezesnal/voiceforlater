@@ -54,8 +54,7 @@ export default async function MessagePage({ params }: PageProps) {
                 text_content,
                 audio_path,
                 created_at,
-                delivered_at,
-                updated_at,
+                delivery_claimed_at,
                 owner_id,
                 profiles (
                    first_name,
@@ -102,7 +101,7 @@ export default async function MessagePage({ params }: PageProps) {
     });
 
     // Check Availability
-    const deliveredAt = message.delivered_at || message.updated_at || message.created_at;
+    const deliveredAt = message.delivery_claimed_at || message.created_at;
     const { status } = getMessageAvailability(deliveredAt);
 
     if (status === 'expired') {

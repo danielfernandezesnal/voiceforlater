@@ -29,8 +29,7 @@ export default async function ReceivedMessagesPage({
                 status,
                 title,
                 created_at,
-                delivered_at,
-                updated_at,
+                delivery_claimed_at,
                 owner_id,
                 profiles (
                    first_name,
@@ -51,7 +50,7 @@ export default async function ReceivedMessagesPage({
             ...msg,
             sender_name: `${msg.profiles?.first_name || ''} ${msg.profiles?.last_name || ''}`.trim() || null,
             token: msg.delivery_tokens?.[0]?.token || null,
-            delivered_at: msg.delivered_at || msg.updated_at || msg.created_at
+            delivered_at: msg.delivery_claimed_at || msg.created_at
         }));
     }
 

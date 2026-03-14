@@ -1,5 +1,3 @@
-'use client';
-
 import type { MessageWithRecipient } from "./dashboard-message-list";
 import { getMessageAvailability } from "@/lib/message-availability";
 
