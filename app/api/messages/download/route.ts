@@ -26,8 +26,7 @@ export async function GET(request: NextRequest) {
                     text_content,
                     audio_path,
                     created_at,
-                    delivered_at,
-                    updated_at
+                    delivery_claimed_at
                 )
             `)
             .eq("token", token)
@@ -38,7 +37,7 @@ export async function GET(request: NextRequest) {
         }
 
         const message = tokenData.messages as any;
-        const deliveredAt = message.delivered_at || message.updated_at || message.created_at;
+        const deliveredAt = message.delivery_claimed_at || message.created_at;
 
         // 2. Check Availability
         const { status } = getMessageAvailability(deliveredAt);
