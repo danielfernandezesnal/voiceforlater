@@ -136,8 +136,18 @@ export async function GET(request: NextRequest) {
                     }
                 }
 
+                // Generate magic link for recipient
+                const { data: linkData } = await supabase.auth.admin.generateLink({
+                    type: 'magiclink',
+                    email: recipient.email,
+                    options: {
+                        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/dashboard/received`
+                    }
+                });
+                const magicLink = linkData?.properties?.action_link ?? '';
+
                 // Use template
-                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml });
+                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml, magicLink });
 
                 await resend.emails.send({
                     from: DEFAULT_SENDER,

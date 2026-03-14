@@ -132,6 +132,36 @@ export function VideoPlayer({ src, overlayText }: { src: string, overlayText: st
                 }}
             />
 
+            {/* Watermark */}
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: '48px', // por encima de los controles nativos del video
+                    left: '16px',
+                    pointerEvents: 'none',
+                    zIndex: 10,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    background: 'rgba(0, 0, 0, 0.35)',
+                    borderRadius: '6px',
+                    padding: '3px 8px',
+                }}
+            >
+                <span
+                    style={{
+                        fontFamily: 'Georgia, serif',
+                        fontStyle: 'italic',
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.75)',
+                        letterSpacing: '0.02em',
+                        whiteSpace: 'nowrap',
+                    }}
+                >
+                    Carry My Words
+                </span>
+            </div>
+
             {/* Custom Overlay */}
             {!isPlaying && (
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex flex-col items-center justify-center gap-4 transition-all duration-700 group-hover:bg-black/50">

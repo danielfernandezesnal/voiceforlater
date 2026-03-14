@@ -150,8 +150,18 @@ export async function releaseCheckinMessages(userId: string) {
                     }
                 }
 
+                // Generate magic link for recipient
+                const { data: linkData } = await supabase.auth.admin.generateLink({
+                    type: 'magiclink',
+                    email: recipient.email,
+                    options: {
+                        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/${validLocale}/dashboard/received`
+                    }
+                });
+                const magicLink = linkData?.properties?.action_link ?? '';
+
                 // Use template
-                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml });
+                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml, magicLink });
 
                 await resend.emails.send({
                     from: "Carry My Words <noreply@carrymywords.com>",
