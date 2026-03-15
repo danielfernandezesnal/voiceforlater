@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { LoginForm } from "@/components/auth/login-form";
+import { LocaleSwitcher } from "@/components/profile/locale-switcher";
 
 // Force dynamic rendering - this page uses client-side auth
 // Rebuild trigger: 2026-02-09 v3
@@ -34,21 +35,8 @@ export default async function LoginPage({
                     <LoginForm dictionary={dict.auth} locale={locale} />
                 </div>
 
-                {/* Language Switcher */}
-                <div className="mt-8 flex items-center justify-center gap-4 text-sm text-muted-foreground">
-                    <Link
-                        href="/en/auth/login"
-                        className={`hover:text-foreground transition-colors ${locale === 'en' ? 'text-foreground font-medium' : ''}`}
-                    >
-                        English
-                    </Link>
-                    <span className="text-border">|</span>
-                    <Link
-                        href="/es/auth/login"
-                        className={`hover:text-foreground transition-colors ${locale === 'es' ? 'text-foreground font-medium' : ''}`}
-                    >
-                        Español
-                    </Link>
+                <div className="mt-8 flex items-center justify-center">
+                    <LocaleSwitcher currentLocale={locale} />
                 </div>
             </div>
         </div>

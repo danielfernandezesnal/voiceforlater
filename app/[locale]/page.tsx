@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { LandingContactForm } from "@/components/landing-contact-form";
 import { LandingScenarios } from "@/components/landing-scenarios";
 import { LandingFaq } from "@/components/landing-faq";
+import { LocaleSwitcher } from "@/components/profile/locale-switcher";
 
 export async function generateMetadata({
     params,
@@ -49,11 +50,7 @@ export default async function LocaleHomePage({
                     Carry My Words
                 </div>
                 <div className="flex flex-row gap-3 md:gap-6 items-center">
-                    <div className="flex items-center gap-2 text-sm font-medium">
-                        <Link href="/en" className={locale === 'en' ? 'text-primary' : 'text-muted-foreground hover:text-foreground transition-colors'}>EN</Link>
-                        <span className="text-border">/</span>
-                        <Link href="/es" className={locale === 'es' ? 'text-primary' : 'text-muted-foreground hover:text-foreground transition-colors'}>ES</Link>
-                    </div>
+                    <LocaleSwitcher currentLocale={locale} />
                     {/* Nav CTA */}
                     <Link
                         href={`/${locale}/auth/login`}
@@ -450,10 +447,8 @@ export default async function LocaleHomePage({
                         <Link href={`/${locale}/terms`} className="hover:text-foreground transition-colors">{dict.landing.footer.terms}</Link>
                         <Link href={`/${locale}/contact`} className="hover:text-foreground transition-colors">{dict.landing.footer.contact}</Link>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <Link href="/en" className={locale === 'en' ? 'text-primary font-bold' : 'hover:text-foreground'}>EN</Link>
-                        <span>/</span>
-                        <Link href="/es" className={locale === 'es' ? 'text-primary font-bold' : 'hover:text-foreground'}>ES</Link>
+                    <div className="flex items-center">
+                        <LocaleSwitcher currentLocale={locale} />
                     </div>
                 </div>
             </footer>
