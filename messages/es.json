@@ -372,6 +372,7 @@
       "cancel": "Cancelar"
     },
     "plan": {
+      "title": "Mi Plan",
       "compare": {
         "title": "Funcionalidad",
         "free": "Free",

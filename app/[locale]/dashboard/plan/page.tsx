@@ -51,7 +51,7 @@ export default async function PlanPage({
 
             {/* B) Header */}
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Mi Plan</h1>
+                <h1 className="font-serif font-semibold text-[1.9rem] leading-tight text-foreground">{dict.dashboard.plan?.title || 'Mi Plan'}</h1>
 
             </div>
 
