@@ -33,20 +33,14 @@ export async function POST(request: NextRequest) {
             email_to_find: email
         });
 
-        let finalUserId: string;
-
         if (rpcError) {
             if (process.env.NODE_ENV !== 'production') console.error('RPC Error searching user:', rpcError);
-            // Fallback to listUsers if RPC fails (e.g. not yet deployed in all envs)
-            const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
-            if (listError) throw listError;
-            const user = users.find(u => u.email?.toLowerCase() === email.toLowerCase());
-            if (!user) return NextResponse.json({ success: true });
-            finalUserId = user.id;
-        } else {
-            if (!userId) return NextResponse.json({ success: true });
-            finalUserId = userId;
+            throw rpcError;
         }
+
+        if (!userId) return NextResponse.json({ success: true });
+
+        const finalUserId: string = userId;
 
         // 2. Generate new password
         const newPassword = generatePassword(10);
