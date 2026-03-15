@@ -106,7 +106,7 @@ export default async function DashboardLayout({
                     <div className="flex items-center gap-2 sm:gap-4">
                         <MobileNav locale={locale} labels={labels} />
                         {/* Language Switcher */}
-                        <div className="hidden md:block">
+                        <div className="flex items-center">
                             <LocaleSwitcher currentLocale={locale} />
                         </div>
 
