@@ -5,6 +5,7 @@ import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/
 import { SideNav } from "@/components/dashboard/side-nav";
 import { LocaleSyncer } from "@/components/profile/sync-locale";
 import { LocaleSwitcher } from "@/components/profile/locale-switcher";
+import { MobileNav } from "@/components/dashboard/mobile-nav";
 
 import { getEffectivePlan } from "@/lib/plan-resolver";
 
@@ -82,36 +83,28 @@ export default async function DashboardLayout({
             {/* Topbar */}
             <header className="h-16 border-b border-border/40 fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md transition-all">
                 <div className="flex items-center justify-between h-full px-4 sm:px-6">
-                    <div className="hidden md:flex flex-col items-start justify-center">
-                        <Link href={`/${locale}/dashboard`} className="font-serif italic text-xl leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
-                            Carry My Words
-                        </Link>
-                        <p className="text-[0.55rem] font-medium uppercase tracking-widest mt-0.5" style={{ color: '#C4623A' }}>
-                            {labels.tagline}
-                        </p>
+                    <div className="flex items-center">
+                        {/* Logo Desktop */}
+                        <div className="hidden md:flex flex-col items-start justify-center">
+                            <Link href={`/${locale}/dashboard`} className="font-serif italic text-xl leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
+                                Carry My Words
+                            </Link>
+                            <p className="text-[0.55rem] font-medium uppercase tracking-widest mt-0.5" style={{ color: '#C4623A' }}>
+                                {labels.tagline}
+                            </p>
+                        </div>
+
+                        {/* Logo Mobile */}
+                        <div className="flex md:hidden items-center">
+                            <Link href={`/${locale}/dashboard`} className="font-serif italic text-lg leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
+                                Carry My Words
+                            </Link>
+                        </div>
                     </div>
 
-                    {/* Mobile Nav Links */}
-                    <nav className="flex md:hidden items-center gap-5 overflow-x-auto pb-1 flex-1 px-1 min-w-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                        <Link href={`/${locale}/dashboard`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
-                            {labels.dashboard}
-                        </Link>
-                        <Link href={`/${locale}/dashboard/received`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
-                            {labels.received}
-                        </Link>
-                        <Link href={`/${locale}/dashboard/contacts`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
-                            {labels.contacts}
-                        </Link>
-                        <Link href={`/${locale}/dashboard/profile`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
-                            {labels.profile}
-                        </Link>
-                        <Link href={`/${locale}/dashboard/plan`} className="text-sm font-medium text-muted-foreground hover:text-primary whitespace-nowrap">
-                            {labels.plan}
-                        </Link>
-                    </nav>
-
-                    {/* Right Actions */}
-                    <div className="flex items-center gap-4">
+                    {/* Right Actions & Mobile Hamburger */}
+                    <div className="flex items-center gap-2 sm:gap-4">
+                        <MobileNav locale={locale} labels={labels} />
                         {/* Language Switcher */}
                         <div className="hidden md:block">
                             <LocaleSwitcher currentLocale={locale} />
