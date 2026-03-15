@@ -46,7 +46,7 @@ export default async function LocaleHomePage({
         <div className="min-h-screen flex flex-col" style={{ background: 'hsl(var(--cream))' }}>
             {/* Navbar */}
             <nav className="px-4 py-4 md:p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
-                <div className="font-serif italic font-normal text-[1.35rem] md:text-5xl tracking-tight whitespace-nowrap" style={{ color: TC }}>
+                <div className="font-serif italic font-normal text-[1.5rem] md:text-5xl tracking-tight whitespace-nowrap" style={{ color: TC }}>
                     Carry My Words
                 </div>
                 <div className="flex flex-row gap-3 md:gap-6 items-center">
@@ -54,7 +54,7 @@ export default async function LocaleHomePage({
                     {/* Nav CTA */}
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="inline-flex items-center justify-center text-center rounded-full px-4 py-1.5 md:px-5 md:py-2 text-sm font-medium no-underline bg-[#C4623A] text-white md:bg-transparent md:text-[#C4623A] md:border md:border-[#C4623A]"
+                        className="inline-flex items-center justify-center text-center rounded-full px-3 py-1.5 md:px-5 md:py-2 text-xs md:text-sm font-medium no-underline bg-[#C4623A] text-white md:bg-transparent md:text-[#C4623A] md:border md:border-[#C4623A] max-w-[80px] md:max-w-none leading-tight"
                     >
                         {(dict.landing as any).nav?.login}
                     </Link>
