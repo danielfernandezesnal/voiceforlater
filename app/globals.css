@@ -210,8 +210,17 @@ html {
     }
 
     .hero-img-col {
-      min-height: 200px;
-      max-height: 200px;
+      min-height: 280px;
+      max-height: 320px;
+    }
+
+    .tl-step {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tl-line {
+      display: none;
     }
   }
 
