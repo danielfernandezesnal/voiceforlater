@@ -376,6 +376,7 @@
       "addContactLong": "+ Add contact"
     },
     "plan": {
+      "title": "My Plan",
       "compare": {
         "title": "Feature",
         "free": "Free",

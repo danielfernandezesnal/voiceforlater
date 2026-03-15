@@ -138,7 +138,7 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
             )}
 
             <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-5">
-                <h2 className="text-lg font-semibold mb-1">{t.personalData}</h2>
+                <h2 className="font-serif font-semibold text-lg text-foreground mb-4">{t.personalData}</h2>
 
                 {/* Avatar with initials */}
                 <div className="flex items-center gap-4 mb-6">
@@ -209,7 +209,7 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
             </div>
 
             <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-5">
-                <h2 className="text-lg font-semibold mb-1">{t.locationContact}</h2>
+                <h2 className="font-serif font-semibold text-lg text-foreground mb-4">{t.locationContact}</h2>
 
                 {/* Country (dropdown) + City */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -279,7 +279,7 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
 
             <div className="bg-card border border-border rounded-xl p-6 shadow-sm space-y-4">
                 {/* @ts-ignore */}
-                <h2 className="text-lg font-semibold mb-1">{t.security?.title || 'Seguridad'}</h2>
+                <h2 className="font-serif font-semibold text-lg text-foreground mb-4">{t.security?.title || 'Seguridad'}</h2>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                         {/* @ts-ignore */}

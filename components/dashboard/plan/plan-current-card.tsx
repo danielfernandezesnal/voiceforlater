@@ -25,7 +25,7 @@ export function PlanCurrentCard({ planName, status }: PlanCurrentCardProps) {
                 <div>
                     <p className="text-sm text-muted-foreground mb-1">Plan actual</p>
                     <div className="flex items-center gap-3">
-                        <h2 className="text-2xl font-bold tracking-tight">
+                        <h2 className="font-serif font-semibold text-lg text-foreground mb-4">
                             {isPro ? '✨ Pro' : 'Free'}
                         </h2>
                         {badge && (
