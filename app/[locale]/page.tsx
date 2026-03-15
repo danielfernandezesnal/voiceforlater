@@ -45,7 +45,7 @@ export default async function LocaleHomePage({
         <div className="min-h-screen flex flex-col" style={{ background: 'hsl(var(--cream))' }}>
             {/* Navbar */}
             <nav className="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
-                <div className="font-serif italic font-normal text-5xl tracking-tight" style={{ color: TC }}>
+                <div className="font-serif italic font-normal text-3xl md:text-5xl tracking-tight" style={{ color: TC }}>
                     Carry My Words
                 </div>
                 <div className="flex flex-col md:flex-row gap-2 md:gap-6 items-end md:items-center">
@@ -81,6 +81,24 @@ export default async function LocaleHomePage({
                         style={{ fontSize: 'clamp(1.1rem, 1.4vw, 1.35rem)', color: 'rgba(42, 37, 32, 0.65)', maxWidth: '500px' }}>
                         {dict.landing.hero.subtitle}
                     </p>
+                    {/* Botón CTA Mobile */}
+                    <div className="block md:hidden animate-in fade-in duration-1000 delay-300 mt-2">
+                        <Link
+                            href={`/${locale}/auth/login`}
+                            className="flex justify-center items-center w-full"
+                            style={{
+                                background: TC,
+                                color: '#fff',
+                                borderRadius: '100px',
+                                padding: '16px 36px',
+                                fontSize: '1rem',
+                                fontWeight: 500,
+                                textDecoration: 'none',
+                            }}
+                        >
+                            {ctaHero}
+                        </Link>
+                    </div>
                     {/* Hero CTA */}
                     <div className="hidden md:block animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
                         <Link
@@ -221,7 +239,7 @@ export default async function LocaleHomePage({
                 </h2>
                 <div className="grid md:grid-cols-2 gap-8 md:gap-10 mb-20">
                     {/* Date delivery */}
-                    <div className="flex flex-col gap-5 p-10 rounded-2xl border border-border/60 transition-shadow hover:shadow-md">
+                    <div className="flex flex-col gap-5 p-6 md:p-10 rounded-2xl border border-border/60 transition-shadow hover:shadow-md">
                         <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" />
@@ -234,7 +252,7 @@ export default async function LocaleHomePage({
                         <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
                     </div>
                     {/* Checkin delivery */}
-                    <div className="flex flex-col gap-5 p-10 rounded-2xl border border-border/60 transition-shadow hover:shadow-md">
+                    <div className="flex flex-col gap-5 p-6 md:p-10 rounded-2xl border border-border/60 transition-shadow hover:shadow-md">
                         <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M5 22h14" />
@@ -422,7 +440,7 @@ export default async function LocaleHomePage({
             <footer className="py-12 px-6 border-t border-border mt-auto bg-card text-muted-foreground text-sm">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex flex-col items-center">
-                        <div className="font-serif font-bold text-3xl" style={{ color: TC }}>Carry My Words</div>
+                        <div className="font-serif font-normal italic text-2xl" style={{ color: TC }}>Carry My Words</div>
                         <p style={{ color: TC, fontSize: '0.65rem', letterSpacing: '0.14em', fontWeight: 500, marginTop: '4px', textAlign: 'center' }}>
                             {locale === 'es' ? 'MENSAJES QUE VIAJAN EN EL TIEMPO' : 'MESSAGES THAT TRAVEL THROUGH TIME'}
                         </p>
