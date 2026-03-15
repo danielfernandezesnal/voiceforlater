@@ -65,56 +65,58 @@ export function PlanCompare({ currentPlan, comparisonData }: PlanCompareProps) {
     ]
 
     return (
-        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
-            {/* Column Headers */}
-            <div className="grid grid-cols-[1fr_100px_100px] sm:grid-cols-[1fr_120px_120px] border-b-2 border-stone-200 bg-stone-100 rounded-t-xl">
-                <div className="py-5 px-4 sm:px-5">
-                    <span className="text-sm font-semibold text-stone-500 uppercase tracking-wide">{comparisonData.title}</span>
+        <div className="overflow-x-auto rounded-xl border border-border shadow-sm bg-card">
+            <div className="min-w-[420px]">
+                {/* Column Headers */}
+                <div className="grid grid-cols-[1fr_100px_100px] sm:grid-cols-[1fr_120px_120px] border-b-2 border-stone-200 bg-stone-100 rounded-t-xl">
+                    <div className="py-5 px-4 sm:px-5">
+                        <span className="text-sm font-semibold text-stone-500 uppercase tracking-wide">{comparisonData.title}</span>
+                    </div>
+                    <div className={`py-5 px-4 sm:px-5 text-center ${isFree ? 'bg-stone-200/40' : ''}`}>
+                        <span className="text-sm font-bold text-stone-700">{comparisonData.free}</span>
+                    </div>
+                    <div className="py-5 px-4 sm:px-5 text-center bg-primary rounded-tr-xl">
+                        <span className="text-sm font-bold text-white uppercase tracking-wider">✨ {comparisonData.pro}</span>
+                    </div>
                 </div>
-                <div className={`py-5 px-4 sm:px-5 text-center ${isFree ? 'bg-stone-200/40' : ''}`}>
-                    <span className="text-sm font-bold text-stone-700">{comparisonData.free}</span>
-                </div>
-                <div className="py-5 px-4 sm:px-5 text-center bg-primary rounded-tr-xl">
-                    <span className="text-sm font-bold text-white uppercase tracking-wider">✨ {comparisonData.pro}</span>
-                </div>
-            </div>
 
-            {/* Feature Rows */}
-            {features.map((feature, i) => (
-                <div
-                    key={feature.name}
-                    className={`grid grid-cols-[1fr_100px_100px] sm:grid-cols-[1fr_120px_120px] ${i < features.length - 1 ? 'border-b border-border/50' : ''
-                        } hover:bg-muted/20 transition-colors`}
-                >
-                    <div className="p-4 sm:p-5 flex items-center">
-                        <span className="text-sm text-foreground">{feature.name}</span>
+                {/* Feature Rows */}
+                {features.map((feature, i) => (
+                    <div
+                        key={feature.name}
+                        className={`grid grid-cols-[1fr_100px_100px] sm:grid-cols-[1fr_120px_120px] ${i < features.length - 1 ? 'border-b border-border/50' : ''
+                            } hover:bg-muted/20 transition-colors`}
+                    >
+                        <div className="p-4 sm:p-5 flex items-center">
+                            <span className="text-sm text-foreground">{feature.name}</span>
+                        </div>
+                        <div className={`p-4 sm:p-5 flex flex-col items-center justify-center ${isFree ? 'bg-primary/[0.02]' : ''}`}>
+                            {feature.free ? (
+                                <>
+                                    <CheckIcon />
+                                    {feature.freeNote && (
+                                        <span className="text-[11px] text-muted-foreground mt-0.5">{feature.freeNote}</span>
+                                    )}
+                                </>
+                            ) : (
+                                <DashIcon />
+                            )}
+                        </div>
+                        <div className="p-4 sm:p-5 flex flex-col items-center justify-center bg-emerald-50/60">
+                            {feature.pro ? (
+                                <>
+                                    <CheckIcon />
+                                    {feature.proNote && (
+                                        <span className="text-[11px] text-muted-foreground mt-0.5">{feature.proNote}</span>
+                                    )}
+                                </>
+                            ) : (
+                                <DashIcon />
+                            )}
+                        </div>
                     </div>
-                    <div className={`p-4 sm:p-5 flex flex-col items-center justify-center ${isFree ? 'bg-primary/[0.02]' : ''}`}>
-                        {feature.free ? (
-                            <>
-                                <CheckIcon />
-                                {feature.freeNote && (
-                                    <span className="text-[11px] text-muted-foreground mt-0.5">{feature.freeNote}</span>
-                                )}
-                            </>
-                        ) : (
-                            <DashIcon />
-                        )}
-                    </div>
-                    <div className="p-4 sm:p-5 flex flex-col items-center justify-center bg-emerald-50/60">
-                        {feature.pro ? (
-                            <>
-                                <CheckIcon />
-                                {feature.proNote && (
-                                    <span className="text-[11px] text-muted-foreground mt-0.5">{feature.proNote}</span>
-                                )}
-                            </>
-                        ) : (
-                            <DashIcon />
-                        )}
-                    </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     )
 }
