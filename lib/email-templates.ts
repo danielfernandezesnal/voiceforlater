@@ -111,25 +111,73 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
   const t = dict.emails.magicLink;
   const subject = data.isAdminLogin ? t.subjectAdmin : t.subject;
 
-  const html = `
-      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-        <h2 style="color: #3A4D3F;">${t.title}</h2>
-        ${data.isAdminLogin ? `<p style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; margin: 10px 0;"><strong>${t.adminBadge}</strong></p>` : ''}
-        <p>${t.intro}</p>
-        <div style="margin: 30px 0;">
-          <a href="${data.magicLink}" style="background-color: #3A4D3F; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
-            ${t.button}
-          </a>
-        </div>
-        <p style="color: #666; font-size: 14px;">
-          ${t.ignore}
-        </p>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
-        <p style="font-size: 12px; color: #999;">
+  const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#F5F0E8;font-family:Georgia,serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
+    <tr>
+      <td align="center">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(196,98,58,0.08);">
+          <!-- HEADER -->
+          <tr>
+            <td align="center" style="background:#C4623A;padding:32px 40px;">
+              <div style="font-family:Georgia,serif;font-style:italic;font-size:24px;color:#ffffff;letter-spacing:-0.3px;">
+                Carry My Words
+              </div>
+            </td>
+          </tr>
+          <!-- BODY -->
+          <tr>
+            <td style="padding:40px;">
+              <div style="font-family:Georgia,serif;font-size:26px;font-weight:600;color:#2D2D2D;line-height:1.3;margin-bottom:16px;">
+                ${t.title}
+              </div>
+              ${data.isAdminLogin ? `<div style="background:#fef3c7;border-left:4px solid #f59e0b;padding:12px 16px;margin-bottom:20px;border-radius:0 8px 8px 0;font-family:sans-serif;font-size:14px;color:#92400e;"><strong>${t.adminBadge}</strong></div>` : ''}
+              <p style="font-size:15px;line-height:1.7;color:#555555;margin:0 0 32px 0;">
+                ${t.intro}
+              </p>
+              <!-- CTA BUTTON -->
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="padding:8px 0 24px;">
+                    <a href="${data.magicLink}" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
+                      ${t.button}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0;">
+                ${t.ignore}
+              </p>
+            </td>
+          </tr>
+          <!-- FOOTER -->
+          <tr>
+            <td style="padding:0 40px 36px;" align="center">
+              <div style="height:1px;background:#EAE4D9;margin-bottom:28px;"></div>
+              <p style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
+                Carry My Words
+              </p>
+              <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
+                <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">carrymywords.com</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+        <!-- URL de respaldo -->
+        <p style="margin-top:20px;font-size:11px;color:#9B8B7E;text-align:center;word-break:break-all;">
           ${data.magicLink}
         </p>
-      </div>
-    `;
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`;
 
   return { subject, html };
 };
