@@ -44,11 +44,11 @@ export default async function LocaleHomePage({
     return (
         <div className="min-h-screen flex flex-col" style={{ background: 'hsl(var(--cream))' }}>
             {/* Navbar */}
-            <nav className="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
+            <nav className="px-4 py-4 md:p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
                 <div className="font-serif italic font-normal text-3xl md:text-5xl tracking-tight" style={{ color: TC }}>
                     Carry My Words
                 </div>
-                <div className="flex flex-col md:flex-row gap-2 md:gap-6 items-end md:items-center">
+                <div className="flex flex-row gap-3 md:gap-6 items-center">
                     <div className="flex items-center gap-2 text-sm font-medium">
                         <Link href="/en" className={locale === 'en' ? 'text-primary' : 'text-muted-foreground hover:text-foreground transition-colors'}>EN</Link>
                         <span className="text-border">/</span>
