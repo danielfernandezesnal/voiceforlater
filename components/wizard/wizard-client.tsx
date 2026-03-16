@@ -226,9 +226,11 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                             {dictionary.common.back}
                         </button>
                     )}
-                    <button onClick={handleNext} disabled={!canProceed} className="btn-primary">
-                        {dictionary.common.next}
-                    </button>
+                    {step < 5 && step !== 1 && (
+                        <button onClick={handleNext} disabled={!canProceed} className="btn-primary">
+                            {dictionary.common.next}
+                        </button>
+                    )}
                 </div>
             )}
         </div>
