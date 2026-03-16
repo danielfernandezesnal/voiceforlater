@@ -40,8 +40,10 @@ export function Step1TypeSelect({ dictionary, userPlan }: Step1Props) {
         }
 
         updateData({ messageType: type })
-        // Use a small timeout to ensure state update propagates before navigation
-        setTimeout(() => setStep(2), 50)
+        if (window.innerWidth < 768) {
+            // Use a small timeout to ensure state update propagates before navigation
+            setTimeout(() => setStep(2), 50)
+        }
     }
 
     const options: {
