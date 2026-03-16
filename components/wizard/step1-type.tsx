@@ -16,7 +16,7 @@ interface Step1Props {
 }
 
 export function Step1TypeSelect({ dictionary, userPlan }: Step1Props) {
-    const { data, updateData } = useWizard()
+    const { data, updateData, setStep } = useWizard()
     const router = useRouter()
 
     const handleTypeSelect = async (type: MessageType) => {
@@ -40,6 +40,8 @@ export function Step1TypeSelect({ dictionary, userPlan }: Step1Props) {
         }
 
         updateData({ messageType: type })
+        // Use a small timeout to ensure state update propagates before navigation
+        setTimeout(() => setStep(2), 50)
     }
 
     const options: {
