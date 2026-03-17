@@ -54,7 +54,7 @@ export default async function LocaleHomePage({
                     {/* Nav CTA */}
                     <Link
                         href={`/${locale}/auth/login`}
-                        className="inline-flex items-center justify-center text-center rounded-full px-3 py-1.5 md:px-5 md:py-2 text-xs md:text-sm font-medium no-underline bg-[#C4623A] text-white md:bg-transparent md:text-[#C4623A] md:border md:border-[#C4623A] max-w-[80px] md:max-w-none leading-tight"
+                        className="inline-flex items-center justify-center text-center rounded-full px-3 py-1.5 md:px-5 md:py-2 text-xs md:text-sm font-medium no-underline bg-[#C4623A] text-white md:bg-transparent md:text-[#C4623A] md:border md:border-[#C4623A] leading-tight shrink-0"
                     >
                         {(dict.landing as any).nav?.login}
                     </Link>
