@@ -121,15 +121,22 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(196,98,58,0.08);">
-          <!-- HEADER -->
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+          <!-- LOGO -->
           <tr>
-            <td align="center" style="background:#C4623A;padding:32px 40px;">
-              <div style="font-family:Georgia,serif;font-style:italic;font-size:24px;color:#ffffff;letter-spacing:-0.3px;">
+            <td align="center" style="padding-bottom:28px;">
+              <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
                 Carry My Words
+              </div>
+              <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
+                ${dict.emails.common.tagline}
               </div>
             </td>
           </tr>
+          <!-- CARD -->
+          <tr>
+            <td style="background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(196,98,58,0.08);">
+              <table width="100%" cellpadding="0" cellspacing="0">
           <!-- BODY -->
           <tr>
             <td style="padding:40px;">
@@ -165,6 +172,9 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
               <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
                 <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">carrymywords.com</a>
               </p>
+            </td>
+          </tr>
+              </table>
             </td>
           </tr>
         </table>
@@ -206,16 +216,24 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 10px 40px rgba(196,98,58,0.08);">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
 
-        <!-- HEADER -->
+        <!-- LOGO -->
         <tr>
-          <td align="center" style="background:#C4623A;padding:32px 40px;">
-            <div style="font-family:Georgia,serif;font-weight:700;font-size:24px;color:#ffffff;letter-spacing:-0.01em;">
+          <td align="center" style="padding-bottom:28px;">
+            <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
               Carry My Words
+            </div>
+            <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
+              ${dict.emails.common.tagline}
             </div>
           </td>
         </tr>
+
+        <!-- CARD -->
+        <tr>
+          <td style="background:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 10px 40px rgba(196,98,58,0.08);">
+            <table width="100%" cellpadding="0" cellspacing="0">
 
         <!-- BODY -->
         <tr>
@@ -265,6 +283,9 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
           </td>
         </tr>
 
+            </table>
+          </td>
+        </tr>
       </table>
     </td>
   </tr>
@@ -295,8 +316,8 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
   body { background-color: #e8e0d5; font-family: 'Source Sans 3', sans-serif; padding: 40px 20px; color: #2c2318; }
   .email-wrapper { max-width: 560px; margin: 0 auto; }
   .top-header { text-align: center; margin-bottom: 24px; }
-  .logo-title { font-family: 'Lora', serif; font-style: italic; font-size: 26px; color: #c0622a; margin-bottom: 4px; }
-  .logo-subtitle { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #c0622a; font-weight: 400; }
+  .logo-title { font-family: 'Lora', serif; font-style: italic; font-size: 30px; color: #c0622a; margin-bottom: 4px; }
+  .logo-subtitle { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #c0622a; font-weight: 500; }
   .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
   .hero { background-color: #c0622a; padding: 32px 40px 28px; }
   .hero-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 10px; }
@@ -325,7 +346,7 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
 <div class="email-wrapper">
   <div class="top-header">
     <div class="logo-title">${dict.emails.common.footerSignature}</div>
-    <div class="logo-subtitle"></div>
+    <div class="logo-subtitle">${dict.emails.common.tagline}</div>
   </div>
   <div class="card">
     <div class="hero">
@@ -387,8 +408,11 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
           <!-- LOGO -->
           <tr>
             <td align="center" style="padding-bottom:28px;">
-              <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C4623A;">
+              <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
                 Carry My Words
+              </div>
+              <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
+                ${dict.emails.common.tagline}
               </div>
             </td>
           </tr>
@@ -511,11 +535,11 @@ export const getTrustedContactInvitationTemplate = (
         <!-- LOGO -->
         <tr>
           <td align="center" style="padding-bottom:28px;">
-            <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C4623A;letter-spacing:-0.3px;">
+            <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
               Carry My Words
             </div>
-            <div style="font-size:9px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#C4623A;margin-top:3px;">
-              
+            <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
+              ${dict.emails.common.tagline}
             </div>
           </td>
         </tr>
@@ -652,11 +676,11 @@ export const getMessageSpecialTemplate = (
         <!-- LOGO -->
         <tr>
           <td align="center" style="padding-bottom:28px;">
-            <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
+            <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
               ${dict.emails.common.footerSignature}
             </div>
-            <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
-              
+            <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
+              ${dict.emails.common.tagline}
             </div>
           </td>
         </tr>
@@ -783,11 +807,11 @@ export const getMessagePosthumousTemplate = (
         <!-- LOGO -->
         <tr>
           <td align="center" style="padding-bottom:28px;">
-            <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
+            <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
               ${dict.emails.common.footerSignature}
             </div>
-            <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
-              
+            <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
+              ${dict.emails.common.tagline}
             </div>
           </td>
         </tr>
@@ -889,10 +913,10 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
         <!-- LOGO -->
         <tr>
           <td align="center" style="padding-bottom:28px;">
-            <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
+            <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
               ${dict.emails.common.footerSignature}
             </div>
-            <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
+            <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
               ${dict.emails.common.tagline}
             </div>
           </td>
@@ -995,11 +1019,11 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
         <!-- LOGO -->
         <tr>
           <td align="center" style="padding-bottom:28px;">
-            <div style="font-family:Georgia,serif;font-style:italic;font-size:22px;color:#C0522A;letter-spacing:-0.3px;">
+            <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
               ${dict.emails.common.footerSignature}
             </div>
-            <div style="font-size:9px;font-weight:500;letter-spacing:0.35em;text-transform:uppercase;color:#C0522A;margin-top:3px;">
-              
+            <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
+              ${dict.emails.common.tagline}
             </div>
           </td>
         </tr>
