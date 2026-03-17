@@ -121,7 +121,7 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
           <!-- LOGO -->
           <tr>
             <td align="center" style="padding-bottom:28px;">
@@ -139,12 +139,12 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
               <table width="100%" cellpadding="0" cellspacing="0">
           <!-- BODY -->
           <tr>
-            <td style="padding:40px;">
+            <td style="padding:48px;">
               <div style="font-family:Georgia,serif;font-size:26px;font-weight:600;color:#2D2D2D;line-height:1.3;margin-bottom:16px;">
                 ${t.title}
               </div>
               ${data.isAdminLogin ? `<div style="background:#fef3c7;border-left:4px solid #f59e0b;padding:12px 16px;margin-bottom:20px;border-radius:0 8px 8px 0;font-family:sans-serif;font-size:14px;color:#92400e;"><strong>${t.adminBadge}</strong></div>` : ''}
-              <p style="font-size:15px;line-height:1.7;color:#555555;margin:0 0 32px 0;">
+              <p style="font-size:17px;line-height:1.7;color:#555555;margin:0 0 32px 0;">
                 ${t.intro}
               </p>
               <!-- CTA BUTTON -->
@@ -164,7 +164,7 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
           </tr>
           <!-- FOOTER -->
           <tr>
-            <td style="padding:0 40px 36px;" align="center">
+            <td style="padding:0 48px 36px;" align="center">
               <div style="height:1px;background:#EAE4D9;margin-bottom:28px;"></div>
               <p style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
                 Carry My Words
@@ -216,7 +216,7 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- LOGO -->
         <tr>
@@ -237,12 +237,12 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 
         <!-- BODY -->
         <tr>
-          <td style="padding:40px;">
+          <td style="padding:48px;">
             <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:#2D2D2D;line-height:1.3;margin-bottom:16px;">
               ${subject}
             </div>
             
-            <p style="font-size:16px;line-height:1.6;color:#555555;margin:0 0 32px 0;">
+            <p style="font-size:17px;line-height:1.6;color:#555555;margin:0 0 32px 0;">
               ${t.ctaIntro}
             </p>
 
@@ -271,7 +271,7 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 
         <!-- FOOTER -->
         <tr>
-          <td style="padding:0 40px 40px;" align="center">
+          <td style="padding:0 48px 40px;" align="center">
             <div style="height:1px;background:#EAE4D9;margin-bottom:32px;"></div>
             <p style="margin:0 0 12px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
               Carry My Words
@@ -314,16 +314,16 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
   @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background-color: #e8e0d5; font-family: 'Source Sans 3', sans-serif; padding: 40px 20px; color: #2c2318; }
-  .email-wrapper { max-width: 560px; margin: 0 auto; }
+  .email-wrapper { max-width: 650px; margin: 0 auto; }
   .top-header { text-align: center; margin-bottom: 24px; }
   .logo-title { font-family: 'Lora', serif; font-style: italic; font-size: 30px; color: #c0622a; margin-bottom: 4px; }
   .logo-subtitle { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #c0622a; font-weight: 500; }
   .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
-  .hero { background-color: #c0622a; padding: 32px 40px 28px; }
+  .hero { background-color: #c0622a; padding: 32px 48px 28px; }
   .hero-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 10px; }
   .hero h1 { font-family: 'Lora', serif; font-size: 30px; font-weight: 700; color: #fff; line-height: 1.25; }
-  .body { padding: 36px 40px; }
-  .body p { font-size: 16px; line-height: 1.65; color: #3a2e24; margin-bottom: 20px; }
+  .body { padding: 40px 48px; }
+  .body p { font-size: 17px; line-height: 1.65; color: #3a2e24; margin-bottom: 20px; }
   hr { border: none; border-top: 1px solid #e0d8cf; margin: 28px 0; }
   .action-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #c0622a; margin-bottom: 16px; }
   .btn-primary { display: block; background: #c0622a; color: #fff !important; text-decoration: none; text-align: center; padding: 16px 24px; border-radius: 8px; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
@@ -333,7 +333,7 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
   .reply-box strong { color: #2c2318; font-weight: 600; display: block; margin-bottom: 2px; font-size: 15px; }
   .alert-box { border-left: 3px solid #c0622a; padding: 14px 18px; background: #faf6f2; border-radius: 0 8px 8px 0; }
   .alert-box p { font-size: 14px !important; color: #6a5040 !important; line-height: 1.55 !important; margin-bottom: 0 !important; }
-  .sign-off { padding: 0 40px 36px; }
+  .sign-off { padding: 0 48px 36px; }
   .sign-off p { font-size: 15px; color: #3a2e24; line-height: 1.6; margin-bottom: 4px; }
   .sign-off .firma { font-family: 'Lora', serif; font-style: italic; color: #8a6a50; font-size: 15px; }
   .footer { text-align: center; padding: 20px 0 0; }
@@ -404,7 +404,7 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
           <!-- LOGO -->
           <tr>
             <td align="center" style="padding-bottom:28px;">
@@ -422,7 +422,7 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
               <!-- HEADER -->
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="background:#C4623A;padding:32px 40px 28px;">
+                  <td style="background:#C4623A;padding:32px 48px 28px;">
                     <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
                       Carry My Words
                     </div>
@@ -435,14 +435,14 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
               <!-- BODY -->
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="padding:36px 40px;">
-                    <p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <td style="padding:40px 48px;">
+                    <p style="margin:0 0 16px;font-size:17px;line-height:1.7;color:#2A2520;">
                       ${t.title}
                     </p>
-                    <p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:#2A2520;">
+                    <p style="margin:0 0 16px;font-size:17px;line-height:1.7;color:#2A2520;">
                       ${t.intro.replace('{email}', data.userEmail)}
                     </p>
-                    <p style="margin:0 0 28px;font-size:15px;line-height:1.7;color:#2A2520;">
+                    <p style="margin:0 0 28px;font-size:17px;line-height:1.7;color:#2A2520;">
                       ${t.explanation}
                     </p>
                     <!-- BLOQUE DE ALERTA -->
@@ -530,7 +530,7 @@ export const getTrustedContactInvitationTemplate = (
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0EBE3;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- LOGO -->
         <tr>
@@ -551,7 +551,7 @@ export const getTrustedContactInvitationTemplate = (
             <!-- FRANJA TERRACOTA -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#C4623A;padding:32px 40px 28px;">
+                <td style="background:#C4623A;padding:32px 48px 28px;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
                     ${replaceAll(t?.preheader)}
                   </div>
@@ -565,12 +565,12 @@ export const getTrustedContactInvitationTemplate = (
             <!-- CUERPO -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="padding:36px 40px 0;">
+                <td style="padding:40px 48px 0;">
 
-                  <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 20px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p1)}
                   </p>
-                  <p style="margin:0 0 28px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 28px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p2)}
                   </p>
 
@@ -601,10 +601,10 @@ export const getTrustedContactInvitationTemplate = (
 
                   <div style="height:1px;background:#F0EBE3;margin-bottom:28px;"></div>
 
-                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t?.thanks || ''}
                   </p>
-                  <p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:#6A6560;font-style:italic;">
+                  <p style="margin:0 0 32px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
                     ${t?.signature || ''}
                   </p>
 
@@ -671,7 +671,7 @@ export const getMessageSpecialTemplate = (
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- LOGO -->
         <tr>
@@ -692,7 +692,7 @@ export const getMessageSpecialTemplate = (
             <!-- HERO BLOCK -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#C0522A;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
+                <td style="background:#C0522A;padding:32px 48px 28px;border-radius:12px 12px 0 0;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
                     ${replaceAll(t?.preheader)}
                   </div>
@@ -708,10 +708,10 @@ export const getMessageSpecialTemplate = (
               <tr>
                 <td style="padding:36px;">
 
-                  <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 20px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p1)}
                   </p>
-                  <p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 32px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p2)}
                   </p>
 
@@ -731,10 +731,10 @@ export const getMessageSpecialTemplate = (
 
                   <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
 
-                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t?.closing || ''}
                   </p>
-                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#6A6560;font-style:italic;">
+                  <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
                     ${t?.signature || ''}
                   </p>
 
@@ -802,7 +802,7 @@ export const getMessagePosthumousTemplate = (
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- LOGO -->
         <tr>
@@ -823,7 +823,7 @@ export const getMessagePosthumousTemplate = (
             <!-- HERO BLOCK -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#3D2C1E;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
+                <td style="background:#3D2C1E;padding:32px 48px 28px;border-radius:12px 12px 0 0;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
                     ${replaceAll(t?.preheader)}
                   </div>
@@ -839,10 +839,10 @@ export const getMessagePosthumousTemplate = (
               <tr>
                 <td style="padding:36px;">
 
-                  <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 20px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p1)}
                   </p>
-                  <p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 32px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p2)}
                   </p>
 
@@ -855,10 +855,10 @@ export const getMessagePosthumousTemplate = (
 
                   <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
 
-                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t?.closing || ''}
                   </p>
-                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#6A6560;font-style:italic;">
+                  <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
                     — ${dict.emails.common.footerSignature}
                   </p>
 
@@ -908,7 +908,7 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- LOGO -->
         <tr>
@@ -929,7 +929,7 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
             <!-- HERO BLOCK -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#C0522A;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
+                <td style="background:#C0522A;padding:32px 48px 28px;border-radius:12px 12px 0 0;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
                     ${dict.emails.common.footerSignature.toUpperCase()}
                   </div>
@@ -945,7 +945,7 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
               <tr>
                 <td style="padding:36px;">
                   
-                  <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 24px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t.intro}
                   </p>
 
@@ -959,7 +959,7 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
                     </div>
                   </div>
 
-                  <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#C0522A;font-weight:600;text-align:center;">
+                  <p style="margin:0 0 24px;font-size:17px;line-height:1.7;color:#C0522A;font-weight:600;text-align:center;">
                     ${t.warning}
                   </p>
 
@@ -1014,7 +1014,7 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- LOGO -->
         <tr>
@@ -1035,7 +1035,7 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
             <!-- HERO BLOCK -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#C0522A;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
+                <td style="background:#C0522A;padding:32px 48px 28px;border-radius:12px 12px 0 0;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
                     CARRY MY WORDS
                   </div>
@@ -1051,7 +1051,7 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
               <tr>
                 <td style="padding:36px;">
                   
-                  <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 24px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t.intro.replace('{planStatus}', data.planStatus)}
                   </p>
 
