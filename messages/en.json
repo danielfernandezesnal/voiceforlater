@@ -750,13 +750,13 @@
       "externalFooter": "Carry My Words · carrymywords.com"
     },
     "magicLink": {
-      "subject": "Your Carry My Words Login Link",
+      "subject": "Your Carry My Words Access Link",
       "subjectAdmin": "Admin Access - Carry My Words",
-      "title": "Your message is waiting for you",
+      "title": "Log in to your account",
       "adminBadge": "Admin Access",
-      "intro": "Someone thought of you and took the time to save you something. Click to access it — it's yours.",
-      "button": "See my message",
-      "ignore": "If you weren't expecting this email, you can safely ignore it.",
+      "intro": "Click the button below to securely access your Carry My Words account. This link will expire shortly.",
+      "button": "Enter my account",
+      "ignore": "If you did not request this link, you can safely ignore this email.",
       "tagline": "Messages for when it really matters."
     },
     "messageDelivery": {
@@ -820,7 +820,6 @@
       "p1": "{{SENDER_NAME}} scheduled a message for you some time ago, with the intention that you would receive it exactly today.",
       "p2": "It is something thought out, chosen, and carefully kept until this moment.",
       "button": "🎙 Access the message",
-      "info": "Carry My Words is a platform that allows you to send text, voice, or video messages to loved ones, choosing when you want them to arrive: on an important date, or at that moment when you are no longer there to say it yourself.",
       "closing": "Because some words deserve to arrive at just the right moment.",
       "signature": "— The Carry My Words team",
       "tagline": "Messages for when it really matters."
