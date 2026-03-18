@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
         },
         {
             name: 'Trusted Contact Verify',
-            ...getTrustedContactVerifyTemplate(dict, { name: "Daniel", userEmail: "usuario@ejemplo.com", verifyUrl: dummyLink })
+            ...getTrustedContactVerifyTemplate(dict, { contactFirstName: "María", senderFirstName: "Daniel", verifyUrl: dummyLink })
         },
         {
             name: 'Trusted Contact Invitation',

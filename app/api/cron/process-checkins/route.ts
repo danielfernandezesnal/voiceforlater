@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
                 // Get user profile and plan (and locale!)
                 const { data: profile } = await supabase
                     .from("profiles")
-                    .select("plan, locale")
+                    .select("plan, locale, first_name")
                     .eq("id", userId)
                     .single();
 
@@ -234,8 +234,8 @@ export async function GET(request: NextRequest) {
                             // Use User's locale for creating urgency and clarity on behalf of user
                             const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify-status?token=${rawToken}`;
                             const { subject, html } = getTrustedContactVerifyTemplate(dict as unknown as EmailDictionary, {
-                                name: contact.name,
-                                userEmail: userEmail || '',
+                                contactFirstName: contact.name || '',
+                                senderFirstName: profile?.first_name || userEmail?.split('@')[0] || 'Tu contacto',
                                 verifyUrl
                             });
 

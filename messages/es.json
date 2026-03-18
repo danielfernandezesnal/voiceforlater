@@ -778,17 +778,15 @@
       "warning": "Si no respondes después de 3 intentos, contactaremos a tu(s) persona(s) de confianza."
     },
     "trustedContactVerify": {
-      "subject": "ACCIÓN REQUERIDA: Confirmar estado de {email}",
-      "greeting": "Hola {name},",
-      "greetingUnknown": "Hola,",
-      "title": "Acción Requerida: Verificar Estado",
-      "intro": "{email} ha perdido sus check-ins programados en Carry My Words.",
-      "explanation": "Como contacto de confianza, necesitamos que verifiques si no pueden acceder a su cuenta.",
-      "boxTitle": "¿{email} no está disponible?",
-      "boxText": "Si confirmas, sus mensajes programados serán liberados a los destinatarios.",
-      "button": "Verificar Estado Ahora",
-      "falseAlarm": "Si es una falsa alarma o sabes que están bien, por favor usa el enlace de arriba para reportarlo de forma segura.",
-      "expiry": "El enlace expira en 48 horas."
+      "subject": "{senderFirstName} necesita que lo ayudes",
+      "eyebrow": "{contactFirstName}, necesitamos tu ayuda",
+      "eyebrowUnknown": "Necesitamos tu ayuda",
+      "title": "¿Sabés cómo está {senderFirstName}?",
+      "intro": "{senderFirstName} tiene mensajes programados en Carry My Words y dejó de responder sus confirmaciones de actividad. Como persona de confianza, sos quien puede ayudarnos a entender qué está pasando.",
+      "boxTitle": "¿{senderFirstName} no está disponible?",
+      "boxText": "Si confirmás, sus mensajes programados serán enviados a sus destinatarios.",
+      "button": "Verificar estado",
+      "secondary": "Si sabés que está bien, usá el mismo enlace para reportarlo. El enlace expira en 48 horas."
     },
     "trustedContactInvitation": {
       "subject": "{{firstName}}, alguien pensó en ti",
