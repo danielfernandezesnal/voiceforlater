@@ -6,6 +6,117 @@ import Link from 'next/link'
 import { type Plan, getPlanLimits } from '@/lib/plans'
 import { CreateContactForm } from './create-contact-form'
 
+// ─── Wheel Column ─────────────────────────────────────────────────────────────
+function WheelColumn({ items, value, onChange, formatItem }: {
+    items: number[]
+    value: number
+    onChange: (val: number) => void
+    formatItem?: (val: number) => string
+}) {
+    const ITEM_H = 48
+    const ref = useRef<HTMLDivElement>(null)
+    const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined)
+    const skipRef = useRef(false)
+
+    // Scroll to selected item whenever value changes externally
+    useEffect(() => {
+        const el = ref.current
+        if (!el) return
+        const idx = items.indexOf(value)
+        if (idx === -1) return
+        skipRef.current = true
+        el.scrollTop = idx * ITEM_H
+        setTimeout(() => { skipRef.current = false }, 50)
+    }, [value, items])
+
+    const handleScroll = () => {
+        if (skipRef.current) return
+        if (timerRef.current) clearTimeout(timerRef.current)
+        timerRef.current = setTimeout(() => {
+            const el = ref.current
+            if (!el) return
+            const idx = Math.round(el.scrollTop / ITEM_H)
+            const clamped = Math.max(0, Math.min(idx, items.length - 1))
+            el.scrollTo({ top: clamped * ITEM_H, behavior: 'smooth' })
+            if (items[clamped] !== value) onChange(items[clamped])
+        }, 120)
+    }
+
+    return (
+        <div className="relative flex-1 select-none">
+            {/* Top fade */}
+            <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-card to-transparent pointer-events-none z-10" />
+            {/* Bottom fade */}
+            <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-card to-transparent pointer-events-none z-10" />
+            {/* Selection lines */}
+            <div className="absolute inset-x-3 top-12 h-px bg-border pointer-events-none z-10" />
+            <div className="absolute inset-x-3 bottom-12 h-px bg-border pointer-events-none z-10" />
+            {/* Scroll container */}
+            <div
+                ref={ref}
+                onScroll={handleScroll}
+                className="h-36 overflow-y-scroll snap-y snap-mandatory"
+                style={{ scrollbarWidth: 'none' }}
+            >
+                <div className="h-12" />
+                {items.map(item => (
+                    <div
+                        key={item}
+                        className="h-12 flex items-center justify-center snap-center text-lg font-medium text-foreground cursor-pointer"
+                    >
+                        {formatItem ? formatItem(item) : String(item).padStart(2, '0')}
+                    </div>
+                ))}
+                <div className="h-12" />
+            </div>
+        </div>
+    )
+}
+
+// ─── Date Wheel Picker ────────────────────────────────────────────────────────
+function DateWheelPicker({ value, min, onChange, locale }: {
+    value: string
+    min: string
+    onChange: (date: string) => void
+    locale: string
+}) {
+    const [y, m, d] = value.split('-').map(Number)
+    const minYear = parseInt(min.split('-')[0])
+
+    const years = useMemo(() => Array.from({ length: 30 }, (_, i) => minYear + i), [minYear])
+    const months = useMemo(() => Array.from({ length: 12 }, (_, i) => i + 1), [])
+    const days = useMemo(() => {
+        const count = new Date(y, m, 0).getDate()
+        return Array.from({ length: count }, (_, i) => i + 1)
+    }, [y, m])
+
+    const monthNames = useMemo(() =>
+        Array.from({ length: 12 }, (_, i) =>
+            new Intl.DateTimeFormat(locale, { month: 'short' }).format(new Date(2000, i, 1))
+        ), [locale])
+
+    const commit = (newY: number, newM: number, newD: number) => {
+        const maxDay = new Date(newY, newM, 0).getDate()
+        const safeD = Math.min(newD, maxDay)
+        const dateStr = `${newY}-${String(newM).padStart(2, '0')}-${String(safeD).padStart(2, '0')}`
+        if (dateStr < min) return
+        onChange(dateStr)
+    }
+
+    return (
+        <div className="flex bg-card border border-border rounded-xl overflow-hidden">
+            <WheelColumn items={days} value={d} onChange={nd => commit(y, m, nd)} />
+            <WheelColumn
+                items={months}
+                value={m}
+                onChange={nm => commit(y, nm, d)}
+                formatItem={val => monthNames[val - 1]}
+            />
+            <WheelColumn items={years} value={y} onChange={ny => commit(ny, m, d)} />
+        </div>
+    )
+}
+
 interface Step4Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any // Using specific type earlier, but simplifying for flexibility with new structure
@@ -174,21 +285,6 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
         return `${h}:${m}`
     }, [data.deliverAt])
 
-    const weekday = useMemo(() => {
-        if (!currentDate) return ''
-        try {
-            const dateObj = new Date(currentDate + 'T12:00:00')
-            return new Intl.DateTimeFormat(locale, { weekday: 'long' }).format(dateObj)
-        } catch (e) {
-            return ''
-        }
-    }, [currentDate, locale])
-
-    const formattedDateDisplay = useMemo(() => {
-        if (!currentDate) return ''
-        const [y, m, d] = currentDate.split('-')
-        return `${d}/${m}/${y}`
-    }, [currentDate])
 
     const handleIntervalChange = (e: ChangeEvent<HTMLSelectElement>) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -232,36 +328,15 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <div className="flex-1">
                                             <label className="block text-sm font-medium mb-2">{step4Dict.date.label}</label>
-                                            <div className="relative group">
-                                                <input
-                                                    type="date"
-                                                    min={minDate}
-                                                    value={currentDate}
-                                                    onChange={(e) => {
-                                                        if (!e.target.value) return;
-                                                        const localDate = new Date(e.target.value + 'T' + currentTime + ':00');
-                                                        updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
-                                                    }}
-                                                    onClick={(e) => {
-                                                        try {
-                                                            if ('showPicker' in e.currentTarget) {
-                                                                (e.currentTarget as HTMLInputElement).showPicker();
-                                                            }
-                                                        } catch (err) {}
-                                                    }}
-                                                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
-                                                    title={step4Dict.date.label}
-                                                />
-                                                <div className="w-full h-[108px] px-4 flex flex-col items-center justify-center bg-input border border-border rounded-xl transition-all group-hover:border-primary/50 group-focus-within:ring-2 group-focus-within:ring-primary relative pointer-events-none">
-                                                    <span className="text-xl font-medium text-primary">{formattedDateDisplay}</span>
-                                                    <span className="text-sm text-muted-foreground capitalize mt-1">{weekday}</span>
-                                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground/50">
-                                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <DateWheelPicker
+                                                value={currentDate}
+                                                min={minDate}
+                                                onChange={(newDate) => {
+                                                    const localDate = new Date(newDate + 'T' + currentTime + ':00')
+                                                    updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' })
+                                                }}
+                                                locale={locale}
+                                            />
                                         </div>
                                         <div className="w-full sm:w-64">
                                             <label className="block text-sm font-medium mb-2">{step4Dict.date.timeLabel}</label>
