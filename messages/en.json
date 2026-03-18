@@ -841,10 +841,10 @@
     },
     "paymentFailed": {
       "subject": "Payment issue with your Carry My Words subscription",
-      "title": "Payment unsuccessful",
-      "intro": "We were unable to process the payment for your subscription. To ensure your messages remain protected and ready for delivery, your plan status has been updated to: {planStatus}.",
-      "action": "Update Payment Method",
-      "footer": "If you have any questions, please contact our support team."
+      "title": "We couldn't process your payment",
+      "intro": "There was an issue with your subscription payment. To keep your messages protected and ready for delivery, please update your payment method.",
+      "action": "Update payment method",
+      "footer": "If you have any questions, contact our support team."
     }
   },
   "legal": {

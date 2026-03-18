@@ -1003,7 +1003,7 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { resetLin
   return { subject: t.subject, html };
 };
 
-export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStatus: string }) => {
+export const getPaymentFailedTemplate = (dict: EmailDictionary) => {
   const t = dict.emails.paymentFailed;
   const html = `
 <!DOCTYPE html>
@@ -1018,18 +1018,6 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
   <tr>
     <td align="center">
       <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
-
-        <!-- LOGO -->
-        <tr>
-          <td align="center" style="padding-bottom:28px;">
-            <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
-              ${dict.emails.common.footerSignature}
-            </div>
-            <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
-              ${dict.emails.common.tagline}
-            </div>
-          </td>
-        </tr>
 
         <!-- CARD -->
         <tr>
@@ -1052,22 +1040,21 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
             <!-- CUERPO -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="padding:36px;">
-                  
-                  <p style="margin:0 0 24px;font-size:17px;line-height:1.7;color:#2A2520;">
-                    ${t.intro.replace('{planStatus}', data.planStatus)}
+                <td style="padding:36px 48px;">
+
+                  <p style="margin:0 0 32px;font-size:17px;line-height:1.7;color:#2A2520;">
+                    ${t.intro}
                   </p>
 
                   <!-- BOTÓN -->
                   <div style="margin-bottom:32px;text-align:center;">
-                    <a href="https://carrymywords.com/dashboard" style="display:inline-block;padding:14px 28px;background:#C0522A;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;">
+                    <a href="https://carrymywords.com/dashboard" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
                       ${t.action}
                     </a>
                   </div>
 
                   <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
 
-                  <!-- INFO TEXT -->
                   <p style="margin:0;font-style:italic;font-size:13px;line-height:1.6;color:#7A6050;">
                     ${t.footer}
                   </p>
@@ -1083,7 +1070,7 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
             <div style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
-              ${dict.emails.common.footerSignature}
+              Carry My Words
             </div>
             <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
               <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
