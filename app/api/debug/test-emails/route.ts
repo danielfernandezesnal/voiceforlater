@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
         },
         {
             name: 'Reset Password',
-            ...getResetPasswordTemplate(dict, { password: 'TEST-PASSWORD-123' })
+            ...getResetPasswordTemplate(dict, { resetLink: dummyLink })
         },
         {
             name: 'Message Delivery',
