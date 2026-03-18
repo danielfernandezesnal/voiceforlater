@@ -79,7 +79,6 @@ export type EmailDictionary = {
       p1: string;
       p2: string;
       button: string;
-      info: string;
       closing: string;
       signature: string;
       tagline: string;
