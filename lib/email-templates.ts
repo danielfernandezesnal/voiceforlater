@@ -94,8 +94,8 @@ export type EmailDictionary = {
       subject: string;
       title: string;
       intro: string;
-      passwordLabel: string;
-      warning: string;
+      cta: string;
+      securityNote: string;
       footer: string;
     };
     paymentFailed: {
@@ -899,7 +899,7 @@ export const getMessagePosthumousTemplate = (
   return { subject, html };
 };
 
-export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password: string }) => {
+export const getResetPasswordTemplate = (dict: EmailDictionary, data: { resetLink: string }) => {
   const t = dict.emails.resetPassword;
   const html = `
 <!DOCTYPE html>
@@ -954,23 +954,21 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
                     ${t.intro}
                   </p>
 
-                  <!-- BLOQUE CONTRASEÑA -->
-                  <div style="background:#f4f4f5;border-radius:8px;padding:24px;margin-bottom:24px;text-align:center;border:1px solid #e4e4e7;">
-                    <p style="margin:0 0 12px;font-size:13px;color:#71717a;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">
-                      ${t.passwordLabel}
-                    </p>
-                    <div style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:32px;font-weight:700;color:#18181b;letter-spacing:0.1em;">
-                      ${data.password}
-                    </div>
+                  <!-- CTA BUTTON -->
+                  <div style="text-align:center;margin-bottom:24px;">
+                    <a href="${data.resetLink}" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
+                      ${t.cta}
+                    </a>
                   </div>
 
-                  <p style="margin:0 0 24px;font-size:17px;line-height:1.7;color:#C0522A;font-weight:600;text-align:center;">
-                    ${t.warning}
+                  <!-- SECURITY NOTE -->
+                  <p style="margin:0 0 24px;font-size:13px;line-height:1.6;color:#7A6050;text-align:center;font-style:italic;">
+                    ${t.securityNote}
                   </p>
 
                   <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
 
-                  <!-- INFO TEXT -->
+                  <!-- FOOTER NOTE -->
                   <p style="margin:0;font-style:italic;font-size:13px;line-height:1.6;color:#7A6050;">
                     ${t.footer}
                   </p>
