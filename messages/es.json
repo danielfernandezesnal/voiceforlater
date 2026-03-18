@@ -742,16 +742,17 @@
   "emails": {
     "common": {
       "footerSignature": "Carry My Words",
-      "tagline": "MENSAJES QUE VIAJAN EN EL TIEMPO"
+      "tagline": "Mensajes para cuando realmente importa.",
+      "externalFooter": "Carry My Words · carrymywords.com"
     },
     "magicLink": {
       "subject": "Tu enlace de acceso a Carry My Words",
       "subjectAdmin": "Acceso de administrador - Carry My Words",
-      "title": "Tu acceso está listo",
+      "title": "Ya podés ver tu mensaje",
       "adminBadge": "Acceso de administrador",
-      "intro": "Alguien pensó en vos y dejó algo guardado especialmente para este momento. Hacé clic para acceder.",
-      "button": "Entrar ahora",
-      "ignore": "Si no solicitaste este enlace, podés ignorar este correo.",
+      "intro": "Alguien pensó en vos y se tomó el tiempo de guardarte algo. Hacé clic para acceder — es tuyo.",
+      "button": "Ver mi mensaje",
+      "ignore": "Si no esperabas este email, podés ignorarlo tranquilo.",
       "tagline": "Mensajes para cuando realmente importa."
     },
     "messageDelivery": {
@@ -767,7 +768,8 @@
       "ctaIntro": "Alguien te dejó un mensaje especial. Crea tu cuenta para acceder a él.",
       "ctaSubject": "{senderName} te dejó un mensaje",
       "preheader": "Este mensaje estuvo esperando el momento justo para llegar.",
-      "contentHidden": "Este mensaje fue guardado especialmente para ti.<br>Solo tú puedes leerlo."
+      "contentHidden": "Este mensaje fue guardado especialmente para ti.<br>Solo tú puedes leerlo.",
+      "tagline": "Mensajes para cuando realmente importa."
     },
     "checkinReminder": {
       "subject": "⏰ Recordatorio de check-in - Carry My Words",
@@ -775,18 +777,20 @@
       "intro": "Tu check-in programado está vencido. Por favor confirma que estás activo.",
       "attempt": "Intento {attempt} de 3",
       "button": "Confirmar Actividad",
-      "warning": "Si no respondes después de 3 intentos, contactaremos a tu(s) persona(s) de confianza."
+      "warning": "Si no respondes después de 3 intentos, contactaremos a tu(s) persona(s) de confianza.",
+      "tagline": "Mensajes para cuando realmente importa."
     },
     "trustedContactVerify": {
       "subject": "{senderFirstName} necesita que lo ayudes",
       "eyebrow": "{contactFirstName}, necesitamos tu ayuda",
       "eyebrowUnknown": "Necesitamos tu ayuda",
       "title": "¿Sabés cómo está {senderFirstName}?",
-      "intro": "{senderFirstName} tiene mensajes programados en Carry My Words y dejó de responder sus confirmaciones de actividad. Como persona de confianza, sos quien puede ayudarnos a entender qué está pasando.",
+      "intro": "{senderFirstName} tiene mensajes guardados en Carry My Words y dejó de responder sus confirmaciones de actividad. Como persona de confianza, sos quien puede ayudarnos a entender qué está pasando.",
       "boxTitle": "¿{senderFirstName} no está disponible?",
-      "boxText": "Si confirmás, sus mensajes programados serán enviados a sus destinatarios.",
+      "boxText": "Si confirmás, sus mensajes serán enviados a quienes él eligió.",
       "button": "Verificar estado",
-      "secondary": "Si sabés que está bien, usá el mismo enlace para reportarlo. El enlace expira en 48 horas."
+      "secondary": "Si sabés que está bien, usá el mismo enlace para reportarlo. Expira en 48 horas.",
+      "tagline": "Mensajes para cuando realmente importa."
     },
     "trustedContactInvitation": {
       "subject": "{{firstName}}, alguien pensó en ti",
@@ -798,11 +802,12 @@
       "roleP1": "Si en algún momento {{senderFirstName}} deja de responder las confirmaciones de actividad de la plataforma, es posible que te contactemos para verificar su situación antes de proceder con el envío de sus mensajes programados.",
       "roleP2": "<strong>No tienes que hacer nada por ahora.</strong> Solo queríamos que supieras que {{senderFirstName}} confió en ti para este rol.",
       "moreTitle": "¿Quieres saber más?",
-      "moreText": "{{senderFirstName}} es la mejor persona para contarte por qué te eligió a ti. Una conversación con él va a explicar mejor que cualquier email lo que esto significa.",
+      "moreText": "{{senderFirstName}} is the best person to tell you why they chose you. A conversation with him will explain better than any email what this means.",
       "thanks": "Gracias por ser parte de esto.",
       "signature": "— El equipo de Carry My Words",
       "footerLogo": "Carry My Words",
-      "footerLegal": "Recibiste este email porque alguien te eligió como contacto de confianza.<br>Si crees que es un error, puedes ignorar este mensaje."
+      "footerLegal": "Recibiste este email porque alguien te eligió como contacto de confianza.<br>Si crees que es un error, puedes ignorar este mensaje.",
+      "tagline": "Mensajes para cuando realmente importa."
     },
     "messageSpecial": {
       "subject": "Mensajes que viajan en el tiempo",
@@ -813,7 +818,8 @@
       "button": "🎙 Acceder al mensaje",
       "info": "Carry My Words es una plataforma que permite enviar mensajes de texto, voz o video para seres queridos, eligiendo cuándo quieren que lleguen: en una fecha importante, o en ese momento en que ya no estén para decirlo ellos mismos.",
       "closing": "Porque algunas palabras merecen llegar en el momento justo.",
-      "signature": "— El equipo de Carry My Words"
+      "signature": "— El equipo de Carry My Words",
+      "tagline": "Mensajes para cuando realmente importa."
     },
     "messagePosthumous": {
       "subject": "Mensajes que viajan en el tiempo",
@@ -823,22 +829,26 @@
       "p2": "Tenía cosas para decirte — aunque ya no pueda estar para decirlas en persona.",
       "button": "🎙 Acceder al mensaje",
       "closing": "Porque hay palabras que merecen llegar, sin importar cuándo.",
-      "footerLegal": "Recibiste este email porque alguien dejó un mensaje para ti. Si crees que es un error, puedes ignorar este mensaje."
+      "footerLegal": "Recibiste este email porque alguien dejó un mensaje para ti. Si crees que es un error, puedes ignorar este mensaje.",
+      "tagline": "Mensajes para cuando realmente importa."
     },
     "resetPassword": {
       "subject": "Restablecé tu contraseña de Carry My Words",
+      "eyebrow": "TU CUENTA",
       "title": "Restablecé tu contraseña",
-      "intro": "Recibimos una solicitud para restablecer la contraseña de tu cuenta. Hacé clic en el botón para crear una nueva.",
+      "intro": "Recibimos tu solicitud. Hacé clic abajo y en un minuto vas a poder entrar de nuevo con una contraseña nueva.",
       "cta": "Crear nueva contraseña",
-      "securityNote": "Este enlace expira en 1 hora. Si no solicitaste esto, podés ignorar este email.",
-      "footer": "Si no solicitaste esto, podés ignorar este email de manera segura."
+      "securityNote": "Este enlace expira en 1 hora. Si no fuiste vos, podés ignorar este email — tu cuenta está segura.",
+      "tagline": "Mensajes para cuando realmente importa."
     },
     "paymentFailed": {
       "subject": "Problema con el pago de tu suscripción en Carry My Words",
+      "eyebrow": "TU SUSCRIPCIÓN",
       "title": "No pudimos procesar tu pago",
-      "intro": "Hubo un problema con el pago de tu suscripción. Para que tus mensajes sigan protegidos y listos para su entrega, actualizá tu medio de pago.",
+      "intro": "Hubo un problema con el pago de tu suscripción. Para que tus mensajes sigan protegidos y listos para cuando llegue el momento, actualizá tu medio de pago.",
       "action": "Actualizar medio de pago",
-      "footer": "Si tenés alguna duda, contactá a nuestro equipo de soporte."
+      "footer": "Si tenés alguna duda, contactá a nuestro equipo de soporte.",
+      "tagline": "Mensajes para cuando realmente importa."
     }
   },
   "legal": {
