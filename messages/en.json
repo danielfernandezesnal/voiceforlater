@@ -746,52 +746,55 @@
   "emails": {
     "common": {
       "footerSignature": "Carry My Words",
-      "tagline": "MESSAGES THAT TRAVEL THROUGH TIME"
+      "tagline": "Messages for when it really matters.",
+      "externalFooter": "Carry My Words · carrymywords.com"
     },
     "magicLink": {
-      "subject": "Your Carry My Words Login Link",
+      "subject": "Your Carry My Words Access Link",
       "subjectAdmin": "Admin Access - Carry My Words",
-      "title": "Carry My Words",
+      "title": "Log in to your account",
       "adminBadge": "Admin Access",
-      "intro": "Click the button below to sign in to your account:",
-      "button": "Sign In Now",
-      "ignore": "If you didn't request this link, you can safely ignore this email."
+      "intro": "Click the button below to securely access your Carry My Words account. This link will expire shortly.",
+      "button": "Enter my account",
+      "ignore": "If you did not request this link, you can safely ignore this email.",
+      "tagline": "Messages for when it really matters."
     },
-      "messageDelivery": {
-        "subject": "You have a message via Carry My Words",
-        "title": "You have a message from Carry My Words",
-        "intro": "A message scheduled for you has arrived.",
-        "footer": "Carry My Words - Messages for when it truly matters.",
-        "viewVideo": "View Video",
-        "listenAudio": "Listen to Audio",
-        "linkValid": "Link valid for 15 days.",
-        "linkError": "Error generating link.",
-        "ctaButton": "See my message",
-        "ctaIntro": "Someone left a special message for you. Create your account to access it.",
-        "ctaSubject": "{senderName} left you a message",
-        "preheader": "This message was waiting for just the right moment to arrive.",
-        "contentHidden": "This message was kept especially for you.<br>Only you can read it."
-      },
+    "messageDelivery": {
+      "subject": "You have a message via Carry My Words",
+      "title": "You have a message from Carry My Words",
+      "intro": "A message scheduled for you has arrived.",
+      "footer": "Carry My Words - Messages for when it truly matters.",
+      "viewVideo": "View Video",
+      "listenAudio": "Listen to Audio",
+      "linkValid": "Link valid for 15 days.",
+      "linkError": "Error generating link.",
+      "ctaButton": "See my message",
+      "ctaIntro": "Someone left a special message for you. Create your account to access it.",
+      "ctaSubject": "{senderName} te dejó un mensaje",
+      "preheader": "This message was waiting for just the right moment to arrive.",
+      "contentHidden": "This message was kept especially for you.<br>Only you can read it.",
+      "tagline": "Messages for when it really matters."
+    },
     "checkinReminder": {
       "subject": "⏰ Check-in reminder - Carry My Words",
       "title": "Time to check in!",
       "intro": "Your scheduled check-in is overdue. Please confirm you're still active.",
       "attempt": "Attempt {attempt} of 3",
       "button": "Confirm I'm Active",
-      "warning": "If you don't respond after 3 attempts, we'll contact your trusted contact."
+      "warning": "If you don't respond after 3 attempts, we'll contact your trusted contact.",
+      "tagline": "Messages for when it really matters."
     },
     "trustedContactVerify": {
-      "subject": "ACTION REQUIRED: Confirm status for {email}",
-      "greeting": "Hello {name},",
-      "greetingUnknown": "Hello,",
-      "title": "Action Required: Verify Status",
-      "intro": "{email} has missed their scheduled check-ins on Carry My Words.",
-      "explanation": "As a trusted contact, we need you to verify if they are unable to access their account.",
-      "boxTitle": "Is {email} unavailable?",
-      "boxText": "If you confirm, their scheduled messages will be released to recipients.",
-      "button": "Verify Status Now",
-      "falseAlarm": "If this is a false alarm or you know they are fine, please use the link above to report it secure and stop further notifications.",
-      "expiry": "Link expires in 48 hours."
+      "subject": "{senderFirstName} needs your help",
+      "eyebrow": "{contactFirstName}, we need your help",
+      "eyebrowUnknown": "We need your help",
+      "title": "Do you know how {senderFirstName} is doing?",
+      "intro": "{senderFirstName} has messages saved in Carry My Words and has stopped responding to activity check-ins. As their trusted contact, you're the person who can help us understand what's happening.",
+      "boxTitle": "Is {senderFirstName} unavailable?",
+      "boxText": "If you confirm, their messages will be sent to the people they chose.",
+      "button": "Verify status",
+      "secondary": "If you know they're fine, use the same link to report it. Expires in 48 hours.",
+      "tagline": "Messages for when it really matters."
     },
     "trustedContactInvitation": {
       "subject": "{{firstName}}, someone thought of you",
@@ -807,7 +810,8 @@
       "thanks": "Thank you for being part of this.",
       "signature": "— The Carry My Words team",
       "footerLogo": "Carry My Words",
-      "footerLegal": "You received this email because someone chose you as a trusted contact.<br>If you believe this is an error, you can ignore this message."
+      "footerLegal": "You received this email because someone chose you as a trusted contact.<br>If you believe this is an error, you can ignore this message.",
+      "tagline": "Messages for when it really matters."
     },
     "messageSpecial": {
       "subject": "Messages that travel through time",
@@ -816,34 +820,39 @@
       "p1": "{{SENDER_NAME}} scheduled a message for you some time ago, with the intention that you would receive it exactly today.",
       "p2": "It is something thought out, chosen, and carefully kept until this moment.",
       "button": "🎙 Access the message",
-      "info": "Carry My Words is a platform that allows you to send text, voice, or video messages to loved ones, choosing when you want them to arrive: on an important date, or at that moment when you are no longer there to say it yourself.",
       "closing": "Because some words deserve to arrive at just the right moment.",
-      "signature": "— The Carry My Words team"
+      "signature": "— The Carry My Words team",
+      "tagline": "Messages for when it really matters."
     },
     "messagePosthumous": {
       "subject": "Messages that travel through time",
+      "epigraph": "Some people find a way to keep being present.",
       "preheader": "{{RECIPIENT_NAME}}, THERE IS A MESSAGE FOR YOU",
       "heading": "There are people who find a way to stay present",
       "p1": "{{SENDER_NAME}} prepared this message for you with time. They kept it carefully, and asked that it reach you at this moment.",
       "p2": "They had things to tell you — even if they can no longer be there to say them in person.",
       "button": "🎙 Access the message",
       "closing": "Because there are words that deserve to arrive, no matter when.",
-      "footerLegal": "You received this email because someone left a message for you. If you believe this is an error, you can ignore this message."
+      "footerLegal": "You received this email because someone left a message for you. If you believe this is an error, you can ignore this message.",
+      "tagline": "Messages for when it really matters."
     },
     "resetPassword": {
-      "subject": "Your new Carry My Words password",
-      "title": "Password reset",
-      "intro": "You requested a password reset. Here is your new temporary password:",
-      "passwordLabel": "Your temporary password:",
-      "warning": "We recommend changing it as soon as you log in.",
-      "footer": "If you didn't request this, contact support."
+      "subject": "Reset your Carry My Words password",
+      "eyebrow": "YOUR ACCOUNT",
+      "title": "Reset your password",
+      "intro": "We got your request. Click below and you'll be back in your account in no time.",
+      "cta": "Create new password",
+      "securityNote": "This link expires in 1 hour. If this wasn't you, you can ignore this email — your account is safe.",
+      "tagline": "Messages for when it really matters."
     },
     "paymentFailed": {
       "subject": "Payment issue with your Carry My Words subscription",
-      "title": "Payment unsuccessful",
-      "intro": "We were unable to process the payment for your subscription. To ensure your messages remain protected and ready for delivery, your plan status has been updated to: {planStatus}.",
-      "action": "Update Payment Method",
-      "footer": "If you have any questions, please contact our support team."
+      "eyebrow": "YOUR SUBSCRIPTION",
+      "title": "We couldn't process your payment",
+      "intro": "There was an issue with your subscription payment. To keep your messages protected and ready for delivery, please update your payment method.",
+      "action": "Update payment method",
+      "footer": "If you have any questions, contact our support team.",
+      "tagline": "Messages for when it really matters."
     }
   },
   "legal": {

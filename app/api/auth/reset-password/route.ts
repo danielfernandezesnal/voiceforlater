@@ -7,17 +7,6 @@ import { getResetPasswordTemplate, EmailDictionary } from '@/lib/email-templates
 
 export const dynamic = 'force-dynamic';
 
-function generatePassword(length = 10) {
-    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let pass = '';
-    for (let i = 0; i < length; i++) {
-        const randomValues = new Uint32Array(1);
-        crypto.getRandomValues(randomValues);
-        pass += chars[randomValues[0] % chars.length];
-    }
-    return pass;
-}
-
 export async function POST(request: NextRequest) {
     try {
         const { email, locale = 'es' } = await request.json();
@@ -28,40 +17,26 @@ export async function POST(request: NextRequest) {
 
         const supabase = createAdminClient();
 
-        // 1. Efficient user lookup via RPC
-        const { data: userId, error: rpcError } = await supabase.rpc('get_user_id_by_email', {
-            email_to_find: email
+        // 1. Generate a Supabase recovery link (secure, expires in 1h)
+        const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
+            type: 'recovery',
+            email,
+            options: {
+                redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/auth/set-password`,
+            },
         });
 
-        if (rpcError) {
-            if (process.env.NODE_ENV !== 'production') console.error('RPC Error searching user:', rpcError);
-            throw rpcError;
+        if (linkError) {
+            if (process.env.NODE_ENV !== 'production') console.error('Error generating reset link:', linkError);
+            // Return success anyway to avoid email enumeration
+            return NextResponse.json({ success: true });
         }
 
-        if (!userId) return NextResponse.json({ success: true });
+        const resetLink = linkData.properties.action_link;
 
-        const finalUserId: string = userId;
-
-        // 2. Generate new password
-        const newPassword = generatePassword(10);
-
-        // 3. Update user password
-        const { error: updateError } = await supabase.auth.admin.updateUserById(
-            finalUserId,
-            { password: newPassword, user_metadata: { auth_password_set: true } }
-        );
-
-        if (updateError) {
-            if (process.env.NODE_ENV !== 'production') console.error('Failed to update password:', updateError);
-            throw updateError;
-        }
-
-        // 4. Update profile flag
-        await supabase.from('profiles').update({ auth_password_set: true }).eq('id', finalUserId);
-
-        // 5. Send Email with Terracotta Design
+        // 2. Send email with reset link
         const dict = await getDictionary(locale) as unknown as EmailDictionary;
-        const { subject, html } = getResetPasswordTemplate(dict, { password: newPassword });
+        const { subject, html } = getResetPasswordTemplate(dict, { resetLink });
 
         const resend = getResend();
         const sender = 'Carry My Words <hola@carrymywords.com>'; // Standardized sender

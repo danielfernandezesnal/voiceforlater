@@ -6,6 +6,7 @@ export type EmailDictionary = {
     common: {
       footerSignature: string;
       tagline: string;
+      externalFooter: string;
     };
     magicLink: {
       subject: string;
@@ -15,6 +16,7 @@ export type EmailDictionary = {
       intro: string;
       button: string;
       ignore: string;
+      tagline: string;
     };
     messageDelivery: {
       subject: string;
@@ -30,6 +32,7 @@ export type EmailDictionary = {
       ctaSubject: string;
       preheader: string;
       contentHidden: string;
+      tagline: string;
     };
     checkinReminder: {
       subject: string;
@@ -38,19 +41,19 @@ export type EmailDictionary = {
       attempt: string;
       button: string;
       warning: string;
+      tagline: string;
     };
     trustedContactVerify: {
       subject: string;
-      greeting: string;
-      greetingUnknown: string;
+      eyebrow: string;
+      eyebrowUnknown: string;
       title: string;
       intro: string;
-      explanation: string;
       boxTitle: string;
       boxText: string;
       button: string;
-      falseAlarm: string;
-      expiry: string;
+      secondary: string;
+      tagline: string;
     };
     trustedContactInvitation: {
       subject: string;
@@ -67,6 +70,7 @@ export type EmailDictionary = {
       signature: string;
       footerLogo: string;
       footerLegal: string;
+      tagline: string;
     };
     messageSpecial: {
       subject: string;
@@ -75,12 +79,13 @@ export type EmailDictionary = {
       p1: string;
       p2: string;
       button: string;
-      info: string;
       closing: string;
       signature: string;
+      tagline: string;
     };
     messagePosthumous: {
       subject: string;
+      epigraph: string;
       preheader: string;
       heading: string;
       p1: string;
@@ -88,21 +93,25 @@ export type EmailDictionary = {
       button: string;
       closing: string;
       footerLegal: string;
+      tagline: string;
     };
     resetPassword: {
       subject: string;
+      eyebrow: string;
       title: string;
       intro: string;
-      passwordLabel: string;
-      warning: string;
-      footer: string;
+      cta: string;
+      securityNote: string;
+      tagline: string;
     };
     paymentFailed: {
       subject: string;
+      eyebrow: string;
       title: string;
       intro: string;
       action: string;
       footer: string;
+      tagline: string;
     };
   };
 };
@@ -121,30 +130,29 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-          <!-- LOGO -->
-          <tr>
-            <td align="center" style="padding-bottom:28px;">
-              <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
-                Carry My Words
-              </div>
-              <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
-                ${dict.emails.common.tagline}
-              </div>
-            </td>
-          </tr>
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
           <!-- CARD -->
           <tr>
             <td style="background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(196,98,58,0.08);">
+              <!-- HEADER -->
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background:#C4623A;padding:32px 48px 28px;">
+                    <div style="font-family:Georgia,serif;font-style:italic;font-size:24px;color:#ffffff;margin-bottom:16px;">
+                      Carry My Words
+                    </div>
+                    <div style="font-family:Georgia,serif;font-size:26px;font-weight:600;color:#ffffff;line-height:1.25;">
+                      ${t.title}
+                    </div>
+                  </td>
+                </tr>
+              </table>
               <table width="100%" cellpadding="0" cellspacing="0">
           <!-- BODY -->
           <tr>
-            <td style="padding:40px;">
-              <div style="font-family:Georgia,serif;font-size:26px;font-weight:600;color:#2D2D2D;line-height:1.3;margin-bottom:16px;">
-                ${t.title}
-              </div>
+            <td style="padding:48px;">
               ${data.isAdminLogin ? `<div style="background:#fef3c7;border-left:4px solid #f59e0b;padding:12px 16px;margin-bottom:20px;border-radius:0 8px 8px 0;font-family:sans-serif;font-size:14px;color:#92400e;"><strong>${t.adminBadge}</strong></div>` : ''}
-              <p style="font-size:15px;line-height:1.7;color:#555555;margin:0 0 32px 0;">
+              <p style="font-size:17px;line-height:1.7;color:#555555;margin:0 0 32px 0;">
                 ${t.intro}
               </p>
               <!-- CTA BUTTON -->
@@ -157,20 +165,24 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
                   </td>
                 </tr>
               </table>
-              <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0;">
+              <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0 0 32px 0;text-align:center;">
                 ${t.ignore}
+              </p>
+              <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+              <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                ${t.tagline}
               </p>
             </td>
           </tr>
           <!-- FOOTER -->
           <tr>
-            <td style="padding:0 40px 36px;" align="center">
+            <td style="padding:0 48px 36px;" align="center">
               <div style="height:1px;background:#EAE4D9;margin-bottom:28px;"></div>
               <p style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
                 Carry My Words
               </p>
               <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
-                <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">carrymywords.com</a>
+                <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
               </p>
             </td>
           </tr>
@@ -216,7 +228,7 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- LOGO -->
         <tr>
@@ -237,12 +249,12 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 
         <!-- BODY -->
         <tr>
-          <td style="padding:40px;">
+          <td style="padding:48px;">
             <div style="font-family:Georgia,serif;font-size:28px;font-weight:700;color:#2D2D2D;line-height:1.3;margin-bottom:16px;">
               ${subject}
             </div>
             
-            <p style="font-size:16px;line-height:1.6;color:#555555;margin:0 0 32px 0;">
+            <p style="font-size:17px;line-height:1.6;color:#555555;margin:0 0 32px 0;">
               ${t.ctaIntro}
             </p>
 
@@ -271,7 +283,7 @@ export const getMessageDeliveryTemplate = (dict: EmailDictionary, data: { conten
 
         <!-- FOOTER -->
         <tr>
-          <td style="padding:0 40px 40px;" align="center">
+          <td style="padding:0 48px 40px;" align="center">
             <div style="height:1px;background:#EAE4D9;margin-bottom:32px;"></div>
             <p style="margin:0 0 12px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
               Carry My Words
@@ -314,16 +326,16 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
   @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background-color: #e8e0d5; font-family: 'Source Sans 3', sans-serif; padding: 40px 20px; color: #2c2318; }
-  .email-wrapper { max-width: 560px; margin: 0 auto; }
+  .email-wrapper { max-width: 650px; margin: 0 auto; }
   .top-header { text-align: center; margin-bottom: 24px; }
   .logo-title { font-family: 'Lora', serif; font-style: italic; font-size: 30px; color: #c0622a; margin-bottom: 4px; }
   .logo-subtitle { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #c0622a; font-weight: 500; }
   .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
-  .hero { background-color: #c0622a; padding: 32px 40px 28px; }
+  .hero { background-color: #c0622a; padding: 32px 48px 28px; }
   .hero-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 10px; }
   .hero h1 { font-family: 'Lora', serif; font-size: 30px; font-weight: 700; color: #fff; line-height: 1.25; }
-  .body { padding: 36px 40px; }
-  .body p { font-size: 16px; line-height: 1.65; color: #3a2e24; margin-bottom: 20px; }
+  .body { padding: 40px 48px; }
+  .body p { font-size: 17px; line-height: 1.65; color: #3a2e24; margin-bottom: 20px; }
   hr { border: none; border-top: 1px solid #e0d8cf; margin: 28px 0; }
   .action-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #c0622a; margin-bottom: 16px; }
   .btn-primary { display: block; background: #c0622a; color: #fff !important; text-decoration: none; text-align: center; padding: 16px 24px; border-radius: 8px; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
@@ -333,7 +345,7 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
   .reply-box strong { color: #2c2318; font-weight: 600; display: block; margin-bottom: 2px; font-size: 15px; }
   .alert-box { border-left: 3px solid #c0622a; padding: 14px 18px; background: #faf6f2; border-radius: 0 8px 8px 0; }
   .alert-box p { font-size: 14px !important; color: #6a5040 !important; line-height: 1.55 !important; margin-bottom: 0 !important; }
-  .sign-off { padding: 0 40px 36px; }
+  .sign-off { padding: 0 48px 36px; }
   .sign-off p { font-size: 15px; color: #3a2e24; line-height: 1.6; margin-bottom: 4px; }
   .sign-off .firma { font-family: 'Lora', serif; font-style: italic; color: #8a6a50; font-size: 15px; }
   .footer { text-align: center; padding: 20px 0 0; }
@@ -373,10 +385,18 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
       <hr>
       <p>Gracias por confiar en nosotros con algo tan importante.</p>
       <p class="firma">— El equipo de Carry My Words</p>
+      
+      <div style="height:1px;background:#EAE4D9;margin:24px 0;"></div>
+      <p style="margin:0;font-family: 'Lora', serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+        ${t.tagline}
+      </p>
     </div>
   </div>
   <div class="footer">
-    <div class="footer-logo">${dict.emails.common.footerSignature}</div>
+    <div class="footer-logo" style="margin-bottom: 8px;">Carry My Words</div>
+    <p style="margin-bottom: 8px;">
+      <a href="https://carrymywords.com" style="color:#8a7a6a;text-decoration:none;">${dict.emails.common.externalFooter}</a>
+    </p>
     <p>Recibiste este email porque tenés un check-in programado activo.<br>
     <a href="${dashboardUrl}">Configurar frecuencia de check-ins</a> · <a href="${supportUrl}">Soporte</a></p>
   </div>
@@ -386,13 +406,13 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
   return { subject: t.subject, html };
 };
 
-export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { name: string, userEmail: string, verifyUrl: string }) => {
+export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { contactFirstName: string, senderFirstName: string, verifyUrl: string }) => {
   const t = dict.emails.trustedContactVerify;
-  const subject = t.subject.replace('{email}', data.userEmail);
+  const subject = t.subject.replace('{senderFirstName}', data.senderFirstName);
 
-  const greeting = data.name
-    ? t.greeting.replace('{name}', data.name)
-    : t.greetingUnknown;
+  const eyebrow = data.contactFirstName
+    ? t.eyebrow.replace('{contactFirstName}', data.contactFirstName)
+    : t.eyebrowUnknown;
 
   const html = `<!DOCTYPE html>
 <html>
@@ -404,30 +424,22 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#F5F0E8;padding:40px 16px;">
     <tr>
       <td align="center">
-        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-          <!-- LOGO -->
-          <tr>
-            <td align="center" style="padding-bottom:28px;">
-              <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
-                Carry My Words
-              </div>
-              <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
-                ${dict.emails.common.tagline}
-              </div>
-            </td>
-          </tr>
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
           <!-- CARD -->
           <tr>
             <td style="background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(196,98,58,0.08);">
               <!-- HEADER -->
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="background:#C4623A;padding:32px 40px 28px;">
-                    <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
+                  <td style="background:#C4623A;padding:32px 48px 28px;">
+                    <div style="font-family:Georgia,serif;font-style:italic;font-size:24px;color:#ffffff;margin-bottom:16px;">
                       Carry My Words
                     </div>
+                    <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
+                      ${eyebrow}
+                    </div>
                     <div style="font-family:Georgia,serif;font-size:26px;font-weight:600;color:#ffffff;line-height:1.25;">
-                      ${greeting}
+                      ${t.title.replace('{senderFirstName}', data.senderFirstName)}
                     </div>
                   </td>
                 </tr>
@@ -435,20 +447,14 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
               <!-- BODY -->
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="padding:36px 40px;">
-                    <p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:#2A2520;">
-                      ${t.title}
-                    </p>
-                    <p style="margin:0 0 16px;font-size:15px;line-height:1.7;color:#2A2520;">
-                      ${t.intro.replace('{email}', data.userEmail)}
-                    </p>
-                    <p style="margin:0 0 28px;font-size:15px;line-height:1.7;color:#2A2520;">
-                      ${t.explanation}
+                  <td style="padding:40px 48px;">
+                    <p style="margin:0 0 28px;font-size:17px;line-height:1.7;color:#2A2520;">
+                      ${t.intro.replace('{senderFirstName}', data.senderFirstName)}
                     </p>
                     <!-- BLOQUE DE ALERTA -->
                     <div style="background:#FFF5F5;border-left:3px solid #C4623A;border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:28px;">
-                      <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#2A2520;">
-                        ${t.boxTitle.replace('{email}', data.userEmail)}
+                      <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#C4623A;">
+                        ${t.boxTitle.replace('{senderFirstName}', data.senderFirstName)}
                       </p>
                       <p style="margin:0;font-size:14px;line-height:1.65;color:#6A4040;">
                         ${t.boxText}
@@ -465,11 +471,12 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
                       </tr>
                     </table>
                     <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
-                    <p style="margin:0 0 12px;font-size:13px;line-height:1.6;color:#9B8B7E;">
-                      ${t.falseAlarm}
+                    <p style="margin:0 0 24px;font-size:13px;line-height:1.6;color:#9B8B7E;text-align:center;">
+                      ${t.secondary}
                     </p>
-                    <p style="margin:0;font-size:12px;color:#B0A090;">
-                      ${t.expiry}
+                    <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+                    <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                      ${t.tagline}
                     </p>
                   </td>
                 </tr>
@@ -479,11 +486,11 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
           <!-- FOOTER -->
           <tr>
             <td align="center" style="padding:28px 16px 8px;">
-              <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C4623A;">
-                ${dict.emails.common.footerSignature}
+              <p style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
+                Carry My Words
               </p>
-              <p style="margin:0;font-size:11px;color:#A09890;line-height:1.6;">
-                <a href="https://carrymywords.com" style="color:#A09890;text-decoration:none;">carrymywords.com</a>
+              <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
+                <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
               </p>
             </td>
           </tr>
@@ -530,7 +537,7 @@ export const getTrustedContactInvitationTemplate = (
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0EBE3;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- LOGO -->
         <tr>
@@ -551,7 +558,7 @@ export const getTrustedContactInvitationTemplate = (
             <!-- FRANJA TERRACOTA -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#C4623A;padding:32px 40px 28px;">
+                <td style="background:#C4623A;padding:32px 48px 28px;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
                     ${replaceAll(t?.preheader)}
                   </div>
@@ -565,12 +572,12 @@ export const getTrustedContactInvitationTemplate = (
             <!-- CUERPO -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="padding:36px 40px 0;">
+                <td style="padding:40px 48px 0;">
 
-                  <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 20px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p1)}
                   </p>
-                  <p style="margin:0 0 28px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 28px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p2)}
                   </p>
 
@@ -601,11 +608,16 @@ export const getTrustedContactInvitationTemplate = (
 
                   <div style="height:1px;background:#F0EBE3;margin-bottom:28px;"></div>
 
-                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t?.thanks || ''}
                   </p>
-                  <p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:#6A6560;font-style:italic;">
+                  <p style="margin:0 0 16px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
                     ${t?.signature || ''}
+                  </p>
+
+                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+                  <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                    ${t.tagline}
                   </p>
 
                 </td>
@@ -618,11 +630,11 @@ export const getTrustedContactInvitationTemplate = (
         <!-- FOOTER -->
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
-            <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C4623A;">
-              ${t?.footerLogo || ''}
-            </p>
-            <p style="margin:0;font-size:11px;color:#A09890;line-height:1.6;">
-              ${t?.footerLegal || ''}
+            <div style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
+              Carry My Words
+            </div>
+            <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
+              <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
             </p>
           </td>
         </tr>
@@ -671,7 +683,7 @@ export const getMessageSpecialTemplate = (
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- LOGO -->
         <tr>
@@ -692,7 +704,7 @@ export const getMessageSpecialTemplate = (
             <!-- HERO BLOCK -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#C0522A;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
+                <td style="background:#C0522A;padding:32px 48px 28px;border-radius:12px 12px 0 0;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
                     ${replaceAll(t?.preheader)}
                   </div>
@@ -708,10 +720,10 @@ export const getMessageSpecialTemplate = (
               <tr>
                 <td style="padding:36px;">
 
-                  <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 20px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p1)}
                   </p>
-                  <p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 32px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p2)}
                   </p>
 
@@ -724,18 +736,16 @@ export const getMessageSpecialTemplate = (
 
                   <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
 
-                  <!-- INFO TEXT -->
-                  <p style="margin:0 0 24px;font-style:italic;font-size:13px;line-height:1.6;color:#7A6050;">
-                    ${t?.info || ''}
-                  </p>
-
-                  <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
-
-                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t?.closing || ''}
                   </p>
-                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#6A6560;font-style:italic;">
+                  <p style="margin:0 0 16px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
                     ${t?.signature || ''}
+                  </p>
+
+                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+                  <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                    ${t.tagline}
                   </p>
 
                 </td>
@@ -748,12 +758,11 @@ export const getMessageSpecialTemplate = (
         <!-- FOOTER -->
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
-            <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
-              ${dict.emails.common.footerSignature}
+            <p style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
+              Carry My Words
             </p>
-            <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
-              Recibiste este email porque alguien programó un mensaje especial para vos.<br>
-              <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
+            <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
+              <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
             </p>
           </td>
         </tr>
@@ -802,7 +811,7 @@ export const getMessagePosthumousTemplate = (
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- LOGO -->
         <tr>
@@ -823,7 +832,7 @@ export const getMessagePosthumousTemplate = (
             <!-- HERO BLOCK -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#3D2C1E;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
+                <td style="background:#C4623A;padding:32px 48px 28px;border-radius:12px 12px 0 0;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
                     ${replaceAll(t?.preheader)}
                   </div>
@@ -837,29 +846,38 @@ export const getMessagePosthumousTemplate = (
             <!-- CUERPO -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="padding:36px;">
+                <td style="padding:48px;">
 
-                  <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 32px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#999;text-align:center;">
+                    ${t?.epigraph || ''}
+                  </p>
+
+                  <p style="margin:0 0 20px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p1)}
                   </p>
-                  <p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 32px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p2)}
                   </p>
 
                   <!-- BOTÓN -->
-                  <div style="margin-bottom:32px;">
-                    <a href="${data.messageUrl}" style="display:inline-block;padding:14px 28px;background:#3D2C1E;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;">
+                  <div style="margin-bottom:32px;text-align:center;">
+                    <a href="${data.messageUrl}" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
                       ${t?.button || ''}
                     </a>
                   </div>
 
                   <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
 
-                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t?.closing || ''}
                   </p>
-                  <p style="margin:0 0 8px;font-size:15px;line-height:1.7;color:#6A6560;font-style:italic;">
+                  <p style="margin:0 0 16px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
                     — ${dict.emails.common.footerSignature}
+                  </p>
+
+                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+                  <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                    ${t.tagline}
                   </p>
 
                 </td>
@@ -872,12 +890,12 @@ export const getMessagePosthumousTemplate = (
         <!-- FOOTER -->
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
-            <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
-              ${dict.emails.common.footerSignature}
+            <p style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
+              Carry My Words
             </p>
-            <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
+            <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
               ${t?.footerLegal || ''}<br>
-              <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
+              <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
             </p>
           </td>
         </tr>
@@ -894,7 +912,7 @@ export const getMessagePosthumousTemplate = (
   return { subject, html };
 };
 
-export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password: string }) => {
+export const getResetPasswordTemplate = (dict: EmailDictionary, data: { resetLink: string }) => {
   const t = dict.emails.resetPassword;
   const html = `
 <!DOCTYPE html>
@@ -908,30 +926,21 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-
-        <!-- LOGO -->
-        <tr>
-          <td align="center" style="padding-bottom:28px;">
-            <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
-              ${dict.emails.common.footerSignature}
-            </div>
-            <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
-              ${dict.emails.common.tagline}
-            </div>
-          </td>
-        </tr>
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- CARD -->
         <tr>
           <td style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(42,37,32,0.08);">
 
-            <!-- HERO BLOCK -->
+            <!-- HEADER -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#C0522A;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
-                  <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
-                    ${dict.emails.common.footerSignature.toUpperCase()}
+                <td style="background:#C4623A;padding:32px 48px 28px;">
+                  <div style="font-family:Georgia,serif;font-style:italic;font-size:24px;color:#ffffff;margin-bottom:16px;">
+                    Carry My Words
+                  </div>
+                  <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
+                    ${t.eyebrow}
                   </div>
                   <div style="font-family:Georgia,serif;font-size:30px;font-weight:600;color:#ffffff;line-height:1.25;">
                     ${t.title}
@@ -943,31 +952,31 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
             <!-- CUERPO -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="padding:36px;">
+                <td style="padding:48px;">
                   
-                  <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#2A2520;">
+                  <p style="margin:0 0 32px;font-size:17px;line-height:1.7;color:#2D2D2D;">
                     ${t.intro}
                   </p>
 
-                  <!-- BLOQUE CONTRASEÑA -->
-                  <div style="background:#f4f4f5;border-radius:8px;padding:24px;margin-bottom:24px;text-align:center;border:1px solid #e4e4e7;">
-                    <p style="margin:0 0 12px;font-size:13px;color:#71717a;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">
-                      ${t.passwordLabel}
-                    </p>
-                    <div style="font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:32px;font-weight:700;color:#18181b;letter-spacing:0.1em;">
-                      ${data.password}
-                    </div>
-                  </div>
+                  <!-- CTA BUTTON -->
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td align="center" style="padding:8px 0 24px;">
+                        <a href="${data.resetLink}" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
+                          ${t.cta}
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
 
-                  <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#C0522A;font-weight:600;text-align:center;">
-                    ${t.warning}
+                  <!-- SECURITY NOTE -->
+                  <p style="margin:0 0 32px;font-size:13px;line-height:1.6;color:#9B8B7E;text-align:center;">
+                    ${t.securityNote}
                   </p>
 
-                  <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
-
-                  <!-- INFO TEXT -->
-                  <p style="margin:0;font-style:italic;font-size:13px;line-height:1.6;color:#7A6050;">
-                    ${t.footer}
+                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+                  <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                    ${t.tagline}
                   </p>
 
                 </td>
@@ -980,11 +989,11 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
         <!-- FOOTER -->
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
-            <div style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
+            <div style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
               Carry My Words
             </div>
-            <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
-              <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
+            <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
+              <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
             </p>
           </td>
         </tr>
@@ -1000,7 +1009,7 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { password
   return { subject: t.subject, html };
 };
 
-export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStatus: string }) => {
+export const getPaymentFailedTemplate = (dict: EmailDictionary) => {
   const t = dict.emails.paymentFailed;
   const html = `
 <!DOCTYPE html>
@@ -1014,30 +1023,21 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
   <tr>
     <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
-
-        <!-- LOGO -->
-        <tr>
-          <td align="center" style="padding-bottom:28px;">
-            <div style="font-family:Georgia,serif;font-style:italic;font-size:30px;color:#C4623A;letter-spacing:-0.3px;">
-              ${dict.emails.common.footerSignature}
-            </div>
-            <div style="font-size:11px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#C4623A;margin-top:6px;">
-              ${dict.emails.common.tagline}
-            </div>
-          </td>
-        </tr>
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
 
         <!-- CARD -->
         <tr>
           <td style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(42,37,32,0.08);">
 
-            <!-- HERO BLOCK -->
+            <!-- HEADER -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#C0522A;padding:32px 40px 28px;border-radius:12px 12px 0 0;">
-                  <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
-                    CARRY MY WORDS
+                <td style="background:#C4623A;padding:32px 48px 28px;">
+                  <div style="font-family:Georgia,serif;font-style:italic;font-size:24px;color:#ffffff;margin-bottom:16px;">
+                    Carry My Words
+                  </div>
+                  <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
+                    ${t.eyebrow}
                   </div>
                   <div style="font-family:Georgia,serif;font-size:30px;font-weight:600;color:#ffffff;line-height:1.25;">
                     ${t.title}
@@ -1049,24 +1049,31 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
             <!-- CUERPO -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="padding:36px;">
-                  
-                  <p style="margin:0 0 24px;font-size:15px;line-height:1.7;color:#2A2520;">
-                    ${t.intro.replace('{planStatus}', data.planStatus)}
+                <td style="padding:48px;">
+
+                  <p style="margin:0 0 32px;font-size:17px;line-height:1.7;color:#2D2D2D;">
+                    ${t.intro}
                   </p>
 
                   <!-- BOTÓN -->
-                  <div style="margin-bottom:32px;text-align:center;">
-                    <a href="https://carrymywords.com/dashboard" style="display:inline-block;padding:14px 28px;background:#C0522A;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;">
-                      ${t.action}
-                    </a>
-                  </div>
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td align="center" style="padding:8px 0 24px;">
+                        <a href="https://carrymywords.com/dashboard" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
+                          ${t.action}
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
 
-                  <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
+                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
 
-                  <!-- INFO TEXT -->
-                  <p style="margin:0;font-style:italic;font-size:13px;line-height:1.6;color:#7A6050;">
+                  <p style="margin:0 0 24px;font-size:13px;line-height:1.6;color:#9B8B7E;text-align:center;">
                     ${t.footer}
+                  </p>
+                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+                  <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                    ${t.tagline}
                   </p>
 
                 </td>
@@ -1079,11 +1086,11 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { planStat
         <!-- FOOTER -->
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
-            <div style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
-              ${dict.emails.common.footerSignature}
+            <div style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
+              Carry My Words
             </div>
-            <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
-              <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
+            <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
+              <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
             </p>
           </td>
         </tr>
