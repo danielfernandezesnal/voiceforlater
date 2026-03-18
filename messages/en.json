@@ -751,11 +751,12 @@
     "magicLink": {
       "subject": "Your Carry My Words Login Link",
       "subjectAdmin": "Admin Access - Carry My Words",
-      "title": "Carry My Words",
+      "title": "Your access is ready",
       "adminBadge": "Admin Access",
-      "intro": "Click the button below to sign in to your account:",
-      "button": "Sign In Now",
-      "ignore": "If you didn't request this link, you can safely ignore this email."
+      "intro": "Someone thought of you and left something saved especially for this moment. Click to access it.",
+      "button": "Enter now",
+      "ignore": "If you didn't request this link, you can safely ignore this email.",
+      "tagline": "Messages for when it really matters."
     },
       "messageDelivery": {
         "subject": "You have a message via Carry My Words",

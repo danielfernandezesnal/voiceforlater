@@ -15,6 +15,7 @@ export type EmailDictionary = {
       intro: string;
       button: string;
       ignore: string;
+      tagline: string;
     };
     messageDelivery: {
       subject: string;
@@ -157,8 +158,12 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
                   </td>
                 </tr>
               </table>
-              <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0;">
+              <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0 0 32px 0;text-align:center;">
                 ${t.ignore}
+              </p>
+              <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+              <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                ${t.tagline}
               </p>
             </td>
           </tr>
