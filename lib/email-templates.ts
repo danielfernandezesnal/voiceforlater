@@ -86,6 +86,7 @@ export type EmailDictionary = {
     };
     messagePosthumous: {
       subject: string;
+      epigraph: string;
       preheader: string;
       heading: string;
       p1: string;
@@ -385,10 +386,18 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
       <hr>
       <p>Gracias por confiar en nosotros con algo tan importante.</p>
       <p class="firma">— El equipo de Carry My Words</p>
+      
+      <div style="height:1px;background:#EAE4D9;margin:24px 0;"></div>
+      <p style="margin:0;font-family: 'Lora', serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+        ${t.tagline}
+      </p>
     </div>
   </div>
   <div class="footer">
-    <div class="footer-logo">${dict.emails.common.footerSignature}</div>
+    <div class="footer-logo" style="margin-bottom: 8px;">Carry My Words</div>
+    <p style="margin-bottom: 8px;">
+      <a href="https://carrymywords.com" style="color:#8a7a6a;text-decoration:none;">${dict.emails.common.externalFooter}</a>
+    </p>
     <p>Recibiste este email porque tenés un check-in programado activo.<br>
     <a href="${dashboardUrl}">Configurar frecuencia de check-ins</a> · <a href="${supportUrl}">Soporte</a></p>
   </div>
@@ -603,8 +612,13 @@ export const getTrustedContactInvitationTemplate = (
                   <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t?.thanks || ''}
                   </p>
-                  <p style="margin:0 0 32px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
+                  <p style="margin:0 0 16px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
                     ${t?.signature || ''}
+                  </p>
+
+                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+                  <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                    ${t.tagline}
                   </p>
 
                 </td>
@@ -617,11 +631,11 @@ export const getTrustedContactInvitationTemplate = (
         <!-- FOOTER -->
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
-            <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C4623A;">
-              ${t?.footerLogo || ''}
-            </p>
-            <p style="margin:0;font-size:11px;color:#A09890;line-height:1.6;">
-              ${t?.footerLegal || ''}
+            <div style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
+              Carry My Words
+            </div>
+            <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
+              <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
             </p>
           </td>
         </tr>
@@ -723,18 +737,16 @@ export const getMessageSpecialTemplate = (
 
                   <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
 
-                  <!-- INFO TEXT -->
-                  <p style="margin:0 0 24px;font-style:italic;font-size:13px;line-height:1.6;color:#7A6050;">
-                    ${t?.info || ''}
-                  </p>
-
-                  <div style="height:1px;background:#E0D8CC;margin-bottom:24px;"></div>
-
                   <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t?.closing || ''}
                   </p>
-                  <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
+                  <p style="margin:0 0 16px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
                     ${t?.signature || ''}
+                  </p>
+
+                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+                  <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                    ${t.tagline}
                   </p>
 
                 </td>
@@ -747,12 +759,11 @@ export const getMessageSpecialTemplate = (
         <!-- FOOTER -->
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
-            <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
-              ${dict.emails.common.footerSignature}
+            <p style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
+              Carry My Words
             </p>
-            <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
-              Recibiste este email porque alguien programó un mensaje especial para vos.<br>
-              <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
+            <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
+              <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
             </p>
           </td>
         </tr>
@@ -822,7 +833,7 @@ export const getMessagePosthumousTemplate = (
             <!-- HERO BLOCK -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#3D2C1E;padding:32px 48px 28px;border-radius:12px 12px 0 0;">
+                <td style="background:#C4623A;padding:32px 48px 28px;border-radius:12px 12px 0 0;">
                   <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
                     ${replaceAll(t?.preheader)}
                   </div>
@@ -836,7 +847,11 @@ export const getMessagePosthumousTemplate = (
             <!-- CUERPO -->
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="padding:36px;">
+                <td style="padding:48px;">
+
+                  <p style="margin:0 0 32px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#999;text-align:center;">
+                    ${t?.epigraph || ''}
+                  </p>
 
                   <p style="margin:0 0 20px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${replaceAll(t?.p1)}
@@ -846,8 +861,8 @@ export const getMessagePosthumousTemplate = (
                   </p>
 
                   <!-- BOTÓN -->
-                  <div style="margin-bottom:32px;">
-                    <a href="${data.messageUrl}" style="display:inline-block;padding:14px 28px;background:#3D2C1E;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;font-size:16px;">
+                  <div style="margin-bottom:32px;text-align:center;">
+                    <a href="${data.messageUrl}" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
                       ${t?.button || ''}
                     </a>
                   </div>
@@ -857,8 +872,13 @@ export const getMessagePosthumousTemplate = (
                   <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#2A2520;">
                     ${t?.closing || ''}
                   </p>
-                  <p style="margin:0 0 8px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
+                  <p style="margin:0 0 16px;font-size:17px;line-height:1.7;color:#6A6560;font-style:italic;">
                     — ${dict.emails.common.footerSignature}
+                  </p>
+
+                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
+                  <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+                    ${t.tagline}
                   </p>
 
                 </td>
@@ -871,12 +891,12 @@ export const getMessagePosthumousTemplate = (
         <!-- FOOTER -->
         <tr>
           <td style="padding:28px 16px 8px;" align="center">
-            <p style="margin:0 0 6px;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#C0522A;">
-              ${dict.emails.common.footerSignature}
+            <p style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
+              Carry My Words
             </p>
-            <p style="margin:0;font-size:11px;color:#A08878;line-height:1.6;">
+            <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
               ${t?.footerLegal || ''}<br>
-              <a href="https://carrymywords.com" style="color:#A08878;text-decoration:underline;">carrymywords.com</a>
+              <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
             </p>
           </td>
         </tr>
