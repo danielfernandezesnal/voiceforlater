@@ -827,12 +827,12 @@
       "footerLegal": "Recibiste este email porque alguien dejó un mensaje para ti. Si crees que es un error, puedes ignorar este mensaje."
     },
     "resetPassword": {
-      "subject": "Tu nueva contraseña de Carry My Words",
-      "title": "Contraseña restablecida",
-      "intro": "Has solicitado restablecer tu contraseña. Aquí tienes una nueva contraseña temporal:",
-      "passwordLabel": "Tu contraseña temporal:",
-      "warning": "Te recomendamos cambiarla apenas inicies sesión.",
-      "footer": "Si no solicitaste esto, por favor contacta a soporte."
+      "subject": "Restablecé tu contraseña de Carry My Words",
+      "title": "Restablecé tu contraseña",
+      "intro": "Recibimos una solicitud para restablecer la contraseña de tu cuenta. Hacé clic en el botón para crear una nueva.",
+      "cta": "Crear nueva contraseña",
+      "securityNote": "Este enlace expira en 1 hora. Si no solicitaste esto, podés ignorar este email.",
+      "footer": "Si no solicitaste esto, podés ignorar este email de manera segura."
     },
     "paymentFailed": {
       "subject": "Problema con el pago de tu suscripción en Carry My Words",
