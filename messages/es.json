@@ -836,10 +836,10 @@
     },
     "paymentFailed": {
       "subject": "Problema con el pago de tu suscripción en Carry My Words",
-      "title": "Pago no procesado",
-      "intro": "No hemos podido procesar el pago de tu suscripción. Para asegurar que tus mensajes sigan protegidos y listos para su entrega, el estado de tu plan se ha actualizado a: {planStatus}.",
+      "title": "No pudimos procesar tu pago",
+      "intro": "Hubo un problema con el pago de tu suscripción. Para que tus mensajes sigan protegidos y listos para su entrega, actualizá tu medio de pago.",
       "action": "Actualizar medio de pago",
-      "footer": "Si tienes alguna duda, por favor contacta a nuestro equipo de soporte."
+      "footer": "Si tenés alguna duda, contactá a nuestro equipo de soporte."
     }
   },
   "legal": {

@@ -371,9 +371,7 @@ export async function POST(request: NextRequest) {
                         if (email) {
                             const dict = await getDictionary('es'); // Fallback locale
                             const resend = getResend();
-                            const { subject, html } = getPaymentFailedTemplate(dict, {
-                                planStatus: mappedPlan.effectiveStatus
-                            });
+                            const { subject, html } = getPaymentFailedTemplate(dict);
 
                             await resend.emails.send({
                                 from: DEFAULT_SENDER,
