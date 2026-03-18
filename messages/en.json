@@ -782,17 +782,15 @@
       "warning": "If you don't respond after 3 attempts, we'll contact your trusted contact."
     },
     "trustedContactVerify": {
-      "subject": "ACTION REQUIRED: Confirm status for {email}",
-      "greeting": "Hello {name},",
-      "greetingUnknown": "Hello,",
-      "title": "Action Required: Verify Status",
-      "intro": "{email} has missed their scheduled check-ins on Carry My Words.",
-      "explanation": "As a trusted contact, we need you to verify if they are unable to access their account.",
-      "boxTitle": "Is {email} unavailable?",
-      "boxText": "If you confirm, their scheduled messages will be released to recipients.",
-      "button": "Verify Status Now",
-      "falseAlarm": "If this is a false alarm or you know they are fine, please use the link above to report it secure and stop further notifications.",
-      "expiry": "Link expires in 48 hours."
+      "subject": "{senderFirstName} needs your help",
+      "eyebrow": "{contactFirstName}, we need your help",
+      "eyebrowUnknown": "We need your help",
+      "title": "Do you know how {senderFirstName} is doing?",
+      "intro": "{senderFirstName} has scheduled messages in Carry My Words and has stopped responding to activity check-ins. As their trusted contact, you're the person who can help us understand what's happening.",
+      "boxTitle": "Is {senderFirstName} unavailable?",
+      "boxText": "If you confirm, their scheduled messages will be sent to their recipients.",
+      "button": "Verify status",
+      "secondary": "If you know they're fine, use the same link to report it. The link expires in 48 hours."
     },
     "trustedContactInvitation": {
       "subject": "{{firstName}}, someone thought of you",

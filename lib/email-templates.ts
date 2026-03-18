@@ -42,16 +42,14 @@ export type EmailDictionary = {
     };
     trustedContactVerify: {
       subject: string;
-      greeting: string;
-      greetingUnknown: string;
+      eyebrow: string;
+      eyebrowUnknown: string;
       title: string;
       intro: string;
-      explanation: string;
       boxTitle: string;
       boxText: string;
       button: string;
-      falseAlarm: string;
-      expiry: string;
+      secondary: string;
     };
     trustedContactInvitation: {
       subject: string;
@@ -391,13 +389,13 @@ export const getCheckinReminderTemplate = (dict: EmailDictionary, data: { attemp
   return { subject: t.subject, html };
 };
 
-export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { name: string, userEmail: string, verifyUrl: string }) => {
+export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { contactFirstName: string, senderFirstName: string, verifyUrl: string }) => {
   const t = dict.emails.trustedContactVerify;
-  const subject = t.subject.replace('{email}', data.userEmail);
+  const subject = t.subject.replace('{senderFirstName}', data.senderFirstName);
 
-  const greeting = data.name
-    ? t.greeting.replace('{name}', data.name)
-    : t.greetingUnknown;
+  const eyebrow = data.contactFirstName
+    ? t.eyebrow.replace('{contactFirstName}', data.contactFirstName)
+    : t.eyebrowUnknown;
 
   const html = `<!DOCTYPE html>
 <html>
@@ -429,10 +427,10 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
                 <tr>
                   <td style="background:#C4623A;padding:32px 48px 28px;">
                     <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
-                      Carry My Words
+                      ${eyebrow}
                     </div>
                     <div style="font-family:Georgia,serif;font-size:26px;font-weight:600;color:#ffffff;line-height:1.25;">
-                      ${greeting}
+                      ${t.title.replace('{senderFirstName}', data.senderFirstName)}
                     </div>
                   </td>
                 </tr>
@@ -441,19 +439,13 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding:40px 48px;">
-                    <p style="margin:0 0 16px;font-size:17px;line-height:1.7;color:#2A2520;">
-                      ${t.title}
-                    </p>
-                    <p style="margin:0 0 16px;font-size:17px;line-height:1.7;color:#2A2520;">
-                      ${t.intro.replace('{email}', data.userEmail)}
-                    </p>
                     <p style="margin:0 0 28px;font-size:17px;line-height:1.7;color:#2A2520;">
-                      ${t.explanation}
+                      ${t.intro.replace('{senderFirstName}', data.senderFirstName)}
                     </p>
                     <!-- BLOQUE DE ALERTA -->
                     <div style="background:#FFF5F5;border-left:3px solid #C4623A;border-radius:0 12px 12px 0;padding:20px 24px;margin-bottom:28px;">
                       <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#2A2520;">
-                        ${t.boxTitle.replace('{email}', data.userEmail)}
+                        ${t.boxTitle.replace('{senderFirstName}', data.senderFirstName)}
                       </p>
                       <p style="margin:0;font-size:14px;line-height:1.65;color:#6A4040;">
                         ${t.boxText}
@@ -470,11 +462,8 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { n
                       </tr>
                     </table>
                     <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
-                    <p style="margin:0 0 12px;font-size:13px;line-height:1.6;color:#9B8B7E;">
-                      ${t.falseAlarm}
-                    </p>
-                    <p style="margin:0;font-size:12px;color:#B0A090;">
-                      ${t.expiry}
+                    <p style="margin:0;font-size:13px;line-height:1.6;color:#9B8B7E;">
+                      ${t.secondary}
                     </p>
                   </td>
                 </tr>
