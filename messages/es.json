@@ -748,11 +748,11 @@
     "magicLink": {
       "subject": "Tu enlace de acceso a Carry My Words",
       "subjectAdmin": "Acceso de administrador - Carry My Words",
-      "title": "Ya podés ver tu mensaje",
+      "title": "Iniciá sesión en tu cuenta",
       "adminBadge": "Acceso de administrador",
-      "intro": "Alguien pensó en vos y se tomó el tiempo de guardarte algo. Hacé clic para acceder — es tuyo.",
-      "button": "Ver mi mensaje",
-      "ignore": "Si no esperabas este email, podés ignorarlo tranquilo.",
+      "intro": "Hacé clic en el botón de abajo para acceder a tu cuenta de Carry My Words de forma segura. El enlace expirará pronto.",
+      "button": "Ingresar a mi cuenta",
+      "ignore": "Si no solicitaste este acceso, podés ignorar este email tranquilamente.",
       "tagline": "Mensajes para cuando realmente importa."
     },
     "messageDelivery": {

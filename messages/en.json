@@ -750,13 +750,13 @@
       "externalFooter": "Carry My Words · carrymywords.com"
     },
     "magicLink": {
-      "subject": "Your Carry My Words Login Link",
+      "subject": "Your Carry My Words Access Link",
       "subjectAdmin": "Admin Access - Carry My Words",
-      "title": "Your message is waiting for you",
+      "title": "Log in to your account",
       "adminBadge": "Admin Access",
-      "intro": "Someone thought of you and took the time to save you something. Click to access it — it's yours.",
-      "button": "See my message",
-      "ignore": "If you weren't expecting this email, you can safely ignore it.",
+      "intro": "Click the button below to securely access your Carry My Words account. This link will expire shortly.",
+      "button": "Enter my account",
+      "ignore": "If you did not request this link, you can safely ignore this email.",
       "tagline": "Messages for when it really matters."
     },
     "messageDelivery": {
