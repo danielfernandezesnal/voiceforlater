@@ -19,7 +19,12 @@ export function UpgradeButton({ dictionary, isPro = false, className = '' }: Upg
         setLoading(true);
         try {
             const endpoint = isPro ? '/api/stripe/portal' : '/api/stripe/checkout';
-            const response = await fetch(endpoint, { method: 'POST' });
+            const locale = window.location.pathname.split('/')[1] || 'es';
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: isPro ? undefined : JSON.stringify({ redirectPath: `/${locale}/dashboard?upgrade=success` }),
+            });
             const data = await response.json();
 
             if (data.url) {
