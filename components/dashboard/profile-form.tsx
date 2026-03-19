@@ -113,7 +113,8 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
             // After a successful save during onboarding, return the user to message creation.
             // Guard: only when the onboarding flag is explicitly set (no redirect on normal edits).
             if (onboarding && locale) {
-                router.push(`/${locale}/messages/create`)
+                // Ensure the message wizard starts fresh after onboarding
+                router.push(`/${locale}/messages/create?new=true`)
             }
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : t.errors.saveError

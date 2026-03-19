@@ -105,8 +105,10 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                 }
 
                 setData(loadedData)
-                setStep(loadedStep)
-                setMaxStep(loadedStep)
+                // Safety: if we are loading a step > 1 but there's no type selected, go back to 1
+                const finalStep = (loadedStep > 1 && !loadedData.messageType) ? 1 : loadedStep
+                setStep(finalStep)
+                setMaxStep(finalStep)
             } catch (err) {
                 if (process.env.NODE_ENV !== 'production') console.error('Failed to load drafts:', err)
             } finally {
