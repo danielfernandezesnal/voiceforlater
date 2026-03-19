@@ -333,13 +333,13 @@
     },
     "limitReached": {
       "title": "Message limit reached",
-      "description": "Your current plan only allows 1 message. To create unlimited messages and access premium features, upgrade to Pro.",
+      "description": "To access more features, upgrade to PRO.",
       "subtitle": "For just USD 10 you can:",
       "features": [
         "Send unlimited messages",
         "Send text, audio, and video messages!",
-        "Choose exactly when each message is sent",
-        "Designate a trusted person to ensure delivery"
+        "Designate up to 3 trusted contacts for your messages",
+        "Send the same message to multiple recipients"
       ],
       "cancel": "Cancel"
     },
