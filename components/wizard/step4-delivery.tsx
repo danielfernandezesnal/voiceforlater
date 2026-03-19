@@ -42,6 +42,19 @@ function WheelColumn({ items, value, onChange, formatItem }: {
         }, 120)
     }
 
+    const handleItemClick = (val: number) => {
+        if (skipRef.current || val === value) return
+        const idx = items.indexOf(val)
+        if (idx === -1) return
+        const el = ref.current
+        if (!el) return
+        
+        skipRef.current = true
+        el.scrollTo({ top: idx * ITEM_H, behavior: 'smooth' })
+        onChange(val)
+        setTimeout(() => { skipRef.current = false }, 300)
+    }
+
     return (
         <div className="relative flex-1 select-none">
             {/* Top fade */}
@@ -51,18 +64,19 @@ function WheelColumn({ items, value, onChange, formatItem }: {
             {/* Selection lines */}
             <div className="absolute inset-x-3 top-12 h-px bg-border pointer-events-none z-10" />
             <div className="absolute inset-x-3 bottom-12 h-px bg-border pointer-events-none z-10" />
-            {/* Scroll container */}
+            
             <div
                 ref={ref}
                 onScroll={handleScroll}
-                className="h-36 overflow-y-scroll snap-y snap-mandatory"
-                style={{ scrollbarWidth: 'none' }}
+                className="h-36 overflow-y-scroll snap-y snap-mandatory no-scrollbar overscroll-contain"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
                 <div className="h-12" />
                 {items.map(item => (
                     <div
                         key={item}
-                        className="h-12 flex items-center justify-center snap-center text-lg font-medium text-foreground cursor-pointer"
+                        onClick={() => handleItemClick(item)}
+                        className={`h-12 flex items-center justify-center snap-center text-lg font-medium transition-all duration-200 cursor-pointer ${item === value ? 'text-primary scale-110' : 'text-muted-foreground/60 hover:text-primary/70'}`}
                     >
                         {formatItem ? formatItem(item) : String(item).padStart(2, '0')}
                     </div>
@@ -98,8 +112,13 @@ function DateWheelPicker({ value, min, onChange, locale }: {
     const commit = (newY: number, newM: number, newD: number) => {
         const maxDay = new Date(newY, newM, 0).getDate()
         const safeD = Math.min(newD, maxDay)
-        const dateStr = `${newY}-${String(newM).padStart(2, '0')}-${String(safeD).padStart(2, '0')}`
-        if (dateStr < min) return
+        let dateStr = `${newY}-${String(newM).padStart(2, '0')}-${String(safeD).padStart(2, '0')}`
+        
+        // Clamp to minimum allowed date instead of ignoring the change
+        if (dateStr < min) {
+            dateStr = min
+        }
+        
         onChange(dateStr)
     }
 
