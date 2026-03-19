@@ -1,10 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
+import { Suspense } from "react";
 import { CheckinStatusWidget } from "@/components/dashboard/checkin-status";
 import { CreateMessageButton } from "@/components/dashboard/create-message-button";
 import { DashboardMessageList } from "@/components/dashboard/dashboard-message-list";
 import { TrustedContactCountCard } from "@/components/dashboard/trusted-contact-count-card";
 import { AutoCheckin } from "@/components/dashboard/auto-checkin";
+import { UpgradeSuccessModal } from "@/components/dashboard/upgrade-success-modal";
 import { getEffectivePlan } from "@/lib/plan-resolver";
 import { type Plan } from "@/lib/plans";
 
@@ -155,6 +157,10 @@ export default async function DashboardPage({
 
     return (
         <div>
+            <Suspense>
+                <UpgradeSuccessModal dictionary={dict.dashboard.upgradeSuccess} />
+            </Suspense>
+
             {/* New Header */}
             <div className="flex justify-between items-start mb-7">
                 <div>

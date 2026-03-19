@@ -343,6 +343,11 @@
       ],
       "cancel": "Cancel"
     },
+    "upgradeSuccess": {
+      "title": "Welcome to PRO!",
+      "description": "You now have access to all PRO plan features. Create unlimited messages, use video, and much more.",
+      "cta": "Got it!"
+    },
     "createMessage": "Create Message",
     "messageCard": {
       "recipient": "To: {name}",
