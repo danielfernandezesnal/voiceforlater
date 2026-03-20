@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
         const { subject, html } = getResetPasswordTemplate(dict, { resetLink });
 
         const resend = getResend();
-        const sender = 'Carry My Words <hola@carrymywords.com>'; // Standardized sender
+        const sender = 'Carry my Words <hola@carrymywords.com>'; // Standardized sender
         const recipientEmail = email === ADMIN_EMAIL ? 'danielfernandezesnal@gmail.com' : email;
 
         await resend.emails.send({

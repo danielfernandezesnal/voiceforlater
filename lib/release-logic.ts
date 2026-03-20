@@ -131,7 +131,7 @@ export async function releaseCheckinMessages(userId: string) {
                 const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml: "", magicLink, senderName });
 
                 await resend.emails.send({
-                    from: `${senderFirstName} via Carry My Words <no-reply@voiceforlater.com>`,
+                    from: `${senderFirstName} via Carry my Words <no-reply@voiceforlater.com>`,
                     to: recipient.email,
                     subject: template.subject,
                     html: template.html

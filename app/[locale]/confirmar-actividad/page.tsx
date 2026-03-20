@@ -35,7 +35,7 @@ export default function ConfirmActivityPage() {
         <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#F0EBE3] font-serif">
             <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-sm border border-[#E0D8CC] text-center">
                 <div className="mb-6">
-                    <h1 className="text-2xl font-semibold text-[#C4623A] mb-2">Carry My Words</h1>
+                    <h1 className="text-2xl font-semibold text-[#C4623A] mb-2">Carry my Words</h1>
                     <p className="text-sm text-[#8a6a50] italic">Mensajes que viajan en el tiempo</p>
                 </div>
 

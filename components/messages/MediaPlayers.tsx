@@ -158,7 +158,7 @@ export function VideoPlayer({ src, overlayText }: { src: string, overlayText: st
                         whiteSpace: 'nowrap',
                     }}
                 >
-                    Carry My Words
+                    Carry my Words
                 </span>
             </div>
 

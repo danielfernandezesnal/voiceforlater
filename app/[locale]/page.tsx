@@ -16,7 +16,7 @@ export async function generateMetadata({
     const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
 
     return {
-        title: "Carry My Words",
+        title: "Carry my Words",
         description: locale === 'es'
             ? "Un espacio para dejar mensajes que viajen en el tiempo, para quienes más quieres."
             : "A space to leave messages that travel through time, for those you love most.",
@@ -47,7 +47,7 @@ export default async function LocaleHomePage({
             {/* Navbar */}
             <nav className="px-4 py-4 md:p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
                 <div className="font-serif italic font-normal text-[1.6rem] md:text-5xl tracking-tight whitespace-nowrap" style={{ color: TC }}>
-                    Carry My Words
+                    Carry my Words
                 </div>
                 <div className="flex flex-row gap-3 md:gap-6 items-center">
                     <LocaleSwitcher currentLocale={locale} />
@@ -121,7 +121,7 @@ export default async function LocaleHomePage({
                 <div className="hero-img-col relative overflow-hidden">
                     <Image
                         src="/assets/rebrand/hero-editorial.png"
-                        alt="Carry My Words - Editorial Hero"
+                        alt="Carry my Words - Editorial Hero"
                         fill
                         priority
                         quality={95}
@@ -437,7 +437,7 @@ export default async function LocaleHomePage({
             <footer className="py-12 px-6 border-t border-border mt-auto bg-card text-muted-foreground text-sm">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex flex-col items-center">
-                        <div className="font-serif font-normal italic text-2xl" style={{ color: TC }}>Carry My Words</div>
+                        <div className="font-serif font-normal italic text-2xl" style={{ color: TC }}>Carry my Words</div>
                         <p style={{ color: TC, fontSize: '0.65rem', letterSpacing: '0.14em', fontWeight: 500, marginTop: '4px', textAlign: 'center' }}>
                             {locale === 'es' ? 'MENSAJES QUE VIAJAN EN EL TIEMPO' : 'MESSAGES THAT TRAVEL THROUGH TIME'}
                         </p>
