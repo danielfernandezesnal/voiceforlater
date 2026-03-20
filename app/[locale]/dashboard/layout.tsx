@@ -87,7 +87,7 @@ export default async function DashboardLayout({
                         {/* Logo Desktop */}
                         <div className="hidden md:flex flex-col items-start justify-center">
                             <Link href={`/${locale}/dashboard`} className="font-serif italic text-xl leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
-                                Carry My Words
+                                Carry my Words
                             </Link>
                             <p className="text-[0.55rem] font-medium uppercase tracking-widest mt-0.5" style={{ color: '#C4623A' }}>
                                 {labels.tagline}
@@ -97,7 +97,7 @@ export default async function DashboardLayout({
                         {/* Logo Mobile */}
                         <div className="flex md:hidden items-center">
                             <Link href={`/${locale}/dashboard`} className="font-serif italic text-lg leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
-                                Carry My Words
+                                Carry my Words
                             </Link>
                         </div>
                     </div>
