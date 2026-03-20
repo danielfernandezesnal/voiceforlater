@@ -16,6 +16,7 @@ interface PlanCompareProps {
             trustedContacts: string
             trustedContactsFree: string
             trustedContactsPro: string
+            multipleRecipients: string
         }
     }
 }
@@ -61,6 +62,13 @@ export function PlanCompare({ currentPlan, comparisonData }: PlanCompareProps) {
             pro: true,
             freeNote: t.trustedContactsFree,
             proNote: t.trustedContactsPro,
+        },
+        {
+            name: t.multipleRecipients,
+            free: false,
+            pro: true,
+            freeNote: null,
+            proNote: null,
         },
     ]
 
