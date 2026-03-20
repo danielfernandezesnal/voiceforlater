@@ -39,7 +39,7 @@ export default async function DashboardLayout({
     const [profileResult, currentPlan] = await Promise.all([
         supabase
             .from('profiles')
-            .select('auth_password_set, locale')
+            .select('auth_password_set, locale, first_name, last_name')
             .eq('id', user.id)
             .single(),
         getEffectivePlan(supabase, user.id)
@@ -69,9 +69,13 @@ export default async function DashboardLayout({
     }
 
     // Prepare user object for client component
+    const firstName = profile?.first_name || '';
+    const lastName = profile?.last_name || '';
+    const fullName = [firstName, lastName].filter(Boolean).join(' ');
+
     const userForNav = {
         email: user.email,
-        full_name: user.user_metadata?.full_name
+        full_name: fullName || user.user_metadata?.full_name
     }
 
 
