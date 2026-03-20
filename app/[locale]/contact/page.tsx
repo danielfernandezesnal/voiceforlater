@@ -14,7 +14,7 @@ export async function generateMetadata({
     const dict = await getDictionary(locale);
 
     return {
-        title: `${dict.contact.title} | Carry My Words`,
+        title: `${dict.contact.title} | Carry my Words`,
     };
 }
 
@@ -32,7 +32,7 @@ export default async function ContactPage({
             {/* Navbar */}
             <nav className="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
                 <div className="font-serif font-bold text-2xl tracking-tight text-primary">
-                    <Link href={`/${locale}`}>Carry My Words</Link>
+                    <Link href={`/${locale}`}>Carry my Words</Link>
                 </div>
                 <div className="flex gap-6 items-center">
                     <LocaleSwitcher currentLocale={locale} />
@@ -58,7 +58,7 @@ export default async function ContactPage({
             <footer className="py-12 px-6 border-t border-border mt-auto bg-card text-muted-foreground text-sm">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="font-serif font-bold text-foreground text-lg">
-                        <Link href={`/${locale}`}>Carry My Words</Link>
+                        <Link href={`/${locale}`}>Carry my Words</Link>
                     </div>
                     <div className="flex gap-6">
                         <Link href={`/${locale}/privacy`} className="hover:text-foreground transition-colors">{dict.landing.footer.privacy}</Link>

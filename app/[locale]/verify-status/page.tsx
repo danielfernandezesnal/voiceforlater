@@ -132,7 +132,7 @@ function VerifyStatusContent() {
                 </div>
 
                 <p className="mt-6 text-center text-xs text-gray-400">
-                    Carry My Words Verification System &bull; Secure Link
+                    Carry my Words Verification System &bull; Secure Link
                 </p>
             </div>
         </div>

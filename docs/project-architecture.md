@@ -1,7 +1,7 @@
-# Project Architecture: Carry My Words (formerly voiceforlater)
+# Project Architecture: Carry my Words (formerly voiceforlater)
 
 ## 1. Project Overview
-Carry My Words is a digital platform built to securely store voice messages and textual reflections for future delivery. Built with Next.js (App Router), Supabase, Stripe, and Resend, the project functions as an emotional reflection space. The application handles reliable scheduling and security for ensuring messages are only released under precise structural conditions.
+Carry my Words is a digital platform built to securely store voice messages and textual reflections for future delivery. Built with Next.js (App Router), Supabase, Stripe, and Resend, the project functions as an emotional reflection space. The application handles reliable scheduling and security for ensuring messages are only released under precise structural conditions.
 
 ## 2. System Architecture
 The application runs on a modern serverless stack:
@@ -73,7 +73,7 @@ Security architecture prioritizing user privacy and data locking:
 - **CI Smoke Tests:** Automated tests (`smoke:domain`, `smoke:stripe`) running in GitHub Actions to validate core routing and critical paths before any merge.
 
 ## 10. Product Philosophy
-Carry My Words is specifically structured as:
+Carry my Words is specifically structured as:
 - An emotional reflection space.
 - Not a social network.
 - Focused on meaningful, permanent messages.

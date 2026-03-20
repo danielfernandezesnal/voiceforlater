@@ -1,6 +1,6 @@
 # Landing v14 - Estado Final
 
-Este documento resume los cambios técnicos y estéticos implementados en la iteración de rebranding **"Carry My Words"** (v14).
+Este documento resume los cambios técnicos y estéticos implementados en la iteración de rebranding **"Carry my Words"** (v14).
 
 ## Cambios Implementados
 

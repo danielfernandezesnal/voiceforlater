@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Carry My Words",
+    "appName": "Carry my Words",
     "loading": "Loading...",
     "error": "Something went wrong",
     "retry": "Try again",
@@ -159,17 +159,17 @@
       "item2": "Only delivered when conditions are met.",
       "item3": "You stay in control at all times.",
       "encryption": "Your messages are encrypted and we never read them. Only you and your recipients have access.",
-      "clarification": "Carry My Words only delivers what you recorded, exactly as you left it."
+      "clarification": "Carry my Words only delivers what you recorded, exactly as you left it."
     },
     "notWhat": {
-      "title": "What Carry My Words is NOT",
+      "title": "What Carry my Words is NOT",
       "items": [
         "Not a will or testament",
         "Not legal advice",
         "Not a replacement for a person",
         "Not making decisions for you"
       ],
-      "clarification": "Carry My Words only delivers messages you left, exactly as you recorded them."
+      "clarification": "Carry my Words only delivers messages you left, exactly as you recorded them."
     },
     "faq": {
       "title": "Frequently Asked Questions",
@@ -177,8 +177,8 @@
       "showLess": "View less",
       "items": [
         {
-          "q": "What is Carry My Words?",
-          "a": "Carry My Words is a service that allows you to create messages today that will be delivered in the future. You can write a message, record audio or video, choose who will receive it, and decide when it should be delivered. Some people use it to send messages on important dates. Others use it to leave words for their loved ones in case they can no longer do so themselves."
+          "q": "What is Carry my Words?",
+          "a": "Carry my Words is a service that allows you to create messages today that will be delivered in the future. You can write a message, record audio or video, choose who will receive it, and decide when it should be delivered. Some people use it to send messages on important dates. Others use it to leave words for their loved ones in case they can no longer do so themselves."
         },
         {
           "q": "How does message delivery work?",
@@ -217,7 +217,7 @@
           "a": "Messages are only delivered when the condition you chose is met. Until that moment, they remain private and under your control."
         },
         {
-          "q": "Why would someone use Carry My Words?",
+          "q": "Why would someone use Carry my Words?",
           "a": "People use it for different reasons. Some write messages for birthdays, anniversaries or important future moments. Others want to leave words for their family or loved ones to ensure those messages arrive someday. It's simply a way to ensure that important words are never left unsaid."
         },
         {
@@ -284,7 +284,7 @@
     "createAccount": "New Account",
     "forgotPassword": "Forgot password?",
     "magicLink": {
-      "title": "Carry My Words",
+      "title": "Carry my Words",
       "subtitle": "Enter your email to access",
       "emailLabel": "Email address",
       "emailPlaceholder": "you@example.com",
@@ -478,7 +478,7 @@
     },
     "step4": {
       "title": "When should this message be delivered?",
-      "subtitle": "This is the heart of Carry My Words. Choose if you want it to arrive on a special date or to be saved for when you are no longer here.",
+      "subtitle": "This is the heart of Carry my Words. Choose if you want it to arrive on a special date or to be saved for when you are no longer here.",
       "date": {
         "title": "On a specific date",
         "description": "Birthday, graduation, anniversary, or simply something you want to say today but that must arrive at the right moment.",
@@ -531,7 +531,7 @@
     },
     "tosModal": {
       "title": "A Brief Formality",
-      "subtitle": "To maintain a safe and trusted space, we kindly ask you to accept our Terms of Service. This simply confirms that Carry My Words will be used for its intended, meaningful purpose.",
+      "subtitle": "To maintain a safe and trusted space, we kindly ask you to accept our Terms of Service. This simply confirms that Carry my Words will be used for its intended, meaningful purpose.",
       "checkboxPre": "I have read and agree to the ",
       "checkboxMid": " and ",
       "checkboxTerms": "Terms of Service",
@@ -598,10 +598,10 @@
     "contactNotification": {
       "subject": "You’ve been chosen as a trusted contact",
       "title": "You’ve been chosen as a trusted contact",
-      "intro": "{name} has chosen you as a trusted contact on Carry My Words.",
+      "intro": "{name} has chosen you as a trusted contact on Carry my Words.",
       "explanation": "This means that if this person does not confirm their activity within the defined period, you may receive a notification related to the messages they have scheduled.",
       "noAction": "No action is required from you at this time. We just wanted to inform you and thank you for being part of {name}’s circle of trust.",
-      "signature": "Carry My Words",
+      "signature": "Carry my Words",
       "tagline": "So your words arrive when they’re meant to."
     }
   },
@@ -745,25 +745,25 @@
   },
   "emails": {
     "common": {
-      "footerSignature": "Carry My Words",
+      "footerSignature": "Carry my Words",
       "tagline": "Messages for when it really matters.",
-      "externalFooter": "Carry My Words · carrymywords.com"
+      "externalFooter": "Carry my Words · carrymywords.com"
     },
     "magicLink": {
-      "subject": "Your Carry My Words Access Link",
-      "subjectAdmin": "Admin Access - Carry My Words",
+      "subject": "Your Carry my Words Access Link",
+      "subjectAdmin": "Admin Access - Carry my Words",
       "title": "Log in to your account",
       "adminBadge": "Admin Access",
-      "intro": "Click the button below to securely access your Carry My Words account. This link will expire shortly.",
+      "intro": "Click the button below to securely access your Carry my Words account. This link will expire shortly.",
       "button": "Enter my account",
       "ignore": "If you did not request this link, you can safely ignore this email.",
       "tagline": "Messages for when it really matters."
     },
     "messageDelivery": {
-      "subject": "You have a message via Carry My Words",
-      "title": "You have a message from Carry My Words",
+      "subject": "You have a message via Carry my Words",
+      "title": "You have a message from Carry my Words",
       "intro": "A message scheduled for you has arrived.",
-      "footer": "Carry My Words - Messages for when it truly matters.",
+      "footer": "Carry my Words - Messages for when it truly matters.",
       "viewVideo": "View Video",
       "listenAudio": "Listen to Audio",
       "linkValid": "Link valid for 15 days.",
@@ -776,7 +776,7 @@
       "tagline": "Messages for when it really matters."
     },
     "checkinReminder": {
-      "subject": "⏰ Check-in reminder - Carry My Words",
+      "subject": "⏰ Check-in reminder - Carry my Words",
       "title": "Time to check in!",
       "intro": "Your scheduled check-in is overdue. Please confirm you're still active.",
       "attempt": "Attempt {attempt} of 3",
@@ -789,7 +789,7 @@
       "eyebrow": "{contactFirstName}, we need your help",
       "eyebrowUnknown": "We need your help",
       "title": "Do you know how {senderFirstName} is doing?",
-      "intro": "{senderFirstName} has messages saved in Carry My Words and has stopped responding to activity check-ins. As their trusted contact, you're the person who can help us understand what's happening.",
+      "intro": "{senderFirstName} has messages saved in Carry my Words and has stopped responding to activity check-ins. As their trusted contact, you're the person who can help us understand what's happening.",
       "boxTitle": "Is {senderFirstName} unavailable?",
       "boxText": "If you confirm, their messages will be sent to the people they chose.",
       "button": "Verify status",
@@ -801,15 +801,15 @@
       "preheader": "{{contactFirstName}}, someone thought of you",
       "heading": "You were chosen for<br>something important",
       "p1": "There are people who think about others even before the moment arrives. <strong>{{senderFullName}}</strong> is one of them.",
-      "p2": "{{senderFirstName}} chose you as their <strong>trusted person</strong> on Carry My Words — a platform for leaving messages that will arrive at the right moment, or when they can no longer send them themselves.",
+      "p2": "{{senderFirstName}} chose you as their <strong>trusted person</strong> on Carry my Words — a platform for leaving messages that will arrive at the right moment, or when they can no longer send them themselves.",
       "roleTitle": "What does this role mean?",
       "roleP1": "If at any point {{senderFirstName}} stops responding to the platform's activity confirmations, we may contact you to verify their situation before proceeding with the delivery of their scheduled messages.",
       "roleP2": "<strong>You don't have to do anything for now.</strong> We just wanted you to know that {{senderFirstName}} trusted you for this role.",
       "moreTitle": "Want to know more?",
       "moreText": "{{senderFirstName}} is the best person to tell you why they chose you. A conversation with them will explain what this means better than any email.",
       "thanks": "Thank you for being part of this.",
-      "signature": "— The Carry My Words team",
-      "footerLogo": "Carry My Words",
+      "signature": "— The Carry my Words team",
+      "footerLogo": "Carry my Words",
       "footerLegal": "You received this email because someone chose you as a trusted contact.<br>If you believe this is an error, you can ignore this message.",
       "tagline": "Messages for when it really matters."
     },
@@ -821,7 +821,7 @@
       "p2": "It is something thought out, chosen, and carefully kept until this moment.",
       "button": "🎙 Access the message",
       "closing": "Because some words deserve to arrive at just the right moment.",
-      "signature": "— The Carry My Words team",
+      "signature": "— The Carry my Words team",
       "tagline": "Messages for when it really matters."
     },
     "messagePosthumous": {
@@ -837,7 +837,7 @@
       "tagline": "Messages for when it really matters."
     },
     "resetPassword": {
-      "subject": "Reset your Carry My Words password",
+      "subject": "Reset your Carry my Words password",
       "eyebrow": "YOUR ACCOUNT",
       "title": "Reset your password",
       "intro": "We got your request. Click below and you'll be back in your account in no time.",
@@ -846,7 +846,7 @@
       "tagline": "Messages for when it really matters."
     },
     "paymentFailed": {
-      "subject": "Payment issue with your Carry My Words subscription",
+      "subject": "Payment issue with your Carry my Words subscription",
       "eyebrow": "YOUR SUBSCRIPTION",
       "title": "We couldn't process your payment",
       "intro": "There was an issue with your subscription payment. To keep your messages protected and ready for delivery, please update your payment method.",
@@ -863,11 +863,11 @@
       "sections": [
         {
           "heading": "1. Introduction & Acceptance",
-          "body": "Welcome to Carry My Words. By accessing or using our platform, you agree to form a binding agreement with us under these terms. If you do not agree to these terms, please do not use our service."
+          "body": "Welcome to Carry my Words. By accessing or using our platform, you agree to form a binding agreement with us under these terms. If you do not agree to these terms, please do not use our service."
         },
         {
           "heading": "2. Eligibility",
-          "body": "You must be at least 16 years old to use Carry My Words. Minors require the consent of a parent or guardian to make purchases or use premium features."
+          "body": "You must be at least 16 years old to use Carry my Words. Minors require the consent of a parent or guardian to make purchases or use premium features."
         },
         {
           "heading": "3. Account Security",
@@ -875,7 +875,7 @@
         },
         {
           "heading": "4. Acceptable Use",
-          "body": "Carry My Words is designed for personal and emotional messages. You agree not to use our platform to distribute illegal content, harassment, threats, spam, or malicious material."
+          "body": "Carry my Words is designed for personal and emotional messages. You agree not to use our platform to distribute illegal content, harassment, threats, spam, or malicious material."
         },
         {
           "heading": "5. User Content & Ownership",
@@ -899,7 +899,7 @@
         },
         {
           "heading": "10. Disclaimers",
-          "body": "Our service is provided on an \"as is\" and \"as available\" basis. Carry My Words is a messaging tool; it is not a replacement for a legal will, testament, healthcare directive, or professional legal and financial advice."
+          "body": "Our service is provided on an \"as is\" and \"as available\" basis. Carry my Words is a messaging tool; it is not a replacement for a legal will, testament, healthcare directive, or professional legal and financial advice."
         },
         {
           "heading": "11. Limitation of Liability",
@@ -926,7 +926,7 @@
       "sections": [
         {
           "heading": "1. Introduction",
-          "body": "We are deeply committed to your privacy. This policy explains how we collect, use, and protect your information when you use Carry My Words. We act as a data processor for the content of your scheduled messages."
+          "body": "We are deeply committed to your privacy. This policy explains how we collect, use, and protect your information when you use Carry my Words. We act as a data processor for the content of your scheduled messages."
         },
         {
           "heading": "2. Data We Collect",
@@ -962,7 +962,7 @@
         },
         {
           "heading": "10. Children's Privacy",
-          "body": "Carry My Words is not intended for children under 13 years of age, and we do not knowingly collect personal data from them."
+          "body": "Carry my Words is not intended for children under 13 years of age, and we do not knowingly collect personal data from them."
         },
         {
           "heading": "11. International Transfers",
@@ -1005,7 +1005,7 @@
       "heading": "Because your words matter",
       "text": "Carry your messages beyond time. Save what you feel today so it reaches tomorrow.",
       "button": "I want to send my words",
-      "subtext": "Carry My Words — Messages that travel through time"
+      "subtext": "Carry my Words — Messages that travel through time"
     },
     "error": {
       "title": "Message not found",

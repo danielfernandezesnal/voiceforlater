@@ -192,7 +192,7 @@ export default async function MessagePage({ params }: PageProps) {
             <header className="px-6 py-8 border-b border-black/[0.04] bg-[#F0EBE4]/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-700">
                 <div className="max-w-4xl mx-auto flex flex-col items-center gap-1">
                     <div className="font-playfair italic text-2xl text-primary tracking-tight">
-                        Carry My Words
+                        Carry my Words
                     </div>
                     <div className="text-[9px] font-medium tracking-[0.3em] text-primary/70 uppercase">
                         {t.cta.subtext.split(' — ')[1] || 'Messages that travel through time'}
@@ -275,7 +275,7 @@ export default async function MessagePage({ params }: PageProps) {
             {/* Footer */}
             <footer className="max-w-4xl mx-auto px-6 py-24 text-center border-t border-black/[0.04] animate-slide-up" style={{ animationDelay: '0.9s' }}>
                 <div className="font-playfair italic text-2xl text-primary/40 mb-8 select-none">
-                    Carry My Words
+                    Carry my Words
                 </div>
                 <div className="flex flex-col items-center gap-6">
                     <p className="text-[11px] text-[#9C9088] font-sans font-medium leading-relaxed max-w-xs uppercase tracking-[0.2em]">
