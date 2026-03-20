@@ -65,7 +65,13 @@ export function UpgradeButton({ dictionary, isPro = false, className = '' }: Upg
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     )}
-                    {isPro ? dictionary.manageSub : dictionary.upgrade}
+                    {isPro ? dictionary.manageSub : (
+                        dictionary.upgrade.includes('\n')
+                            ? <span className="flex flex-col items-center leading-tight">
+                                {dictionary.upgrade.split('\n').map((line: string, i: number) => <span key={i}>{line}</span>)}
+                              </span>
+                            : dictionary.upgrade
+                    )}
                 </>
             )}
         </button>
