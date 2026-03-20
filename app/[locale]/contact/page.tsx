@@ -41,8 +41,13 @@ export default async function ContactPage({
 
             {/* Desktop navbar */}
             <nav className="hidden md:flex p-6 justify-between items-center max-w-6xl mx-auto w-full">
-                <div className="font-serif font-normal italic text-2xl tracking-tight" style={{ color: '#C4623A' }}>
-                    <Link href={`/${locale}`}>Carry my Words</Link>
+                <div className="flex flex-col items-start">
+                    <Link href={`/${locale}`} className="font-serif font-normal italic text-2xl tracking-tight" style={{ color: '#C4623A' }}>
+                        Carry my Words
+                    </Link>
+                    <p style={{ color: '#C4623A', fontSize: '0.6rem', letterSpacing: '0.14em', fontWeight: 500, marginTop: '3px' }}>
+                        {locale === 'es' ? 'MENSAJES QUE VIAJAN EN EL TIEMPO' : 'MESSAGES THAT TRAVEL THROUGH TIME'}
+                    </p>
                 </div>
                 <div className="flex gap-6 items-center">
                     <LocaleSwitcher currentLocale={locale} />
