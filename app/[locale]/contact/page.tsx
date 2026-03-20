@@ -31,11 +31,11 @@ export default async function ContactPage({
         <div className="min-h-screen flex flex-col bg-background text-foreground">
             {/* Mobile header: centered logo + tagline only */}
             <div className="md:hidden pt-10 pb-2 flex flex-col items-center text-center px-6">
-                <Link href={`/${locale}`} className="font-serif font-bold text-3xl tracking-tight text-primary leading-tight">
+                <Link href={`/${locale}`} className="font-serif font-normal italic text-3xl tracking-tight leading-tight" style={{ color: '#C4623A' }}>
                     Carry my Words
                 </Link>
-                <p className="text-xs text-muted-foreground mt-2 tracking-wide">
-                    {dict.emails.magicLink.tagline}
+                <p style={{ color: '#C4623A', fontSize: '0.65rem', letterSpacing: '0.14em', fontWeight: 500, marginTop: '6px' }}>
+                    {locale === 'es' ? 'MENSAJES QUE VIAJAN EN EL TIEMPO' : 'MESSAGES THAT TRAVEL THROUGH TIME'}
                 </p>
             </div>
 
