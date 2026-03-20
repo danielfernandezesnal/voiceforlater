@@ -41,7 +41,7 @@ export default async function ContactPage({
 
             {/* Desktop navbar */}
             <nav className="hidden md:flex p-6 justify-between items-center max-w-6xl mx-auto w-full">
-                <div className="font-serif font-bold text-2xl tracking-tight text-primary">
+                <div className="font-serif font-normal italic text-2xl tracking-tight" style={{ color: '#C4623A' }}>
                     <Link href={`/${locale}`}>Carry my Words</Link>
                 </div>
                 <div className="flex gap-6 items-center">
@@ -67,7 +67,7 @@ export default async function ContactPage({
             {/* Footer */}
             <footer className="py-12 px-6 border-t border-border mt-auto bg-card text-muted-foreground text-sm">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div className="hidden md:block font-serif font-bold text-foreground text-lg">
+                    <div className="hidden md:block font-serif font-normal italic text-foreground text-lg">
                         <Link href={`/${locale}`}>Carry my Words</Link>
                     </div>
                     <div className="flex gap-6">
