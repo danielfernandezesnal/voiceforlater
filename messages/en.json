@@ -254,7 +254,8 @@
           "Text",
           "Audio",
           "Video",
-          "Up to 3 trusted people"
+          "Up to 3 trusted people",
+          "Messages to multiple recipients"
         ],
         "cta": "Switch to PRO plan"
       }
@@ -395,7 +396,8 @@
           "video": "Video message",
           "trustedContacts": "Trusted people",
           "trustedContactsFree": "Up to 1",
-          "trustedContactsPro": "Up to 3"
+          "trustedContactsPro": "Up to 3",
+          "multipleRecipients": "Messages to multiple recipients"
         }
       }
     },

@@ -250,7 +250,8 @@
           "Texto",
           "Audio",
           "Video",
-          "Hasta 3 personas de confianza"
+          "Hasta 3 personas de confianza",
+          "Mensajes a múltiples destinatarios"
         ],
         "cta": "Comenzar con plan PRO"
       }
@@ -391,7 +392,8 @@
           "video": "Mensaje de video",
           "trustedContacts": "Personas de confianza",
           "trustedContactsFree": "Hasta 1",
-          "trustedContactsPro": "Hasta 3"
+          "trustedContactsPro": "Hasta 3",
+          "multipleRecipients": "Mensajes a múltiples destinatarios"
         }
       }
     },
