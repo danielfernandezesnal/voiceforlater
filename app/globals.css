@@ -215,12 +215,40 @@ html {
     }
 
     .tl-step {
-      flex-direction: column;
-      align-items: center;
+      flex-direction: row !important;
+      align-items: flex-start !important;
+      text-align: left !important;
+      gap: 16px;
+    }
+
+    .tl-step .tl-node-row {
+      width: auto;
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    .tl-step .tl-content {
+      flex: 1;
+      padding: 0;
+    }
+
+    .tl-step .tl-content h3 {
+      text-align: left;
+    }
+
+    .tl-step .tl-content p {
+      text-align: left;
+      margin: 0;
+      max-width: none;
     }
 
     .tl-line {
       display: none;
+    }
+
+    .tl-circle {
+      width: 40px;
+      height: 40px;
     }
   }
 
@@ -236,13 +264,13 @@ html {
     @apply flex-shrink-0 flex items-center justify-center rounded-full transition-all duration-200;
     width: 52px;
     height: 52px;
-    border: 1px solid hsl(var(--rose-border) / 0.35);
-    background: hsl(var(--cream));
+    border: 1.5px solid hsl(var(--rose) / 0.45);
+    background: hsl(var(--rose) / 0.07);
   }
 
   .tl-step:hover .tl-circle {
-    border-color: hsl(var(--rose));
-    background: hsl(var(--rose) / 0.06);
+    border-color: hsl(var(--rose) / 0.75);
+    background: hsl(var(--rose) / 0.13);
   }
 
   .tl-line {

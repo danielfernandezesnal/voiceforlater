@@ -646,7 +646,7 @@
   },
   "stripe": {
     "upgrade": "Upgrade to PRO",
-    "upgradeModal": "Upgrade to PRO for only USD 10",
+    "upgradeModal": "Upgrade to PRO for only\nUSD 10 per year",
     "upgrading": "Redirecting...",
     "manageSub": "Manage Subscription",
     "proBadge": "PRO",

@@ -46,8 +46,8 @@ export default async function ContactsPage({
             <div className="bg-card border border-border rounded-xl p-4 sm:p-8 shadow-sm w-full box-border">
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 <h1 className="font-serif font-semibold text-[1.9rem] leading-tight text-foreground">{dict.trustedContact?.pageTitle || 'Contactos de confianza'}</h1>
-                <div className="mb-8 leading-relaxed">
-                    <p className="font-medium text-foreground">
+                <div className="mt-3 mb-8 leading-relaxed">
+                    <p className="font-medium text-sm text-foreground">
                         {dict.trustedContact?.pageDescription1}
                     </p>
                     <p className="text-muted-foreground mt-2 text-sm">

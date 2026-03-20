@@ -151,7 +151,7 @@ export default async function LocaleHomePage({
 
             {/* How It Works - Propuesta D Timeline */}
             <section id="how-it-works" className="py-[72px] px-[7%] bg-[hsl(var(--cream))]">
-                <div className="text-center mb-[72px]">
+                <div className="text-center mb-[36px] md:mb-[72px]">
                     <h2 className="font-serif font-normal text-[hsl(var(--ink))] mb-2.5"
                         style={{ fontSize: 'clamp(2.6rem, 4vw, 3.8rem)', lineHeight: 1.1 }}>
                         {dict.landing.howItWorks.title}
@@ -165,9 +165,9 @@ export default async function LocaleHomePage({
                         { step: '02', ...dict.landing.howItWorks.step2 },
                         { step: '03', ...dict.landing.howItWorks.step3 }
                     ].map((item, i) => (
-                        <div key={i} className="tl-step flex-1 flex flex-col items-center text-center relative md:flex-col flex-row gap-5 md:gap-0">
+                        <div key={i} className="tl-step flex-1 flex flex-col items-center text-center">
                             {/* Node row with connecting lines */}
-                            <div className="flex items-center w-full mb-7">
+                            <div className="tl-node-row flex items-center w-full mb-7">
                                 {i === 0
                                     ? <div className="flex-1 h-px bg-transparent" />
                                     : <div className="tl-line" />}
@@ -180,7 +180,7 @@ export default async function LocaleHomePage({
                                     ? <div className="flex-1 h-px bg-transparent" />
                                     : <div className="tl-line" />}
                             </div>
-                            <div className="px-2">
+                            <div className="tl-content px-2">
                                 <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2 leading-[1.2] text-2xl">
                                     {item.title}
                                 </h3>
@@ -270,8 +270,11 @@ export default async function LocaleHomePage({
             <section className="py-16 px-6 bg-surface/50 border-t border-border/50">
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
                     <div className="order-1">
-                        <h2 className="text-4xl md:text-5xl font-serif font-light mb-8 leading-tight">{dict.landing.audio.title}</h2>
-                        <p className="text-xl text-muted-foreground leading-relaxed mb-8">
+                        <h2 className="font-serif font-light text-[hsl(var(--ink))] mb-6 leading-tight"
+                            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
+                            {dict.landing.audio.title}
+                        </h2>
+                        <p className="text-base text-muted-foreground leading-relaxed mb-8">
                             {dict.landing.audio.description}
                         </p>
                         <div className="flex flex-wrap gap-3">

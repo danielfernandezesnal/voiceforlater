@@ -100,7 +100,7 @@ export default async function DashboardLayout({
 
                         {/* Logo Mobile */}
                         <div className="flex md:hidden items-center">
-                            <Link href={`/${locale}/dashboard`} className="font-serif italic text-lg leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
+                            <Link href={`/${locale}/dashboard`} className="font-serif italic text-[1.575rem] leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
                                 Carry my Words
                             </Link>
                         </div>
