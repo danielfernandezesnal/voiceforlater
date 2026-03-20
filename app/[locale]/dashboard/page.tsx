@@ -185,14 +185,14 @@ export default async function DashboardPage({
             {/* Stats Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 {/* Card 1: Saved messages */}
-                <div className="bg-card border border-border/60 rounded-2xl p-5">
-                    <p className="text-[0.65rem] font-[600] uppercase tracking-widest text-muted-foreground mb-1">
+                <div className="rounded-2xl p-5" style={{ background: '#C4623A' }}>
+                    <p className="text-[0.65rem] font-[600] uppercase tracking-widest mb-1" style={{ color: 'rgba(255,255,255,0.75)' }}>
                         {dict.dashboard.stats.savedMessages}
                     </p>
-                    <p className="font-serif text-[1.9rem] font-semibold text-foreground leading-none">
+                    <p className="font-serif text-[1.9rem] font-semibold leading-none" style={{ color: 'white' }}>
                         {messageCount}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-1.5">
+                    <p className="text-xs mt-1.5" style={{ color: 'rgba(255,255,255,0.75)' }}>
                         {savedMsgSubtext}
                     </p>
                 </div>
@@ -211,10 +211,11 @@ export default async function DashboardPage({
                 </div>
 
                 {/* Card 3: Trusted contacts - client-fetched count */}
-                <div className="rounded-2xl p-5" style={{ background: '#C4623A' }}>
+                <div className="bg-card border border-border/60 rounded-2xl p-5">
                     <TrustedContactCountCard
                         label={dict.dashboard.stats.trustedContacts}
                         subtext={trustedContactsSubtext}
+                        variant="default"
                     />
                 </div>
             </div>
