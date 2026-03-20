@@ -29,8 +29,18 @@ export default async function ContactPage({
 
     return (
         <div className="min-h-screen flex flex-col bg-background text-foreground">
-            {/* Navbar */}
-            <nav className="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
+            {/* Mobile header: centered logo + tagline only */}
+            <div className="md:hidden pt-10 pb-2 flex flex-col items-center text-center px-6">
+                <Link href={`/${locale}`} className="font-serif font-bold text-3xl tracking-tight text-primary leading-tight">
+                    Carry my Words
+                </Link>
+                <p className="text-xs text-muted-foreground mt-2 tracking-wide">
+                    {dict.emails.magicLink.tagline}
+                </p>
+            </div>
+
+            {/* Desktop navbar */}
+            <nav className="hidden md:flex p-6 justify-between items-center max-w-6xl mx-auto w-full">
                 <div className="font-serif font-bold text-2xl tracking-tight text-primary">
                     <Link href={`/${locale}`}>Carry my Words</Link>
                 </div>
@@ -45,7 +55,7 @@ export default async function ContactPage({
                 </div>
             </nav>
 
-            <main className="flex-grow py-24 px-6 flex flex-col items-center justify-center">
+            <main className="flex-grow py-12 md:py-24 px-6 flex flex-col items-center justify-center">
                 <div className="max-w-xl mx-auto w-full">
                     <h1 className="text-4xl md:text-5xl font-serif font-light text-center mb-12">
                         {dict.contact.title}
@@ -57,7 +67,7 @@ export default async function ContactPage({
             {/* Footer */}
             <footer className="py-12 px-6 border-t border-border mt-auto bg-card text-muted-foreground text-sm">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div className="font-serif font-bold text-foreground text-lg">
+                    <div className="hidden md:block font-serif font-bold text-foreground text-lg">
                         <Link href={`/${locale}`}>Carry my Words</Link>
                     </div>
                     <div className="flex gap-6">
