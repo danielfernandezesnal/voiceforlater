@@ -361,15 +361,20 @@
     },
     "limitReached": {
       "title": "Límite de mensajes alcanzado",
-      "description": "Tu plan actual permite crear solo 1 mensaje. Para crear mensajes ilimitados y acceder a funciones premium, actualiza a Pro.",
+      "description": "Para acceder a más funciones, actualizá a PRO.",
       "subtitle": "Por solo USD 10 al año podrás:",
       "features": [
         "Enviar mensajes ilimitados",
         "Enviar mensajes de texto, audio y también Video!",
-        "Elegir exactamente cuándo se envía cada mensaje",
-        "Designar a una(s) persona(s) de confianza para garantizar la entrega"
+        "Designar hasta 3 personas de confianza para tus mensajes",
+        "Enviar un mismo mensaje a múltiples destinatarios"
       ],
       "cancel": "Cancelar"
+    },
+    "upgradeSuccess": {
+      "title": "¡Bienvenido a PRO!",
+      "description": "Ya tenés acceso a todas las funcionalidades del plan PRO. Creá mensajes ilimitados, usá video, y mucho más.",
+      "cta": "¡Entendido!"
     },
     "plan": {
       "title": "Mi Plan",
