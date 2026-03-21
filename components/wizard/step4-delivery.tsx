@@ -427,7 +427,7 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
                         </button>
 
                         {selectedTab === option.mode && (
-                            <div className="mt-3 ml-10 p-4 bg-card rounded-lg border border-border animate-in slide-in-from-top-1">
+                            <div className="mt-3 ml-10 md:ml-0 p-4 bg-card rounded-lg border border-border animate-in slide-in-from-top-1">
                                 {option.mode === 'date' && (
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <div className="flex-1">
@@ -457,15 +457,28 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
                                                 />
                                             </div>
                                         </div>
-                                        <div className="w-full sm:w-64">
+                                        <div className="w-full sm:w-auto">
                                             <label className="block text-sm font-medium mb-2">{step4Dict.date.timeLabel}</label>
-                                            <TimePickerSpinner
-                                                value={currentTime}
-                                                onChange={(newTime) => {
-                                                    const localDate = new Date(currentDate + 'T' + newTime + ':00');
-                                                    updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
-                                                }}
-                                            />
+                                            {/* Mobile: spinner */}
+                                            <div className="md:hidden">
+                                                <TimePickerSpinner
+                                                    value={currentTime}
+                                                    onChange={(newTime) => {
+                                                        const localDate = new Date(currentDate + 'T' + newTime + ':00');
+                                                        updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
+                                                    }}
+                                                />
+                                            </div>
+                                            {/* Desktop: dropdown */}
+                                            <div className="hidden md:block">
+                                                <TimeDropdownPicker
+                                                    value={currentTime}
+                                                    onChange={(newTime) => {
+                                                        const localDate = new Date(currentDate + 'T' + newTime + ':00');
+                                                        updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' });
+                                                    }}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 )}
@@ -746,6 +759,59 @@ function TimePickerSpinner({ value, onChange }: { value: string, onChange: (val:
                     PM
                 </button>
             </div>
+        </div>
+    )
+}
+
+function TimeDropdownPicker({ value, onChange }: { value: string, onChange: (val: string) => void }) {
+    // value is HH:MM in 24h
+    const [h24, m24] = value.split(':').map(Number)
+    const period = h24 >= 12 ? 'PM' : 'AM'
+    const h12 = h24 % 12 === 0 ? 12 : h24 % 12
+    const minuteRounded = [0, 15, 30, 45].reduce((prev, curr) =>
+        Math.abs(curr - m24) < Math.abs(prev - m24) ? curr : prev, 0)
+
+    const emit = (newH12: number, newMinute: number, newPeriod: string) => {
+        let h = newH12 % 12
+        if (newPeriod === 'PM') h += 12
+        onChange(`${String(h).padStart(2, '0')}:${String(newMinute).padStart(2, '0')}`)
+    }
+
+    const selectClass = "px-3 py-2 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all cursor-pointer text-sm font-medium appearance-none pr-7 bg-no-repeat"
+    const chevronStyle = { backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`, backgroundPosition: 'right 8px center', backgroundSize: '14px' }
+
+    return (
+        <div className="flex items-center gap-2">
+            <select
+                value={h12}
+                onChange={e => emit(Number(e.target.value), minuteRounded, period)}
+                className={selectClass}
+                style={chevronStyle}
+            >
+                {Array.from({ length: 12 }, (_, i) => i + 1).map(h => (
+                    <option key={h} value={h}>{String(h).padStart(2, '0')}</option>
+                ))}
+            </select>
+            <span className="text-lg font-medium text-muted-foreground">:</span>
+            <select
+                value={minuteRounded}
+                onChange={e => emit(h12, Number(e.target.value), period)}
+                className={selectClass}
+                style={chevronStyle}
+            >
+                {[0, 15, 30, 45].map(m => (
+                    <option key={m} value={m}>{String(m).padStart(2, '0')}</option>
+                ))}
+            </select>
+            <select
+                value={period}
+                onChange={e => emit(h12, minuteRounded, e.target.value)}
+                className={selectClass}
+                style={chevronStyle}
+            >
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+            </select>
         </div>
     )
 }
