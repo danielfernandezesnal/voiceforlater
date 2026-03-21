@@ -74,7 +74,7 @@ export async function PATCH(
 ) {
     try {
         // Verify admin access
-        await requireAdmin();
+        const { adminClient: supabase } = await requireAdmin();
 
         const { id: userId } = await params;
         const { plan } = await request.json();
@@ -86,8 +86,6 @@ export async function PATCH(
         if (!plan || !['free', 'pro'].includes(plan)) {
             return NextResponse.json({ error: 'Invalid plan' }, { status: 400 });
         }
-
-        const supabase = createAdminClient();
 
         // Update user subscription
         const { error: updateError } = await supabase
