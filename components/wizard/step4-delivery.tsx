@@ -136,6 +136,91 @@ function DateWheelPicker({ value, min, onChange, locale }: {
     )
 }
 
+// ─── Date Dropdown Picker (Desktop) ──────────────────────────────────────────
+function DateDropdownPicker({ value, min, onChange, locale }: {
+    value: string
+    min: string
+    onChange: (date: string) => void
+    locale: string
+}) {
+    const [y, m, d] = value.split('-').map(Number)
+    const minYear = parseInt(min.split('-')[0])
+
+    const years = useMemo(() => Array.from({ length: 30 }, (_, i) => minYear + i), [minYear])
+    const months = useMemo(() => Array.from({ length: 12 }, (_, i) => i + 1), [])
+    const days = useMemo(() => {
+        const count = new Date(y, m, 0).getDate()
+        return Array.from({ length: count }, (_, i) => i + 1)
+    }, [y, m])
+
+    const monthNames = useMemo(() =>
+        Array.from({ length: 12 }, (_, i) =>
+            new Intl.DateTimeFormat(locale, { month: 'long' }).format(new Date(2000, i, 1))
+        ), [locale])
+
+    const commit = (newY: number, newM: number, newD: number) => {
+        const maxDay = new Date(newY, newM, 0).getDate()
+        const safeD = Math.min(newD, maxDay)
+        let dateStr = `${newY}-${String(newM).padStart(2, '0')}-${String(safeD).padStart(2, '0')}`
+        if (dateStr < min) dateStr = min
+        onChange(dateStr)
+    }
+
+    const selectClass = "bg-card border border-border rounded-lg px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer appearance-none pr-8"
+
+    return (
+        <div className="flex gap-3">
+            {/* Day */}
+            <div className="relative">
+                <select
+                    value={d}
+                    onChange={e => commit(y, m, parseInt(e.target.value))}
+                    className={selectClass}
+                    style={{ minWidth: '72px' }}
+                >
+                    {days.map(day => (
+                        <option key={day} value={day}>{String(day).padStart(2, '0')}</option>
+                    ))}
+                </select>
+                <svg className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+            {/* Month */}
+            <div className="relative flex-1">
+                <select
+                    value={m}
+                    onChange={e => commit(y, parseInt(e.target.value), d)}
+                    className={`${selectClass} w-full`}
+                >
+                    {months.map(month => (
+                        <option key={month} value={month}>{monthNames[month - 1]}</option>
+                    ))}
+                </select>
+                <svg className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+            {/* Year */}
+            <div className="relative">
+                <select
+                    value={y}
+                    onChange={e => commit(parseInt(e.target.value), m, d)}
+                    className={selectClass}
+                    style={{ minWidth: '88px' }}
+                >
+                    {years.map(year => (
+                        <option key={year} value={year}>{year}</option>
+                    ))}
+                </select>
+                <svg className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+        </div>
+    )
+}
+
 interface Step4Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any // Using specific type earlier, but simplifying for flexibility with new structure
@@ -347,15 +432,30 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <div className="flex-1">
                                             <label className="block text-sm font-medium mb-2">{step4Dict.date.label}</label>
-                                            <DateWheelPicker
-                                                value={currentDate}
-                                                min={minDate}
-                                                onChange={(newDate) => {
-                                                    const localDate = new Date(newDate + 'T' + currentTime + ':00')
-                                                    updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' })
-                                                }}
-                                                locale={locale}
-                                            />
+                                            {/* Mobile: drum wheel picker */}
+                                            <div className="md:hidden">
+                                                <DateWheelPicker
+                                                    value={currentDate}
+                                                    min={minDate}
+                                                    onChange={(newDate) => {
+                                                        const localDate = new Date(newDate + 'T' + currentTime + ':00')
+                                                        updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' })
+                                                    }}
+                                                    locale={locale}
+                                                />
+                                            </div>
+                                            {/* Desktop: dropdown picker */}
+                                            <div className="hidden md:block">
+                                                <DateDropdownPicker
+                                                    value={currentDate}
+                                                    min={minDate}
+                                                    onChange={(newDate) => {
+                                                        const localDate = new Date(newDate + 'T' + currentTime + ':00')
+                                                        updateData({ deliverAt: localDate.toISOString(), deliveryMode: 'date' })
+                                                    }}
+                                                    locale={locale}
+                                                />
+                                            </div>
                                         </div>
                                         <div className="w-full sm:w-64">
                                             <label className="block text-sm font-medium mb-2">{step4Dict.date.timeLabel}</label>
