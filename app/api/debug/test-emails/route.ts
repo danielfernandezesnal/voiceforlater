@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
         },
         {
             name: 'Reset Password',
-            ...getResetPasswordTemplate(dict, { resetLink: dummyLink })
+            ...getResetPasswordTemplate(dict, { password: "DUMMY_PASSWORD_123" })
         },
         {
             name: 'Message Delivery',
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
         },
         {
             name: 'Payment Failed',
-            ...getPaymentFailedTemplate(dict)
+            ...getPaymentFailedTemplate(dict, { planStatus: "Past Due" })
         },
         {
             name: 'Special Message',
