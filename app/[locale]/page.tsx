@@ -6,6 +6,7 @@ import { LandingContactForm } from "@/components/landing-contact-form";
 import { LandingScenarios } from "@/components/landing-scenarios";
 import { LandingFaq } from "@/components/landing-faq";
 import { LocaleSwitcher } from "@/components/profile/locale-switcher";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 export async function generateMetadata({
     params,
@@ -152,45 +153,49 @@ export default async function LocaleHomePage({
             {/* How It Works - Propuesta D Timeline */}
             <section id="how-it-works" className="py-[72px] px-[7%] bg-[hsl(var(--cream))]">
                 <div className="text-center mb-[36px] md:mb-[72px]">
-                    <h2 className="font-serif font-normal text-[hsl(var(--ink))] mb-2.5"
-                        style={{ fontSize: 'clamp(2.6rem, 4vw, 3.8rem)', lineHeight: 1.1 }}>
-                        {dict.landing.howItWorks.title}
-                    </h2>
+                    <ScrollReveal>
+                        <h2 className="font-serif font-normal text-[hsl(var(--ink))] mb-2.5"
+                            style={{ fontSize: 'clamp(2.6rem, 4vw, 3.8rem)', lineHeight: 1.1 }}>
+                            {dict.landing.howItWorks.title}
+                        </h2>
+                    </ScrollReveal>
                 </div>
 
                 {/* Timeline */}
-                <div className="flex flex-col md:flex-row items-start justify-center max-w-[940px] mx-auto">
-                    {[
-                        { step: '01', ...dict.landing.howItWorks.step1 },
-                        { step: '02', ...dict.landing.howItWorks.step2 },
-                        { step: '03', ...dict.landing.howItWorks.step3 }
-                    ].map((item, i) => (
-                        <div key={i} className="tl-step flex-1 flex flex-col items-center text-center">
-                            {/* Node row with connecting lines */}
-                            <div className="tl-node-row flex items-center w-full mb-7">
-                                {i === 0
-                                    ? <div className="flex-1 h-px bg-transparent" />
-                                    : <div className="tl-line" />}
-                                <div className="tl-circle">
-                                    <span className="font-serif text-base font-normal tracking-[0.05em]" style={{ color: TC }}>
-                                        {item.step}
-                                    </span>
+                <ScrollReveal childSelector=".tl-step" staggerMs={120}>
+                    <div className="flex flex-col md:flex-row items-start justify-center max-w-[940px] mx-auto">
+                        {[
+                            { step: '01', ...dict.landing.howItWorks.step1 },
+                            { step: '02', ...dict.landing.howItWorks.step2 },
+                            { step: '03', ...dict.landing.howItWorks.step3 }
+                        ].map((item, i) => (
+                            <div key={i} className="tl-step sr-hidden flex-1 flex flex-col items-center text-center">
+                                {/* Node row with connecting lines */}
+                                <div className="tl-node-row flex items-center w-full mb-7">
+                                    {i === 0
+                                        ? <div className="flex-1 h-px bg-transparent" />
+                                        : <div className="tl-line" />}
+                                    <div className="tl-circle">
+                                        <span className="font-serif text-base font-normal tracking-[0.05em]" style={{ color: TC }}>
+                                            {item.step}
+                                        </span>
+                                    </div>
+                                    {i === 2
+                                        ? <div className="flex-1 h-px bg-transparent" />
+                                        : <div className="tl-line" />}
                                 </div>
-                                {i === 2
-                                    ? <div className="flex-1 h-px bg-transparent" />
-                                    : <div className="tl-line" />}
+                                <div className="tl-content px-2">
+                                    <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2 leading-[1.2] text-2xl">
+                                        {item.title}
+                                    </h3>
+                                    <p className="tl-desc">
+                                        {item.description}
+                                    </p>
+                                </div>
                             </div>
-                            <div className="tl-content px-2">
-                                <h3 className="font-serif font-medium text-[hsl(var(--ink))] mb-2 leading-[1.2] text-2xl">
-                                    {item.title}
-                                </h3>
-                                <p className="tl-desc">
-                                    {item.description}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                </ScrollReveal>
 
                 {/* CTA after How It Works */}
                 <div className="flex justify-center mt-14">
@@ -227,49 +232,52 @@ export default async function LocaleHomePage({
 
             {/* Delivery Options — "Vos elegís el momento" */}
             <section className="py-16 px-6 max-w-5xl mx-auto w-full">
-                <p className="text-sm font-medium tracking-widest text-center uppercase mb-4" style={{ color: TC }}>
-                    {(dict.landing.delivery as any).eyebrow}
-                </p>
-                <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">
-                    {dict.landing.delivery.title}<br />
-                    <em style={{ color: TC }} className="italic font-serif">{(dict.landing.delivery as any).titleEm}</em>
-                </h2>
-                <div className="grid md:grid-cols-2 gap-8 md:gap-10 mb-20">
-                    {/* Date delivery */}
-                    <div className="flex flex-col gap-5 p-6 md:p-10 rounded-2xl border border-border/60 transition-shadow hover:shadow-md">
-                        <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" />
-                                <line x1="3" y1="9" x2="21" y2="9" />
-                                <line x1="8" y1="2" x2="8" y2="6" />
-                                <line x1="16" y1="2" x2="16" y2="6" />
-                            </svg>
+                <ScrollReveal>
+                    <p className="text-sm font-medium tracking-widest text-center uppercase mb-4" style={{ color: TC }}>
+                        {(dict.landing.delivery as any).eyebrow}
+                    </p>
+                    <h2 className="text-3xl md:text-4xl font-serif font-light text-center mb-20 tracking-tight">
+                        {dict.landing.delivery.title}<br />
+                        <em style={{ color: TC }} className="italic font-serif">{(dict.landing.delivery as any).titleEm}</em>
+                    </h2>
+                </ScrollReveal>
+                <ScrollReveal childSelector=".delivery-card" staggerMs={120}>
+                    <div className="grid md:grid-cols-2 gap-8 md:gap-10 mb-20">
+                        {/* Date delivery */}
+                        <div className="delivery-card sr-hidden flex flex-col gap-5 p-6 md:p-10 rounded-2xl border border-border/60 transition-shadow hover:shadow-md">
+                            <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                    <line x1="3" y1="9" x2="21" y2="9" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl md:text-2xl font-serif font-light">{dict.landing.delivery.date.title}</h3>
+                            <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
                         </div>
-                        <h3 className="text-xl md:text-2xl font-serif font-light">{dict.landing.delivery.date.title}</h3>
-                        <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.date.description}</p>
-                    </div>
-                    {/* Checkin delivery */}
-                    <div className="flex flex-col gap-5 p-6 md:p-10 rounded-2xl border border-border/60 transition-shadow hover:shadow-md">
-                        <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M5 22h14" />
-                                <path d="M5 2h14" />
-                                <path d="M17 22c0-3.1-2-6-5-6s-5 2.9-5 6" />
-                                <path d="M17 2c0 3.1-2 6-5 6s-5-2.9-5-6" />
-                                <path d="M12 11v1" />
-                            </svg>
+                        {/* Checkin delivery */}
+                        <div className="delivery-card sr-hidden flex flex-col gap-5 p-6 md:p-10 rounded-2xl border border-border/60 transition-shadow hover:shadow-md">
+                            <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M5 22h14" />
+                                    <path d="M5 2h14" />
+                                    <path d="M17 22c0-3.1-2-6-5-6s-5 2.9-5 6" />
+                                    <path d="M17 2c0 3.1-2 6-5 6s-5-2.9-5-6" />
+                                    <path d="M12 11v1" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl md:text-2xl font-serif font-light">{dict.landing.delivery.checkin.title}</h3>
+                            <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.checkin.description}</p>
                         </div>
-                        <h3 className="text-xl md:text-2xl font-serif font-light">{dict.landing.delivery.checkin.title}</h3>
-                        <p className="text-base text-muted-foreground leading-relaxed">{dict.landing.delivery.checkin.description}</p>
                     </div>
-                </div>
-
+                </ScrollReveal>
             </section>
 
             {/* Audio Section */}
             <section className="py-16 px-6 bg-surface/50 border-t border-border/50">
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-                    <div className="order-1">
+                    <ScrollReveal className="order-1">
                         <h2 className="font-serif font-light text-[hsl(var(--ink))] mb-6 leading-tight"
                             style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
                             {dict.landing.audio.title}
@@ -288,8 +296,8 @@ export default async function LocaleHomePage({
                                 </span>
                             ))}
                         </div>
-                    </div>
-                    <div className="order-2">
+                    </ScrollReveal>
+                    <ScrollReveal className="order-2" threshold={0.08}>
                         <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-white/50 relative group">
                             <Image
                                 src="/assets/media-recording.png"
@@ -299,54 +307,60 @@ export default async function LocaleHomePage({
                             />
                             <div className="absolute inset-0 bg-primary/5 pointer-events-none"></div>
                         </div>
-                    </div>
+                    </ScrollReveal>
                 </div>
             </section>
 
             {/* Trust & Privacy */}
             <section className="py-24 px-6 border-t border-border/50">
                 <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-4xl md:text-5xl font-serif font-light mb-12">{dict.landing.trust.title}</h2>
-                    <ul className="grid md:grid-cols-3 gap-8">
-                        {/* 🔒 → lock */}
-                        <li className="flex flex-col items-center gap-4">
-                            <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z" />
-                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                </svg>
-                            </div>
-                            <span className="font-medium">{dict.landing.trust.item1}</span>
-                        </li>
-                        {/* 🤝 → check-circle */}
-                        <li className="flex flex-col items-center gap-4">
-                            <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                                    <polyline points="22 4 12 14.01 9 11.01" />
-                                </svg>
-                            </div>
-                            <span className="font-medium">{dict.landing.trust.item2}</span>
-                        </li>
-                        {/* ⚡ → shield */}
-                        <li className="flex flex-col items-center gap-4">
-                            <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                </svg>
-                            </div>
-                            <span className="font-medium">{dict.landing.trust.item3}</span>
-                        </li>
-                    </ul>
-                    <div className="mt-12 flex flex-col items-center gap-3 bg-card border border-border/50 shadow-sm rounded-2xl md:rounded-full px-4 md:px-6 py-4 w-full max-w-[95%] md:max-w-3xl mx-auto text-center break-words">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                        </svg>
-                        <span className="font-medium text-[hsl(var(--ink))] text-sm md:text-base leading-snug">
-                            {(dict.landing.trust as any).encryption}
-                        </span>
-                    </div>
+                    <ScrollReveal>
+                        <h2 className="text-4xl md:text-5xl font-serif font-light mb-12">{dict.landing.trust.title}</h2>
+                    </ScrollReveal>
+                    <ScrollReveal childSelector=".trust-item" staggerMs={110}>
+                        <ul className="grid md:grid-cols-3 gap-8">
+                            {/* 🔒 → lock */}
+                            <li className="trust-item sr-hidden flex flex-col items-center gap-4">
+                                <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z" />
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                    </svg>
+                                </div>
+                                <span className="font-medium">{dict.landing.trust.item1}</span>
+                            </li>
+                            {/* 🤝 → check-circle */}
+                            <li className="trust-item sr-hidden flex flex-col items-center gap-4">
+                                <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <polyline points="22 4 12 14.01 9 11.01" />
+                                    </svg>
+                                </div>
+                                <span className="font-medium">{dict.landing.trust.item2}</span>
+                            </li>
+                            {/* ⚡ → shield */}
+                            <li className="trust-item sr-hidden flex flex-col items-center gap-4">
+                                <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    </svg>
+                                </div>
+                                <span className="font-medium">{dict.landing.trust.item3}</span>
+                            </li>
+                        </ul>
+                    </ScrollReveal>
+                    <ScrollReveal className="mt-12">
+                        <div className="flex flex-col items-center gap-3 bg-card border border-border/50 shadow-sm rounded-2xl md:rounded-full px-4 md:px-6 py-4 w-full max-w-[95%] md:max-w-3xl mx-auto text-center break-words">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <span className="font-medium text-[hsl(var(--ink))] text-sm md:text-base leading-snug">
+                                {(dict.landing.trust as any).encryption}
+                            </span>
+                        </div>
+                    </ScrollReveal>
                     {(dict.landing.trust as any).clarification && (
                         <p className="text-center text-sm text-muted-foreground mt-10 max-w-xl mx-auto italic">
                             {(dict.landing.trust as any).clarification}
@@ -361,79 +375,85 @@ export default async function LocaleHomePage({
             {/* Pricing */}
             <section className="py-24 px-6 border-b border-border/50">
                 <div className="max-w-5xl mx-auto text-center">
-                    <h2 className="text-4xl md:text-5xl font-serif font-light mb-6">{dict.landing.pricing.title}</h2>
-                    <p className="text-muted-foreground mb-16">{dict.landing.pricing.justification}</p>
+                    <ScrollReveal>
+                        <h2 className="text-4xl md:text-5xl font-serif font-light mb-6">{dict.landing.pricing.title}</h2>
+                        <p className="text-muted-foreground mb-16">{dict.landing.pricing.justification}</p>
+                    </ScrollReveal>
 
-                    <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                        {/* Free Plan */}
-                        <div className="bg-card p-8 rounded-2xl border border-border shadow-sm card-hover flex flex-col">
-                            <h3 className="text-xl font-bold mb-1">{dict.landing.pricing.free.title}</h3>
-                            <p className="text-xs text-muted-foreground italic mb-4">{(dict.landing.pricing.free as { tagline?: string }).tagline}</p>
-                            <div className="text-3xl font-bold mb-6">{dict.landing.pricing.free.price}</div>
-                            <ul className="space-y-4 mb-8 text-left flex-1">
-                                {dict.landing.pricing.free.features.map((f, i) => (
-                                    <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                                        <span style={{ color: TC }} className="font-bold">✓</span> {f}
-                                    </li>
-                                ))}
-                            </ul>
-                            <Link
-                                href={`/${locale}/auth/login`}
-                                className="w-full py-3 text-white font-semibold text-center transition-all duration-200"
-                                style={{ background: TC, borderRadius: '100px', display: 'block' }}
-                            >
-                                {(dict.landing.pricing.free as any).cta}
-                            </Link>
-                        </div>
-                        {/* Pro Plan */}
-                        <div className="bg-card p-8 rounded-2xl shadow-xl card-hover relative flex flex-col" style={{ border: `2px solid ${TC}` }}>
-                            <div className="absolute top-0 right-0 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg" style={{ background: TC }}>
-                                {dict.landing.pricing.recommended}
+                    <ScrollReveal childSelector=".pricing-card" staggerMs={130}>
+                        <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                            {/* Free Plan */}
+                            <div className="pricing-card sr-hidden bg-card p-8 rounded-2xl border border-border shadow-sm card-hover flex flex-col">
+                                <h3 className="text-xl font-bold mb-1">{dict.landing.pricing.free.title}</h3>
+                                <p className="text-xs text-muted-foreground italic mb-4">{(dict.landing.pricing.free as { tagline?: string }).tagline}</p>
+                                <div className="text-3xl font-bold mb-6">{dict.landing.pricing.free.price}</div>
+                                <ul className="space-y-4 mb-8 text-left flex-1">
+                                    {dict.landing.pricing.free.features.map((f, i) => (
+                                        <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                            <span style={{ color: TC }} className="font-bold">✓</span> {f}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <Link
+                                    href={`/${locale}/auth/login`}
+                                    className="w-full py-3 text-white font-semibold text-center transition-all duration-200"
+                                    style={{ background: TC, borderRadius: '100px', display: 'block' }}
+                                >
+                                    {(dict.landing.pricing.free as any).cta}
+                                </Link>
                             </div>
-                            <h3 className="text-xl font-bold mb-1" style={{ color: TC }}>{dict.landing.pricing.pro.title}</h3>
-                            <p className="text-xs italic mb-4" style={{ color: `${TC}99` }}>{(dict.landing.pricing.pro as { tagline?: string }).tagline}</p>
-                            <div className="text-3xl font-bold mb-6">{dict.common.price.replace('{amount}', '10')}</div>
-                            <ul className="space-y-4 mb-8 text-left flex-1">
-                                {dict.landing.pricing.pro.features.map((f, i) => (
-                                    <li key={i} className="flex items-center gap-2 text-sm">
-                                        <span style={{ color: TC }} className="font-bold">✓</span> {f}
-                                    </li>
-                                ))}
-                            </ul>
-                            <Link
-                                href={`/${locale}/auth/login`}
-                                className="w-full py-3 text-white font-semibold text-center transition-all duration-200"
-                                style={{ background: TC, borderRadius: '100px', display: 'block' }}
-                            >
-                                {dict.landing.pricing.pro.cta}
-                            </Link>
+                            {/* Pro Plan */}
+                            <div className="pricing-card sr-hidden bg-card p-8 rounded-2xl shadow-xl card-hover relative flex flex-col" style={{ border: `2px solid ${TC}` }}>
+                                <div className="absolute top-0 right-0 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg" style={{ background: TC }}>
+                                    {dict.landing.pricing.recommended}
+                                </div>
+                                <h3 className="text-xl font-bold mb-1" style={{ color: TC }}>{dict.landing.pricing.pro.title}</h3>
+                                <p className="text-xs italic mb-4" style={{ color: `${TC}99` }}>{(dict.landing.pricing.pro as { tagline?: string }).tagline}</p>
+                                <div className="text-3xl font-bold mb-6">{dict.common.price.replace('{amount}', '10')}</div>
+                                <ul className="space-y-4 mb-8 text-left flex-1">
+                                    {dict.landing.pricing.pro.features.map((f, i) => (
+                                        <li key={i} className="flex items-center gap-2 text-sm">
+                                            <span style={{ color: TC }} className="font-bold">✓</span> {f}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <Link
+                                    href={`/${locale}/auth/login`}
+                                    className="w-full py-3 text-white font-semibold text-center transition-all duration-200"
+                                    style={{ background: TC, borderRadius: '100px', display: 'block' }}
+                                >
+                                    {dict.landing.pricing.pro.cta}
+                                </Link>
+                            </div>
                         </div>
-                    </div>
+                    </ScrollReveal>
                 </div>
             </section>
 
             {/* Closing — dark dramatic block */}
-            <section
-                style={{
-                    background: '#6E6862',
-                    padding: '80px 24px',
-                    textAlign: 'center',
-                }}
-            >
-                <p
-                    className="font-serif font-light italic"
+            <ScrollReveal>
+                <section
                     style={{
-                        fontSize: 'clamp(2rem, 5vw, 4rem)',
-                        lineHeight: 1.2,
-                        color: 'rgba(253, 248, 240, 0.92)',
-                        maxWidth: '820px',
-                        margin: '0 auto',
-                        letterSpacing: '-0.01em',
+                        background: '#6E6862',
+                        padding: '80px 24px',
+                        textAlign: 'center',
                     }}
                 >
-                    &ldquo;{dict.landing.final_thought}&rdquo;
-                </p>
-            </section>
+                    <p
+                        className="font-serif font-light italic"
+                        style={{
+                            fontSize: 'clamp(2rem, 5vw, 4rem)',
+                            lineHeight: 1.2,
+                            color: 'rgba(253, 248, 240, 0.92)',
+                            maxWidth: '820px',
+                            margin: '0 auto',
+                            letterSpacing: '-0.01em',
+                        }}
+                    >
+                        &ldquo;{dict.landing.final_thought}&rdquo;
+                    </p>
+                </section>
+            </ScrollReveal>
 
 
             {/* Footer */}
