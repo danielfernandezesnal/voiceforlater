@@ -86,6 +86,27 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ── Scroll-reveal animation system ── */
+.sr-hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.sr-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Disable all scroll-reveal animations when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .sr-hidden {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
