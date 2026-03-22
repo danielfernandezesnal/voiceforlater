@@ -629,6 +629,7 @@
     "deleteConfirm": "¿Estás seguro de que quieres eliminar este contacto?",
     "remove": "Eliminar",
     "addContact": "Agregar contacto",
+    "contactCounter": "{current} de {max} contactos",
     "noContact": "Sin contacto de confianza",
     "proRequired": "Contacto de confianza requiere plan Pro",
     "newContactTitle": "Nuevo Contacto de Confianza",

@@ -633,6 +633,7 @@
     "deleteConfirm": "Are you sure you want to remove this contact?",
     "remove": "Remove",
     "addContact": "Add contact",
+    "contactCounter": "{current} of {max} contacts",
     "noContact": "No trusted contact set",
     "proRequired": "Trusted contact requires Pro plan",
     "newContactTitle": "New Trusted Contact",
