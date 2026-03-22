@@ -28,6 +28,7 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
     const [isSaving, setIsSaving] = useState(false)
     const [isDeleting, setIsDeleting] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
+    const [emailError, setEmailError] = useState<string | null>(null)
     const [isAddingMode, setIsAddingMode] = useState(false)
 
     // Form State
@@ -40,10 +41,29 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
     const maxContacts = plan === 'pro' ? 3 : 1
     const canAdd = contacts.length < maxContacts
 
+    const validateEmail = (email: string) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email.trim()) {
+            return dictionary.trustedContact.invalidEmail;
+        }
+        if (!regex.test(email)) {
+            return dictionary.trustedContact.invalidEmail;
+        }
+        return null;
+    };
+
     async function handleAdd(e: React.FormEvent) {
         e.preventDefault()
         setIsSaving(true)
         setError(null)
+        setEmailError(null)
+
+        const vError = validateEmail(newEmail);
+        if (vError) {
+            setEmailError(vError);
+            setIsSaving(false);
+            return;
+        }
 
         if (newEmail.trim().toLowerCase() === userEmail.toLowerCase()) {
             setError(dictionary.trustedContact.ownEmailError)
@@ -143,7 +163,7 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
             {/* Add Form */}
             {isAddingMode && (
                 <div className="bg-card border border-border p-6 rounded-xl shadow-sm animate-in slide-in-from-top-2">
-                    <form onSubmit={handleAdd} className="space-y-4">
+                    <form onSubmit={handleAdd} noValidate className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium mb-1">{dictionary.trustedContact.nameLabel}</label>
@@ -160,11 +180,20 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
                                 <input
                                     type="email"
                                     value={newEmail}
-                                    onChange={(e) => setNewEmail(e.target.value)}
+                                    onChange={(e) => {
+                                        setNewEmail(e.target.value);
+                                        if (emailError) setEmailError(null);
+                                    }}
+                                    onBlur={() => setEmailError(validateEmail(newEmail))}
                                     placeholder={dictionary.trustedContact.emailPlaceholder}
-                                    required
-                                    className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20"
+                                    className={`w-full px-3 py-2 bg-input border rounded-lg focus:ring-2 transition-all ${emailError ? 'border-red-500 focus:ring-red-200' : 'border-border focus:ring-primary/20'
+                                        }`}
                                 />
+                                {emailError && (
+                                    <p className="mt-1 text-xs text-red-500 animate-in fade-in slide-in-from-top-1">
+                                        {emailError}
+                                    </p>
+                                )}
                             </div>
                         </div>
                         <div className="flex justify-end gap-3 pt-2">
