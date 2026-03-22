@@ -642,7 +642,9 @@
       "item1": "You can add up to 3 trusted contacts with the Pro plan.",
       "item2": "When you assign a contact to a message, we'll send them an email notification.",
       "item3": "Your contacts cannot see the content of your messages."
-    }
+    },
+    "emptyStateNote": "When you add a contact, we recommend letting them know you chose them. Knowing you trust them makes everything more meaningful when the time comes.",
+    "listNote": "Have you told them? Letting your contacts know you chose them makes your messages land with the weight they deserve."
   },
   "stripe": {
     "upgrade": "Upgrade to PRO",

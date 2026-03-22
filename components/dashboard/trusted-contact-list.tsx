@@ -194,10 +194,13 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
                         <p className="text-muted-foreground">{dictionary.trustedContact.noContact}</p>
                         <button
                             onClick={() => setIsAddingMode(true)}
-                            className="mt-4 text-primary font-medium hover:underline"
+                            className="mt-4 text-primary font-medium hover:underline block mx-auto"
                         >
                             {dictionary.trustedContact.addContact}
                         </button>
+                        <p className="mt-6 text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed px-4">
+                            {dictionary.trustedContact.emptyStateNote}
+                        </p>
                     </div>
                 ) : (
                     contacts.map(contact => (
@@ -229,6 +232,13 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
                     ))
                 )}
             </div>
+
+            {/* List Footer Note */}
+            {contacts.length > 0 && (
+                <p className="text-xs text-muted-foreground text-center mt-[-1rem] animate-in fade-in duration-700">
+                    {dictionary.trustedContact.listNote}
+                </p>
+            )}
 
             {/* Info Note — How it works */}
             <div className="rounded-xl p-4 mt-2 text-sm leading-relaxed"

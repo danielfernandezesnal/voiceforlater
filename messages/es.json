@@ -638,7 +638,9 @@
       "item1": "Puedes agregar hasta 3 contactos de confianza con el plan Pro.",
       "item2": "Cuando asignes un contacto a un mensaje, le enviaremos un correo para notificarle.",
       "item3": "Tus contactos no pueden ver el contenido de tus mensajes."
-    }
+    },
+    "emptyStateNote": "Cuando agregues un contacto, te recomendamos contarle que lo elegiste. Que sepa que confiás en él hace que todo tenga más sentido cuando llegue el momento.",
+    "listNote": "¿Ya les avisaste? Que tus contactos sepan que los elegiste hace que tus mensajes lleguen con el peso que merecen."
   },
   "stripe": {
     "upgrade": "Mejorar a PRO",
