@@ -114,22 +114,22 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
         <div className="space-y-8">
             {/* Header / Add Button */}
                 {!isAddingMode && (
-                    <div className="flex flex-col items-start gap-1.5">
+                    <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm text-muted-foreground">
+                            {dictionary.trustedContact.contactCounter
+                                .replace('{current}', contacts.length.toString())
+                                .replace('{max}', maxContacts.toString())}
+                        </span>
                         <button
                             onClick={() => setIsAddingMode(true)}
                             disabled={!canAdd}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm ${canAdd
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm shrink-0 ${canAdd
                                 ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                                 : 'bg-muted text-muted-foreground cursor-not-allowed opacity-60'
                                 }`}
                         >
                             {dictionary.trustedContact.addContact}
                         </button>
-                        {!canAdd && plan === 'free' && (
-                            <span className="text-xs text-amber-600">
-                                Límite del plan Free (1). Pasate a Pro para agregar hasta 3.
-                            </span>
-                        )}
                     </div>
                 )}
 
