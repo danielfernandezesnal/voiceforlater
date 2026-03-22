@@ -28,6 +28,7 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
     const [isSaving, setIsSaving] = useState(false)
     const [isDeleting, setIsDeleting] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
+    const [emailError, setEmailError] = useState<string | null>(null)
     const [isAddingMode, setIsAddingMode] = useState(false)
 
     // Form State
@@ -40,10 +41,29 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
     const maxContacts = plan === 'pro' ? 3 : 1
     const canAdd = contacts.length < maxContacts
 
+    const validateEmail = (email: string) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email.trim()) {
+            return dictionary.trustedContact.invalidEmail;
+        }
+        if (!regex.test(email)) {
+            return dictionary.trustedContact.invalidEmail;
+        }
+        return null;
+    };
+
     async function handleAdd(e: React.FormEvent) {
         e.preventDefault()
         setIsSaving(true)
         setError(null)
+        setEmailError(null)
+
+        const vError = validateEmail(newEmail);
+        if (vError) {
+            setEmailError(vError);
+            setIsSaving(false);
+            return;
+        }
 
         if (newEmail.trim().toLowerCase() === userEmail.toLowerCase()) {
             setError(dictionary.trustedContact.ownEmailError)
@@ -113,34 +133,25 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
     return (
         <div className="space-y-8">
             {/* Header / Add Button */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h2 className="font-serif font-semibold text-lg text-foreground mb-4">{dictionary.trustedContact.title}</h2>
-                    {dictionary.trustedContact.sectionSubtitle && (
-                        <p className="text-muted-foreground text-sm mt-1">{dictionary.trustedContact.sectionSubtitle}</p>
-                    )}
-                </div>
-
                 {!isAddingMode && (
-                    <div className="flex flex-col items-end gap-1.5">
+                    <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm text-muted-foreground">
+                            {dictionary.trustedContact.contactCounter
+                                .replace('{current}', contacts.length.toString())
+                                .replace('{max}', maxContacts.toString())}
+                        </span>
                         <button
                             onClick={() => setIsAddingMode(true)}
                             disabled={!canAdd}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm ${canAdd
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm shrink-0 ${canAdd
                                 ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                                 : 'bg-muted text-muted-foreground cursor-not-allowed opacity-60'
                                 }`}
                         >
                             {dictionary.trustedContact.addContact}
                         </button>
-                        {!canAdd && plan === 'free' && (
-                            <span className="text-xs text-amber-600">
-                                Límite del plan Free (1). Pasate a Pro para agregar hasta 3.
-                            </span>
-                        )}
                     </div>
                 )}
-            </div>
 
             {/* Error Message */}
             {error && (
@@ -152,7 +163,7 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
             {/* Add Form */}
             {isAddingMode && (
                 <div className="bg-card border border-border p-6 rounded-xl shadow-sm animate-in slide-in-from-top-2">
-                    <form onSubmit={handleAdd} className="space-y-4">
+                    <form onSubmit={handleAdd} noValidate className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium mb-1">{dictionary.trustedContact.nameLabel}</label>
@@ -169,11 +180,20 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
                                 <input
                                     type="email"
                                     value={newEmail}
-                                    onChange={(e) => setNewEmail(e.target.value)}
+                                    onChange={(e) => {
+                                        setNewEmail(e.target.value);
+                                        if (emailError) setEmailError(null);
+                                    }}
+                                    onBlur={() => setEmailError(validateEmail(newEmail))}
                                     placeholder={dictionary.trustedContact.emailPlaceholder}
-                                    required
-                                    className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20"
+                                    className={`w-full px-3 py-2 bg-input border rounded-lg focus:ring-2 transition-all ${emailError ? 'border-red-500 focus:ring-red-200' : 'border-border focus:ring-primary/20'
+                                        }`}
                                 />
+                                {emailError && (
+                                    <p className="mt-1 text-xs text-red-500 animate-in fade-in slide-in-from-top-1">
+                                        {emailError}
+                                    </p>
+                                )}
                             </div>
                         </div>
                         <div className="flex justify-end gap-3 pt-2">
@@ -203,10 +223,13 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
                         <p className="text-muted-foreground">{dictionary.trustedContact.noContact}</p>
                         <button
                             onClick={() => setIsAddingMode(true)}
-                            className="mt-4 text-primary font-medium hover:underline"
+                            className="mt-4 text-primary font-medium hover:underline block mx-auto"
                         >
                             {dictionary.trustedContact.addContact}
                         </button>
+                        <p className="mt-6 text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed px-4">
+                            {dictionary.trustedContact.emptyStateNote}
+                        </p>
                     </div>
                 ) : (
                     contacts.map(contact => (
@@ -238,6 +261,13 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
                     ))
                 )}
             </div>
+
+            {/* List Footer Note */}
+            {contacts.length > 0 && (
+                <p className="text-xs text-muted-foreground text-center mt-[-1rem] animate-in fade-in duration-700">
+                    {dictionary.trustedContact.listNote}
+                </p>
+            )}
 
             {/* Info Note — How it works */}
             <div className="rounded-xl p-4 mt-2 text-sm leading-relaxed"

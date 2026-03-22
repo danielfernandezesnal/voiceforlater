@@ -19,7 +19,12 @@ export function UpgradeButton({ dictionary, isPro = false, className = '' }: Upg
         setLoading(true);
         try {
             const endpoint = isPro ? '/api/stripe/portal' : '/api/stripe/checkout';
-            const response = await fetch(endpoint, { method: 'POST' });
+            const locale = window.location.pathname.split('/')[1] || 'es';
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: isPro ? undefined : JSON.stringify({ redirectPath: `/${locale}/dashboard?upgrade=success` }),
+            });
             const data = await response.json();
 
             if (data.url) {
@@ -60,7 +65,13 @@ export function UpgradeButton({ dictionary, isPro = false, className = '' }: Upg
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     )}
-                    {isPro ? dictionary.manageSub : dictionary.upgrade}
+                    {isPro ? dictionary.manageSub : (
+                        dictionary.upgrade.includes('\n')
+                            ? <span className="flex flex-col items-center leading-tight">
+                                {dictionary.upgrade.split('\n').map((line: string, i: number) => <span key={i}>{line}</span>)}
+                              </span>
+                            : dictionary.upgrade
+                    )}
                 </>
             )}
         </button>

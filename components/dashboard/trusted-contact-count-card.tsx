@@ -5,9 +5,15 @@ import { useState, useEffect } from 'react';
 interface Props {
     label: string;
     subtext: string;
+    variant?: 'primary' | 'default';
 }
 
-export function TrustedContactCountCard({ label, subtext }: Props) {
+export function TrustedContactCountCard({ label, subtext, variant = 'primary' }: Props) {
+    const labelColor = variant === 'default' ? undefined : 'rgba(255,255,255,0.75)';
+    const valueColor = variant === 'default' ? undefined : 'white';
+    const labelClass = variant === 'default' ? 'text-muted-foreground' : '';
+    const valueClass = variant === 'default' ? 'text-foreground' : '';
+    const subtextClass = variant === 'default' ? 'text-muted-foreground' : '';
     const [count, setCount] = useState<number | null>(null);
 
     useEffect(() => {
@@ -37,13 +43,13 @@ export function TrustedContactCountCard({ label, subtext }: Props) {
 
     return (
         <>
-            <p className="text-[0.65rem] font-[600] uppercase tracking-widest mb-1 truncate" style={{ color: 'rgba(255,255,255,0.75)' }}>
+            <p className={`text-[0.65rem] font-[600] uppercase tracking-widest mb-1 truncate ${labelClass}`} style={labelColor ? { color: labelColor } : undefined}>
                 {label}
             </p>
-            <p className="font-serif text-[1.9rem] font-semibold leading-none" style={{ color: 'white' }}>
+            <p className={`font-serif text-[1.9rem] font-semibold leading-none ${valueClass}`} style={valueColor ? { color: valueColor } : undefined}>
                 {count === null ? '·' : count}
             </p>
-            <p className="text-xs mt-1.5 truncate" style={{ color: 'rgba(255,255,255,0.75)' }}>
+            <p className={`text-xs mt-1.5 truncate ${subtextClass}`} style={labelColor ? { color: labelColor } : undefined}>
                 {subtext}
             </p>
         </>

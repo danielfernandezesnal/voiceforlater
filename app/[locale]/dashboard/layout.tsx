@@ -39,7 +39,7 @@ export default async function DashboardLayout({
     const [profileResult, currentPlan] = await Promise.all([
         supabase
             .from('profiles')
-            .select('auth_password_set, locale')
+            .select('auth_password_set, locale, first_name, last_name')
             .eq('id', user.id)
             .single(),
         getEffectivePlan(supabase, user.id)
@@ -69,9 +69,13 @@ export default async function DashboardLayout({
     }
 
     // Prepare user object for client component
+    const firstName = profile?.first_name || '';
+    const lastName = profile?.last_name || '';
+    const fullName = [firstName, lastName].filter(Boolean).join(' ');
+
     const userForNav = {
         email: user.email,
-        full_name: user.user_metadata?.full_name
+        full_name: fullName || user.user_metadata?.full_name
     }
 
 
@@ -87,7 +91,7 @@ export default async function DashboardLayout({
                         {/* Logo Desktop */}
                         <div className="hidden md:flex flex-col items-start justify-center">
                             <Link href={`/${locale}/dashboard`} className="font-serif italic text-xl leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
-                                Carry My Words
+                                Carry my Words
                             </Link>
                             <p className="text-[0.55rem] font-medium uppercase tracking-widest mt-0.5" style={{ color: '#C4623A' }}>
                                 {labels.tagline}
@@ -96,8 +100,8 @@ export default async function DashboardLayout({
 
                         {/* Logo Mobile */}
                         <div className="flex md:hidden items-center">
-                            <Link href={`/${locale}/dashboard`} className="font-serif italic text-lg leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
-                                Carry My Words
+                            <Link href={`/${locale}/dashboard`} className="font-serif italic text-[1.575rem] leading-none hover:opacity-80 transition-opacity" style={{ color: '#C4623A' }}>
+                                Carry my Words
                             </Link>
                         </div>
                     </div>

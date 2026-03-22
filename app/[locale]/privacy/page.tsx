@@ -2,7 +2,7 @@ import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/
 import { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-    return { title: "Privacy Policy | Carry My Words" };
+    return { title: "Privacy Policy | Carry my Words" };
 }
 
 type LegalSection = { heading: string; body: string };

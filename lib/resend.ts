@@ -19,20 +19,20 @@ export function getDefaultSender() {
     if (!resendFromEnv) {
         // Fallback to Resend's default onboarding email but with our branding if allowed
         // Note: Resend is very strict with onboarding@resend.dev, sometimes display name works, sometimes not.
-        return "Carry My Words <onboarding@resend.dev>";
+        return "Carry my Words <onboarding@resend.dev>";
     }
 
-    // Use the ENV value but ensure the display name is 'Carry My Words'
+    // Use the ENV value but ensure the display name is 'Carry my Words'
     if (resendFromEnv.includes('<')) {
         // Extract the email part including brackets <email@domain.com>
         const emailPart = resendFromEnv.match(/<[^>]+>/)?.[0];
         if (emailPart) {
-            return `Carry My Words ${emailPart}`;
+            return `Carry my Words ${emailPart}`;
         }
     }
 
     // fallback for raw email strings or empty
-    return `Carry My Words <${resendFromEnv}>`;
+    return `Carry my Words <${resendFromEnv}>`;
 }
 
 export const DEFAULT_SENDER = getDefaultSender();

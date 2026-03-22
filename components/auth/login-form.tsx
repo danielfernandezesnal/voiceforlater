@@ -136,17 +136,27 @@ export function LoginForm({ dictionary, locale }: LoginFormProps) {
 
             {/* Success Message */}
             {successMessage ? (
-                <div className="text-center p-6 bg-card rounded-xl border border-border">
+                <div className="text-center py-4">
                     <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
                         <span className="text-2xl">✉️</span>
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Revisa tu email</h3>
-                    <p className="text-muted-foreground">{successMessage}</p>
+                    <h3 className="text-xl font-semibold mb-3">
+                        {locale === 'es' ? 'Revisá tu email' : 'Check your email'}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                        {locale === 'es' ? 'Enviamos un enlace a:' : 'We sent a link to:'}
+                    </p>
+                    <div className="bg-muted rounded-lg px-4 py-2.5 mb-4">
+                        <p className="text-sm font-medium break-all text-foreground">{email}</p>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                        {locale === 'es' ? 'Hacé clic en el enlace para iniciar sesión.' : 'Click the link to sign in.'}
+                    </p>
                     <button
                         onClick={() => { setSuccessMessage(null); setMode('login'); }}
                         className="mt-6 text-primary hover:underline text-sm"
                     >
-                        Volver al inicio de sesión
+                        {locale === 'es' ? 'Volver al inicio de sesión' : 'Back to sign in'}
                     </button>
                 </div>
             ) : (
