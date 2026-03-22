@@ -113,16 +113,8 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
     return (
         <div className="space-y-8">
             {/* Header / Add Button */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h2 className="font-serif font-semibold text-lg text-foreground mb-4">{dictionary.trustedContact.title}</h2>
-                    {dictionary.trustedContact.sectionSubtitle && (
-                        <p className="text-muted-foreground text-sm mt-1">{dictionary.trustedContact.sectionSubtitle}</p>
-                    )}
-                </div>
-
                 {!isAddingMode && (
-                    <div className="flex flex-col items-end gap-1.5">
+                    <div className="flex flex-col items-start gap-1.5">
                         <button
                             onClick={() => setIsAddingMode(true)}
                             disabled={!canAdd}
@@ -140,7 +132,6 @@ export function TrustedContactList({ dictionary, locale, plan, initialContacts, 
                         )}
                     </div>
                 )}
-            </div>
 
             {/* Error Message */}
             {error && (
