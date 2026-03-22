@@ -623,6 +623,7 @@
     "confirmEmailPlaceholder": "maria@ejemplo.com",
     "emailMismatch": "Los correos electrónicos no coinciden",
     "ownEmailError": "No puedes usar tu propio correo como contacto de confianza.",
+    "invalidEmail": "Ingresá un email válido.",
     "save": "Guardar Contacto",
     "saving": "Guardando...",
     "saved": "¡Contacto guardado!",

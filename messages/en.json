@@ -627,6 +627,7 @@
     "confirmEmailPlaceholder": "jane@example.com",
     "emailMismatch": "Email addresses do not match",
     "ownEmailError": "You can't use your own email as a trusted contact.",
+    "invalidEmail": "Please enter a valid email.",
     "save": "Save Contact",
     "saving": "Saving...",
     "saved": "Contact saved!",
