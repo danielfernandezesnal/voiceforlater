@@ -1025,5 +1025,51 @@
       "text": "The link is invalid or has expired.",
       "button": "Back to home"
     }
+  },
+  "verifyStatus": {
+    "loading": "Verifying link...",
+    "title": "Do you know how {senderName} is doing?",
+    "subtitle": "Your response helps us act carefully before making any decision.",
+    "options": {
+      "alive": {
+        "label": "They are fine",
+        "description": "I've had recent contact and they are doing well."
+      },
+      "critical": {
+        "label": "They are in a serious situation",
+        "description": "I know they are in a serious situation and cannot respond.",
+        "hint": "hospitalized · ICU · traveling without access · other similar situation"
+      },
+      "deceased": {
+        "label": "They have passed away",
+        "description": "I know that {senderName} has passed away.",
+        "secondary": "We will ask for an additional confirmation before proceeding."
+      },
+      "unknown": {
+        "label": "I don't have information",
+        "description": "I don't have recent information about their situation."
+      }
+    },
+    "commentLabel": "Would you like to add anything?",
+    "commentPlaceholder": "Optional. Any details you'd like to share.",
+    "submit": "Submit response",
+    "submitting": "Submitting...",
+    "deceasedConfirm": {
+      "title": "Confirm this response?",
+      "body": "This response may initiate the delivery process of saved messages.\nDo you confirm that {senderName} has passed away?",
+      "confirm": "Confirm",
+      "back": "Go back"
+    },
+    "success": {
+      "title": "Thank you",
+      "body": "Your response has been recorded."
+    },
+    "errors": {
+      "invalidToken": "This link is not valid. Please check that you copied it correctly.",
+      "expiredToken": "This link has expired. Verification links have a limited validity.",
+      "alreadyUsed": "This link has already been used. A response was recorded previously.",
+      "noOption": "Please select one of the options before continuing.",
+      "generic": "There was a problem submitting your response. Please try again."
+    }
   }
 }
