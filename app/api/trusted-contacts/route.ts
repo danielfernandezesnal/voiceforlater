@@ -6,7 +6,7 @@ import { getPlanLimits } from '@/lib/plans';
 import { trackServerEvent } from '@/lib/analytics/trackEvent';
 import { getErrorMessage } from '@/lib/errors';
 import { trackEmail } from '@/lib/email-tracking';
-import { getDictionary, type Locale } from '@/lib/i18n';
+import { getDictionary, isValidLocale, type Locale } from '@/lib/i18n';
 import { getTrustedContactInvitationTemplate } from '@/lib/email-templates';
 
 export const dynamic = 'force-dynamic';
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
                 try {
                     const url = new URL(referer);
                     const firstPart = url.pathname.split('/')[1];
-                    if (['en', 'es'].includes(firstPart)) {
+                    if (isValidLocale(firstPart)) {
                         emailLocale = firstPart;
                     }
                 } catch (e) { }

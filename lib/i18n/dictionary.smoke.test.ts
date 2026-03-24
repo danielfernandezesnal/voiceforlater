@@ -1,10 +1,10 @@
 import { getDictionary } from './dictionaries'
-import { Locale } from './config'
+import { locales, type Locale } from './config'
 
 describe('i18n Dictionary Smoke Test', () => {
-    const locales: Locale[] = ['en', 'es']
+    const localesToTest: Locale[] = [...locales]
 
-    locales.forEach((locale) => {
+    localesToTest.forEach((locale) => {
         describe(`Locale: ${locale}`, () => {
             let dictionary: Awaited<ReturnType<typeof getDictionary>>
 
