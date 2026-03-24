@@ -2,13 +2,13 @@
 'use client';
 
 import { useEffect } from 'react';
+import { isValidLocale } from '@/lib/i18n';
 
 export function SyncProfileLocale({ locale }: { locale: string }) {
     useEffect(() => {
-        // Sync locale to profile if authenticated. 
+        // Sync locale to profile if authenticated.
         // We do this optimistically and silently.
-        // We only support 'en' and 'es' for now.
-        if (['en', 'es'].includes(locale)) {
+        if (isValidLocale(locale)) {
             fetch('/api/profile/locale', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

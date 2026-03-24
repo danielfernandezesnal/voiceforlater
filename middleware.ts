@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { resolveLocale } from "@/lib/i18n/locale";
+import { locales } from "@/lib/i18n/config";
 
 export async function middleware(request: NextRequest) {
     // PROACTIVE LOGGING FOR DEBUGGING
@@ -51,7 +52,7 @@ export async function middleware(request: NextRequest) {
     const isApiOrAuth = pathname.startsWith('/api/') || pathname.includes('/auth/');
 
     // Check if we are on dashboard (e.g. /en/dashboard)
-    const locales = ['en', 'es'];
+    // locales is imported from @/lib/i18n/config — single source of truth
     const parts = pathname.split("/").filter(Boolean);
     const firstPart = parts[0];
     const isLocaleDashboard = parts.length >= 2 && parts[1] === "dashboard";
@@ -67,7 +68,7 @@ export async function middleware(request: NextRequest) {
         return response;
     }
 
-    const pathnameHasLocale = locales.includes(firstPart);
+    const pathnameHasLocale = locales.includes(firstPart as typeof locales[number]);
     const locale = pathnameHasLocale ? firstPart : resolveLocale(request);
 
     // If missing locale in path, redirect

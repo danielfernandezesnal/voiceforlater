@@ -4,7 +4,7 @@ import { Resend } from "resend";
 import { getResend, DEFAULT_SENDER } from "@/lib/resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
 import crypto from 'crypto';
-import { getDictionary, Locale } from '@/lib/i18n';
+import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
 import { getCheckinReminderTemplate, getTrustedContactVerifyTemplate, EmailDictionary } from '@/lib/email-templates';
 
 // Generate secure token (helper function inline for now to avoid large diffs if util not available in easy import path)
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
 
                 const plan = (profile?.plan as Plan) || "free";
                 const localeRaw = profile?.locale || 'en';
-                const locale = (['en', 'es'].includes(localeRaw) ? localeRaw : 'en') as Locale;
+                const locale = (isValidLocale(localeRaw) ? localeRaw : 'en') as Locale;
                 const dict = await getDictionary(locale); // Fetch once per user/loop iteration is acceptable for cron
 
                 const maxReminders = getMaxReminders(plan);
