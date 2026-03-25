@@ -17,6 +17,7 @@ export type EmailDictionary = {
       button: string;
       secondary: string;
       ignore: string;
+      linkFallback: string;
       tagline: string;
     };
     messageDelivery: {
@@ -193,8 +194,9 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
           </tr>
         </table>
         <!-- URL de respaldo -->
-        <p style="margin-top:20px;font-size:11px;color:#9B8B7E;text-align:center;word-break:break-all;">
-          ${data.magicLink}
+        <p style="margin-top:20px;font-size:11px;color:#9B8B7E;text-align:center;">
+          ${t.linkFallback}<br>
+          <a href="${data.magicLink}" style="color:#9B8B7E;word-break:break-all;">${data.magicLink}</a>
         </p>
       </td>
     </tr>
