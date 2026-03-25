@@ -54,8 +54,8 @@ const t = {
         back: "Volver",
     },
     success: {
-        title: "Gracias",
-        body: "Tu respuesta fue registrada.",
+        title: "Gracias por tomarte el tiempo",
+        body: "Tu respuesta nos ayuda a entender la situación con mayor claridad. Vamos a tratar esta información con el cuidado que merece.",
     },
     errors: {
         invalid: "Este enlace no es válido. Por favor, verifica que lo copiaste correctamente.",
