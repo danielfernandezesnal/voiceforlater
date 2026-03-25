@@ -15,6 +15,7 @@ export type EmailDictionary = {
       adminBadge: string;
       intro: string;
       button: string;
+      secondary: string;
       ignore: string;
       tagline: string;
     };
@@ -152,19 +153,20 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
           <tr>
             <td style="padding:48px;">
               ${data.isAdminLogin ? `<div style="background:#fef3c7;border-left:4px solid #f59e0b;padding:12px 16px;margin-bottom:20px;border-radius:0 8px 8px 0;font-family:sans-serif;font-size:14px;color:#92400e;"><strong>${t.adminBadge}</strong></div>` : ''}
-              <p style="font-size:17px;line-height:1.7;color:#555555;margin:0 0 32px 0;">
-                ${t.intro}
-              </p>
+              ${t.intro.split('\n\n').map(p => `<p style="font-size:17px;line-height:1.7;color:#555555;margin:0 0 20px 0;">${p}</p>`).join('')}
               <!-- CTA BUTTON -->
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td align="center" style="padding:8px 0 24px;">
+                  <td align="center" style="padding:12px 0 20px;">
                     <a href="${data.magicLink}" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
                       ${t.button}
                     </a>
                   </td>
                 </tr>
               </table>
+              <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0 0 8px 0;text-align:center;">
+                ${t.secondary}
+              </p>
               <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0 0 32px 0;text-align:center;">
                 ${t.ignore}
               </p>
