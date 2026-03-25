@@ -757,13 +757,14 @@
       "externalFooter": "Carry my Words · carrymywords.com"
     },
     "magicLink": {
-      "subject": "Tu enlace de acceso a Carry my Words",
+      "subject": "Tu acceso está listo",
       "subjectAdmin": "Acceso de administrador - Carry my Words",
-      "title": "Iniciá sesión en tu cuenta",
+      "title": "Tus palabras te están esperando",
       "adminBadge": "Acceso de administrador",
-      "intro": "Hacé clic en el botón de abajo para acceder a tu cuenta de Carry my Words de forma segura. El enlace expirará pronto.",
-      "button": "Ingresar a mi cuenta",
-      "ignore": "Si no solicitaste este acceso, podés ignorar este email tranquilamente.",
+      "intro": "Estás a un paso de acceder.\n\nUsá el siguiente enlace para ingresar de forma segura a tu cuenta:",
+      "button": "Ingresar",
+      "secondary": "Este enlace es personal y expira en unos minutos.",
+      "ignore": "Si no solicitaste este acceso, podés ignorar este mensaje.",
       "tagline": "Mensajes para cuando realmente importa."
     },
     "messageDelivery": {
