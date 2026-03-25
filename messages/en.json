@@ -1061,8 +1061,8 @@
       "back": "Go back"
     },
     "success": {
-      "title": "Thank you",
-      "body": "Your response has been recorded."
+      "title": "Thank you for taking the time",
+      "body": "Your response helps us better understand the situation. We will treat this information with the care it deserves."
     },
     "errors": {
       "invalidToken": "This link is not valid. Please check that you copied it correctly.",
