@@ -1070,6 +1070,8 @@
       "alreadyUsed": "This link has already been used. A response was recorded previously.",
       "noOption": "Please select one of the options before continuing.",
       "generic": "There was a problem submitting your response. Please try again."
-    }
+    },
+    "senderFallback": "the sender",
+    "footerNote": "Secure verification link"
   }
 }

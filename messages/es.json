@@ -1070,6 +1070,8 @@
       "alreadyUsed": "Este enlace ya fue utilizado. La respuesta fue registrada anteriormente.",
       "noOption": "Por favor, elige una de las opciones antes de continuar.",
       "generic": "Hubo un problema al enviar tu respuesta. Por favor, intenta de nuevo."
-    }
+    },
+    "senderFallback": "el remitente",
+    "footerNote": "Enlace de verificación seguro"
   }
 }
