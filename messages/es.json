@@ -1025,5 +1025,51 @@
       "text": "El enlace es inválido o ha expirado.",
       "button": "Volver al inicio"
     }
+  },
+  "verifyStatus": {
+    "loading": "Verificando enlace...",
+    "title": "¿Sabes cómo se encuentra {senderName}?",
+    "subtitle": "Tu respuesta nos ayuda a actuar con cuidado antes de tomar cualquier decisión.",
+    "options": {
+      "alive": {
+        "label": "Está bien",
+        "description": "He tenido contacto reciente y está bien."
+      },
+      "critical": {
+        "label": "Está en una situación grave",
+        "description": "Sé que está en una situación grave y no puede responder.",
+        "hint": "internación · CTI · viaje sin conexión · otra situación similar"
+      },
+      "deceased": {
+        "label": "Falleció",
+        "description": "Sé que {senderName} falleció.",
+        "secondary": "Te pediremos una confirmación adicional antes de avanzar."
+      },
+      "unknown": {
+        "label": "No tengo información",
+        "description": "No tengo información reciente sobre su situación."
+      }
+    },
+    "commentLabel": "¿Quieres agregar algo?",
+    "commentPlaceholder": "Opcional. Cualquier detalle que quieras compartir.",
+    "submit": "Enviar respuesta",
+    "submitting": "Enviando...",
+    "deceasedConfirm": {
+      "title": "¿Confirmar esta respuesta?",
+      "body": "Esta respuesta puede iniciar el proceso de entrega de mensajes guardados.\n¿Deseas confirmar que {senderName} falleció?",
+      "confirm": "Confirmar",
+      "back": "Volver"
+    },
+    "success": {
+      "title": "Gracias",
+      "body": "Tu respuesta fue registrada."
+    },
+    "errors": {
+      "invalidToken": "Este enlace no es válido. Por favor, verifica que lo copiaste correctamente.",
+      "expiredToken": "Este enlace ya expiró. Los enlaces de verificación tienen una validez limitada.",
+      "alreadyUsed": "Este enlace ya fue utilizado. La respuesta fue registrada anteriormente.",
+      "noOption": "Por favor, elige una de las opciones antes de continuar.",
+      "generic": "Hubo un problema al enviar tu respuesta. Por favor, intenta de nuevo."
+    }
   }
 }
