@@ -70,7 +70,7 @@ function OptionCard({ value, selected, onSelect, label, description, hint, secon
     );
 }
 
-function PageShell({ children, appName }: { children: React.ReactNode; appName: string }) {
+function PageShell({ children, appName, footerNote }: { children: React.ReactNode; appName: string; footerNote: string }) {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[#F0EBE3] font-sans">
             <div className="w-full max-w-lg">
@@ -81,7 +81,7 @@ function PageShell({ children, appName }: { children: React.ReactNode; appName: 
                     {children}
                 </div>
                 <p className="text-center text-xs text-[#B5ADA5] mt-6">
-                    Carry my Words · Enlace de verificación seguro
+                    {appName} · {footerNote}
                 </p>
             </div>
         </div>
@@ -96,7 +96,7 @@ function ErrorState({ reason, t, appName }: { reason: "invalid" | "expired" | "u
     };
 
     return (
-        <PageShell appName={appName}>
+        <PageShell appName={appName} footerNote={t.footerNote}>
             <div className="px-8 py-10 text-center">
                 <div className="w-14 h-14 rounded-full bg-[#F0EBE3] flex items-center justify-center mx-auto mb-5">
                     <svg
@@ -123,7 +123,7 @@ function ErrorState({ reason, t, appName }: { reason: "invalid" | "expired" | "u
 
 function SuccessState({ t, appName }: { t: any; appName: string }) {
     return (
-        <PageShell appName={appName}>
+        <PageShell appName={appName} footerNote={t.footerNote}>
             <div className="px-8 py-10 text-center">
                 <div className="w-14 h-14 rounded-full bg-[#EBF2EC] flex items-center justify-center mx-auto mb-5">
                     <svg
@@ -156,7 +156,7 @@ function DeceasedConfirm({ senderName, onConfirm, onBack, submitting, t, appName
     const bodyText = t.deceasedConfirm.body.replace("{senderName}", senderName);
 
     return (
-        <PageShell appName={appName}>
+        <PageShell appName={appName} footerNote={t.footerNote}>
             <div className="px-8 py-10">
                 <div className="w-8 h-0.5 bg-[#C4623A]/30 rounded-full mb-6" />
 
@@ -277,7 +277,7 @@ function VerifyForm({ token, senderName, t, appName }: VerifyFormProps) {
     const isSubmitting = submitStage === "submitting";
 
     return (
-        <PageShell appName={appName}>
+        <PageShell appName={appName} footerNote={t.footerNote}>
             <div className="px-8 pt-8 pb-10">
                 <div className="mb-6">
                     <h1 className="text-[#2A2520] font-semibold text-xl leading-snug">
@@ -366,7 +366,7 @@ export function VerifyStatusClient({ dictionary }: { dictionary: any }) {
 
     const [tokenState, setTokenState] = useState<TokenState>({ stage: "loading" });
     const t = dictionary.verifyStatus;
-    const appName = dictionary.common?.appName || "Carry my Words";
+    const appName = dictionary.common.appName;
 
     useEffect(() => {
         if (!token) {
@@ -383,7 +383,7 @@ export function VerifyStatusClient({ dictionary }: { dictionary: any }) {
                     else if (code === "TOKEN_USED") setTokenState({ stage: "invalid", reason: "used" });
                     else setTokenState({ stage: "invalid", reason: "invalid" });
                 } else {
-                    setTokenState({ stage: "ready", senderName: data.senderName || "el remitente" });
+                    setTokenState({ stage: "ready", senderName: data.senderName || t.senderFallback });
                 }
             })
             .catch(() => {
@@ -393,7 +393,7 @@ export function VerifyStatusClient({ dictionary }: { dictionary: any }) {
 
     if (tokenState.stage === "loading") {
         return (
-            <PageShell appName={appName}>
+            <PageShell appName={appName} footerNote={t.footerNote}>
                 <div className="px-8 py-12 flex flex-col items-center gap-4">
                     <div className="w-8 h-8 border-2 border-[#C4623A]/30 border-t-[#C4623A] rounded-full animate-spin" />
                     <p className="text-sm text-[#9C9088]">{t.loading}</p>
