@@ -788,6 +788,14 @@
       "contentHidden": "This message was kept especially for you.<br>Only you can read it.",
       "tagline": "Messages for when it really matters."
     },
+    "checkinInitial": {
+      "subject": "Are you okay?",
+      "title": "We just want to know you're okay",
+      "intro": "This is an automatic message to check that everything is okay with you.\n\nWhenever you have a moment, you can confirm it with a single click.",
+      "button": "Confirm I'm okay",
+      "secondary": "If you can't respond right now, that's okay.\nWe'll check again later.",
+      "tagline": "Messages for when it really matters."
+    },
     "checkinReminder": {
       "subject": "⏰ Check-in reminder - Carry my Words",
       "title": "Time to check in!",
