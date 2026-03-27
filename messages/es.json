@@ -802,14 +802,14 @@
       "tagline": "Mensajes para cuando realmente importa."
     },
     "checkinReminder2": {
-      "subject": "Solo queríamos volver a saber de vos",
+      "subject": "Seguimos sin saber de vos",
       "body": {
         "line1": "Hola,",
-        "line2": "Hace unos días intentamos contactarte, pero quizás simplemente no viste el mensaje.",
-        "line3": "Solo queríamos volver a saber de vos, sin apuro.",
+        "line2": "Hace unos días intentamos contactarte, pero no recibimos respuesta.",
+        "line3": "Sabemos que pueden pasar muchas cosas… pero también que a veces un simple gesto puede traer tranquilidad.",
         "line4": "Si estás bien, podés confirmarlo en el siguiente enlace:",
         "cta": "Confirmar que estoy bien",
-        "footer": "Gracias por tomarte un momento."
+        "footer": "Si estás bien, con un solo click es suficiente.\n\nEsto ayuda a evitar que tengamos que contactar a otras personas por vos."
       }
     },
     "trustedContactNotify": {
