@@ -769,6 +769,7 @@
       "button": "Access account",
       "secondary": "This link is personal and will expire in a few minutes.",
       "ignore": "If you didn't request this, you can safely ignore this email.",
+      "linkFallback": "If the button doesn't work, copy this link:",
       "tagline": "Messages for when it really matters."
     },
     "messageDelivery": {
