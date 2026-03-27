@@ -761,13 +761,15 @@
       "externalFooter": "Carry my Words · carrymywords.com"
     },
     "magicLink": {
-      "subject": "Your Carry my Words Access Link",
+      "subject": "Your access is ready",
       "subjectAdmin": "Admin Access - Carry my Words",
-      "title": "Log in to your account",
+      "title": "Your words are waiting",
       "adminBadge": "Admin Access",
-      "intro": "Click the button below to securely access your Carry my Words account. This link will expire shortly.",
-      "button": "Enter my account",
-      "ignore": "If you did not request this link, you can safely ignore this email.",
+      "intro": "You're one step away.\n\nUse the link below to securely access your account:",
+      "button": "Access account",
+      "secondary": "This link is personal and will expire in a few minutes.",
+      "ignore": "If you didn't request this, you can safely ignore this email.",
+      "linkFallback": "If the button doesn't work, copy this link:",
       "tagline": "Messages for when it really matters."
     },
     "messageDelivery": {
@@ -786,6 +788,14 @@
       "contentHidden": "This message was kept especially for you.<br>Only you can read it.",
       "tagline": "Messages for when it really matters."
     },
+    "checkinInitial": {
+      "subject": "Are you okay?",
+      "title": "We just want to know you're okay",
+      "intro": "This is an automatic message to check that everything is okay with you.\n\nWhenever you have a moment, you can confirm it with a single click.",
+      "button": "Confirm I'm okay",
+      "secondary": "If you can't respond right now, that's okay.\nWe'll check again later.",
+      "tagline": "Messages for when it really matters."
+    },
     "checkinReminder": {
       "subject": "⏰ Check-in reminder - Carry my Words",
       "title": "Time to check in!",
@@ -793,6 +803,27 @@
       "attempt": "Attempt {attempt} of 3",
       "button": "Confirm I'm Active",
       "warning": "If you don't respond after 3 attempts, we'll contact your trusted contact.",
+      "tagline": "Messages for when it really matters."
+    },
+    "checkinReminder2": {
+      "subject": "We haven’t heard from you",
+      "body": {
+        "line1": "Hi,",
+        "line2": "We reached out a few days ago, but haven’t heard back from you.",
+        "line3": "We understand that life gets busy… but sometimes a small action can bring peace of mind.",
+        "line4": "If you're okay, you can confirm here:",
+        "cta": "Confirm I'm okay",
+        "footer": "If you're okay, a single click is enough.\n\nThis helps us avoid reaching out to others on your behalf."
+      }
+    },
+    "trustedContactNotify": {
+      "subject": "{senderName} chose you as a trusted contact",
+      "title": "We need your help",
+      "intro": "{senderName} chose you as someone they trust for this moment.\n\nWe tried to reach them, but did not receive a response.",
+      "body": "Your response will help us understand their situation.",
+      "button": "Share status",
+      "secondary": "This will only take a moment.",
+      "ignore": "If you don't know this person or believe this is a mistake, you can ignore this message.",
       "tagline": "Messages for when it really matters."
     },
     "trustedContactVerify": {
@@ -1025,5 +1056,54 @@
       "text": "The link is invalid or has expired.",
       "button": "Back to home"
     }
+  },
+  "verifyStatus": {
+    "loading": "Verifying link...",
+    "title": "Do you know how {senderName} is doing?",
+    "subtitle": "Your response helps us act carefully before making any decision.",
+    "options": {
+      "alive": {
+        "label": "They are fine",
+        "description": "I've had recent contact and they are doing well."
+      },
+      "critical": {
+        "label": "They are in a serious situation",
+        "description": "I know they are unable to respond at this moment.",
+        "hint": "hospitalized · ICU · traveling without access · other similar situation"
+      },
+      "deceased": {
+        "label": "They have passed away",
+        "description": "I know that {senderName} has passed away.",
+        "secondary": "We will ask for an additional confirmation before proceeding."
+      },
+      "unknown": {
+        "label": "I don't have information",
+        "description": "I don't have recent information about their situation."
+      }
+    },
+    "commentLabel": "Would you like to add anything?",
+    "commentPlaceholder": "Optional. Any details you'd like to share.",
+    "submit": "Submit response",
+    "submitting": "Submitting...",
+    "deceasedConfirm": {
+      "title": "Confirm this response?",
+      "body": "This response may initiate the delivery process of saved messages.\nDo you confirm that {senderName} has passed away?",
+      "confirm": "Confirm",
+      "back": "Go back"
+    },
+    "success": {
+      "title": "Thank you for taking the time",
+      "body": "Your response helps us better understand the situation. We will treat this information with the care it deserves.",
+      "close": "You can close this page whenever you're ready."
+    },
+    "errors": {
+      "invalidToken": "This link is not valid. Please check that you copied it correctly.",
+      "expiredToken": "This link has expired. Verification links have a limited validity.",
+      "alreadyUsed": "This link has already been used. A response was recorded previously.",
+      "noOption": "Please select one of the options before continuing.",
+      "generic": "There was a problem submitting your response. Please try again."
+    },
+    "senderFallback": "the sender",
+    "footerNote": "Secure verification link"
   }
 }

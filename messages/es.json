@@ -86,9 +86,9 @@
           "description": "Para alguien que sabes que lo va a necesitar más adelante."
         },
         {
-          "icon": "🤝",
-          "title": "Un mensaje de apoyo anticipado",
-          "description": "Para alguien que sabes que lo va a necesitar más adelante."
+          "icon": "🔇",
+          "title": "Lo que cuesta decir en persona",
+          "description": "A veces las palabras fluyen mejor cuando no hay miradas de por medio."
         },
         {
           "icon": "⏳",
@@ -757,13 +757,15 @@
       "externalFooter": "Carry my Words · carrymywords.com"
     },
     "magicLink": {
-      "subject": "Tu enlace de acceso a Carry my Words",
+      "subject": "Tu acceso está listo — tus palabras te están esperando",
       "subjectAdmin": "Acceso de administrador - Carry my Words",
-      "title": "Iniciá sesión en tu cuenta",
+      "title": "Tus palabras te están esperando",
       "adminBadge": "Acceso de administrador",
-      "intro": "Hacé clic en el botón de abajo para acceder a tu cuenta de Carry my Words de forma segura. El enlace expirará pronto.",
-      "button": "Ingresar a mi cuenta",
-      "ignore": "Si no solicitaste este acceso, podés ignorar este email tranquilamente.",
+      "intro": "Estás a un paso de entrar.\n\nUsá el siguiente enlace para ingresar de forma segura a tu cuenta:",
+      "button": "Ingresar",
+      "secondary": "Este enlace es personal y expira en unos minutos.",
+      "ignore": "Si no solicitaste este acceso, podés ignorar este mensaje.",
+      "linkFallback": "Si el botón no funciona, copiá este enlace:",
       "tagline": "Mensajes para cuando realmente importa."
     },
     "messageDelivery": {
@@ -782,6 +784,14 @@
       "contentHidden": "Este mensaje fue guardado especialmente para ti.<br>Solo tú puedes leerlo.",
       "tagline": "Mensajes para cuando realmente importa."
     },
+    "checkinInitial": {
+      "subject": "¿Estás bien?",
+      "title": "Solo queremos saber si estás bien",
+      "intro": "Este es un mensaje automático para confirmar que todo está bien con vos.\n\nCuando tengas un momento, podés confirmarlo con un solo click.",
+      "button": "Confirmar que estoy bien",
+      "secondary": "Si no podés responder en este momento, no pasa nada.\nVolveremos a intentarlo más adelante.",
+      "tagline": "Mensajes para cuando realmente importa."
+    },
     "checkinReminder": {
       "subject": "⏰ Recordatorio de check-in - Carry my Words",
       "title": "¡Es hora de reportarse!",
@@ -789,6 +799,27 @@
       "attempt": "Intento {attempt} de 3",
       "button": "Confirmar Actividad",
       "warning": "Si no respondes después de 3 intentos, contactaremos a tu(s) persona(s) de confianza.",
+      "tagline": "Mensajes para cuando realmente importa."
+    },
+    "checkinReminder2": {
+      "subject": "Seguimos sin saber de vos",
+      "body": {
+        "line1": "Hola,",
+        "line2": "Hace unos días intentamos contactarte, pero no recibimos respuesta.",
+        "line3": "Sabemos que pueden pasar muchas cosas… pero también que a veces un simple gesto puede traer tranquilidad.",
+        "line4": "Si estás bien, podés confirmarlo en el siguiente enlace:",
+        "cta": "Confirmar que estoy bien",
+        "footer": "Si estás bien, con un solo click es suficiente.\n\nEsto ayuda a evitar que tengamos que contactar a otras personas por vos."
+      }
+    },
+    "trustedContactNotify": {
+      "subject": "Necesitamos tu ayuda con {senderName}",
+      "title": "Necesitamos tu ayuda",
+      "intro": "{senderName} te eligió como una persona de confianza para este momento.\n\nIntentamos comunicarnos, pero no obtuvimos respuesta.",
+      "body": "Tu respuesta nos va a ayudar a entender cómo se encuentra.",
+      "button": "Indicar estado",
+      "secondary": "Solo te va a llevar un momento.",
+      "ignore": "Si no conocés a esta persona o creés que esto es un error, podés ignorar este mensaje.",
       "tagline": "Mensajes para cuando realmente importa."
     },
     "trustedContactVerify": {
@@ -1025,5 +1056,54 @@
       "text": "El enlace es inválido o ha expirado.",
       "button": "Volver al inicio"
     }
+  },
+  "verifyStatus": {
+    "loading": "Verificando enlace...",
+    "title": "¿Sabes cómo se encuentra {senderName}?",
+    "subtitle": "Tu respuesta nos ayuda a actuar con cuidado antes de tomar cualquier decisión.",
+    "options": {
+      "alive": {
+        "label": "Está bien",
+        "description": "He tenido contacto reciente y está bien."
+      },
+      "critical": {
+        "label": "Está en una situación grave",
+        "description": "Sé que no puede responder en este momento.",
+        "hint": "internación · CTI · viaje sin conexión · otra situación similar"
+      },
+      "deceased": {
+        "label": "Falleció",
+        "description": "Sé que {senderName} falleció.",
+        "secondary": "Te pediremos una confirmación adicional antes de avanzar."
+      },
+      "unknown": {
+        "label": "No tengo información",
+        "description": "No tengo información reciente sobre su situación."
+      }
+    },
+    "commentLabel": "¿Quieres agregar algo?",
+    "commentPlaceholder": "Opcional. Cualquier detalle que quieras compartir.",
+    "submit": "Enviar respuesta",
+    "submitting": "Enviando...",
+    "deceasedConfirm": {
+      "title": "¿Confirmar esta respuesta?",
+      "body": "Esta respuesta puede iniciar el proceso de entrega de mensajes guardados.\n¿Deseas confirmar que {senderName} falleció?",
+      "confirm": "Confirmar",
+      "back": "Volver"
+    },
+    "success": {
+      "title": "Gracias por tomarte el tiempo",
+      "body": "Tu respuesta nos ayuda a entender la situación con mayor claridad. Vamos a tratar esta información con el cuidado que merece.",
+      "close": "Podés cerrar esta página cuando quieras."
+    },
+    "errors": {
+      "invalidToken": "Este enlace no es válido. Por favor, verifica que lo copiaste correctamente.",
+      "expiredToken": "Este enlace ya expiró. Los enlaces de verificación tienen una validez limitada.",
+      "alreadyUsed": "Este enlace ya fue utilizado. La respuesta fue registrada anteriormente.",
+      "noOption": "Por favor, elige una de las opciones antes de continuar.",
+      "generic": "Hubo un problema al enviar tu respuesta. Por favor, intenta de nuevo."
+    },
+    "senderFallback": "el remitente",
+    "footerNote": "Enlace de verificación seguro"
   }
 }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useScrollReveal } from '@/hooks/use-scroll-reveal'
 
 type ScenarioStrings = {
     eyebrow: string
@@ -13,6 +14,8 @@ type ScenarioStrings = {
 
 export function LandingScenarios({ t }: { t: ScenarioStrings }) {
     const sectionRef = useRef<HTMLElement>(null)
+    const eyebrowRef = useScrollReveal<HTMLParagraphElement>()
+    const titleRef = useScrollReveal<HTMLHeadingElement>()
 
     useEffect(() => {
         const scenarios = sectionRef.current?.querySelectorAll('.cmw-scenario')
@@ -34,8 +37,8 @@ export function LandingScenarios({ t }: { t: ScenarioStrings }) {
     return (
         <section className="cmw-scenarios-section" ref={sectionRef}>
 
-            <p className="cmw-eyebrow">{t.eyebrow}</p>
-            <h2 className="cmw-section-title">{t.title} <em>{t.titleEm}</em></h2>
+            <p ref={eyebrowRef} className="cmw-eyebrow sr-hidden">{t.eyebrow}</p>
+            <h2 ref={titleRef} className="cmw-section-title sr-hidden">{t.title} <em>{t.titleEm}</em></h2>
 
             {/* Escenario 01 */}
             <div className="cmw-scenario">

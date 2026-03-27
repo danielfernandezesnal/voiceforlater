@@ -1,14 +1,10 @@
 
 import { NextRequest } from "next/server";
+import { defaultLocale, isValidLocale, type Locale } from './config';
 
-export const LOCALES = ['en', 'es'] as const;
-export type Locale = typeof LOCALES[number];
-export const DEFAULT_LOCALE: Locale = 'en';
+export { isValidLocale, type Locale, defaultLocale };
+
 export const LOCALE_COOKIE = 'vfl_locale';
-
-export function isValidLocale(locale: string): locale is Locale {
-    return (LOCALES as readonly string[]).includes(locale);
-}
 
 /**
  * Resolve locale from request (Cookie > Accept-Language > Default)
@@ -23,19 +19,25 @@ export function resolveLocale(request: NextRequest): Locale {
     // 2. Check Accept-Language
     const acceptLanguage = request.headers.get('accept-language');
     if (acceptLanguage) {
-        // Simple parse: take first valid language found
+        // Simple parse: take first valid locale found (full tag first, then base tag)
         const preferred = acceptLanguage.split(',').map(lang => {
             const [l] = lang.split(';');
-            return l.trim().split('-')[0]; // e.g. "en-US" -> "en"
+            return l.trim(); // e.g. "en-US", "es", "pt-BR"
         });
 
         for (const lang of preferred) {
+            // Check exact match first (important for tags like "pt-BR" once supported)
             if (isValidLocale(lang)) {
                 return lang;
+            }
+            // Fall back to base language tag (e.g. "en-US" -> "en")
+            const base = lang.split('-')[0];
+            if (isValidLocale(base)) {
+                return base;
             }
         }
     }
 
     // 3. Default
-    return DEFAULT_LOCALE;
+    return defaultLocale;
 }

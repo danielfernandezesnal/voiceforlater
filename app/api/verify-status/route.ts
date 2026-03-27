@@ -1,12 +1,12 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import crypto from 'crypto';
-import { releaseCheckinMessages } from "@/lib/release-logic";
+import crypto from "crypto";
 
 export const runtime = "nodejs";
 
-// Use service role for admin operations (bypass RLS)
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
 function getAdminClient() {
     return createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,118 +14,184 @@ function getAdminClient() {
     );
 }
 
-export async function POST(request: NextRequest) {
-    try {
-        const { token, decision } = await request.json();
+function hashToken(rawToken: string): string {
+    return crypto.createHash("sha256").update(rawToken).digest("hex");
+}
 
-        if (!token || !decision || !['confirm', 'deny'].includes(decision)) {
-            return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+type ContactStatus = "alive" | "critical" | "deceased" | "unknown";
+
+const VALID_STATUSES: ContactStatus[] = ["alive", "critical", "deceased", "unknown"];
+
+// ─── GET /api/verify-status?token=XXXX ────────────────────────────────────────
+// Validates the token and returns the sender's first name.
+// Does NOT mark the token as used.
+
+export async function GET(request: NextRequest) {
+    try {
+        const { searchParams } = new URL(request.url);
+        const rawToken = searchParams.get("token");
+
+        if (!rawToken) {
+            return NextResponse.json({ error: "Missing token", code: "TOKEN_MISSING" }, { status: 400 });
         }
 
         const supabase = getAdminClient();
+        const tokenHash = hashToken(rawToken);
 
-        // 1. Hash the token
-        const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-
-        // 2. Find and Validate Token
+        // 1. Look up the token
         const { data: verification, error: fetchError } = await supabase
             .from("verification_tokens")
-            .select("*")
+            .select("id, user_id, action, expires_at, used_at")
             .eq("token_hash", tokenHash)
             .single();
 
         if (fetchError || !verification) {
-            return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
+            return NextResponse.json({ error: "Token not found", code: "TOKEN_INVALID" }, { status: 404 });
         }
 
+        // 2. Check action type
+        if (verification.action !== "verify-status") {
+            return NextResponse.json({ error: "Invalid token action", code: "TOKEN_INVALID" }, { status: 400 });
+        }
+
+        // 3. Check expiry
+        if (new Date(verification.expires_at) < new Date()) {
+            return NextResponse.json({ error: "Token has expired", code: "TOKEN_EXPIRED" }, { status: 410 });
+        }
+
+        // 4. Check if already used
         if (verification.used_at) {
-            return NextResponse.json({ error: "Token already used" }, { status: 409 });
+            return NextResponse.json({ error: "Token already used", code: "TOKEN_USED" }, { status: 409 });
+        }
+
+        // 5. Fetch sender's name from profiles
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("first_name, last_name")
+            .eq("id", verification.user_id)
+            .single();
+
+        const senderName = profile?.first_name
+            ? profile.first_name
+            : "el remitente";
+
+        return NextResponse.json({
+            valid: true,
+            senderName,
+        });
+    } catch (error) {
+        console.error("[verify-status GET] Unexpected error:", error);
+        return NextResponse.json({ error: "Internal server error", code: "INTERNAL_ERROR" }, { status: 500 });
+    }
+}
+
+// ─── POST /api/verify-status ──────────────────────────────────────────────────
+// Accepts the trusted contact's response.
+// Validates the token, persists the response, marks the token as used.
+// Does NOT trigger message release logic.
+
+export async function POST(request: NextRequest) {
+    try {
+        const body = await request.json();
+        const { token: rawToken, status, comment } = body as {
+            token?: string;
+            status?: string;
+            comment?: string;
+        };
+
+        // --- Input validation ---
+        if (!rawToken) {
+            return NextResponse.json({ error: "Missing token", code: "TOKEN_MISSING" }, { status: 400 });
+        }
+
+        if (!status || !VALID_STATUSES.includes(status as ContactStatus)) {
+            return NextResponse.json(
+                { error: "Invalid status. Must be one of: alive, critical, deceased, unknown", code: "INVALID_STATUS" },
+                { status: 400 }
+            );
+        }
+
+        const contactStatus = status as ContactStatus;
+
+        const supabase = getAdminClient();
+        const tokenHash = hashToken(rawToken);
+
+        // 1. Fetch and validate token
+        const { data: verification, error: fetchError } = await supabase
+            .from("verification_tokens")
+            .select("id, user_id, contact_email, action, expires_at, used_at")
+            .eq("token_hash", tokenHash)
+            .single();
+
+        if (fetchError || !verification) {
+            return NextResponse.json({ error: "Token not found", code: "TOKEN_INVALID" }, { status: 404 });
+        }
+
+        if (verification.action !== "verify-status") {
+            return NextResponse.json({ error: "Invalid token action", code: "TOKEN_INVALID" }, { status: 400 });
         }
 
         if (new Date(verification.expires_at) < new Date()) {
-            return NextResponse.json({ error: "Token expired" }, { status: 410 });
+            return NextResponse.json({ error: "Token has expired", code: "TOKEN_EXPIRED" }, { status: 410 });
         }
 
-        // 3. Mark Token as Used (Idempotency Lock)
+        if (verification.used_at) {
+            return NextResponse.json({ error: "Token already used", code: "TOKEN_USED" }, { status: 409 });
+        }
+
         const now = new Date().toISOString();
-        const { data, error: updateError } = await supabase
+        const ip = request.headers.get("x-forwarded-for") || "unknown";
+        const ua = request.headers.get("user-agent") || "unknown";
+
+        // 2. Mark token as used (optimistic lock: only if used_at is still null)
+        const { data: updated, error: updateError } = await supabase
             .from("verification_tokens")
             .update({
                 used_at: now,
                 used_reason: "user_action",
-                used_ip: request.headers.get("x-forwarded-for") || "unknown",
-                used_user_agent: request.headers.get("user-agent") || "unknown"
+                used_ip: ip,
+                used_user_agent: ua,
+                // Store the contact's response directly on the token row
+                contact_status: contactStatus,
+                contact_comment: comment?.trim() || null,
+                responded_at: now,
             })
             .eq("id", verification.id)
-            .is("used_at", null) // Optimistic lock
-            .select(); // Ask for returned data to check if row was updated
+            .is("used_at", null) // Optimistic concurrency lock
+            .select("id");
 
         if (updateError) {
-            // If update fails, likely purely concurrent race condition
-            return NextResponse.json({ error: "Concurrent usage detected" }, { status: 409 });
+            console.error("[verify-status POST] Update error:", updateError);
+            return NextResponse.json({ error: "Concurrent usage detected", code: "CONCURRENT_USE" }, { status: 409 });
         }
 
-        // Critical: If count is 0, it means it was already used by another request
-        if (!data || data.length === 0) {
-            return NextResponse.json({ error: "Token already used (Concurrent)" }, { status: 409 });
+        if (!updated || updated.length === 0) {
+            // Another request beat us to it
+            return NextResponse.json({ error: "Token already used", code: "TOKEN_USED" }, { status: 409 });
         }
 
-        // Double check if update actually happened (row count > 0)
-        // update returns status 204 typically.
-        // If we want to be super strict, we can check select again, but .is() filter generally works.
+        // 3. Write audit event to confirmation_events
+        const eventType = `trusted_contact_response_${contactStatus}`;
 
-        // 4. Log Event
-        // Canonical type normalization (decision_confirm / decision_deny)
-        const eventType = `decision_${decision}`;
-
-        await supabase.from("confirmation_events").upsert({
+        await supabase.from("confirmation_events").insert({
             user_id: verification.user_id,
             contact_email: verification.contact_email,
-            decision: decision, // Keep strictly for query convenience if needed, though type covers it
             token_id: verification.id,
             type: eventType,
-            ip_address: request.headers.get("x-forwarded-for") || "unknown",
-            user_agent: request.headers.get("user-agent") || "unknown"
-        }, { onConflict: 'token_id, type', ignoreDuplicates: true });
+            // Store structured response in the event for auditing
+            contact_status: contactStatus,
+            contact_comment: comment?.trim() || null,
+            ip_address: ip,
+            user_agent: ua,
+        });
 
-        // 5. Execute Decision Logic
-        if (decision === 'confirm') {
-            // RELEASE MESSAGES
-            const releaseResult = await releaseCheckinMessages(verification.user_id);
-
-            // Also update a global user status if needed? 
-            // The user is already 'confirmed_absent' or similar.
-            // Maybe we want to mark them as 'released'?
-            // leaving status as is for MVP, releaseCheckinMessages does the job.
-
-            return NextResponse.json({ success: true, action: 'released', details: releaseResult });
-
-        } else if (decision === 'deny') {
-            // FALSE ALARM - Reset Check-in
-            // Set status back to active, attempts 0, give them 24h grace period
-            const nextDue = new Date();
-            nextDue.setHours(nextDue.getHours() + 48); // 48h breather
-
-            await supabase
-                .from("checkins")
-                .update({
-                    status: 'active',
-                    attempts: 0,
-                    next_due_at: nextDue.toISOString(),
-                    last_confirmed_at: now // technically they didn't confirm, but the contact did
-                })
-                .eq("user_id", verification.user_id);
-
-            // Notify User about False Alarm? 
-            // (Optional for MVP, but good practice)
-
-            return NextResponse.json({ success: true, action: 'reset' });
-        }
-
-        return NextResponse.json({ success: true });
-
+        // 4. Return success — intentionally no release logic here
+        return NextResponse.json({
+            success: true,
+            status: contactStatus,
+        });
     } catch (error) {
-        console.error("Verify status error:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        console.error("[verify-status POST] Unexpected error:", error);
+        return NextResponse.json({ error: "Internal server error", code: "INTERNAL_ERROR" }, { status: 500 });
     }
 }

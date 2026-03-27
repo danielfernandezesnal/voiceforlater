@@ -1,11 +1,11 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { isValidLocale } from "@/lib/i18n";
 
 export async function POST(request: NextRequest) {
     try {
         const { locale } = await request.json();
-        if (!locale || !['en', 'es'].includes(locale)) {
+        if (!locale || !isValidLocale(locale)) {
             return NextResponse.json({ error: "Invalid locale" }, { status: 400 });
         }
 

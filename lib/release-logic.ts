@@ -1,7 +1,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-import { getDictionary, Locale } from '@/lib/i18n';
+import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
 import { getMessageDeliveryTemplate, EmailDictionary } from "@/lib/email-templates";
 
 // Helper to get admin client
@@ -107,7 +107,7 @@ export async function releaseCheckinMessages(userId: string) {
 
             try {
                 const localeRaw = locale || 'en';
-                const validLocale = (['en', 'es'].includes(localeRaw) ? localeRaw : 'en') as Locale;
+                const validLocale = (isValidLocale(localeRaw) ? localeRaw : 'en') as Locale;
                 const dict = await getDictionary(validLocale);
 
                 // Generate magic link for recipient

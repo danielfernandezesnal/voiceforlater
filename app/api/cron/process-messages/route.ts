@@ -3,7 +3,7 @@ import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { trackEmail } from '@/lib/email-tracking';
-import { getDictionary, Locale } from '@/lib/i18n';
+import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
 import { getMessageDeliveryTemplate, EmailDictionary } from '@/lib/email-templates';
 
 // Use service role for admin operations (bypass RLS)
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
 
             try {
                 const localeRaw = profile?.locale || 'en';
-                const locale = (['en', 'es'].includes(localeRaw) ? localeRaw : 'en') as Locale;
+                const locale = (isValidLocale(localeRaw) ? localeRaw : 'en') as Locale;
                 const dict = await getDictionary(locale);
 
                 // Generate magic link for recipient
