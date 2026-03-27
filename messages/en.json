@@ -797,6 +797,16 @@
       "warning": "If you don't respond after 3 attempts, we'll contact your trusted contact.",
       "tagline": "Messages for when it really matters."
     },
+    "trustedContactNotify": {
+      "subject": "{senderName} chose you as a trusted contact",
+      "title": "We need your help",
+      "intro": "{senderName} chose you as someone they trust for this moment.\n\nWe tried to reach them, but did not receive a response.",
+      "body": "Your response will help us understand their situation.",
+      "button": "Share status",
+      "secondary": "This will only take a moment.",
+      "ignore": "If you don't know this person or believe this is a mistake, you can ignore this message.",
+      "tagline": "Messages for when it really matters."
+    },
     "trustedContactVerify": {
       "subject": "{senderFirstName} needs your help",
       "eyebrow": "{contactFirstName}, we need your help",

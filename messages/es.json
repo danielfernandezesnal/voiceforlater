@@ -793,6 +793,16 @@
       "warning": "Si no respondes después de 3 intentos, contactaremos a tu(s) persona(s) de confianza.",
       "tagline": "Mensajes para cuando realmente importa."
     },
+    "trustedContactNotify": {
+      "subject": "Necesitamos tu ayuda con {senderName}",
+      "title": "Necesitamos tu ayuda",
+      "intro": "{senderName} te eligió como una persona de confianza para este momento.\n\nIntentamos comunicarnos, pero no obtuvimos respuesta.",
+      "body": "Tu respuesta nos va a ayudar a entender cómo se encuentra.",
+      "button": "Indicar estado",
+      "secondary": "Solo te va a llevar un momento.",
+      "ignore": "Si no conocés a esta persona o creés que esto es un error, podés ignorar este mensaje.",
+      "tagline": "Mensajes para cuando realmente importa."
+    },
     "trustedContactVerify": {
       "subject": "{senderFirstName} necesita que lo ayudes",
       "eyebrow": "{contactFirstName}, necesitamos tu ayuda",
