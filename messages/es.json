@@ -801,6 +801,17 @@
       "warning": "Si no respondes después de 3 intentos, contactaremos a tu(s) persona(s) de confianza.",
       "tagline": "Mensajes para cuando realmente importa."
     },
+    "checkinReminder2": {
+      "subject": "Solo queríamos volver a saber de vos",
+      "body": {
+        "line1": "Hola,",
+        "line2": "Hace unos días intentamos contactarte, pero quizás simplemente no viste el mensaje.",
+        "line3": "Solo queríamos volver a saber de vos, sin apuro.",
+        "line4": "Si estás bien, podés confirmarlo en el siguiente enlace:",
+        "cta": "Confirmar que estoy bien",
+        "footer": "Gracias por tomarte un momento."
+      }
+    },
     "trustedContactNotify": {
       "subject": "Necesitamos tu ayuda con {senderName}",
       "title": "Necesitamos tu ayuda",

@@ -805,6 +805,17 @@
       "warning": "If you don't respond after 3 attempts, we'll contact your trusted contact.",
       "tagline": "Messages for when it really matters."
     },
+    "checkinReminder2": {
+      "subject": "Just checking in again",
+      "body": {
+        "line1": "Hi,",
+        "line2": "We reached out a few days ago, but you may not have seen the message.",
+        "line3": "We just wanted to check in again, no rush.",
+        "line4": "If you're okay, you can confirm here:",
+        "cta": "Confirm I'm okay",
+        "footer": "Thank you for taking a moment."
+      }
+    },
     "trustedContactNotify": {
       "subject": "{senderName} chose you as a trusted contact",
       "title": "We need your help",
