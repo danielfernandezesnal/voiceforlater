@@ -1038,7 +1038,7 @@
       },
       "critical": {
         "label": "They are in a serious situation",
-        "description": "I know they are in a serious situation and cannot respond.",
+        "description": "I know they are unable to respond at this moment.",
         "hint": "hospitalized · ICU · traveling without access · other similar situation"
       },
       "deceased": {
