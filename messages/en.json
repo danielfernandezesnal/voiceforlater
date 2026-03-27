@@ -758,7 +758,9 @@
     "common": {
       "footerSignature": "Carry my Words",
       "tagline": "Messages for when it really matters.",
-      "externalFooter": "Carry my Words · carrymywords.com"
+      "externalFooter": "Carry my Words · carrymywords.com",
+      "dashboardLink": "Dashboard",
+      "supportLink": "Support"
     },
     "magicLink": {
       "subject": "Your access is ready",

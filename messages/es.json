@@ -754,7 +754,9 @@
     "common": {
       "footerSignature": "Carry my Words",
       "tagline": "Mensajes para cuando realmente importa.",
-      "externalFooter": "Carry my Words · carrymywords.com"
+      "externalFooter": "Carry my Words · carrymywords.com",
+      "dashboardLink": "Dashboard",
+      "supportLink": "Soporte"
     },
     "magicLink": {
       "subject": "Tu acceso está listo — tus palabras te están esperando",
