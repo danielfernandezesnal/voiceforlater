@@ -812,6 +812,17 @@
         "footer": "Si estás bien, con un solo click es suficiente.\n\nEsto ayuda a evitar que tengamos que contactar a otras personas por vos."
       }
     },
+    "checkinReminder3": {
+      "subject": "Es importante que podamos saber de vos",
+      "body": {
+        "line1": "Hola,",
+        "line2": "Intentamos contactarte en varias ocasiones, pero aún no recibimos respuesta.",
+        "line3": "Queremos ser respetuosos con tu espacio, pero también tenemos la responsabilidad de actuar si no logramos confirmarlo.",
+        "line4": "Si estás bien, podés confirmarlo en el siguiente enlace:",
+        "cta": "Confirmar que estoy bien",
+        "footer": "En caso de no poder contactarte, nos apoyaremos en la persona de confianza que hayas elegido.\n\nCon tu confirmación, no será necesario."
+      }
+    },
     "trustedContactNotify": {
       "subject": "Necesitamos tu ayuda con {senderName}",
       "title": "Necesitamos tu ayuda",
