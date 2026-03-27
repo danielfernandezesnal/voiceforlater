@@ -757,14 +757,15 @@
       "externalFooter": "Carry my Words · carrymywords.com"
     },
     "magicLink": {
-      "subject": "Tu acceso está listo",
+      "subject": "Tu acceso está listo — tus palabras te están esperando",
       "subjectAdmin": "Acceso de administrador - Carry my Words",
       "title": "Tus palabras te están esperando",
       "adminBadge": "Acceso de administrador",
-      "intro": "Estás a un paso de acceder.\n\nUsá el siguiente enlace para ingresar de forma segura a tu cuenta:",
+      "intro": "Estás a un paso de entrar.\n\nUsá el siguiente enlace para ingresar de forma segura a tu cuenta:",
       "button": "Ingresar",
       "secondary": "Este enlace es personal y expira en unos minutos.",
       "ignore": "Si no solicitaste este acceso, podés ignorar este mensaje.",
+      "linkFallback": "Si el botón no funciona, copiá este enlace:",
       "tagline": "Mensajes para cuando realmente importa."
     },
     "messageDelivery": {
@@ -790,6 +791,16 @@
       "attempt": "Intento {attempt} de 3",
       "button": "Confirmar Actividad",
       "warning": "Si no respondes después de 3 intentos, contactaremos a tu(s) persona(s) de confianza.",
+      "tagline": "Mensajes para cuando realmente importa."
+    },
+    "trustedContactNotify": {
+      "subject": "Necesitamos tu ayuda con {senderName}",
+      "title": "Necesitamos tu ayuda",
+      "intro": "{senderName} te eligió como una persona de confianza para este momento.\n\nIntentamos comunicarnos, pero no obtuvimos respuesta.",
+      "body": "Tu respuesta nos va a ayudar a entender cómo se encuentra.",
+      "button": "Indicar estado",
+      "secondary": "Solo te va a llevar un momento.",
+      "ignore": "Si no conocés a esta persona o creés que esto es un error, podés ignorar este mensaje.",
       "tagline": "Mensajes para cuando realmente importa."
     },
     "trustedContactVerify": {
@@ -1038,7 +1049,7 @@
       },
       "critical": {
         "label": "Está en una situación grave",
-        "description": "Sé que está en una situación grave y no puede responder.",
+        "description": "Sé que no puede responder en este momento.",
         "hint": "internación · CTI · viaje sin conexión · otra situación similar"
       },
       "deceased": {
@@ -1063,7 +1074,8 @@
     },
     "success": {
       "title": "Gracias por tomarte el tiempo",
-      "body": "Tu respuesta nos ayuda a entender la situación con mayor claridad. Vamos a tratar esta información con el cuidado que merece."
+      "body": "Tu respuesta nos ayuda a entender la situación con mayor claridad. Vamos a tratar esta información con el cuidado que merece.",
+      "close": "Podés cerrar esta página cuando quieras."
     },
     "errors": {
       "invalidToken": "Este enlace no es válido. Por favor, verifica que lo copiaste correctamente.",
