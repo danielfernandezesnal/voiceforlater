@@ -86,7 +86,7 @@ export async function CheckinReminder3Email({
               </a>
             </p>
             <p>
-              <a href={dashboardUrl}>Dashboard</a> · <a href={supportUrl}>Soporte</a>
+              <a href={dashboardUrl}>{common.dashboardLink}</a> · <a href={supportUrl}>{common.supportLink}</a>
             </p>
           </div>
         </div>
