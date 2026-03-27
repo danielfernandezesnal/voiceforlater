@@ -155,15 +155,64 @@ export async function GET(request: NextRequest) {
                 // Reached when: attempts >= maxReminders (just finished last reminder)
                 //           OR: currentStatus === 'awaiting_verification' (sequential outreach in progress)
 
-                // Fetch trusted contacts in stable order for sequential outreach
-                const { data: allContacts } = await supabase
-                    .from("trusted_contacts")
-                    .select("name, email")
-                    .eq("user_id", userId)
-                    .order("created_at", { ascending: true })
-                    .order("id", { ascending: true });
+                // Guard: Resend must be available before any outreach state advances
+                const resendClient = getResendClient();
+                if (!resendClient) {
+                    results.errors.push(`Resend unavailable for user ${userId} — outreach skipped`);
+                    continue;
+                }
 
-                if (!allContacts || allContacts.length === 0) {
+                // Contact selection: message-linked check-in contacts first, fallback to all user contacts
+                // (restores original selection behavior; new: includes created_at for stable ordering)
+                const { data: userMessages } = await supabase
+                    .from('messages')
+                    .select(`
+                        id,
+                        delivery_rules!inner (mode),
+                        message_trusted_contacts (
+                            trusted_contacts (name, email, created_at)
+                        )
+                    `)
+                    .eq('owner_id', userId)
+                    .eq('delivery_rules.mode', 'checkin');
+
+                type ContactEntry = { name: string; email: string; created_at: string | null };
+                const linkedContactsMap = new Map<string, ContactEntry>();
+
+                if (userMessages) {
+                    userMessages.forEach(msg => {
+                        const links = msg.message_trusted_contacts as unknown as
+                            Array<{ trusted_contacts: ContactEntry }>;
+                        if (Array.isArray(links)) {
+                            links.forEach(link => {
+                                const c = link.trusted_contacts;
+                                if (c?.email) linkedContactsMap.set(c.email, c);
+                            });
+                        }
+                    });
+                }
+
+                let contactPool: ContactEntry[];
+
+                if (linkedContactsMap.size > 0) {
+                    contactPool = Array.from(linkedContactsMap.values());
+                } else {
+                    const { data: fallbackContacts } = await supabase
+                        .from("trusted_contacts")
+                        .select("name, email, created_at")
+                        .eq("user_id", userId);
+                    contactPool = fallbackContacts || [];
+                }
+
+                // Sort for stable sequential ordering
+                contactPool.sort((a, b) => {
+                    if (a.created_at && b.created_at) return a.created_at.localeCompare(b.created_at);
+                    if (a.created_at) return -1;
+                    if (b.created_at) return 1;
+                    return 0;
+                });
+
+                if (contactPool.length === 0) {
                     await supabase
                         .from("checkins")
                         .update({ status: "confirmed_absent" })
@@ -183,7 +232,7 @@ export async function GET(request: NextRequest) {
                 );
 
                 // Pick the next contact not yet notified
-                const nextContact = allContacts.find(c => !notifiedEmails.has(c.email));
+                const nextContact = contactPool.find(c => !notifiedEmails.has(c.email));
 
                 if (!nextContact) {
                     // All contacts have been notified — outreach complete
@@ -194,50 +243,60 @@ export async function GET(request: NextRequest) {
                     continue;
                 }
 
-                // Send to next contact
-                const resendClient = getResendClient();
-                if (resendClient) {
-                    const { rawToken, tokenHash } = generateToken();
-                    const expiresAt = new Date(now);
-                    expiresAt.setHours(expiresAt.getHours() + TOKEN_EXPIRY_HOURS);
+                // Create token first, then send — roll back token if send fails
+                const { rawToken, tokenHash } = generateToken();
+                const expiresAt = new Date(now);
+                expiresAt.setHours(expiresAt.getHours() + TOKEN_EXPIRY_HOURS);
 
-                    const { error: tokenError } = await supabase
-                        .from("verification_tokens")
-                        .insert({
-                            user_id: userId,
-                            contact_email: nextContact.email,
-                            token_hash: tokenHash,
-                            expires_at: expiresAt.toISOString(),
-                            action: "verify-status",
-                        });
+                const { error: tokenError } = await supabase
+                    .from("verification_tokens")
+                    .insert({
+                        user_id: userId,
+                        contact_email: nextContact.email,
+                        token_hash: tokenHash,
+                        expires_at: expiresAt.toISOString(),
+                        action: "verify-status",
+                    });
 
-                    if (tokenError) {
-                        results.errors.push(`Token error for ${nextContact.email}: ${tokenError.message}`);
-                    } else {
-                        const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/verify-status?token=${rawToken}`;
-                        const { subject, html } = getTrustedContactNotifyTemplate(
-                            dict as unknown as EmailDictionary,
-                            { senderName, verifyUrl }
-                        );
-
-                        await resendClient.emails.send({
-                            from: DEFAULT_SENDER,
-                            to: nextContact.email,
-                            subject,
-                            html,
-                        });
-                        results.trusted_contact_notified++;
-
-                        await supabase.from("events").insert({
-                            type: "trusted_contact_notified",
-                            user_id: userId,
-                            metadata: { contact_email: nextContact.email },
-                        });
-                    }
+                if (tokenError) {
+                    results.errors.push(`Token error for ${nextContact.email}: ${tokenError.message}`);
+                    continue; // don't advance state — contact not marked notified
                 }
 
+                const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/verify-status?token=${rawToken}`;
+                const { subject, html } = getTrustedContactNotifyTemplate(
+                    dict as unknown as EmailDictionary,
+                    { senderName, verifyUrl }
+                );
+
+                const { error: sendError } = await resendClient.emails.send({
+                    from: DEFAULT_SENDER,
+                    to: nextContact.email,
+                    subject,
+                    html,
+                });
+
+                if (sendError) {
+                    // Roll back token so this contact is not permanently skipped on future runs
+                    await supabase
+                        .from("verification_tokens")
+                        .delete()
+                        .eq("token_hash", tokenHash);
+                    results.errors.push(`Email send failed for ${nextContact.email}: ${sendError.message}`);
+                    continue; // don't advance state
+                }
+
+                // Email confirmed sent — now advance state
+                results.trusted_contact_notified++;
+
+                await supabase.from("events").insert({
+                    type: "trusted_contact_notified",
+                    user_id: userId,
+                    metadata: { contact_email: nextContact.email },
+                });
+
                 // Determine next state: are there more contacts to notify?
-                const remainingContacts = allContacts.filter(
+                const remainingContacts = contactPool.filter(
                     c => !notifiedEmails.has(c.email) && c.email !== nextContact.email
                 );
 
