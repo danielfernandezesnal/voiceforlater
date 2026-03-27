@@ -69,7 +69,7 @@ export async function CheckinReminder2Email({
             </div>
             <div className="sign-off">
               <hr />
-              <p>{t.body.footer}</p>
+              <p style={{ whiteSpace: 'pre-wrap' }}>{t.body.footer}</p>
               <p className="firma">— {common.footerSignature}</p>
               
               <div style={{ height: '1px', background: '#EAE4D9', margin: '24px 0' }}></div>

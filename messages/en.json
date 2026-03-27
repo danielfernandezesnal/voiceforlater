@@ -798,14 +798,14 @@
       "tagline": "Messages for when it really matters."
     },
     "checkinReminder2": {
-      "subject": "Just checking in again",
+      "subject": "We haven’t heard from you",
       "body": {
         "line1": "Hi,",
-        "line2": "We reached out a few days ago, but you may not have seen the message.",
-        "line3": "We just wanted to check in again, no rush.",
+        "line2": "We reached out a few days ago, but haven’t heard back from you.",
+        "line3": "We understand that life gets busy… but sometimes a small action can bring peace of mind.",
         "line4": "If you're okay, you can confirm here:",
         "cta": "Confirm I'm okay",
-        "footer": "Thank you for taking a moment."
+        "footer": "If you're okay, a single click is enough.\n\nThis helps us avoid reaching out to others on your behalf."
       }
     },
     "trustedContactNotify": {
