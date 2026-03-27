@@ -769,6 +769,7 @@
       "button": "Access account",
       "secondary": "This link is personal and will expire in a few minutes.",
       "ignore": "If you didn't request this, you can safely ignore this email.",
+      "linkFallback": "If the button doesn't work, copy this link:",
       "tagline": "Messages for when it really matters."
     },
     "messageDelivery": {
@@ -1048,7 +1049,7 @@
       },
       "critical": {
         "label": "They are in a serious situation",
-        "description": "I know they are in a serious situation and cannot respond.",
+        "description": "I know they are unable to respond at this moment.",
         "hint": "hospitalized · ICU · traveling without access · other similar situation"
       },
       "deceased": {
@@ -1073,7 +1074,8 @@
     },
     "success": {
       "title": "Thank you for taking the time",
-      "body": "Your response helps us better understand the situation. We will treat this information with the care it deserves."
+      "body": "Your response helps us better understand the situation. We will treat this information with the care it deserves.",
+      "close": "You can close this page whenever you're ready."
     },
     "errors": {
       "invalidToken": "This link is not valid. Please check that you copied it correctly.",

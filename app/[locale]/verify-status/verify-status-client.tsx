@@ -138,6 +138,7 @@ function SuccessState({ t, appName }: { t: any; appName: string }) {
                 </div>
                 <h2 className="text-[#2A2520] font-semibold text-xl mb-2">{t.success.title}</h2>
                 <p className="text-[#7A6E62] text-sm leading-relaxed">{t.success.body}</p>
+                <p className="text-[#B5ADA5] text-xs mt-4">{t.success.close}</p>
             </div>
         </PageShell>
     );
