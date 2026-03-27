@@ -1,23 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
-import { getResend, DEFAULT_SENDER } from "@/lib/resend";
+import { DEFAULT_SENDER } from "@/lib/resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
 import crypto from 'crypto';
 import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
-import { getCheckinReminderTemplate, getTrustedContactVerifyTemplate, EmailDictionary } from '@/lib/email-templates';
+import { getCheckinReminderTemplate, getTrustedContactNotifyTemplate, EmailDictionary } from '@/lib/email-templates';
 
-// Generate secure token (helper function inline for now to avoid large diffs if util not available in easy import path)
+// Timing constants (in days)
+const REMINDER_SPACING_DAYS = 4;        // Day 0 → Day 4 → Day 8
+const OUTREACH_SPACING_DAYS = 3;        // Day 12 → Day 15
+const TOKEN_EXPIRY_HOURS = 72;          // Verification token valid for 3 days
+
 function generateToken() {
     const rawToken = crypto.randomBytes(32).toString('hex');
     const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
     return { rawToken, tokenHash };
 }
 
-// This endpoint is called by Vercel Cron
-// It processes overdue check-ins and sends notifications
-
-// Use service role for admin operations
 function getAdminClient() {
     return createAdminClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -25,39 +25,34 @@ function getAdminClient() {
     );
 }
 
-// Lazy initialization of Resend to avoid build errors
 function getResendClient() {
-    if (!process.env.RESEND_API_KEY) {
-        return null;
-    }
+    if (!process.env.RESEND_API_KEY) return null;
     return new Resend(process.env.RESEND_API_KEY);
 }
 
 /**
  * GET /api/cron/process-checkins
- * Called by Vercel Cron daily to process overdue check-ins
- * 
+ * Called by Vercel Cron daily to process overdue check-ins.
+ *
+ * State machine:
+ *   active → pending (missed check-in)
+ *   pending: attempts < maxReminders → send reminder, next_due_at += 4 days
+ *   pending: attempts >= maxReminders → awaiting_verification, notify contact 1, next_due_at += 3 days
+ *   awaiting_verification → notify next uncontacted contact (or confirmed_absent if all done)
+ *
  * Configure in vercel.json:
- * {
- *   "crons": [{
- *     "path": "/api/cron/process-checkins",
- *     "schedule": "0 9 * * *"
- *   }]
- * }
+ * { "crons": [{ "path": "/api/cron/process-checkins", "schedule": "0 9 * * *" }] }
  */
 export async function GET(request: NextRequest) {
-    // Verify cron secret
     const cronSecret = process.env.CRON_SECRET;
     const authHeader = request.headers.get("authorization");
     const customHeader = request.headers.get("x-cron-secret");
-
     const isProduction = process.env.NODE_ENV === 'production';
 
     if (isProduction || cronSecret) {
-        let authorized = false;
-        if (authHeader === `Bearer ${cronSecret}`) authorized = true;
-        if (customHeader === cronSecret) authorized = true;
-
+        const authorized =
+            authHeader === `Bearer ${cronSecret}` ||
+            customHeader === cronSecret;
         if (!authorized) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -65,25 +60,19 @@ export async function GET(request: NextRequest) {
 
     const supabase = getAdminClient();
     const now = new Date();
-    const initialData = {
+    const results = {
         processed: 0,
         reminders_sent: 0,
         trusted_contact_notified: 0,
         messages_delivered: 0,
         errors: [] as string[],
     };
-    const results = initialData;
 
     try {
-        // Get all overdue checkins that are not yet confirmed_absent
+        // Fetch all overdue checkins that are not yet fully resolved
         const { data: overdueCheckins, error } = await supabase
             .from("checkins")
-            .select(`
-        *,
-        profiles!inner (
-          id
-        )
-      `)
+            .select(`*, profiles!inner(id)`)
             .lt("next_due_at", now.toISOString())
             .neq("status", "confirmed_absent");
 
@@ -100,45 +89,49 @@ export async function GET(request: NextRequest) {
             results.processed++;
             const userId = checkin.user_id;
             const attempts = checkin.attempts || 0;
+            const currentStatus = checkin.status as string;
 
             try {
-                // Get user profile and plan (and locale!)
                 const { data: profile } = await supabase
                     .from("profiles")
-                    .select("plan, locale, first_name")
+                    .select("plan, locale, first_name, last_name")
                     .eq("id", userId)
                     .single();
 
                 const plan = (profile?.plan as Plan) || "free";
                 const localeRaw = profile?.locale || 'en';
                 const locale = (isValidLocale(localeRaw) ? localeRaw : 'en') as Locale;
-                const dict = await getDictionary(locale); // Fetch once per user/loop iteration is acceptable for cron
-
+                const dict = await getDictionary(locale);
                 const maxReminders = getMaxReminders(plan);
 
-                // Get user email from auth
                 const { data: authUser } = await supabase.auth.admin.getUserById(userId);
                 const userEmail = authUser?.user?.email;
 
-                if (attempts < maxReminders) {
-                    // Send reminder to user
+                const senderName = [profile?.first_name, profile?.last_name]
+                    .filter(Boolean).join(' ').trim()
+                    || userEmail?.split('@')[0]
+                    || '';
+
+                // ── BRANCH A: Reminder phase ──────────────────────────────────
+                if (currentStatus !== 'awaiting_verification' && attempts < maxReminders) {
                     const resendClient = getResendClient();
                     if (userEmail && resendClient) {
                         const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/confirmar-actividad`;
-                        const { subject, html } = getCheckinReminderTemplate(dict as unknown as EmailDictionary, { attempts: attempts + 1, confirmUrl });
-
+                        const { subject, html } = getCheckinReminderTemplate(
+                            dict as unknown as EmailDictionary,
+                            { attempts: attempts + 1, confirmUrl }
+                        );
                         await resendClient.emails.send({
                             from: DEFAULT_SENDER,
                             to: userEmail,
-                            subject: subject,
-                            html: html
+                            subject,
+                            html,
                         });
                         results.reminders_sent++;
                     }
 
-                    // Increment attempts and set next reminder (24h later)
-                    const nextDue = new Date();
-                    nextDue.setDate(nextDue.getDate() + 1);
+                    const nextDue = new Date(now);
+                    nextDue.setDate(nextDue.getDate() + REMINDER_SPACING_DAYS);
 
                     await supabase
                         .from("checkins")
@@ -149,126 +142,125 @@ export async function GET(request: NextRequest) {
                         })
                         .eq("user_id", userId);
 
-                    // Log event
                     await supabase.from("events").insert({
                         type: "checkin_reminder_sent",
                         user_id: userId,
                         metadata: { attempt: attempts + 1 },
                     });
-                } else {
-                    // 3 attempts exhausted - notify trusted contacts linked to check-in messages
 
-                    // 1. Fetch messages with check-in mode and their contacts
-                    const { data: userMessages } = await supabase
-                        .from('messages')
-                        .select(`
-                            id,
-                            delivery_rules!inner (mode),
-                            message_trusted_contacts (
-                                trusted_contacts (name, email)
-                            )
-                        `)
-                        .eq('owner_id', userId)
-                        .eq('delivery_rules.mode', 'checkin');
+                    continue;
+                }
 
-                    // 2. Aggregate unique contacts
-                    const contactsToNotify = new Map<string, { name: string, email: string }>();
+                // ── BRANCH B: Trusted contact outreach phase ──────────────────
+                // Reached when: attempts >= maxReminders (just finished last reminder)
+                //           OR: currentStatus === 'awaiting_verification' (sequential outreach in progress)
 
-                    if (userMessages) {
-                        userMessages.forEach(msg => {
-                            // Supabase returns array for HasMany
-                            const links = msg.message_trusted_contacts as unknown as Array<{ trusted_contacts: { name: string; email: string } }>;
-                            if (Array.isArray(links)) {
-                                links.forEach(link => {
-                                    const contact = link.trusted_contacts;
-                                    if (contact && contact.email) {
-                                        contactsToNotify.set(contact.email, contact);
-                                    }
-                                });
-                            }
-                        });
-                    }
+                // Fetch trusted contacts in stable order for sequential outreach
+                const { data: allContacts } = await supabase
+                    .from("trusted_contacts")
+                    .select("name, email")
+                    .eq("user_id", userId)
+                    .order("created_at", { ascending: true })
+                    .order("id", { ascending: true });
 
-                    // Fallback: If no message-specific contacts, try to find any trusted contact for the user
-                    if (contactsToNotify.size === 0) {
-                        const { data: fallbackContact } = await supabase
-                            .from("trusted_contacts")
-                            .select("name, email")
-                            .eq("user_id", userId)
-                            .limit(1)
-                            .maybeSingle();
-
-                        if (fallbackContact) {
-                            contactsToNotify.set(fallbackContact.email, fallbackContact);
-                        }
-                    }
-
-                    const resendClientForTrusted = getResendClient();
-                    if (resendClientForTrusted && contactsToNotify.size > 0) {
-                        // Send email to each unique contact with SECURE TOKEN
-                        for (const contact of contactsToNotify.values()) {
-
-                            // 1. Generate secure token
-                            const { rawToken, tokenHash } = generateToken();
-                            const expiresAt = new Date();
-                            expiresAt.setHours(expiresAt.getHours() + 48); // 48h expiration
-
-                            // 2. Store token hash in DB
-                            const { error: tokenError } = await supabase
-                                .from('verification_tokens')
-                                .insert({
-                                    user_id: userId,
-                                    contact_email: contact.email,
-                                    token_hash: tokenHash,
-                                    expires_at: expiresAt.toISOString(),
-                                    action: 'verify-status'
-                                });
-
-                            if (tokenError) {
-                                console.error(`Error storing token for ${contact.email}:`, tokenError);
-                                results.errors.push(`Token error for ${contact.email}: ${tokenError.message}`);
-                                continue;
-                            }
-
-                            // 3. Send actionable email
-                            // Use User's locale for creating urgency and clarity on behalf of user
-                            const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify-status?token=${rawToken}`;
-                            const { subject, html } = getTrustedContactVerifyTemplate(dict as unknown as EmailDictionary, {
-                                contactFirstName: contact.name || '',
-                                senderFirstName: profile?.first_name || userEmail?.split('@')[0] || 'Tu contacto',
-                                verifyUrl
-                            });
-
-                            await resendClientForTrusted.emails.send({
-                                from: DEFAULT_SENDER,
-                                to: contact.email,
-                                subject: subject,
-                                html: html
-                            });
-                            results.trusted_contact_notified++;
-                        }
-                    }
-
-
-                    // Update checkin status
+                if (!allContacts || allContacts.length === 0) {
                     await supabase
                         .from("checkins")
                         .update({ status: "confirmed_absent" })
                         .eq("user_id", userId);
-
-                    // Log event
-                    await supabase.from("events").insert({
-                        type: "trusted_contact_notified",
-                        user_id: userId,
-                        metadata: {
-                            contact_count: contactsToNotify.size,
-                            contacts: Array.from(contactsToNotify.keys())
-                        },
-                    });
-
-                    // Note: Actual message delivery would be done after trusted contact confirms
-                    // For MVP, we stop here and await manual confirmation
+                    continue;
                 }
+
+                // Idempotency guard: find already-notified contacts
+                const { data: existingTokens } = await supabase
+                    .from("verification_tokens")
+                    .select("contact_email")
+                    .eq("user_id", userId)
+                    .eq("action", "verify-status");
+
+                const notifiedEmails = new Set(
+                    (existingTokens || []).map(t => t.contact_email as string)
+                );
+
+                // Pick the next contact not yet notified
+                const nextContact = allContacts.find(c => !notifiedEmails.has(c.email));
+
+                if (!nextContact) {
+                    // All contacts have been notified — outreach complete
+                    await supabase
+                        .from("checkins")
+                        .update({ status: "confirmed_absent" })
+                        .eq("user_id", userId);
+                    continue;
+                }
+
+                // Send to next contact
+                const resendClient = getResendClient();
+                if (resendClient) {
+                    const { rawToken, tokenHash } = generateToken();
+                    const expiresAt = new Date(now);
+                    expiresAt.setHours(expiresAt.getHours() + TOKEN_EXPIRY_HOURS);
+
+                    const { error: tokenError } = await supabase
+                        .from("verification_tokens")
+                        .insert({
+                            user_id: userId,
+                            contact_email: nextContact.email,
+                            token_hash: tokenHash,
+                            expires_at: expiresAt.toISOString(),
+                            action: "verify-status",
+                        });
+
+                    if (tokenError) {
+                        results.errors.push(`Token error for ${nextContact.email}: ${tokenError.message}`);
+                    } else {
+                        const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/verify-status?token=${rawToken}`;
+                        const { subject, html } = getTrustedContactNotifyTemplate(
+                            dict as unknown as EmailDictionary,
+                            { senderName, verifyUrl }
+                        );
+
+                        await resendClient.emails.send({
+                            from: DEFAULT_SENDER,
+                            to: nextContact.email,
+                            subject,
+                            html,
+                        });
+                        results.trusted_contact_notified++;
+
+                        await supabase.from("events").insert({
+                            type: "trusted_contact_notified",
+                            user_id: userId,
+                            metadata: { contact_email: nextContact.email },
+                        });
+                    }
+                }
+
+                // Determine next state: are there more contacts to notify?
+                const remainingContacts = allContacts.filter(
+                    c => !notifiedEmails.has(c.email) && c.email !== nextContact.email
+                );
+
+                if (remainingContacts.length === 0) {
+                    // Last contact was just notified — outreach complete
+                    await supabase
+                        .from("checkins")
+                        .update({ status: "confirmed_absent" })
+                        .eq("user_id", userId);
+                } else {
+                    // More contacts remain — stay in awaiting_verification, schedule next outreach
+                    const nextOutreach = new Date(now);
+                    nextOutreach.setDate(nextOutreach.getDate() + OUTREACH_SPACING_DAYS);
+
+                    await supabase
+                        .from("checkins")
+                        .update({
+                            status: "awaiting_verification",
+                            next_due_at: nextOutreach.toISOString(),
+                        })
+                        .eq("user_id", userId);
+                }
+
             } catch (userError) {
                 console.error(`Error processing user ${userId}:`, userError);
                 results.errors.push(`User ${userId}: ${String(userError)}`);
@@ -276,6 +268,7 @@ export async function GET(request: NextRequest) {
         }
 
         return NextResponse.json({ success: true, results });
+
     } catch (error) {
         console.error("Cron error:", error);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
