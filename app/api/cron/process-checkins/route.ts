@@ -7,6 +7,7 @@ import crypto from 'crypto';
 import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
 import { getCheckinReminderTemplate, getTrustedContactNotifyTemplate, EmailDictionary } from '@/lib/email-templates';
 import { sendCheckinReminder2Email } from '@/components/emails/checkin-reminder-2-email';
+import { sendCheckinReminder3Email } from '@/components/emails/checkin-reminder-3-email';
 
 // Timing constants (in days)
 const REMINDER_SPACING_DAYS = 4;        // Day 0 → Day 4 → Day 8
@@ -158,6 +159,45 @@ export async function GET(request: NextRequest) {
                             } else {
                                 // Token exists from a prior run — email was previously sent.
                                 // State advance must have failed then; advance now to unblock.
+                                emailSent = true;
+                            }
+                        } else if (attempts === 2) { // Reminder 3 (Day 8)
+                            const { data: existingTokens } = await supabase
+                                .from("verification_tokens")
+                                .select("token_hash")
+                                .eq("user_id", userId)
+                                .eq("contact_email", userEmail)
+                                .eq("action", "user-checkin-reminder-3");
+
+                            if (!existingTokens || existingTokens.length === 0) {
+                                const { rawToken, tokenHash } = generateToken();
+                                const expiresAt = new Date(now);
+                                expiresAt.setHours(expiresAt.getHours() + TOKEN_EXPIRY_HOURS);
+
+                                const { error: tokenError } = await supabase
+                                    .from("verification_tokens")
+                                    .insert({
+                                        user_id: userId,
+                                        contact_email: userEmail,
+                                        token_hash: tokenHash,
+                                        expires_at: expiresAt.toISOString(),
+                                        action: "user-checkin-reminder-3",
+                                    });
+
+                                if (!tokenError) {
+                                    const checkinUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/verify-status?token=${rawToken}`;
+                                    const { error: sendError } = await sendCheckinReminder3Email(userEmail, checkinUrl, locale);
+
+                                    if (sendError) {
+                                        await supabase.from("verification_tokens").delete().eq("token_hash", tokenHash);
+                                        results.errors.push(`Email send failed for ${userEmail}: ${sendError}`);
+                                    } else {
+                                        emailSent = true;
+                                    }
+                                } else {
+                                    results.errors.push(`Token error for ${userEmail}: ${tokenError.message}`);
+                                }
+                            } else {
                                 emailSent = true;
                             }
                         } else {

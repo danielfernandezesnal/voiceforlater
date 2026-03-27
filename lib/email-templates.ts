@@ -64,6 +64,17 @@ export type EmailDictionary = {
         footer: string;
       };
     };
+    checkinReminder3: {
+      subject: string;
+      body: {
+        line1: string;
+        line2: string;
+        line3: string;
+        line4: string;
+        cta: string;
+        footer: string;
+      };
+    };
     trustedContactNotify: {
       subject: string;
       title: string;
