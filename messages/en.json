@@ -375,7 +375,8 @@
         "created": "Created",
         "scheduledFor": "Scheduled for",
         "delivery": "Delivery",
-        "contact": "Trusted contact"
+        "contact": "Trusted contact",
+        "hour": "Time"
       },
       "deliveryType": {
         "date": "Specific date",

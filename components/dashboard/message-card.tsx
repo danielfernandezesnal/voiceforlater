@@ -79,12 +79,17 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
     const labels = (dict.dashboard.messageCard as any).labels;
     let scheduledDate = '';
     let scheduledLabel = labels?.scheduledFor;
+    let scheduledDateOnly = '';
+    let scheduledTime = '';
 
     if (deliveryMode === 'checkin') {
         scheduledDate = (dict.dashboard.messageCard as any).deliveryType?.checkin;
         scheduledLabel = labels?.delivery;
     } else if (deliverAt) {
         scheduledDate = formatDateTime(deliverAt);
+        const d = new Date(deliverAt);
+        scheduledDateOnly = d.toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+        scheduledTime = d.toLocaleTimeString(locale === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' });
     }
 
     // Badges Row
@@ -141,14 +146,14 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
         <>
             <Link
                 href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`}
-                className="text-sm font-medium px-3 py-2 rounded-lg bg-foreground/[0.06] hover:bg-foreground/10 transition-colors flex items-center justify-center gap-1.5 w-full"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-1 px-2 py-1.5 rounded-md hover:bg-foreground/[0.04] w-full"
             >
                 ✏️ {isDelivered ? dict.common.view : dict.common.edit}
             </Link>
             <button
                 onClick={handleDelete}
                 disabled={isLoading}
-                className="text-sm font-medium px-3 py-2 rounded-lg bg-destructive/[0.07] text-destructive hover:bg-destructive/[0.13] transition-colors flex items-center justify-center gap-1.5 w-full"
+                className="text-xs text-destructive/60 hover:text-destructive transition-colors flex items-center justify-center gap-1 px-2 py-1.5 rounded-md hover:bg-destructive/[0.06] w-full"
             >
                 {isLoading ? '...' : `🗑️ ${dict.common.delete}`}
             </button>
@@ -159,7 +164,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
         <div className="border border-border/60 rounded-2xl bg-card shadow-sm w-full p-5">
             <div className="flex items-start justify-between gap-4">
                 {/* Content stack */}
-                <div className="flex-1 min-w-0 flex flex-col gap-2">
+                <div className="flex-1 min-w-0 flex flex-col gap-2.5">
 
                     {/* Row 1 — Recipient + status badge */}
                     <div className="flex flex-wrap items-center gap-2">
@@ -189,10 +194,31 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                     </div>
 
                     {/* Row 3 — Delivery (prominent) */}
-                    <div className="text-sm font-medium text-foreground">
-                        <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
-                        {scheduledDate}
-                    </div>
+                    {scheduledDateOnly ? (
+                        <>
+                            {/* Desktop: single line */}
+                            <div className="hidden md:block text-sm font-medium text-foreground">
+                                <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
+                                {scheduledDate}
+                            </div>
+                            {/* Mobile: date and time on separate lines */}
+                            <div className="md:hidden flex flex-col gap-1">
+                                <div className="text-sm font-medium text-foreground">
+                                    <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
+                                    {scheduledDateOnly}
+                                </div>
+                                <div className="text-sm font-medium text-foreground">
+                                    <span className="text-muted-foreground">{labels?.hour}:</span>{' '}
+                                    {scheduledTime}
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <div className="text-sm font-medium text-foreground">
+                            <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
+                            {scheduledDate}
+                        </div>
+                    )}
 
                     {/* Row 4 — Created (subtle) */}
                     <div className="text-xs text-muted-foreground/70">
