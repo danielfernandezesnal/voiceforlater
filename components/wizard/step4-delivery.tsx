@@ -239,23 +239,19 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
     const { data, updateData } = useWizard()
     const step4Dict = dictionary.wizard.step4
     const limits = getPlanLimits(userPlan)
-    const [selectedTab, setSelectedTab] = useState<DeliveryMode>(data.deliveryMode || 'checkin')
+    const [selectedTab, setSelectedTab] = useState<DeliveryMode | null>(data.deliveryMode || null)
 
     // Trusted Contacts State
     const [contacts, setContacts] = useState<Contact[]>([])
     const [loadingContacts, setLoadingContacts] = useState(false)
     const [isCreating, setIsCreating] = useState(false)
 
-    // Sync local tab with data on mount
+    // Sync local tab with data on mount (editing case only)
     useEffect(() => {
         if (data.deliveryMode) {
             setSelectedTab(data.deliveryMode)
-        } else {
-            // Default to 'checkin' if nothing selected
-            updateData({ deliveryMode: 'checkin' })
-            setSelectedTab('checkin')
         }
-    }, [data.deliveryMode, updateData])
+    }, [data.deliveryMode])
 
     const fetchContacts = useCallback(() => {
         setLoadingContacts(true)
@@ -274,9 +270,9 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
             .finally(() => setLoadingContacts(false))
     }, [])
 
-    // Load contacts on mount if initially checkin
+    // Load contacts on mount only when editing an existing checkin message
     useEffect(() => {
-        if (selectedTab === 'checkin') {
+        if (data.deliveryMode === 'checkin') {
             fetchContacts()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

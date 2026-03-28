@@ -557,8 +557,8 @@
     "title": "My Profile",
     "subtitle": "Your name will appear in the messages you send. Your country helps us format dates correctly.",
     "onboardingBanner": {
-      "heading": "Complete your profile to get started",
-      "body": "To create your first message, we need to know a little more about you. Please fill in the required fields."
+      "heading": "Before you begin",
+      "body": "We need a few details to make sure your words are delivered when they matter most."
     },
     "form": {
       "personalData": "Personal information",
