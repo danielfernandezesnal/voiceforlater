@@ -770,12 +770,12 @@
       "subjectAdmin": "Acceso de administrador - Carry my Words",
       "title": "Tus palabras te están esperando",
       "adminBadge": "Acceso de administrador",
-      "intro": "Estás a un paso de entrar.\n\nUsá el siguiente enlace para ingresar de forma segura a tu cuenta:",
+      "intro": "Estás a un paso de entrar.\n\nUsa el siguiente enlace para ingresar de forma segura a tu cuenta:",
       "button": "Ingresar",
       "secondary": "Este enlace es personal y expira en unos minutos.",
-      "ignore": "Si no solicitaste este acceso, podés ignorar este mensaje.",
-      "linkFallback": "Si el botón no funciona, copiá este enlace:",
-      "tagline": "Mensajes para cuando realmente importa."
+      "ignore": "Si no solicitaste este acceso, puedes ignorar este mensaje.",
+      "linkFallback": "También puedes copiar este link en tu navegador para ingresar:",
+      "tagline": "MENSAJES QUE VIAJAN EN EL TIEMPO"
     },
     "messageDelivery": {
       "subject": "Tienes un mensaje vía Carry my Words",
