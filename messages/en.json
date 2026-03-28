@@ -776,9 +776,9 @@
       "intro": "You're one step away.\n\nUse the link below to securely access your account:",
       "button": "Access account",
       "secondary": "This link is personal and will expire in a few minutes.",
-      "ignore": "If you didn't request this, you can safely ignore this email.",
-      "linkFallback": "If the button doesn't work, copy this link:",
-      "tagline": "Messages for when it really matters."
+      "ignore": "If you did not request this access, you can ignore this message.",
+      "linkFallback": "You can also copy this link into your browser to access:",
+      "tagline": "MESSAGES THAT TRAVEL THROUGH TIME"
     },
     "messageDelivery": {
       "subject": "You have a message via Carry my Words",

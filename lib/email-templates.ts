@@ -182,8 +182,8 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="background:#C4623A;padding:32px 48px 28px;">
-                    <div style="font-family:Georgia,serif;font-style:italic;font-size:24px;color:#ffffff;margin-bottom:16px;">
-                      Carry my Words
+                    <div style="font-family:Georgia,serif;font-style:italic;font-size:24px;margin-bottom:16px;">
+                      <a href="https://carrymywords.com" target="_blank" rel="noopener noreferrer" style="color:#ffffff;text-decoration:none;">${dict.emails.common.footerSignature}</a>
                     </div>
                     <div style="font-family:Georgia,serif;font-size:26px;font-weight:600;color:#ffffff;line-height:1.25;">
                       ${t.title}
@@ -207,14 +207,11 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
                   </td>
                 </tr>
               </table>
-              <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0 0 8px 0;text-align:center;">
+              <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0 0 32px 0;text-align:center;">
                 ${t.secondary}
               </p>
-              <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0 0 32px 0;text-align:center;">
-                ${t.ignore}
-              </p>
               <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
-              <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
+              <p style="margin:0;font-family:sans-serif;font-size:11px;font-weight:600;letter-spacing:0.12em;color:#C4623A;text-align:center;text-transform:uppercase;">
                 ${t.tagline}
               </p>
             </td>
@@ -224,10 +221,10 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
             <td style="padding:0 48px 36px;" align="center">
               <div style="height:1px;background:#EAE4D9;margin-bottom:28px;"></div>
               <p style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
-                Carry my Words
+                <a href="https://carrymywords.com" target="_blank" rel="noopener noreferrer" style="color:#C4623A;text-decoration:none;">${dict.emails.common.footerSignature}</a>
               </p>
               <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
-                <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
+                ${t.ignore}
               </p>
             </td>
           </tr>
