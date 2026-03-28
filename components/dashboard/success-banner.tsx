@@ -50,7 +50,7 @@ export function SuccessBanner({ dictionary }: SuccessBannerProps) {
 
         const timeout = setTimeout(() => {
             handleDismiss();
-        }, 6000);
+        }, 10000);
 
         return () => clearTimeout(timeout);
     }, [visible, handleDismiss]);
