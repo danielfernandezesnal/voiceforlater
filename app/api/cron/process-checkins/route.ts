@@ -5,7 +5,7 @@ import { DEFAULT_SENDER } from "@/lib/resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
 import crypto from 'crypto';
 import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
-import { getCheckinReminderTemplate, getTrustedContactNotifyTemplate, EmailDictionary } from '@/lib/email-templates';
+import { getCheckinInitialTemplate, getTrustedContactNotifyTemplate, EmailDictionary } from '@/lib/email-templates';
 import { sendCheckinReminder2Email } from '@/components/emails/checkin-reminder-2-email';
 import { sendCheckinReminder3Email } from '@/components/emails/checkin-reminder-3-email';
 
@@ -200,11 +200,11 @@ export async function GET(request: NextRequest) {
                             } else {
                                 emailSent = true;
                             }
-                        } else {
-                            const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/confirmar-actividad`;
-                            const { subject, html } = getCheckinReminderTemplate(
+                        } else { // Reminder 1 (Day 0)
+                            const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/confirmar-actividad`;
+                            const { subject, html } = getCheckinInitialTemplate(
                                 dict as unknown as EmailDictionary,
-                                { attempts: attempts + 1, confirmUrl }
+                                { confirmUrl }
                             );
                             const { error: sendError } = await resendClient.emails.send({
                                 from: DEFAULT_SENDER,
