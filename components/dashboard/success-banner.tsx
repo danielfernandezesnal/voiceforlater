@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 interface SuccessBannerProps {
@@ -16,23 +16,34 @@ export function SuccessBanner({ dictionary }: SuccessBannerProps) {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
+    
     const [visible, setVisible] = useState(false);
+    const [isFadingOut, setIsFadingOut] = useState(false);
 
     useEffect(() => {
         if (searchParams.get('created') === 'true') {
+            setIsFadingOut(false);
             setVisible(true);
         }
     }, [searchParams]);
 
-    function handleDismiss() {
-        setVisible(false);
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete('created');
-        const qs = params.toString();
-        const newUrl = qs ? `${pathname}?${qs}` : pathname;
-        window.history.replaceState(null, '', newUrl);
-        router.replace(newUrl, { scroll: false });
-    }
+    const handleDismiss = useCallback(() => {
+        if (isFadingOut) return;
+
+        setIsFadingOut(true);
+
+        setTimeout(() => {
+            setVisible(false);
+
+            const params = new URLSearchParams(searchParams.toString());
+            params.delete('created');
+            const qs = params.toString();
+
+            const newUrl = qs ? `${pathname}?${qs}` : pathname;
+            window.history.replaceState(null, '', newUrl);
+            router.replace(newUrl, { scroll: false });
+        }, 300);
+    }, [isFadingOut, searchParams, pathname, router]);
 
     useEffect(() => {
         if (!visible) return;
@@ -42,13 +53,13 @@ export function SuccessBanner({ dictionary }: SuccessBannerProps) {
         }, 6000);
 
         return () => clearTimeout(timeout);
-    }, [visible]);
+    }, [visible, handleDismiss]);
 
     if (!visible) return null;
 
     return (
         <div
-            className="rounded-2xl border p-5 mb-7"
+            className={`rounded-2xl border p-5 mb-7 transition-opacity duration-300 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}
             style={{ background: 'rgba(196,98,58,0.06)', borderColor: 'rgba(196,98,58,0.25)' }}
         >
             <div className="flex items-start justify-between gap-4">
