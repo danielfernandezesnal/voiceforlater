@@ -7,6 +7,8 @@ export type EmailDictionary = {
       footerSignature: string;
       tagline: string;
       externalFooter: string;
+      dashboardLink: string;
+      supportLink: string;
     };
     magicLink: {
       subject: string;
