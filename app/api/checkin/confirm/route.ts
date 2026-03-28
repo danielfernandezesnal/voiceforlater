@@ -71,7 +71,11 @@ export async function POST() {
             .from("verification_tokens")
             .delete()
             .eq("user_id", user.id)
-            .in("action", ["user-checkin-reminder-2", "user-checkin-reminder-3"]);
+            .in("action", [
+                "user-checkin-reminder-1",
+                "user-checkin-reminder-2",
+                "user-checkin-reminder-3",
+            ]);
 
         // Log the event
         await supabase.from("events").insert({
