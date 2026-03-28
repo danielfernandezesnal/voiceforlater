@@ -29,7 +29,9 @@ export function SuccessBanner({ dictionary }: SuccessBannerProps) {
         const params = new URLSearchParams(searchParams.toString());
         params.delete('created');
         const qs = params.toString();
-        router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+        const newUrl = qs ? `${pathname}?${qs}` : pathname;
+        window.history.replaceState(null, '', newUrl);
+        router.replace(newUrl, { scroll: false });
     }
 
     if (!visible) return null;
