@@ -79,12 +79,17 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
     const labels = (dict.dashboard.messageCard as any).labels;
     let scheduledDate = '';
     let scheduledLabel = labels?.scheduledFor;
+    let scheduledDateOnly = '';
+    let scheduledTime = '';
 
     if (deliveryMode === 'checkin') {
         scheduledDate = (dict.dashboard.messageCard as any).deliveryType?.checkin;
         scheduledLabel = labels?.delivery;
     } else if (deliverAt) {
         scheduledDate = formatDateTime(deliverAt);
+        const d = new Date(deliverAt);
+        scheduledDateOnly = d.toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+        scheduledTime = d.toLocaleTimeString(locale === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' });
     }
 
     // Badges Row
@@ -189,10 +194,31 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                     </div>
 
                     {/* Row 3 — Delivery (prominent) */}
-                    <div className="text-sm font-medium text-foreground">
-                        <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
-                        {scheduledDate}
-                    </div>
+                    {scheduledDateOnly ? (
+                        <>
+                            {/* Desktop: single line */}
+                            <div className="hidden md:block text-sm font-medium text-foreground">
+                                <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
+                                {scheduledDate}
+                            </div>
+                            {/* Mobile: date and time on separate lines */}
+                            <div className="md:hidden flex flex-col gap-1">
+                                <div className="text-sm font-medium text-foreground">
+                                    <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
+                                    {scheduledDateOnly}
+                                </div>
+                                <div className="text-sm font-medium text-foreground">
+                                    <span className="text-muted-foreground">{labels?.hour}:</span>{' '}
+                                    {scheduledTime}
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <div className="text-sm font-medium text-foreground">
+                            <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
+                            {scheduledDate}
+                        </div>
+                    )}
 
                     {/* Row 4 — Created (subtle) */}
                     <div className="text-xs text-muted-foreground/70">
