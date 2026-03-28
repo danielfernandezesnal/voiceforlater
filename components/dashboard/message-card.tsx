@@ -141,14 +141,14 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
         <>
             <Link
                 href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`}
-                className="text-sm font-medium px-3 py-2 rounded-lg bg-foreground/[0.06] hover:bg-foreground/10 transition-colors flex items-center justify-center gap-1.5 w-full"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center justify-center gap-1 px-2 py-1.5 rounded-md hover:bg-foreground/[0.04] w-full"
             >
                 ✏️ {isDelivered ? dict.common.view : dict.common.edit}
             </Link>
             <button
                 onClick={handleDelete}
                 disabled={isLoading}
-                className="text-sm font-medium px-3 py-2 rounded-lg bg-destructive/[0.07] text-destructive hover:bg-destructive/[0.13] transition-colors flex items-center justify-center gap-1.5 w-full"
+                className="text-xs text-destructive/60 hover:text-destructive transition-colors flex items-center justify-center gap-1 px-2 py-1.5 rounded-md hover:bg-destructive/[0.06] w-full"
             >
                 {isLoading ? '...' : `🗑️ ${dict.common.delete}`}
             </button>
@@ -159,7 +159,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
         <div className="border border-border/60 rounded-2xl bg-card shadow-sm w-full p-5">
             <div className="flex items-start justify-between gap-4">
                 {/* Content stack */}
-                <div className="flex-1 min-w-0 flex flex-col gap-2">
+                <div className="flex-1 min-w-0 flex flex-col gap-2.5">
 
                     {/* Row 1 — Recipient + status badge */}
                     <div className="flex flex-wrap items-center gap-2">
