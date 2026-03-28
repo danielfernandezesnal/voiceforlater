@@ -34,6 +34,16 @@ export function SuccessBanner({ dictionary }: SuccessBannerProps) {
         router.replace(newUrl, { scroll: false });
     }
 
+    useEffect(() => {
+        if (!visible) return;
+
+        const timeout = setTimeout(() => {
+            handleDismiss();
+        }, 6000);
+
+        return () => clearTimeout(timeout);
+    }, [visible]);
+
     if (!visible) return null;
 
     return (
