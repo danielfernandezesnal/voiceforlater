@@ -105,12 +105,16 @@ export async function sendCheckinReminder2Email(toUserEmail: string, checkinUrl:
   }
 
   try {
-    const data = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: DEFAULT_SENDER,
       to: toUserEmail,
       subject: dict.emails.checkinReminder2.subject,
       react: await CheckinReminder2Email({ checkinUrl, locale }),
     });
+    if (error) {
+      console.error("Error sending Checkin Reminder 2:", error);
+      return { error };
+    }
     return { data };
   } catch (error) {
     console.error("Error sending Checkin Reminder 2:", error);
