@@ -1105,8 +1105,8 @@
       "back": "Go back"
     },
     "success": {
-      "title": "Thank you for taking the time",
-      "body": "Your response helps us better understand the situation. We will treat this information with the care it deserves.",
+      "title": "Everything is okay",
+      "body": "Thanks for confirming.\nNo further action is needed.\n\nWe won't reach out to anyone.\nEverything stays as you set it.",
       "close": "You can close this page whenever you're ready."
     },
     "errors": {

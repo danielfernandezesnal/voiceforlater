@@ -1105,8 +1105,8 @@
       "back": "Volver"
     },
     "success": {
-      "title": "Gracias por tomarte el tiempo",
-      "body": "Tu respuesta nos ayuda a entender la situación con mayor claridad. Vamos a tratar esta información con el cuidado que merece.",
+      "title": "Todo está bien",
+      "body": "Gracias por confirmar.\nNo es necesario hacer nada más.\n\nNo vamos a contactar a nadie.\nTodo sigue como lo configuraste.",
       "close": "Podés cerrar esta página cuando quieras."
     },
     "errors": {
