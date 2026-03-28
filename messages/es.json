@@ -348,7 +348,8 @@
         "created": "Creado",
         "scheduledFor": "Programado para",
         "delivery": "Entrega",
-        "contact": "Contacto de confianza"
+        "contact": "Contacto de confianza",
+        "hour": "Hora"
       },
       "deliveryType": {
         "date": "Fecha específica",
