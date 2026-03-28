@@ -349,6 +349,11 @@
       "description": "You now have access to all PRO plan features. Create unlimited messages, use video, and much more.",
       "cta": "Got it!"
     },
+    "success": {
+      "title": "Your message is ready",
+      "body": "It will be delivered on the date you chose.\nYou can edit it anytime before then.",
+      "emotional": "Your words will be there when they matter most."
+    },
     "createMessage": "Create Message",
     "messageCard": {
       "recipient": "To: {name}",

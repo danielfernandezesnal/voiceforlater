@@ -377,6 +377,11 @@
       "description": "Ya tenés acceso a todas las funcionalidades del plan PRO. Creá mensajes ilimitados, usá video, y mucho más.",
       "cta": "¡Entendido!"
     },
+    "success": {
+      "title": "Tu mensaje ya está listo",
+      "body": "Se va a entregar en la fecha que elegiste.\nPodés editarlo cuando quieras antes de ese momento.",
+      "emotional": "Tus palabras van a estar ahí cuando más importen."
+    },
     "plan": {
       "title": "Mi Plan",
       "compare": {

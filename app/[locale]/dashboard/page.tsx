@@ -7,6 +7,7 @@ import { DashboardMessageList } from "@/components/dashboard/dashboard-message-l
 
 import { AutoCheckin } from "@/components/dashboard/auto-checkin";
 import { UpgradeSuccessModal } from "@/components/dashboard/upgrade-success-modal";
+import { SuccessBanner } from "@/components/dashboard/success-banner";
 import { getEffectivePlan } from "@/lib/plan-resolver";
 import { type Plan } from "@/lib/plans";
 
@@ -159,6 +160,9 @@ export default async function DashboardPage({
         <div>
             <Suspense>
                 <UpgradeSuccessModal dictionary={dict.dashboard.upgradeSuccess} />
+            </Suspense>
+            <Suspense>
+                <SuccessBanner dictionary={dict.dashboard.success} />
             </Suspense>
 
             {/* New Header */}

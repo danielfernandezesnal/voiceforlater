@@ -149,7 +149,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
             }
 
             await clearStorageOnly()
-            router.push(`/${locale}/dashboard`)
+            router.push(`/${locale}/dashboard?created=true`)
             router.refresh()
         } catch (err) {
             console.error('Error creating/updating message:', err)
