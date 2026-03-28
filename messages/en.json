@@ -352,7 +352,8 @@
     "success": {
       "title": "Your message is ready",
       "body": "It will be delivered on the date you chose.\nYou can edit it anytime before then.",
-      "emotional": "Your words will be there when they matter most."
+      "emotional": "Your words will be there when they matter most.",
+      "dismiss": "Dismiss"
     },
     "createMessage": "Create Message",
     "messageCard": {

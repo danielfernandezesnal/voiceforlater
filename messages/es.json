@@ -380,7 +380,8 @@
     "success": {
       "title": "Tu mensaje ya está listo",
       "body": "Se va a entregar en la fecha que elegiste.\nPodés editarlo cuando quieras antes de ese momento.",
-      "emotional": "Tus palabras van a estar ahí cuando más importen."
+      "emotional": "Tus palabras van a estar ahí cuando más importen.",
+      "dismiss": "Cerrar"
     },
     "plan": {
       "title": "Mi Plan",

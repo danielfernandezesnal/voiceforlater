@@ -8,6 +8,7 @@ interface SuccessBannerProps {
         title: string;
         body: string;
         emotional: string;
+        dismiss: string;
     };
 }
 
@@ -25,7 +26,10 @@ export function SuccessBanner({ dictionary }: SuccessBannerProps) {
 
     function handleDismiss() {
         setVisible(false);
-        router.replace(pathname, { scroll: false });
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete('created');
+        const qs = params.toString();
+        router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
     }
 
     if (!visible) return null;
@@ -50,7 +54,7 @@ export function SuccessBanner({ dictionary }: SuccessBannerProps) {
                 <button
                     onClick={handleDismiss}
                     className="text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 mt-0.5"
-                    aria-label="Dismiss"
+                    aria-label={dictionary.dismiss}
                 >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
