@@ -66,6 +66,13 @@ export async function POST() {
             );
         }
 
+        // Clean up stale reminder tokens so future cycles don't skip due to idempotency
+        await supabase
+            .from("verification_tokens")
+            .delete()
+            .eq("user_id", user.id)
+            .in("action", ["user-checkin-reminder-2", "user-checkin-reminder-3"]);
+
         // Log the event
         await supabase.from("events").insert({
             type: "checkin_confirmed",

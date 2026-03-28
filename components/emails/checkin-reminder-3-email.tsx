@@ -86,7 +86,7 @@ export async function CheckinReminder3Email({
               </a>
             </p>
             <p>
-              <a href={dashboardUrl}>Dashboard</a> · <a href={supportUrl}>Soporte</a>
+              <a href={dashboardUrl}>{common.dashboardLink}</a> · <a href={supportUrl}>{common.supportLink}</a>
             </p>
           </div>
         </div>
@@ -105,12 +105,16 @@ export async function sendCheckinReminder3Email(toUserEmail: string, checkinUrl:
   }
 
   try {
-    const data = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: DEFAULT_SENDER,
       to: toUserEmail,
       subject: dict.emails.checkinReminder3.subject,
       react: await CheckinReminder3Email({ checkinUrl, locale }),
     });
+    if (error) {
+      console.error("Error sending Checkin Reminder 3:", error);
+      return { error };
+    }
     return { data };
   } catch (error) {
     console.error("Error sending Checkin Reminder 3:", error);
