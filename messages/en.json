@@ -821,7 +821,7 @@
       "body": {
         "line1": "Hi,",
         "line2": "We’ve tried reaching you several times, but haven’t received a response.",
-        "line3": "We want to respect your space, but we also have a responsibility to act if we can’t confirm you're okay.",
+        "line3": "To make sure everything is okay, we need your confirmation.",
         "line4": "If you're okay, you can confirm here:",
         "cta": "Confirm I'm okay",
         "footer": "If we’re unable to reach you, we’ll rely on the trusted person you selected.\n\nWith your confirmation, that won’t be necessary."
