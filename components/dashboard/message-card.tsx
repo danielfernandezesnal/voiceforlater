@@ -155,148 +155,69 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
         </>
     );
 
-    const ActionButtonsMobile = () => (
-        <>
-            <button
-                onClick={handleDelete}
-                disabled={isLoading}
-                className="text-sm font-medium px-4 py-[10px] rounded-lg bg-destructive/[0.07] text-destructive hover:bg-destructive/[0.13] transition-colors flex items-center gap-1.5"
-            >
-                {isLoading ? '...' : `🗑️ ${dict.common.delete}`}
-            </button>
-            <Link
-                href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`}
-                className="text-sm font-medium px-4 py-[10px] rounded-lg bg-foreground/[0.06] hover:bg-foreground/10 transition-colors flex items-center gap-1.5"
-            >
-                ✏️ {isDelivered ? dict.common.view : dict.common.edit}
-            </Link>
-        </>
-    );
-
-    // Desktop Layout Block
-    const DesktopLayout = (
-        <div className="hidden md:flex flex-row items-stretch border border-border/60 rounded-2xl bg-card shadow-sm w-full">
-            {/* Columna Izquierda - Metadata */}
-            <div className="w-[190px] shrink-0 border-r border-border/50 py-5 pr-5 pl-5 flex flex-col justify-center gap-0">
-                <div className="flex flex-col gap-[3px]">
-                    <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground">{labels?.to}</span>
-                    {visibleRecipients.map((r: any, i: number) => (
-                        <span key={i} className="text-sm font-medium text-foreground">{formatName(r.name)}</span>
-                    ))}
-                    {extraCount > 0 && (
-                        <span className="text-xs text-muted-foreground">+{extraCount} más</span>
-                    )}
-                </div>
-                <div className="border-t border-border/40 my-3" />
-                <div className="flex flex-col gap-[3px]">
-                    <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground">{labels?.created}</span>
-                    <span className="text-sm font-medium text-foreground">{createdDate}</span>
-                </div>
-                <div className="border-t border-border/40 my-3" />
-                <div className="flex flex-col gap-[3px]">
-                    <span className="text-[0.62rem] font-medium uppercase tracking-widest text-muted-foreground">{scheduledLabel}</span>
-                    <span className="text-sm font-medium text-foreground">{scheduledDate}</span>
-                </div>
-            </div>
-
-            {/* Columna Central - Contenido */}
-            <div className="flex-1 px-6 py-5 flex flex-col justify-center gap-2">
-                <BadgesRow />
-                <div className={`truncate max-w-[380px] mt-1 ${hasTitle ? 'font-serif font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
-                    {hasTitle ? message.title : contentFallback}
-                </div>
-                {deliveryMode === 'checkin' && hasTrusted && (
-                    <div className="flex items-center gap-1 mt-1 text-sm">
-                        <span className="text-muted-foreground">{labels?.contact}:</span>
-                        <span className="font-medium text-foreground truncate max-w-[280px]">
-                            {trustedList.map((c: any) => formatName(c.name)).join(', ')}
-                        </span>
-                    </div>
-                )}
-                <ContactAlert />
-            </div>
-
-            {/* Columna Derecha - Acciones */}
-            <div className="w-[100px] shrink-0 border-l border-border/50 py-5 px-4 flex flex-col justify-between items-end gap-3">
-                <ActionButtonsDesktop />
-            </div>
-        </div>
-    );
-
-    // Mobile Layout Block
-    const MobileLayout = (
-        <div className="flex md:hidden flex-col border border-border/60 rounded-[1rem] bg-card shadow-sm w-full">
-            {/* Bloque 1 - Header */}
-            <div className="p-3.5 pb-2.5 flex flex-col gap-2">
-                <BadgesRow />
-                <div className={`truncate max-w-[380px] mt-1 ${hasTitle ? 'font-serif font-semibold text-[0.95rem] text-foreground' : 'text-[0.85rem] italic text-muted-foreground'}`}>
-                    {hasTitle ? message.title : contentFallback}
-                </div>
-            </div>
-
-            {/* Bloque 2 - Metadatos (condensado, valores a la derecha) */}
-            <div className="px-3.5 py-2.5 flex flex-col gap-2 border-t border-border/30 bg-secondary/10">
-                <div className="flex justify-between items-baseline text-xs gap-4">
-                    <span className="font-semibold tracking-wide text-muted-foreground shrink-0">{labels?.to}</span>
-                    <div className="flex gap-1 text-foreground font-medium text-right overflow-hidden">
-                        <span className="truncate">{visibleRecipients.map((r: any) => formatName(r.name)).join(', ')}</span>
-                        {extraCount > 0 && <span className="text-muted-foreground shrink-0">+{extraCount}</span>}
-                    </div>
-                </div>
-                <div className="flex justify-between items-baseline text-xs gap-4">
-                    <span className="font-semibold tracking-wide text-muted-foreground shrink-0">{labels?.created}</span>
-                    <span className="font-medium text-foreground text-right">{createdDate}</span>
-                </div>
-                <div className="flex justify-between items-baseline text-xs gap-4">
-                    <span className="font-semibold tracking-wide text-muted-foreground shrink-0">{scheduledLabel}</span>
-                    <span className="font-medium text-foreground text-right">{scheduledDate}</span>
-                </div>
-                {deliveryMode === 'checkin' && hasTrusted && (
-                    <div className="flex justify-between items-baseline text-xs gap-4">
-                        <span className="font-semibold tracking-wide text-muted-foreground shrink-0">{labels?.contact}</span>
-                        <div className="flex gap-1 text-foreground font-medium text-right overflow-hidden">
-                            <span className="truncate">{trustedList.map((c: any) => formatName(c.name)).join(', ')}</span>
-                        </div>
-                    </div>
-                )}
-            </div>
-
-            {/* Bloque 3 - Alerta */}
-            {!hasTrusted && deliveryMode === 'checkin' && (
-                <div className="px-3.5 py-2.5 bg-[#FFF8E6] flex flex-col gap-0.5 border-t border-border/30">
-                    <div className="text-xs font-semibold text-[#8A6A00] flex items-center gap-1">
-                        ⚠️ {(dict.dashboard.messageCard as any).noContactAssigned}
-                    </div>
-                    <Link href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`} className="text-[0.65rem] font-bold text-primary underline cursor-pointer mt-0.5 w-fit">
-                        {(dict.dashboard.messageCard as any).addContactLong}
-                    </Link>
-                </div>
-            )}
-
-            {/* Bloque 4 - Acciones (Centrados, peso visual igual) */}
-            <div className="p-2 flex justify-center items-center gap-2 border-t border-border/30">
-                <button
-                    onClick={handleDelete}
-                    disabled={isLoading}
-                    className="flex-1 text-xs font-bold py-2.5 rounded-lg bg-destructive/[0.05] text-destructive hover:bg-destructive/[0.1] transition-colors flex items-center justify-center gap-1.5"
-                >
-                    {isLoading ? '...' : `🗑️ ${dict.common.delete}`}
-                </button>
-                <Link
-                    href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`}
-                    className="flex-1 text-xs font-bold py-2.5 rounded-lg bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08] transition-colors flex items-center justify-center gap-1.5"
-                >
-                    ✏️ {isDelivered ? dict.common.view : dict.common.edit}
-                </Link>
-            </div>
-        </div>
-    );
-
     return (
-        <>
-            {DesktopLayout}
-            {MobileLayout}
-        </>
+        <div className="border border-border/60 rounded-2xl bg-card shadow-sm w-full p-5">
+            <div className="flex items-start justify-between gap-4">
+                {/* Content stack */}
+                <div className="flex-1 min-w-0 flex flex-col gap-2">
+
+                    {/* Row 1 — Recipient + status badge */}
+                    <div className="flex flex-wrap items-center gap-2">
+                        <div className="flex flex-wrap gap-x-1">
+                            {visibleRecipients.map((r: any, i: number) => (
+                                <span key={i} className="text-lg font-semibold text-foreground leading-snug">{formatName(r.name)}</span>
+                            ))}
+                            {extraCount > 0 && (
+                                <span className="text-base text-muted-foreground">+{extraCount}</span>
+                            )}
+                        </div>
+                        {isSent ? (
+                            <span className="inline-flex items-center gap-1 px-3 py-1 text-xs rounded-full bg-[#34D399] text-white font-medium shadow-sm">
+                                <svg className="w-3 h-3 text-white fill-current" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
+                                {dict.dashboard.messageCard.status.delivered}
+                            </span>
+                        ) : (
+                            <span className={`inline-flex items-center px-2 py-1 text-xs rounded-full ${status === 'scheduled' ? 'bg-primary/10 text-primary' : status === 'delivered' ? 'bg-[#34D399] text-white' : 'bg-secondary text-muted-foreground'}`}>
+                                {dict.dashboard.messageCard.status[status as 'draft' | 'scheduled' | 'delivered']}
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Row 2 — Title */}
+                    <div className={`truncate ${hasTitle ? 'font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
+                        {hasTitle ? message.title : contentFallback}
+                    </div>
+
+                    {/* Row 3 — Delivery (prominent) */}
+                    <div className="text-sm font-medium text-foreground">
+                        <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
+                        {scheduledDate}
+                    </div>
+
+                    {/* Row 4 — Created (subtle) */}
+                    <div className="text-xs text-muted-foreground/70">
+                        {labels?.created}: {createdDate}
+                    </div>
+
+                    {/* Trusted contact info */}
+                    {deliveryMode === 'checkin' && hasTrusted && (
+                        <div className="flex items-center gap-1 text-sm">
+                            <span className="text-muted-foreground">{labels?.contact}:</span>
+                            <span className="font-medium text-foreground truncate">
+                                {trustedList.map((c: any) => formatName(c.name)).join(', ')}
+                            </span>
+                        </div>
+                    )}
+
+                    <ContactAlert />
+                </div>
+
+                {/* Actions — top-right */}
+                <div className="flex flex-col gap-2 shrink-0">
+                    <ActionButtonsDesktop />
+                </div>
+            </div>
+        </div>
     );
 }
 
