@@ -22,6 +22,7 @@ export function SuccessBanner({ dictionary }: SuccessBannerProps) {
 
     useEffect(() => {
         if (searchParams.get('created') === 'true') {
+            setIsFadingOut(false);
             setVisible(true);
         }
     }, [searchParams]);
