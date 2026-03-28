@@ -90,8 +90,8 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
         setError(null)
 
         try {
-            // Also notify server about ToS acceptance if they checked it (Requirement: audit record)
-            fetch('/api/tos/accept', {
+            // Record ToS acceptance before creating the message — the API validates tos_accepted_at
+            await fetch('/api/tos/accept', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ version: '1.0' })
