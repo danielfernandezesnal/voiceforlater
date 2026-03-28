@@ -201,21 +201,53 @@ export async function GET(request: NextRequest) {
                                 emailSent = true;
                             }
                         } else { // Reminder 1 (Day 0)
-                            const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/confirmar-actividad`;
-                            const { subject, html } = getCheckinInitialTemplate(
-                                dict as unknown as EmailDictionary,
-                                { confirmUrl }
-                            );
-                            const { error: sendError } = await resendClient.emails.send({
-                                from: DEFAULT_SENDER,
-                                to: userEmail,
-                                subject,
-                                html,
-                            });
+                            const { data: existingTokens } = await supabase
+                                .from("verification_tokens")
+                                .select("token_hash")
+                                .eq("user_id", userId)
+                                .eq("contact_email", userEmail)
+                                .eq("action", "user-checkin-reminder-1");
 
-                            if (sendError) {
-                                results.errors.push(`Email send failed for ${userEmail}: ${sendError.message}`);
+                            if (!existingTokens || existingTokens.length === 0) {
+                                const { tokenHash } = generateToken();
+                                const expiresAt = new Date(now);
+                                expiresAt.setHours(expiresAt.getHours() + TOKEN_EXPIRY_HOURS);
+
+                                const { error: tokenError } = await supabase
+                                    .from("verification_tokens")
+                                    .insert({
+                                        user_id: userId,
+                                        contact_email: userEmail,
+                                        token_hash: tokenHash,
+                                        expires_at: expiresAt.toISOString(),
+                                        action: "user-checkin-reminder-1",
+                                    });
+
+                                if (!tokenError) {
+                                    const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/confirmar-actividad`;
+                                    const { subject, html } = getCheckinInitialTemplate(
+                                        dict as unknown as EmailDictionary,
+                                        { confirmUrl }
+                                    );
+                                    const { error: sendError } = await resendClient.emails.send({
+                                        from: DEFAULT_SENDER,
+                                        to: userEmail,
+                                        subject,
+                                        html,
+                                    });
+
+                                    if (sendError) {
+                                        await supabase.from("verification_tokens").delete().eq("token_hash", tokenHash);
+                                        results.errors.push(`Email send failed for ${userEmail}: ${sendError.message}`);
+                                    } else {
+                                        emailSent = true;
+                                    }
+                                } else {
+                                    results.errors.push(`Token error for ${userEmail}: ${tokenError.message}`);
+                                }
                             } else {
+                                // Token exists from a prior run — email was previously sent.
+                                // State advance must have failed then; advance now to unblock.
                                 emailSent = true;
                             }
                         }
