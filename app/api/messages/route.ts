@@ -178,6 +178,20 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "At least one recipient is required" }, { status: 400 });
         }
 
+        // Disallow self as recipient for check-in (posthumous) messages
+        if (deliveryMode === "checkin" && user.email) {
+            const selfEmail = user.email.toLowerCase().trim();
+            const hasSelfRecipient = recipientsData.some(
+                (r) => r.email.toLowerCase().trim() === selfEmail
+            );
+            if (hasSelfRecipient) {
+                return NextResponse.json(
+                    { error: "You cannot send this message to yourself.", code: "SELF_RECIPIENT_NOT_ALLOWED" },
+                    { status: 400 }
+                );
+            }
+        }
+
         // Validate required fields
         if (!type || recipientsData.length === 0 || !deliveryMode || !title || title.trim().length === 0) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -511,6 +525,20 @@ export async function PUT(request: NextRequest) {
                 },
                 { status: 403 }
             );
+        }
+
+        // Disallow self as recipient for check-in (posthumous) messages
+        if (deliveryMode === "checkin" && user.email) {
+            const selfEmail = user.email.toLowerCase().trim();
+            const hasSelfRecipient = recipientsData.some(
+                (r) => r.email.toLowerCase().trim() === selfEmail
+            );
+            if (hasSelfRecipient) {
+                return NextResponse.json(
+                    { error: "You cannot send this message to yourself.", code: "SELF_RECIPIENT_NOT_ALLOWED" },
+                    { status: 400 }
+                );
+            }
         }
 
         // Validation
