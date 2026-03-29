@@ -829,23 +829,23 @@
       }
     },
     "checkinReminder2": {
-      "subject": "Seguimos sin saber de vos",
+      "subject": "Seguimos sin tener noticias tuyas",
       "body": {
         "line1": "Hola,",
         "line2": "Hace unos días intentamos contactarte, pero no recibimos respuesta.",
         "line3": "Sabemos que pueden pasar muchas cosas… pero también que a veces un simple gesto puede traer tranquilidad.",
-        "line4": "Si estás bien, podés confirmarlo en el siguiente enlace:",
+        "line4": "Si estás bien, puedes confirmarlo en el siguiente enlace:",
         "cta": "Confirmar que estoy bien",
-        "footer": "Si estás bien, con un solo click es suficiente.\n\nEsto ayuda a evitar que tengamos que contactar a otras personas por vos."
+        "footer": "Si estás bien, con un solo clic es suficiente.\n\nEsto ayuda a evitar que tengamos que contactar a otras personas por ti."
       }
     },
     "checkinReminder3": {
-      "subject": "Es importante que podamos saber de vos",
+      "subject": "Es importante que podamos saber de ti",
       "body": {
         "line1": "Hola,",
         "line2": "Intentamos contactarte en varias ocasiones, pero aún no recibimos respuesta.",
         "line3": "Para asegurarnos de que todo esté bien, necesitamos tu confirmación.",
-        "line4": "Si estás bien, podés confirmarlo en el siguiente enlace:",
+        "line4": "Si estás bien, puedes confirmarlo en el siguiente enlace:",
         "cta": "Confirmar que estoy bien",
         "footer": "En caso de no poder contactarte, nos apoyaremos en la persona de confianza que hayas elegido.\n\nCon tu confirmación, no será necesario."
       }
