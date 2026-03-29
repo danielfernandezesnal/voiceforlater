@@ -810,6 +810,17 @@
       "warning": "Si no respondes después de 3 intentos, contactaremos a tu(s) persona(s) de confianza.",
       "tagline": "Mensajes para cuando realmente importa."
     },
+    "checkinReminder1": {
+      "subject": "¿Estás bien?",
+      "body": {
+        "line1": "Hola,",
+        "line2": "Este es tu primer aviso de confirmación de actividad.",
+        "line3": "Tus mensajes siguen guardados y protegidos. Solo necesitamos saber que estás activo.",
+        "line4": "Si estás bien, puedes confirmarlo con un solo clic:",
+        "cta": "Confirmar que estoy bien",
+        "footer": "Si no puedes responder en este momento, no pasa nada.\nVolveremos a intentarlo más adelante."
+      }
+    },
     "checkinReminder2": {
       "subject": "Seguimos sin saber de vos",
       "body": {
