@@ -367,7 +367,7 @@ export async function POST(request: NextRequest) {
             const nextDue = new Date();
             nextDue.setDate(nextDue.getDate() + parseInt(checkinIntervalDays, 10));
 
-            await supabase.from("checkins").upsert(
+            const { error: checkinError } = await supabase.from("checkins").upsert(
                 {
                     user_id: user.id,
                     last_confirmed_at: new Date().toISOString(),
@@ -377,6 +377,13 @@ export async function POST(request: NextRequest) {
                 },
                 { onConflict: "user_id" }
             );
+
+            if (checkinError) {
+                console.error("Checkin upsert error:", checkinError);
+                await supabase.from("recipients").delete().eq("message_id", message.id);
+                await supabase.from("messages").delete().eq("id", message.id);
+                return NextResponse.json({ error: "Failed to initialize check-in record" }, { status: 500 });
+            }
         }
 
         const { error: deliveryError } = await supabase
