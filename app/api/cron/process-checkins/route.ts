@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isAuthorized } from "@/lib/cron-auth";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { DEFAULT_SENDER } from "@/lib/resend";
@@ -13,6 +14,9 @@ import { sendCheckinReminder3Email } from '@/components/emails/checkin-reminder-
 const REMINDER_SPACING_DAYS = 4;        // Day 0 → Day 4 → Day 8
 const OUTREACH_SPACING_DAYS = 3;        // Day 12 → Day 15
 const TOKEN_EXPIRY_HOURS = 72;          // Verification token valid for 3 days
+
+export const dynamic = "force-dynamic";
+export const runtime = 'nodejs';
 
 function generateToken() {
     const rawToken = crypto.randomBytes(32).toString('hex');
@@ -46,18 +50,8 @@ function getResendClient() {
  * { "crons": [{ "path": "/api/cron/process-checkins", "schedule": "0 9 * * *" }] }
  */
 export async function GET(request: NextRequest) {
-    const cronSecret = process.env.CRON_SECRET;
-    const authHeader = request.headers.get("authorization");
-    const customHeader = request.headers.get("x-cron-secret");
-    const isProduction = process.env.NODE_ENV === 'production';
-
-    if (isProduction || cronSecret) {
-        const authorized =
-            authHeader === `Bearer ${cronSecret}` ||
-            customHeader === cronSecret;
-        if (!authorized) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+    if (!isAuthorized(request)) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const supabase = getAdminClient();

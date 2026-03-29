@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isAuthorized } from "@/lib/cron-auth";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 import { getResend, DEFAULT_SENDER } from '@/lib/resend';
@@ -14,26 +15,16 @@ function getAdminClient() {
     );
 }
 
+export const dynamic = "force-dynamic";
+export const runtime = 'nodejs';
+
 /**
  * GET /api/cron/process-messages
  * Called by Vercel Cron to send scheduled messages
  */
 export async function GET(request: NextRequest) {
-    // Verify cron secret
-    const cronSecret = process.env.CRON_SECRET;
-    const authHeader = request.headers.get("authorization");
-    const customHeader = request.headers.get("x-cron-secret");
-
-    const isProduction = process.env.NODE_ENV === 'production';
-
-    if (isProduction || cronSecret) {
-        let authorized = false;
-        if (authHeader === `Bearer ${cronSecret}`) authorized = true;
-        if (customHeader === cronSecret) authorized = true;
-
-        if (!authorized) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+    if (!isAuthorized(request)) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const supabase = getAdminClient();
