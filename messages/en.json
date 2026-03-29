@@ -821,6 +821,17 @@
       "warning": "If you don't respond after 3 attempts, we'll contact your trusted contact.",
       "tagline": "Messages for when it really matters."
     },
+    "checkinReminder1": {
+      "subject": "Are you okay?",
+      "body": {
+        "line1": "Hi,",
+        "line2": "This is your first activity confirmation notice.",
+        "line3": "Your messages are still saved and protected. We just need to know you’re still active.",
+        "line4": "If you’re okay, you can confirm with a single click:",
+        "cta": "Confirm I’m okay",
+        "footer": "If you can’t respond right now, that’s okay.\nWe’ll check again later."
+      }
+    },
     "checkinReminder2": {
       "subject": "We haven’t heard from you",
       "body": {

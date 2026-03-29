@@ -6,7 +6,8 @@ import { DEFAULT_SENDER } from "@/lib/resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
 import crypto from 'crypto';
 import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
-import { getCheckinInitialTemplate, getTrustedContactNotifyTemplate, EmailDictionary } from '@/lib/email-templates';
+import { getTrustedContactNotifyTemplate, EmailDictionary } from '@/lib/email-templates';
+import { sendCheckinReminder1Email } from '@/components/emails/checkin-reminder-1-email';
 import { sendCheckinReminder2Email } from '@/components/emails/checkin-reminder-2-email';
 import { sendCheckinReminder3Email } from '@/components/emails/checkin-reminder-3-email';
 
@@ -219,20 +220,11 @@ export async function GET(request: NextRequest) {
 
                                 if (!tokenError) {
                                     const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/confirmar-actividad`;
-                                    const { subject, html } = getCheckinInitialTemplate(
-                                        dict as unknown as EmailDictionary,
-                                        { confirmUrl }
-                                    );
-                                    const { error: sendError } = await resendClient.emails.send({
-                                        from: DEFAULT_SENDER,
-                                        to: userEmail,
-                                        subject,
-                                        html,
-                                    });
+                                    const { error: sendError } = await sendCheckinReminder1Email(userEmail, confirmUrl, locale);
 
                                     if (sendError) {
                                         await supabase.from("verification_tokens").delete().eq("token_hash", tokenHash);
-                                        results.errors.push(`Email send failed for ${userEmail}: ${sendError.message}`);
+                                        results.errors.push(`Email send failed for ${userEmail}: ${String(sendError)}`);
                                     } else {
                                         emailSent = true;
                                     }
