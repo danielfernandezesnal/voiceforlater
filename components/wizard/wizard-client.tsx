@@ -203,7 +203,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                         maxAudioSeconds={maxAudioSeconds}
                     />
                 )}
-                {!isReadOnly && step === 3 && <Step3Recipient dictionary={dictionary.wizard.step3} />}
+                {!isReadOnly && step === 3 && <Step3Recipient dictionary={dictionary.wizard.step3} userEmail={userEmail} />}
                 {!isReadOnly && step === 4 && <Step4Delivery dictionary={dictionary} userPlan={userPlan} locale={locale} userEmail={userEmail} />}
                 {(step === 5 || isReadOnly) && (
                     <Step5Review

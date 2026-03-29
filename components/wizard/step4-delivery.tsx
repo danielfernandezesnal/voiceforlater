@@ -386,6 +386,10 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
     }, [data.deliverAt])
 
 
+    const ENABLE_TEST_INTERVALS = process.env.NEXT_PUBLIC_ENABLE_TEST_INTERVALS === 'true'
+    const BASE_INTERVALS = [30, 60, 90]
+    const intervals = ENABLE_TEST_INTERVALS ? [1, ...BASE_INTERVALS] : BASE_INTERVALS
+
     const handleIntervalChange = (e: ChangeEvent<HTMLSelectElement>) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         updateData({ checkinIntervalDays: Number(e.target.value) as any, deliveryMode: 'checkin' })
@@ -498,11 +502,14 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
                                                 onChange={handleIntervalChange}
                                                 className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all cursor-pointer"
                                             >
-                                                {/* All Options Available for All Plans */}
-                                                {/* <option value={7}>{step4Dict.checkin.days7 || '7 days'}</option> Removed per request */}
-                                                <option value={30}>{String(step4Dict.checkin.days30).replace('(Pro)', '').trim()}</option>
-                                                <option value={60}>{String(step4Dict.checkin.days60).replace('(Pro)', '').trim()}</option>
-                                                <option value={90}>{String(step4Dict.checkin.days90).replace('(Pro)', '').trim()}</option>
+                                                {intervals.map(days => {
+                                                    const key = days === 1 ? '1_test' : String(days)
+                                                    return (
+                                                        <option key={days} value={days}>
+                                                            {(step4Dict.checkin as any).intervals?.[key] ?? `${days}d`}
+                                                        </option>
+                                                    )
+                                                })}
                                             </select>
                                         </div>
 
