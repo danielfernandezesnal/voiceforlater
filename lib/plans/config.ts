@@ -92,7 +92,9 @@ export function canUseTrustedContact(plan: Plan): boolean {
  */
 export function isCheckinIntervalAllowed(plan: Plan, intervalDays: number): boolean {
     const limits = getPlanLimits(plan);
-    return limits.allowedCheckinIntervals.includes(intervalDays);
+    const enableTestIntervals = process.env.ENABLE_TEST_INTERVALS === 'true';
+    const allowed = enableTestIntervals ? [1, ...limits.allowedCheckinIntervals] : limits.allowedCheckinIntervals;
+    return allowed.includes(intervalDays);
 }
 
 /**
