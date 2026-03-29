@@ -13,10 +13,12 @@ interface Step3Props {
         addRecipient?: string
         recipientN?: string
         posthumousContactWarning?: string
+        selfRecipientError?: string
     }
+    userEmail?: string
 }
 
-export function Step3Recipient({ dictionary }: Step3Props) {
+export function Step3Recipient({ dictionary, userEmail }: Step3Props) {
     const { data, updateData } = useWizard()
     const recipients = data.recipients
 
@@ -79,6 +81,12 @@ export function Step3Recipient({ dictionary }: Step3Props) {
                                 placeholder={dictionary.emailPlaceholder}
                                 className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent transition-all placeholder:text-muted-foreground"
                             />
+                            {data.deliveryMode === 'checkin' &&
+                                userEmail &&
+                                recipient.email.toLowerCase().trim() === userEmail.toLowerCase().trim() &&
+                                dictionary.selfRecipientError && (
+                                <p className="mt-1.5 text-sm text-destructive">{dictionary.selfRecipientError}</p>
+                            )}
                         </div>
                     </div>
                 ))}

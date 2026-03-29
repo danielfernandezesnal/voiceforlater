@@ -484,7 +484,8 @@
       "emailPlaceholder": "juan@ejemplo.com",
       "addRecipient": "Agregar destinatario",
       "recipientN": "Destinatario {n}",
-      "posthumousContactWarning": "⚠️ Este tipo de mensaje requiere un contacto de confianza. Podrás asignarlo en el paso siguiente."
+      "posthumousContactWarning": "⚠️ Este tipo de mensaje requiere un contacto de confianza. Podrás asignarlo en el paso siguiente.",
+      "selfRecipientError": "No puedes enviarte este mensaje a ti mismo. Elige a alguien más como destinatario."
     },
     "step4": {
       "title": "¿Cuándo quieres que se entregue?",

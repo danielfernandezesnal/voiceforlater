@@ -488,7 +488,8 @@
       "emailPlaceholder": "john@example.com",
       "addRecipient": "Add recipient",
       "recipientN": "Recipient {n}",
-      "posthumousContactWarning": "⚠️ This message type requires a trusted contact. You'll be able to assign one in the next step."
+      "posthumousContactWarning": "⚠️ This message type requires a trusted contact. You'll be able to assign one in the next step.",
+      "selfRecipientError": "You cannot send this message to yourself. Please choose someone else as a recipient."
     },
     "step4": {
       "title": "When should this message be delivered?",
