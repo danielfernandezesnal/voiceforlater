@@ -510,6 +510,12 @@
         "days30": "Every 30 days",
         "days60": "Every 60 days",
         "days90": "Every 90 days",
+        "intervals": {
+          "1_test": "1 day (for testing)",
+          "30": "30 days",
+          "60": "60 days",
+          "90": "90 days"
+        },
         "freeNote": "Free plan: 7-day interval with 1 reminder. Upgrade to Pro for longer intervals and trusted contact.",
         "trustedContacts": "Trusted Contacts",
         "freeLimit": "Free Limit: 1",

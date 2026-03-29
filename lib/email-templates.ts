@@ -210,10 +210,13 @@ export const getMagicLinkTemplate = (dict: EmailDictionary, data: { magicLink: s
               <p style="font-size:13px;line-height:1.6;color:#9B8B7E;margin:0 0 32px 0;text-align:center;">
                 ${t.secondary}
               </p>
-              <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
-              <p style="margin:0;font-family:sans-serif;font-size:11px;font-weight:600;letter-spacing:0.12em;color:#C4623A;text-align:center;text-transform:uppercase;">
-                ${t.tagline}
-              </p>
+              <div style="text-align:center;padding:24px 0;">
+                <div style="height:1px;background:#EAE4D9;margin-bottom:16px;"></div>
+                <p style="margin:0;font-family:sans-serif;font-size:11px;font-weight:600;letter-spacing:0.12em;color:#C4623A;text-align:center;text-transform:uppercase;">
+                  ${t.tagline}
+                </p>
+                <div style="height:1px;background:#EAE4D9;margin-top:16px;"></div>
+              </div>
             </td>
           </tr>
           <!-- FOOTER -->
