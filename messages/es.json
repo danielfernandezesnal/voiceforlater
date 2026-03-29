@@ -507,6 +507,12 @@
         "days30": "Cada 30 días",
         "days60": "Cada 60 días",
         "days90": "Cada 90 días",
+        "intervals": {
+          "1_test": "1 día (para prueba)",
+          "30": "30 días",
+          "60": "60 días",
+          "90": "90 días"
+        },
         "freeNote": "Plan Free: intervalo de 7 días con 1 recordatorio. Actualiza a Pro para intervalos más largos y contacto de confianza.",
         "trustedContacts": "Contactos de confianza",
         "freeLimit": "Límite Free: 1",
