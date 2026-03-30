@@ -48,8 +48,8 @@ export async function MagicLinkEmail({
       <body>
         <div className="email-wrapper">
           <div className="top-header">
-            <div className="logo-title">{common.footerSignature}</div>
-            <div className="logo-subtitle">{common.tagline}</div>
+            <div className="logo-title"><a href="https://carrymywords.com" style={{ color: 'inherit', textDecoration: 'none' }}>{common.footerSignature}</a></div>
+            <div className="logo-subtitle">MENSAJES QUE VIAJAN EN EL TIEMPO</div>
           </div>
           <div className="card">
             <div className="hero">
@@ -81,24 +81,20 @@ export async function MagicLinkEmail({
             </div>
             <div className="sign-off">
               <hr />
-              <p>{t.ignore}</p>
-              <p style={{ margin: '32px 0 0', fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '14px', color: '#C4623A', textAlign: 'center' }}>
-                {t.tagline}
-              </p>
             </div>
           </div>
           <div className="footer">
-            <div className="footer-logo" style={{ marginBottom: '8px' }}>{common.footerSignature}</div>
-            <p style={{ marginBottom: '8px' }}>
-              <a href="https://carrymywords.com" style={{ color: '#8a7a6a', textDecoration: 'none' }}>
-                {common.externalFooter}
-              </a>
-            </p>
             <p style={{ marginTop: '20px', opacity: 0.75 }}>
               {t.linkFallback}<br />
               <a href={magicLink} style={{ color: '#8a7a6a', wordBreak: 'break-all' }}>{magicLink}</a>
             </p>
+            <p style={{ margin: '20px 0 0', fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '13px', color: '#C4623A', textAlign: 'center', opacity: 0.8 }}>
+              {t.tagline}
+            </p>
           </div>
+          <p style={{ fontSize: '11px', color: '#9B8B7E', textAlign: 'center', marginTop: '20px' }}>
+            {t.ignore}
+          </p>
         </div>
       </body>
     </html>
