@@ -2,10 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { getDictionary } from '@/lib/i18n';
 import { 
-    getMagicLinkTemplate, 
-    getMessageDeliveryTemplate, 
-    getCheckinReminderTemplate, 
-    getTrustedContactVerifyTemplate, 
+    getMagicLinkTemplate,
+    getMessageDeliveryTemplate,
+    getTrustedContactVerifyTemplate,
     getTrustedContactInvitationTemplate,
     getResetPasswordTemplate,
     getPaymentFailedTemplate,
@@ -39,10 +38,6 @@ export async function GET(request: NextRequest) {
         {
             name: 'Message Delivery',
             ...getMessageDeliveryTemplate(dict, { contentHtml: "<p>Contenido de prueba</p>", magicLink: dummyLink, senderName: "Juan Pérez" })
-        },
-        {
-            name: 'Check-in Reminder',
-            ...getCheckinReminderTemplate(dict, { attempts: 1, confirmUrl: 'https://carrymywords.com/confirmar-actividad' })
         },
         {
             name: 'Trusted Contact Verify',

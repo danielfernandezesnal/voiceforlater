@@ -808,15 +808,6 @@
       "secondary": "Si no podés responder en este momento, no pasa nada.\nVolveremos a intentarlo más adelante.",
       "tagline": "Mensajes para cuando realmente importa."
     },
-    "checkinReminder": {
-      "subject": "⏰ Recordatorio de check-in - Carry my Words",
-      "title": "¡Es hora de reportarse!",
-      "intro": "Tu check-in programado está vencido. Por favor confirma que estás activo.",
-      "attempt": "Intento {attempt} de 3",
-      "button": "Confirmar Actividad",
-      "warning": "Si no respondes después de 3 intentos, contactaremos a tu(s) persona(s) de confianza.",
-      "tagline": "Mensajes para cuando realmente importa."
-    },
     "checkinReminder1": {
       "subject": "¿Estás bien?",
       "body": {

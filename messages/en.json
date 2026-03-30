@@ -812,15 +812,6 @@
       "secondary": "If you can't respond right now, that's okay.\nWe'll check again later.",
       "tagline": "Messages for when it really matters."
     },
-    "checkinReminder": {
-      "subject": "⏰ Check-in reminder - Carry my Words",
-      "title": "Time to check in!",
-      "intro": "Your scheduled check-in is overdue. Please confirm you're still active.",
-      "attempt": "Attempt {attempt} of 3",
-      "button": "Confirm I'm Active",
-      "warning": "If you don't respond after 3 attempts, we'll contact your trusted contact.",
-      "tagline": "Messages for when it really matters."
-    },
     "checkinReminder1": {
       "subject": "Are you okay?",
       "body": {
