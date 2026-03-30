@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { getDictionary } from '@/lib/i18n';
-import { 
-    getMagicLinkTemplate,
+import {
     getMessageDeliveryTemplate,
     getTrustedContactVerifyTemplate,
     getTrustedContactInvitationTemplate,
@@ -12,6 +11,7 @@ import {
     getMessagePosthumousTemplate,
     EmailDictionary
 } from '@/lib/email-templates';
+import { sendMagicLinkEmail } from '@/components/emails/magic-link-email';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,11 +26,15 @@ export async function GET(request: NextRequest) {
     const results: any[] = [];
     const dummyLink = 'https://carrymywords.com/auth/callback?token=abc';
 
+    // Magic Link uses the React component system
+    try {
+        const { data, error } = await sendMagicLinkEmail(targetEmail, dummyLink, 'es', false);
+        results.push({ name: 'Magic Link', success: !error, id: (data as any)?.id, error });
+    } catch (e: any) {
+        results.push({ name: 'Magic Link', success: false, error: e.message });
+    }
+
     const templates = [
-        {
-            name: 'Magic Link',
-            ...getMagicLinkTemplate(dict, { magicLink: dummyLink, isAdminLogin: false })
-        },
         {
             name: 'Reset Password',
             ...getResetPasswordTemplate(dict, { resetLink: dummyLink })

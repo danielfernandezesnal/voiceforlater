@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { trackEmail } from '@/lib/email-tracking';
-import { getDictionary, Locale } from '@/lib/i18n';
-import { getMagicLinkTemplate, EmailDictionary } from '@/lib/email-templates';
+import { Locale } from '@/lib/i18n';
+import { sendMagicLinkEmail } from '@/components/emails/magic-link-email';
 
 export const dynamic = 'force-dynamic';
 
@@ -50,18 +49,12 @@ export async function POST(request: NextRequest) {
     const recipientEmail = isAdminLogin ? ADMIN_OWNER_EMAIL : email;
 
     // Send email via Resend
-    const resend = getResend();
-    const sender = DEFAULT_SENDER;
-
-    const dict = await getDictionary((locale || 'en') as Locale);
-    const { subject: emailSubject, html: emailBody } = getMagicLinkTemplate(dict as unknown as EmailDictionary, { magicLink, isAdminLogin });
-
-    const { data: emailData, error: emailError } = await resend.emails.send({
-      from: sender,
-      to: recipientEmail,
-      subject: emailSubject,
-      html: emailBody,
-    });
+    const { data: emailData, error: emailError } = await sendMagicLinkEmail(
+      recipientEmail,
+      magicLink,
+      (locale || 'en') as Locale,
+      isAdminLogin,
+    );
 
     if (emailError) {
       console.error('Error sending email:', emailError);
@@ -72,7 +65,7 @@ export async function POST(request: NextRequest) {
         toEmail: recipientEmail,
         emailType: 'magic_link',
         status: 'failed',
-        errorMessage: emailError.message || 'Unknown error',
+        errorMessage: (emailError as any)?.message || String(emailError) || 'Unknown error',
       });
 
       return NextResponse.json({
