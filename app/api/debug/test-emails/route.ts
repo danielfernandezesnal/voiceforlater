@@ -12,6 +12,7 @@ import {
 } from '@/lib/email-templates';
 import { sendMagicLinkEmail } from '@/components/emails/magic-link-email';
 import { sendResetPasswordEmail } from '@/components/emails/reset-password-email';
+import { sendTrustedContactNotificationEmail } from '@/components/emails/trusted-contact-notification-email';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,6 +40,13 @@ export async function GET(request: NextRequest) {
         results.push({ name: 'Reset Password', success: !error, id: (data as any)?.id, error });
     } catch (e: any) {
         results.push({ name: 'Reset Password', success: false, error: e.message });
+    }
+
+    try {
+        const { data, error } = await sendTrustedContactNotificationEmail(targetEmail, "Juan", dummyLink, 'es');
+        results.push({ name: 'Trusted Contact Notification', success: !error, id: (data as any)?.id, error });
+    } catch (e: any) {
+        results.push({ name: 'Trusted Contact Notification', success: false, error: e.message });
     }
 
     const templates = [

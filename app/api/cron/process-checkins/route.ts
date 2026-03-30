@@ -6,10 +6,10 @@ import { DEFAULT_SENDER } from "@/lib/resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
 import crypto from 'crypto';
 import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
-import { getTrustedContactNotifyTemplate, EmailDictionary } from '@/lib/email-templates';
 import { sendCheckinReminder1Email } from '@/components/emails/checkin-reminder-1-email';
 import { sendCheckinReminder2Email } from '@/components/emails/checkin-reminder-2-email';
 import { sendCheckinReminder3Email } from '@/components/emails/checkin-reminder-3-email';
+import { sendTrustedContactNotificationEmail } from '@/components/emails/trusted-contact-notification-email';
 
 // Timing constants (in days)
 const REMINDER_SPACING_DAYS = 4;        // Day 0 → Day 4 → Day 8
@@ -379,17 +379,13 @@ export async function GET(request: NextRequest) {
                 }
 
                 const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/verify-status?token=${rawToken}`;
-                const { subject, html } = getTrustedContactNotifyTemplate(
-                    dict as unknown as EmailDictionary,
-                    { senderName, verifyUrl }
+                
+                const { error: sendError } = await sendTrustedContactNotificationEmail(
+                    nextContact.email,
+                    senderName,
+                    verifyUrl,
+                    locale
                 );
-
-                const { error: sendError } = await resendClient.emails.send({
-                    from: DEFAULT_SENDER,
-                    to: nextContact.email,
-                    subject,
-                    html,
-                });
 
                 if (sendError) {
                     // Roll back token so this contact is not permanently skipped on future runs
@@ -397,7 +393,7 @@ export async function GET(request: NextRequest) {
                         .from("verification_tokens")
                         .delete()
                         .eq("token_hash", tokenHash);
-                    results.errors.push(`Email send failed for ${nextContact.email}: ${sendError.message}`);
+                    results.errors.push(`Email send failed for ${nextContact.email}: ${String(sendError)}`);
                     continue; // don't advance state
                 }
 
