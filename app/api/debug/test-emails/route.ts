@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
         },
         {
             name: 'Payment Failed',
-            ...getPaymentFailedTemplate(dict)
+            ...getPaymentFailedTemplate(dict, { dashboardUrl: 'https://carrymywords.com/es/dashboard' })
         },
         {
             name: 'Special Message',
