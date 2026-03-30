@@ -2,6 +2,7 @@ import * as React from 'react';
 import { getDictionary, Locale } from '@/lib/i18n';
 import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { checkinReminderStyles } from './_shared/checkin-reminder-layout';
+import { render } from '@react-email/render';
 
 export interface TrustedContactNotificationEmailProps {
   senderName: string;
@@ -97,7 +98,7 @@ export async function sendTrustedContactNotificationEmail(
       from: DEFAULT_SENDER,
       to: toEmail,
       subject,
-      react: await TrustedContactNotificationEmail({ senderName, verifyUrl, locale }),
+      html: await render(await TrustedContactNotificationEmail({ senderName, verifyUrl, locale })),
     });
     if (error) {
       console.error("Error sending Trusted Contact Notification email:", error);
