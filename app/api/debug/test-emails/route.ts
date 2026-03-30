@@ -33,49 +33,49 @@ export async function GET(request: NextRequest) {
     // React-based emails
     try {
         const { data, error } = await sendMagicLinkEmail(targetEmail, dummyLink, 'es', false);
-        results.push({ name: 'Magic Link', success: !error, id: (data as any)?.id, error });
+        results.push({ name: 'Magic Link', success: !error, id: (data as any)?.id, error: error ? String((error as any)?.message || error) : null });
     } catch (e: any) {
         results.push({ name: 'Magic Link', success: false, error: e.message });
     }
 
     try {
         const { data, error } = await sendResetPasswordEmail(targetEmail, dummyLink, 'es');
-        results.push({ name: 'Reset Password', success: !error, id: (data as any)?.id, error });
+        results.push({ name: 'Reset Password', success: !error, id: (data as any)?.id, error: error ? String((error as any)?.message || error) : null });
     } catch (e: any) {
         results.push({ name: 'Reset Password', success: false, error: e.message });
     }
 
     try {
         const { data, error } = await sendTrustedContactNotificationEmail(targetEmail, "Juan", dummyLink, 'es');
-        results.push({ name: 'Trusted Contact Notification', success: !error, id: (data as any)?.id, error });
+        results.push({ name: 'Trusted Contact Notification', success: !error, id: (data as any)?.id, error: error ? String((error as any)?.message || error) : null });
     } catch (e: any) {
         results.push({ name: 'Trusted Contact Notification', success: false, error: e.message });
     }
 
     try {
         const { data, error } = await sendMessageDeliveryEmail(targetEmail, dummyLink, "Juan Pérez", "Juan", 'es');
-        results.push({ name: 'Message Delivery', success: !error, id: (data as any)?.id, error });
+        results.push({ name: 'Message Delivery', success: !error, id: (data as any)?.id, error: error ? String((error as any)?.message || error) : null });
     } catch (e: any) {
         results.push({ name: 'Message Delivery', success: false, error: e.message });
     }
 
     try {
         const { data, error } = await sendCheckinReminder1Email(targetEmail, dummyLink, 'es');
-        results.push({ name: 'Checkin Reminder 1', success: !error, id: (data as any)?.id, error });
+        results.push({ name: 'Checkin Reminder 1', success: !error, id: (data as any)?.id, error: error ? String((error as any)?.message || error) : null });
     } catch (e: any) {
         results.push({ name: 'Checkin Reminder 1', success: false, error: e.message });
     }
 
     try {
         const { data, error } = await sendCheckinReminder2Email(targetEmail, dummyLink, 'es');
-        results.push({ name: 'Checkin Reminder 2', success: !error, id: (data as any)?.id, error });
+        results.push({ name: 'Checkin Reminder 2', success: !error, id: (data as any)?.id, error: error ? String((error as any)?.message || error) : null });
     } catch (e: any) {
         results.push({ name: 'Checkin Reminder 2', success: false, error: e.message });
     }
 
     try {
         const { data, error } = await sendCheckinReminder3Email(targetEmail, dummyLink, 'es');
-        results.push({ name: 'Checkin Reminder 3', success: !error, id: (data as any)?.id, error });
+        results.push({ name: 'Checkin Reminder 3', success: !error, id: (data as any)?.id, error: error ? String((error as any)?.message || error) : null });
     } catch (e: any) {
         results.push({ name: 'Checkin Reminder 3', success: false, error: e.message });
     }
