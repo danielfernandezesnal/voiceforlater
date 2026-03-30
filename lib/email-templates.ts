@@ -939,7 +939,7 @@ export const getResetPasswordTemplate = (dict: EmailDictionary, data: { resetLin
   return { subject: t.subject, html };
 };
 
-export const getPaymentFailedTemplate = (dict: EmailDictionary) => {
+export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { dashboardUrl: string }) => {
   const t = dict.emails.paymentFailed;
   const html = `
 <!DOCTYPE html>
@@ -989,7 +989,7 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary) => {
                   <table width="100%" cellpadding="0" cellspacing="0">
                     <tr>
                       <td align="center" style="padding:8px 0 24px;">
-                        <a href="https://carrymywords.com/dashboard" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
+                        <a href="${data.dashboardUrl}" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
                           ${t.action}
                         </a>
                       </td>

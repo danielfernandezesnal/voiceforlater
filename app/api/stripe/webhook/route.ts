@@ -6,6 +6,7 @@ import { getResourceId, mapSubscriptionToPlan } from "@/lib/stripe/utils";
 import { getResend, DEFAULT_SENDER } from "@/lib/resend";
 import { getPaymentFailedTemplate } from "@/lib/email-templates";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { isValidLocale } from "@/lib/i18n";
 
 // Use service role for webhook operations (bypasses RLS)
 function getAdminSupabase() {
@@ -339,7 +340,7 @@ export async function POST(request: NextRequest) {
 
                 const { data: profile } = await supabase
                     .from("profiles")
-                    .select("id, email")
+                    .select("id, email, locale")
                     .eq("stripe_customer_id", customerId)
                     .single();
 
@@ -369,9 +370,13 @@ export async function POST(request: NextRequest) {
                     try {
                         const email = profile.email;
                         if (email) {
-                            const dict = await getDictionary('es'); // Fallback locale
+                            const localeRaw = (profile as any).locale;
+                            const locale = (localeRaw && isValidLocale(localeRaw)) ? localeRaw : 'en';
+                            const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://carrymywords.com').replace(/\/$/, '');
+                            const dashboardUrl = `${baseUrl}/${locale}/dashboard`;
+                            const dict = await getDictionary(locale);
                             const resend = getResend();
-                            const { subject, html } = getPaymentFailedTemplate(dict);
+                            const { subject, html } = getPaymentFailedTemplate(dict, { dashboardUrl });
 
                             await resend.emails.send({
                                 from: DEFAULT_SENDER,
