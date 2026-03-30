@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { getDictionary } from '@/lib/i18n';
 import {
-    getMessageDeliveryTemplate,
     getTrustedContactVerifyTemplate,
     getTrustedContactInvitationTemplate,
     getPaymentFailedTemplate,
@@ -13,6 +12,7 @@ import {
 import { sendMagicLinkEmail } from '@/components/emails/magic-link-email';
 import { sendResetPasswordEmail } from '@/components/emails/reset-password-email';
 import { sendTrustedContactNotificationEmail } from '@/components/emails/trusted-contact-notification-email';
+import { sendMessageDeliveryEmail } from '@/components/emails/message-delivery-email';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,11 +49,14 @@ export async function GET(request: NextRequest) {
         results.push({ name: 'Trusted Contact Notification', success: false, error: e.message });
     }
 
+    try {
+        const { data, error } = await sendMessageDeliveryEmail(targetEmail, dummyLink, "Juan Pérez", "Juan", 'es');
+        results.push({ name: 'Message Delivery', success: !error, id: (data as any)?.id, error });
+    } catch (e: any) {
+        results.push({ name: 'Message Delivery', success: false, error: e.message });
+    }
+
     const templates = [
-        {
-            name: 'Message Delivery',
-            ...getMessageDeliveryTemplate(dict, { contentHtml: "<p>Contenido de prueba</p>", magicLink: dummyLink, senderName: "Juan Pérez" })
-        },
         {
             name: 'Trusted Contact Verify',
             ...getTrustedContactVerifyTemplate(dict, { contactFirstName: "María", senderFirstName: "Daniel", verifyUrl: dummyLink })

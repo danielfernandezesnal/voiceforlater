@@ -1,8 +1,7 @@
 
 import { createClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
-import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
-import { getMessageDeliveryTemplate, EmailDictionary } from "@/lib/email-templates";
+import { isValidLocale, Locale } from '@/lib/i18n';
+import { sendMessageDeliveryEmail } from '@/components/emails/message-delivery-email';
 
 // Helper to get admin client
 function getAdminClient() {
@@ -12,13 +11,6 @@ function getAdminClient() {
     );
 }
 
-// Helper to get Resend client
-function getResendClient() {
-    if (!process.env.RESEND_API_KEY) {
-        return null;
-    }
-    return new Resend(process.env.RESEND_API_KEY);
-}
 
 /**
  * Releases all eligible check-in messages for a given user.
@@ -28,7 +20,6 @@ function getResendClient() {
  */
 export async function releaseCheckinMessages(userId: string) {
     const supabase = getAdminClient();
-    const resend = getResendClient();
 
     // 1. Get user locale
     const { data: profile } = await supabase
@@ -100,15 +91,9 @@ export async function releaseCheckinMessages(userId: string) {
                 continue;
             }
 
-            if (!resend) {
-                results.errors.push(`Resend client not initialized`);
-                break;
-            }
-
             try {
                 const localeRaw = locale || 'en';
                 const validLocale = (isValidLocale(localeRaw) ? localeRaw : 'en') as Locale;
-                const dict = await getDictionary(validLocale);
 
                 // Generate magic link for recipient
                 const { data: linkData } = await supabase.auth.admin.generateLink({
@@ -127,15 +112,19 @@ export async function releaseCheckinMessages(userId: string) {
 
                 const magicLink = linkData.properties.action_link;
 
-                // Use template
-                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml: "", magicLink, senderName });
+                // Use React email component
+                const { error: sendError } = await sendMessageDeliveryEmail(
+                    recipient.email,
+                    magicLink,
+                    senderName,
+                    senderFirstName,
+                    validLocale
+                );
 
-                await resend.emails.send({
-                    from: `${senderFirstName} via Carry my Words <no-reply@voiceforlater.com>`,
-                    to: recipient.email,
-                    subject: template.subject,
-                    html: template.html
-                });
+                if (sendError) {
+                    results.errors.push(`Message ${message.id}: Send failed`);
+                    continue;
+                }
 
                 // Update status to delivered
                 const { error: updateError } = await supabase
