@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthorized } from "@/lib/cron-auth";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
-import { getResend, DEFAULT_SENDER } from '@/lib/resend';
-import { trackEmail } from '@/lib/email-tracking';
-import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
-import { getMessageDeliveryTemplate, EmailDictionary } from '@/lib/email-templates';
+import { isValidLocale, Locale } from '@/lib/i18n';
+import { sendMessageDeliveryEmail } from '@/components/emails/message-delivery-email';
 
 // Use service role for admin operations (bypass RLS)
 function getAdminClient() {
@@ -28,7 +25,6 @@ export async function GET(request: NextRequest) {
     }
 
     const supabase = getAdminClient();
-    const resend = getResend();
     const now = new Date().toISOString();
 
     const results = {
@@ -84,15 +80,10 @@ export async function GET(request: NextRequest) {
                 continue;
             }
 
-            if (!resend) {
-                results.errors.push(`Resend client not initialized`);
-                break;
-            }
 
             try {
                 const localeRaw = profile?.locale || 'en';
                 const locale = (isValidLocale(localeRaw) ? localeRaw : 'en') as Locale;
-                const dict = await getDictionary(locale);
 
                 // Generate magic link for recipient
                 const { data: linkData } = await supabase.auth.admin.generateLink({
@@ -111,15 +102,19 @@ export async function GET(request: NextRequest) {
 
                 const magicLink = linkData.properties.action_link;
 
-                // Use template
-                const template = getMessageDeliveryTemplate(dict as unknown as EmailDictionary, { contentHtml: "", magicLink, senderName });
+                // Use React email component
+                const { error: sendError } = await sendMessageDeliveryEmail(
+                    recipient.email,
+                    magicLink,
+                    senderName,
+                    senderFirstName,
+                    locale
+                );
 
-                await resend.emails.send({
-                    from: `${senderFirstName} via Carry my Words <no-reply@voiceforlater.com>`,
-                    to: recipient.email,
-                    subject: template.subject,
-                    html: template.html
-                });
+                if (sendError) {
+                    results.errors.push(`Message ${message.id}: Send failed`);
+                    continue;
+                }
 
                 // Update status to delivered
                 await supabase
