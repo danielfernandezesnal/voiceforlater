@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { getResend } from '@/lib/resend';
 import { ADMIN_EMAIL } from '@/lib/constants';
-import { getDictionary } from '@/lib/i18n/dictionaries';
-import { getResetPasswordTemplate, EmailDictionary } from '@/lib/email-templates';
+import { Locale } from '@/lib/i18n';
+import { sendResetPasswordEmail } from '@/components/emails/reset-password-email';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,19 +34,8 @@ export async function POST(request: NextRequest) {
         const resetLink = linkData.properties.action_link;
 
         // 2. Send email with reset link
-        const dict = await getDictionary(locale) as unknown as EmailDictionary;
-        const { subject, html } = getResetPasswordTemplate(dict, { resetLink });
-
-        const resend = getResend();
-        const sender = 'Carry my Words <hola@carrymywords.com>'; // Standardized sender
         const recipientEmail = email === ADMIN_EMAIL ? 'danielfernandezesnal@gmail.com' : email;
-
-        await resend.emails.send({
-            from: sender,
-            to: recipientEmail,
-            subject,
-            html
-        });
+        await sendResetPasswordEmail(recipientEmail, resetLink, locale as Locale);
 
         return NextResponse.json({ success: true });
 
