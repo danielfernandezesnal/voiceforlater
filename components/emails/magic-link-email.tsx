@@ -2,6 +2,7 @@ import * as React from 'react';
 import { getDictionary, Locale } from '@/lib/i18n';
 import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { checkinReminderStyles } from './_shared/checkin-reminder-layout';
+import { render } from '@react-email/render';
 
 export interface MagicLinkEmailProps {
   magicLink: string;
@@ -113,7 +114,7 @@ export async function sendMagicLinkEmail(
       from: DEFAULT_SENDER,
       to: toEmail,
       subject,
-      react: await MagicLinkEmail({ magicLink, locale, isAdminLogin }),
+      html: await render(await MagicLinkEmail({ magicLink, locale, isAdminLogin })),
     });
     if (error) {
       console.error("Error sending Magic Link email:", error);

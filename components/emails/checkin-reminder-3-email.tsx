@@ -2,6 +2,7 @@ import * as React from 'react';
 import { getDictionary, Locale } from '@/lib/i18n';
 import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { CheckinReminderLayout } from './_shared/checkin-reminder-layout';
+import { render } from '@react-email/render';
 
 export interface CheckinReminder3EmailProps {
   checkinUrl: string;
@@ -46,7 +47,7 @@ export async function sendCheckinReminder3Email(toUserEmail: string, checkinUrl:
       from: DEFAULT_SENDER,
       to: toUserEmail,
       subject: dict.emails.checkinReminder3.subject,
-      react: await CheckinReminder3Email({ checkinUrl, locale }),
+      html: await render(await CheckinReminder3Email({ checkinUrl, locale })),
     });
     if (error) {
       console.error("Error sending Checkin Reminder 3:", error);

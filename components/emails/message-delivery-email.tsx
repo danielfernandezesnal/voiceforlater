@@ -2,6 +2,7 @@ import * as React from 'react';
 import { getDictionary, Locale } from '@/lib/i18n';
 import { getResend } from '@/lib/resend';
 import { checkinReminderStyles } from './_shared/checkin-reminder-layout';
+import { render } from '@react-email/render';
 
 export interface MessageDeliveryEmailProps {
   magicLink: string;
@@ -128,7 +129,7 @@ export async function sendMessageDeliveryEmail(
       from: `${senderFirstName} via Carry my Words <no-reply@voiceforlater.com>`,
       to: toEmail,
       subject,
-      react: await MessageDeliveryEmail({ magicLink, senderName, senderFirstName, locale }),
+      html: await render(await MessageDeliveryEmail({ magicLink, senderName, senderFirstName, locale })),
     });
     if (error) {
       console.error("Error sending Message Delivery email:", error);

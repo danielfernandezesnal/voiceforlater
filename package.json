@@ -13,6 +13,7 @@
     "smoke:stripe": "node scripts/stripe-webhook-smoke.mjs"
   },
   "dependencies": {
+    "@react-email/render": "^2.0.4",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.93.3",
     "dotenv": "^17.2.3",

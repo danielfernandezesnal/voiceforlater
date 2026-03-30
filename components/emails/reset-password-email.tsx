@@ -2,6 +2,7 @@ import * as React from 'react';
 import { getDictionary, Locale } from '@/lib/i18n';
 import { getResend, DEFAULT_SENDER } from '@/lib/resend';
 import { checkinReminderStyles } from './_shared/checkin-reminder-layout';
+import { render } from '@react-email/render';
 
 export interface ResetPasswordEmailProps {
   resetLink: string;
@@ -82,7 +83,7 @@ export async function sendResetPasswordEmail(toEmail: string, resetLink: string,
       from: DEFAULT_SENDER,
       to: toEmail,
       subject: dict.emails.resetPassword.subject,
-      react: await ResetPasswordEmail({ resetLink, locale }),
+      html: await render(await ResetPasswordEmail({ resetLink, locale })),
     });
     if (error) {
       console.error("Error sending Reset Password email:", error);
