@@ -21,13 +21,29 @@ export async function MagicLinkEmail({
 
   const introParagraphs = t.intro.split('\n\n').filter(Boolean);
 
+  const magicLinkStyles = checkinReminderStyles + `
+    .email-wrapper { max-width: 580px; }
+    .top-header { margin-bottom: 44px; }
+    .logo-title { font-size: 28px; letter-spacing: -0.01em; margin-bottom: 6px; }
+    .logo-subtitle { font-size: 10px; letter-spacing: 0.12em; opacity: 0.75; }
+    .card { box-shadow: 0 4px 32px rgba(42,24,10,0.10); }
+    .hero { background: linear-gradient(158deg, #a84e20 0%, #c96a32 100%); padding: 28px 56px 72px; }
+    .hero h1 { font-size: 29px; font-weight: 600; line-height: 1.35; letter-spacing: -0.02em; max-width: 78%; }
+    .body { padding: 44px 56px 40px; }
+    .body p { line-height: 1.8; margin-bottom: 28px; }
+    hr { margin: 32px 0; border-top-color: #ede8e0; }
+    .btn-primary { background: linear-gradient(135deg, #a84e20 0%, #c96a32 100%); padding: 18px 48px; border-radius: 100px; font-size: 15px; letter-spacing: 0.03em; margin-bottom: 0; }
+    .sign-off { padding: 0 56px 52px; }
+    .footer p { font-size: 11px; }
+  `;
+
   return (
     <html lang={locale}>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{isAdminLogin ? t.subjectAdmin : t.subject}</title>
-        <style dangerouslySetInnerHTML={{ __html: checkinReminderStyles }} />
+        <style dangerouslySetInnerHTML={{ __html: magicLinkStyles }} />
       </head>
       <body>
         <div className="email-wrapper">
@@ -43,11 +59,11 @@ export async function MagicLinkEmail({
               {isAdminLogin && (
                 <div style={{
                   background: '#fef3c7',
-                  borderLeft: '4px solid #f59e0b',
-                  padding: '12px 16px',
-                  marginBottom: '20px',
-                  borderRadius: '0 8px 8px 0',
-                  fontSize: '14px',
+                  borderLeft: '3px solid #f59e0b',
+                  padding: '14px 20px',
+                  marginBottom: '32px',
+                  borderRadius: '0 10px 10px 0',
+                  fontSize: '13px',
                   color: '#92400e',
                 }}>
                   <strong>{t.adminBadge}</strong>
@@ -56,19 +72,17 @@ export async function MagicLinkEmail({
               {introParagraphs.map((paragraph, i) => (
                 <p key={i}>{paragraph}</p>
               ))}
-              <a href={magicLink} className="btn-primary" style={{ marginTop: '24px' }}>
+              <a href={magicLink} className="btn-primary" style={{ marginTop: '32px' }}>
                 {t.button}
               </a>
-              <p style={{ fontSize: '13px', color: '#9B8B7E', textAlign: 'center', marginTop: '16px' }}>
+              <p style={{ fontSize: '12px', color: '#9B8B7E', textAlign: 'center', marginTop: '20px' }}>
                 {t.secondary}
               </p>
             </div>
             <div className="sign-off">
               <hr />
               <p>{t.ignore}</p>
-
-              <div style={{ height: '1px', background: '#EAE4D9', margin: '24px 0' }}></div>
-              <p style={{ margin: 0, fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '14px', color: '#C4623A', textAlign: 'center' }}>
+              <p style={{ margin: '32px 0 0', fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '14px', color: '#C4623A', textAlign: 'center' }}>
                 {t.tagline}
               </p>
             </div>
@@ -80,7 +94,7 @@ export async function MagicLinkEmail({
                 {common.externalFooter}
               </a>
             </p>
-            <p style={{ marginTop: '12px' }}>
+            <p style={{ marginTop: '20px', opacity: 0.75 }}>
               {t.linkFallback}<br />
               <a href={magicLink} style={{ color: '#8a7a6a', wordBreak: 'break-all' }}>{magicLink}</a>
             </p>
