@@ -13,6 +13,9 @@ import { sendMagicLinkEmail } from '@/components/emails/magic-link-email';
 import { sendResetPasswordEmail } from '@/components/emails/reset-password-email';
 import { sendTrustedContactNotificationEmail } from '@/components/emails/trusted-contact-notification-email';
 import { sendMessageDeliveryEmail } from '@/components/emails/message-delivery-email';
+import { sendCheckinReminder1Email } from '@/components/emails/checkin-reminder-1-email';
+import { sendCheckinReminder2Email } from '@/components/emails/checkin-reminder-2-email';
+import { sendCheckinReminder3Email } from '@/components/emails/checkin-reminder-3-email';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,6 +57,27 @@ export async function GET(request: NextRequest) {
         results.push({ name: 'Message Delivery', success: !error, id: (data as any)?.id, error });
     } catch (e: any) {
         results.push({ name: 'Message Delivery', success: false, error: e.message });
+    }
+
+    try {
+        const { data, error } = await sendCheckinReminder1Email(targetEmail, dummyLink, 'es');
+        results.push({ name: 'Checkin Reminder 1', success: !error, id: (data as any)?.id, error });
+    } catch (e: any) {
+        results.push({ name: 'Checkin Reminder 1', success: false, error: e.message });
+    }
+
+    try {
+        const { data, error } = await sendCheckinReminder2Email(targetEmail, dummyLink, 'es');
+        results.push({ name: 'Checkin Reminder 2', success: !error, id: (data as any)?.id, error });
+    } catch (e: any) {
+        results.push({ name: 'Checkin Reminder 2', success: false, error: e.message });
+    }
+
+    try {
+        const { data, error } = await sendCheckinReminder3Email(targetEmail, dummyLink, 'es');
+        results.push({ name: 'Checkin Reminder 3', success: !error, id: (data as any)?.id, error });
+    } catch (e: any) {
+        results.push({ name: 'Checkin Reminder 3', success: false, error: e.message });
     }
 
     const templates = [
