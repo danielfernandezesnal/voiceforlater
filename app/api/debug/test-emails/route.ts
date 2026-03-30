@@ -5,13 +5,13 @@ import {
     getMessageDeliveryTemplate,
     getTrustedContactVerifyTemplate,
     getTrustedContactInvitationTemplate,
-    getResetPasswordTemplate,
     getPaymentFailedTemplate,
     getMessageSpecialTemplate,
     getMessagePosthumousTemplate,
     EmailDictionary
 } from '@/lib/email-templates';
 import { sendMagicLinkEmail } from '@/components/emails/magic-link-email';
+import { sendResetPasswordEmail } from '@/components/emails/reset-password-email';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     const results: any[] = [];
     const dummyLink = 'https://carrymywords.com/auth/callback?token=abc';
 
-    // Magic Link uses the React component system
+    // React-based emails
     try {
         const { data, error } = await sendMagicLinkEmail(targetEmail, dummyLink, 'es', false);
         results.push({ name: 'Magic Link', success: !error, id: (data as any)?.id, error });
@@ -34,11 +34,14 @@ export async function GET(request: NextRequest) {
         results.push({ name: 'Magic Link', success: false, error: e.message });
     }
 
+    try {
+        const { data, error } = await sendResetPasswordEmail(targetEmail, dummyLink, 'es');
+        results.push({ name: 'Reset Password', success: !error, id: (data as any)?.id, error });
+    } catch (e: any) {
+        results.push({ name: 'Reset Password', success: false, error: e.message });
+    }
+
     const templates = [
-        {
-            name: 'Reset Password',
-            ...getResetPasswordTemplate(dict, { resetLink: dummyLink })
-        },
         {
             name: 'Message Delivery',
             ...getMessageDeliveryTemplate(dict, { contentHtml: "<p>Contenido de prueba</p>", magicLink: dummyLink, senderName: "Juan Pérez" })
