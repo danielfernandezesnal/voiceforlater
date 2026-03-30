@@ -800,14 +800,6 @@
       "contentHidden": "Este mensaje fue guardado especialmente para ti.<br>Solo tú puedes leerlo.",
       "tagline": "Mensajes para cuando realmente importa."
     },
-    "checkinInitial": {
-      "subject": "¿Estás bien?",
-      "title": "Solo queremos saber si estás bien",
-      "intro": "Este es un mensaje automático para confirmar que todo está bien con vos.\n\nCuando tengas un momento, podés confirmarlo con un solo click.",
-      "button": "Confirmar que estoy bien",
-      "secondary": "Si no podés responder en este momento, no pasa nada.\nVolveremos a intentarlo más adelante.",
-      "tagline": "Mensajes para cuando realmente importa."
-    },
     "checkinReminder1": {
       "subject": "¿Estás bien?",
       "body": {
