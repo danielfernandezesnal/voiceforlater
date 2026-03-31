@@ -777,16 +777,16 @@
       "supportLink": "Support"
     },
     "magicLink": {
-      "subject": "Your access is ready",
+      "subject": "Your account is ready — activate your access now",
       "subjectAdmin": "Admin Access - Carry my Words",
-      "title": "Your words are waiting",
+      "title": "You're now part\nof something special.",
       "adminBadge": "Admin Access",
-      "intro": "You're one step away.\n\nUse the link below to securely access your account:",
-      "button": "Access account",
-      "secondary": "This link is personal and will expire in a few minutes.",
-      "ignore": "If you did not request this access, you can ignore this message.",
-      "linkFallback": "You can also copy this link into your browser to access:",
-      "tagline": "MESSAGES THAT TRAVEL THROUGH TIME"
+      "intro": "You created your account on Carry my Words. Now you can start recording messages for the future — for someone you love, or for yourself.\n\nUse the link below to activate your account and set your password:",
+      "button": "Activate my account",
+      "secondary": "Single-use link · Expires in 10 minutes",
+      "ignore": "If you didn't create this account, you can ignore this message.",
+      "linkFallback": "If the button doesn't work, copy this link into your browser:",
+      "tagline": "messages that travel through time"
     },
     "messageDelivery": {
       "subject": "You have a message via Carry my Words",

@@ -18,29 +18,39 @@ export async function MagicLinkEmail({
   const dict = await getDictionary(locale);
   const t = dict.emails.magicLink;
   const common = dict.emails.common;
-
   const introParagraphs = t.intro.split('\n\n').filter(Boolean);
+  const titleLines = t.title.split('\n');
 
-  const magicLinkStyles = checkinReminderStyles + `
+  const styles = checkinReminderStyles + `
+    body { background-color: #f5f0e8; }
     .email-wrapper { max-width: 580px; }
-    .top-header { margin-bottom: 44px; }
-    .logo-title { font-size: 28px; letter-spacing: -0.01em; margin-bottom: 6px; }
-    .logo-subtitle { font-size: 10px; letter-spacing: 0.12em; opacity: 0.75; }
-    .card { box-shadow: 0 4px 32px rgba(42,24,10,0.10); }
-    .hero { background: linear-gradient(158deg, #a84e20 0%, #c96a32 100%); padding: 28px 56px 72px; }
-    .hero h1 { font-size: 29px; font-weight: 600; line-height: 1.35; letter-spacing: -0.02em; max-width: 78%; }
-    .body { padding: 44px 56px 40px; }
-    .body p { line-height: 1.8; margin-bottom: 28px; }
-    hr { margin: 32px 0; border-top-color: #ede8e0; }
-    .btn-primary { background: linear-gradient(135deg, #a84e20 0%, #c96a32 100%); padding: 18px 48px; border-radius: 100px; font-size: 15px; letter-spacing: 0.03em; margin-bottom: 0; }
-    .sign-off { padding: 0 56px 52px; }
-    .footer p { font-size: 11px; }
-    .mobile-footer-logo { display: none; }
+    .top-header { text-align: center; margin-bottom: 32px; }
+    .logo-title { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 24px; color: #c4622a; margin-bottom: 5px; }
+    .logo-subtitle { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: #c4724a; font-weight: 400; }
+    .card { background: #fffdf9; border-radius: 4px; border: 1px solid #e8e0d0; box-shadow: none; }
+    .eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #c4622a; font-weight: 500; margin-bottom: 16px; }
+    .hero { background: #fffdf9; padding: 48px 48px 0; }
+    .hero h1 { font-family: 'Lora', Georgia, serif; font-size: 38px; font-weight: 400; color: #1a0e09; line-height: 1.18; margin: 0; }
+    .hero h1 em { font-style: italic; color: #c4622a; }
+    .hero p { font-size: 14px; color: #5a4030; line-height: 1.75; font-weight: 300; margin: 16px 0 0; }
+    .ornament { display: flex; align-items: center; gap: 12px; padding: 28px 48px; }
+    .ornament-line { flex: 1; height: 1px; background: #ddd0bc; }
+    .ornament-glyph { font-family: 'Lora', serif; font-size: 14px; color: #c4622a; opacity: 0.55; }
+    .body { padding: 0 48px 40px; }
+    .body p { font-size: 14px; line-height: 1.78; color: #4a3728; font-weight: 300; margin-bottom: 28px; }
+    .btn-primary { background: #c4622a; color: #fff9f4 !important; border-radius: 2px; padding: 16px 44px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; display: inline-block; }
+    .cta-hint { font-size: 11px; color: #a08878; margin-top: 12px; font-weight: 300; }
+    .footer { background: #f5efe3; border-top: 1px solid #ecdfd0; padding: 24px 48px; text-align: left; }
+    .footer p { font-size: 11px; color: #9a8070; line-height: 1.65; font-weight: 300; margin-bottom: 14px; }
+    .footer a { color: #c4622a; word-break: break-all; text-decoration: none; }
+    .footer-tagline { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 12px; color: #b09070; letter-spacing: 0.04em; }
+    .footer-ignore { font-size: 11px; color: #b8a898; margin-top: 10px; font-weight: 300; }
     @media only screen and (max-width: 600px) {
-      .logo-title { font-family: 'Lora', Georgia, serif !important; font-weight: 600 !important; }
-      .hero h1 { max-width: 100% !important; width: 100% !important; font-family: 'Lora', Georgia, serif !important; word-break: normal !important; overflow-wrap: normal !important; }
-      .body p { font-family: 'Lora', Georgia, serif !important; line-height: 2.0 !important; }
-      .mobile-footer-logo { display: block !important; }
+      .hero { padding: 36px 28px 0 !important; }
+      .hero h1 { font-size: 28px !important; }
+      .ornament { padding: 20px 28px !important; }
+      .body { padding: 0 28px 28px !important; }
+      .footer { padding: 20px 28px !important; }
     }
   `;
 
@@ -50,64 +60,67 @@ export async function MagicLinkEmail({
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{isAdminLogin ? t.subjectAdmin : t.subject}</title>
-        <style dangerouslySetInnerHTML={{ __html: magicLinkStyles }} />
+        <style dangerouslySetInnerHTML={{ __html: styles }} />
       </head>
       <body>
         <div className="email-wrapper">
+
+          {/* LOGO */}
           <div className="top-header">
-            <div className="logo-title"><a href="https://carrymywords.com" style={{ color: 'inherit', textDecoration: 'none' }}>{common.footerSignature}</a></div>
-            <div className="logo-subtitle">MENSAJES QUE VIAJAN EN EL TIEMPO</div>
-          </div>
-          <div className="card">
-            <div className="hero">
-              <h1>{t.title}</h1>
+            <div className="logo-title">
+              <a href="https://carrymywords.com" style={{ color: 'inherit', textDecoration: 'none' }}>
+                {common.footerSignature}
+              </a>
             </div>
+            <div className="logo-subtitle">{t.tagline}</div>
+          </div>
+
+          <div className="card">
+
+            {/* HERO */}
+            <div className="hero">
+              <div className="eyebrow">{isAdminLogin ? t.adminBadge : (locale === 'es' ? 'Bienvenido' : 'Welcome')}</div>
+              <h1>
+                {titleLines[0]}<br />
+                <em>{titleLines[1]}</em>
+              </h1>
+            </div>
+
+            {/* SEPARADOR */}
+            <div className="ornament">
+              <div className="ornament-line" />
+              <span className="ornament-glyph">◆</span>
+              <div className="ornament-line" />
+            </div>
+
+            {/* BODY */}
             <div className="body">
               {isAdminLogin && (
-                <div style={{
-                  background: '#fef3c7',
-                  borderLeft: '3px solid #f59e0b',
-                  padding: '14px 20px',
-                  marginBottom: '32px',
-                  borderRadius: '0 10px 10px 0',
-                  fontSize: '13px',
-                  color: '#92400e',
-                }}>
+                <div style={{ background: '#fef3c7', borderLeft: '3px solid #f59e0b', padding: '14px 20px', marginBottom: '32px', borderRadius: '0 4px 4px 0', fontSize: '13px', color: '#92400e' }}>
                   <strong>{t.adminBadge}</strong>
                 </div>
               )}
-              {introParagraphs.map((paragraph, i) => (
+              {introParagraphs.map((paragraph: string, i: number) => (
                 <p key={i}>{paragraph}</p>
               ))}
-              <a href={magicLink} className="btn-primary" style={{ marginTop: '32px' }}>
+              <a href={magicLink} className="btn-primary">
                 {t.button}
               </a>
-              <p style={{ fontSize: '12px', color: '#9B8B7E', textAlign: 'center', marginTop: '20px' }}>
-                {t.secondary}
-              </p>
+              <p className="cta-hint">{t.secondary}</p>
             </div>
-            <div className="sign-off">
-              <hr />
-            </div>
+
           </div>
+
+          {/* FOOTER */}
           <div className="footer">
-            <p style={{ marginTop: '20px', opacity: 0.75 }}>
+            <p>
               {t.linkFallback}<br />
-              <a href={magicLink} style={{ color: '#8a7a6a', wordBreak: 'break-all' }}>{magicLink}</a>
+              <a href={magicLink}>{magicLink}</a>
             </p>
-            <p style={{ margin: '20px 0 0', fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '13px', color: '#C4623A', textAlign: 'center', opacity: 0.8 }}>
-              {t.tagline}
-            </p>
+            <div className="footer-tagline">{t.tagline}</div>
+            <p className="footer-ignore">{t.ignore}</p>
           </div>
-          <p style={{ fontSize: '11px', color: '#9B8B7E', textAlign: 'center', marginTop: '20px' }}>
-            {t.ignore}
-          </p>
-          <div className="mobile-footer-logo" style={{ textAlign: 'center', marginTop: '32px', paddingBottom: '24px' }}>
-            <a href="https://carrymywords.com" style={{ color: 'inherit', textDecoration: 'none' }}>
-              <div style={{ fontFamily: "'Lora', Georgia, serif", fontSize: '22px', fontWeight: 600, letterSpacing: '-0.01em', color: '#3d2b1f', marginBottom: '4px' }}>{common.footerSignature}</div>
-              <div style={{ fontSize: '9px', letterSpacing: '0.12em', opacity: 0.6, textTransform: 'uppercase' as const, color: '#6b5a4e' }}>MENSAJES QUE VIAJAN EN EL TIEMPO</div>
-            </a>
-          </div>
+
         </div>
       </body>
     </html>
