@@ -35,6 +35,13 @@ export async function MagicLinkEmail({
     .btn-primary { background: linear-gradient(135deg, #a84e20 0%, #c96a32 100%); padding: 18px 48px; border-radius: 100px; font-size: 15px; letter-spacing: 0.03em; margin-bottom: 0; }
     .sign-off { padding: 0 56px 52px; }
     .footer p { font-size: 11px; }
+    .mobile-footer-logo { display: none; }
+    @media only screen and (max-width: 600px) {
+      .logo-title { font-family: 'Lora', Georgia, serif !important; font-weight: 600 !important; }
+      .hero h1 { max-width: 100% !important; width: 100% !important; font-family: 'Lora', Georgia, serif !important; word-break: normal !important; overflow-wrap: normal !important; }
+      .body p { font-family: 'Lora', Georgia, serif !important; line-height: 2.0 !important; }
+      .mobile-footer-logo { display: block !important; }
+    }
   `;
 
   return (
@@ -95,6 +102,12 @@ export async function MagicLinkEmail({
           <p style={{ fontSize: '11px', color: '#9B8B7E', textAlign: 'center', marginTop: '20px' }}>
             {t.ignore}
           </p>
+          <div className="mobile-footer-logo" style={{ textAlign: 'center', marginTop: '32px', paddingBottom: '24px' }}>
+            <a href="https://carrymywords.com" style={{ color: 'inherit', textDecoration: 'none' }}>
+              <div style={{ fontFamily: "'Lora', Georgia, serif", fontSize: '22px', fontWeight: 600, letterSpacing: '-0.01em', color: '#3d2b1f', marginBottom: '4px' }}>{common.footerSignature}</div>
+              <div style={{ fontSize: '9px', letterSpacing: '0.12em', opacity: 0.6, textTransform: 'uppercase' as const, color: '#6b5a4e' }}>MENSAJES QUE VIAJAN EN EL TIEMPO</div>
+            </a>
+          </div>
         </div>
       </body>
     </html>
