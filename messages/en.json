@@ -785,8 +785,7 @@
       "button": "Activate my account",
       "secondary": "Single-use link · Expires in 10 minutes",
       "ignore": "If you didn't create this account, you can ignore this message.",
-      "linkFallback": "If the button doesn't work, copy this link into your browser:",
-      "tagline": "messages that travel through time"
+      "linkFallback": "If the button doesn't work, copy this link into your browser:"
     },
     "messageDelivery": {
       "subject": "You have a message via Carry my Words",
@@ -901,12 +900,12 @@
     },
     "resetPassword": {
       "subject": "Reset your Carry my Words password",
-      "eyebrow": "YOUR ACCOUNT",
-      "title": "Reset your password",
-      "intro": "We got your request. Click below and you'll be back in your account in no time.",
+      "eyebrow": "Your account",
+      "title": "Create a new\npassword.",
+      "intro": "We got your request. Click below to get back into your account with a new password.",
       "cta": "Create new password",
       "securityNote": "This link expires in 1 hour. If this wasn't you, you can ignore this email — your account is safe.",
-      "tagline": "Messages for when it really matters."
+      "tagline": "messages that travel through time"
     },
     "paymentFailed": {
       "subject": "Payment issue with your Carry my Words subscription",

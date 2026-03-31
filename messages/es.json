@@ -781,8 +781,7 @@
       "button": "Activar mi cuenta",
       "secondary": "Enlace de uso único · Expira en 10 minutos",
       "ignore": "Si no creaste esta cuenta, puedes ignorar este mensaje.",
-      "linkFallback": "Si el botón no funciona, copia este enlace en tu navegador:",
-      "tagline": "mensajes que viajan en el tiempo"
+      "linkFallback": "Si el botón no funciona, copia este enlace en tu navegador:"
     },
     "messageDelivery": {
       "subject": "Tienes un mensaje vía Carry my Words",
@@ -896,13 +895,13 @@
       "tagline": "Mensajes para cuando realmente importa."
     },
     "resetPassword": {
-      "subject": "Restablecé tu contraseña de Carry my Words",
-      "eyebrow": "TU CUENTA",
-      "title": "Restablecé tu contraseña",
-      "intro": "Recibimos tu solicitud. Hacé clic abajo y en un minuto vas a poder entrar de nuevo con una contraseña nueva.",
+      "subject": "Restablece tu contraseña de Carry my Words",
+      "eyebrow": "Tu cuenta",
+      "title": "Crea una nueva\ncontraseña.",
+      "intro": "Recibimos tu solicitud. Haz clic abajo para poder entrar de nuevo con una contraseña nueva.",
       "cta": "Crear nueva contraseña",
-      "securityNote": "Este enlace expira en 1 hora. Si no fuiste vos, podés ignorar este email — tu cuenta está segura.",
-      "tagline": "Mensajes para cuando realmente importa."
+      "securityNote": "Este enlace expira en 1 hora. Si no fuiste tú, puedes ignorar este email — tu cuenta está segura.",
+      "tagline": "mensajes que viajan en el tiempo"
     },
     "paymentFailed": {
       "subject": "Problema con el pago de tu suscripción en Carry my Words",
