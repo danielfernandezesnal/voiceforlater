@@ -910,12 +910,12 @@
     },
     "paymentFailed": {
       "subject": "Payment issue with your Carry my Words subscription",
-      "eyebrow": "YOUR SUBSCRIPTION",
-      "title": "We couldn't process your payment",
+      "eyebrow": "Your subscription",
+      "title": "We couldn't process\nyour payment.",
       "intro": "There was an issue with your subscription payment. To keep your messages protected and ready for delivery, please update your payment method.",
       "action": "Update payment method",
       "footer": "If you have any questions, contact our support team.",
-      "tagline": "Messages for when it really matters."
+      "tagline": "messages that travel through time"
     }
   },
   "legal": {
