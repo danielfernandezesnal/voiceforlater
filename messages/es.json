@@ -687,6 +687,12 @@
     },
     "delivery": {
       "title": "Métricas de Entrega",
+      "health": {
+        "title": "Salud de la Plataforma",
+        "healthy": "Saludable",
+        "warning": "Alerta",
+        "critical": "Crítico"
+      },
       "alerts": {
         "title": "Alertas del Sistema",
         "system_stall": "No se procesaron mensajes en el período de 24h. Sistema potencialmente detenido.",
