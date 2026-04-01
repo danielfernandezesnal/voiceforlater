@@ -26,7 +26,6 @@ interface DeliveryMetricsResponse {
     total: DeliveryMetricSet;
     date: DeliveryMetricSet;
     checkin: DeliveryMetricSet;
-    has_alerts?: boolean;
     alerts?: DeliveryAlert[];
     health_status: 'healthy' | 'warning' | 'critical';
 }
@@ -236,7 +235,7 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                 )}
 
                 {/* Delivery Alerts Section */}
-                {deliveryMetrics?.has_alerts && deliveryMetrics.alerts && deliveryMetrics.alerts.length > 0 && (
+                {deliveryMetrics?.alerts && deliveryMetrics.alerts.length > 0 && (
                     <div className="space-y-4 pt-4">
                         <h3 className="text-sm font-bold tracking-widest text-muted-foreground uppercase px-1">{dict.admin.delivery.alerts.title}</h3>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

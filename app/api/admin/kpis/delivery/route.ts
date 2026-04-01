@@ -107,7 +107,6 @@ export async function GET(request: NextRequest) {
 
         const metricsResponse = {
             ...(metrics || {}),
-            has_alerts: alerts.length > 0,
             alerts,
             health_status
         };
