@@ -685,6 +685,29 @@
       "active": "Activos",
       "today": "Hoy"
     },
+    "delivery": {
+      "title": "Métricas de Entrega",
+      "alerts": {
+        "title": "Alertas del Sistema",
+        "system_stall": "No se procesaron mensajes en el período de 24h. Sistema potencialmente detenido.",
+        "low_success_rate": "Tasa de éxito por debajo del umbral esperado ({value}%).",
+        "finalize_failure": "Fallo crítico en la finalización de la entrega: {value} mensaje(s).",
+        "reclaim_detected": "Recuperación de mensajes 'stale' detectada: {value} mensaje(s)."
+      },
+      "tabs": {
+        "total": "Total",
+        "date": "Por Fecha",
+        "checkin": "Check-in"
+      },
+      "stats": {
+        "processed": "Procesados",
+        "delivered": "Entregados",
+        "sendFailed": "Fallos Envío",
+        "finalizeFailed": "Fallos Finalizado",
+        "staleReclaims": "Recuperación Stale",
+        "successRate": "Tasa de Éxito"
+      }
+    },
     "filters": {
       "title": "Filtros",
       "fromDate": "Desde",

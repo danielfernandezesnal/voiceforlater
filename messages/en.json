@@ -689,6 +689,29 @@
       "active": "Active",
       "today": "Today"
     },
+    "delivery": {
+      "title": "Delivery Health",
+      "alerts": {
+        "title": "System Alerts",
+        "system_stall": "No messages processed in 24h period. System potentially stalled.",
+        "low_success_rate": "Success rate below expected threshold ({value}%).",
+        "finalize_failure": "Critical delivery finalize failure: {value} message(s).",
+        "reclaim_detected": "Stale message reclaims detected: {value} message(s)."
+      },
+      "tabs": {
+        "total": "Total",
+        "date": "By Date",
+        "checkin": "Check-in"
+      },
+      "stats": {
+        "processed": "Processed",
+        "delivered": "Delivered",
+        "sendFailed": "Send Failed",
+        "finalizeFailed": "Finalize Failed",
+        "staleReclaims": "Stale Reclaims",
+        "successRate": "Success Rate"
+      }
+    },
     "filters": {
       "title": "Filters",
       "fromDate": "From",
