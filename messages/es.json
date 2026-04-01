@@ -884,14 +884,16 @@
     "messagePosthumous": {
       "subject": "Mensajes que viajan en el tiempo",
       "epigraph": "Hay personas que encuentran la manera de seguir presentes.",
-      "preheader": "{{RECIPIENT_NAME}}, HAY UN MENSAJE PARA VOS",
-      "heading": "Hay personas que encuentran la manera de seguir presentes",
-      "p1": "{{SENDER_NAME}} preparó este mensaje para vos con tiempo. Lo guardó con cuidado, y pidió que te llegara en este momento.",
+      "preheader": "{{RECIPIENT_NAME}}, hay un mensaje para ti",
+      "heading": "{{SENDER_NAME}} preparó\nun mensaje para ti.",
+      "p1": "{{SENDER_NAME}} guardó este mensaje con cuidado, y pidió que te llegara en este momento.",
       "p2": "Tenía cosas para decirte — aunque ya no pueda estar para decirlas en persona.",
-      "button": "🎙 Acceder al mensaje",
+      "button": "Acceder al mensaje",
+      "linkFallback": "También puedes copiar este enlace en tu navegador:",
       "closing": "Porque hay palabras que merecen llegar, sin importar cuándo.",
-      "footerLegal": "Recibiste este email porque alguien dejó un mensaje para vos. Si creés que es un error, podés ignorar este mensaje.",
-      "tagline": "Mensajes para cuando realmente importa."
+      "signature": "— El equipo de Carry my Words",
+      "footerLegal": "Recibiste este email porque alguien dejó un mensaje para ti. Si crees que es un error, puedes ignorar este mensaje.",
+      "tagline": "mensajes que viajan en el tiempo"
     },
     "resetPassword": {
       "subject": "Restablece tu contraseña de Carry my Words",

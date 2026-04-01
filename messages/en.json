@@ -888,14 +888,16 @@
     "messagePosthumous": {
       "subject": "Messages that travel through time",
       "epigraph": "Some people find a way to keep being present.",
-      "preheader": "{{RECIPIENT_NAME}}, THERE IS A MESSAGE FOR YOU",
-      "heading": "There are people who find a way to stay present",
-      "p1": "{{SENDER_NAME}} prepared this message for you with time. They kept it carefully, and asked that it reach you at this moment.",
+      "preheader": "{{RECIPIENT_NAME}}, there is a message for you",
+      "heading": "{{SENDER_NAME}} prepared\na message for you.",
+      "p1": "They kept it carefully, and asked that it reach you at this moment.",
       "p2": "They had things to tell you — even if they can no longer be there to say them in person.",
-      "button": "🎙 Access the message",
+      "button": "Access the message",
+      "linkFallback": "You can also copy this link into your browser:",
       "closing": "Because there are words that deserve to arrive, no matter when.",
+      "signature": "— The Carry my Words team",
       "footerLegal": "You received this email because someone left a message for you. If you believe this is an error, you can ignore this message.",
-      "tagline": "Messages for when it really matters."
+      "tagline": "messages that travel through time"
     },
     "resetPassword": {
       "subject": "Reset your Carry my Words password",
