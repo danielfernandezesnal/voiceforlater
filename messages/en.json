@@ -859,19 +859,19 @@
     "trustedContactInvitation": {
       "subject": "{{firstName}}, someone thought of you",
       "preheader": "{{contactFirstName}}, someone thought of you",
-      "heading": "You were chosen for<br>something important",
+      "heading": "You were chosen for\nsomething important.",
       "p1": "There are people who think about others even before the moment arrives. <strong>{{senderFullName}}</strong> is one of them.",
       "p2": "{{senderFirstName}} chose you as their <strong>trusted person</strong> on Carry my Words — a platform for leaving messages that will arrive at the right moment, or when they can no longer send them themselves.",
       "roleTitle": "What does this role mean?",
       "roleP1": "If at any point {{senderFirstName}} stops responding to the platform's activity confirmations, we may contact you to verify their situation before proceeding with the delivery of their scheduled messages.",
       "roleP2": "<strong>You don't have to do anything for now.</strong> We just wanted you to know that {{senderFirstName}} trusted you for this role.",
       "moreTitle": "Want to know more?",
-      "moreText": "{{senderFirstName}} is the best person to tell you why they chose you. A conversation with them will explain what this means better than any email.",
+      "moreText": "{{senderFirstName}} is the best person to tell you why they chose you. A conversation with them will explain better than any email what this means.",
       "thanks": "Thank you for being part of this.",
       "signature": "— The Carry my Words team",
       "footerLogo": "Carry my Words",
-      "footerLegal": "You received this email because someone chose you as a trusted contact.<br>If you believe this is an error, you can ignore this message.",
-      "tagline": "Messages for when it really matters."
+      "footerLegal": "You received this email because someone chose you as a trusted contact. If you think this is an error, you can ignore this message.",
+      "tagline": "messages that travel through time"
     },
     "messageSpecial": {
       "subject": "Messages that travel through time",
