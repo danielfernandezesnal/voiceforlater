@@ -246,6 +246,10 @@ html {
       padding: 22px 22px 20px;
     }
 
+    .tl-step + .tl-step {
+      margin-top: 16px;
+    }
+
     .tl-step .tl-node-row {
       display: none;
     }
@@ -287,10 +291,6 @@ html {
 
     .tl-circle {
       display: none;
-    }
-
-    .tl-step + .tl-step {
-      margin-top: 16px;
     }
   }
 
