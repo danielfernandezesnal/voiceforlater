@@ -834,6 +834,8 @@
     },
     "trustedContactNotify": {
       "subject": "We need your help with {senderName}",
+      "title": "We need your help",
+      "tagline": "messages that travel through time",
       "eyebrow": "Trusted contact",
       "heroTitle": "Do you know how\n{senderName} is doing?",
       "intro": "Some time ago, {senderName} chose you as their trusted contact on Carry my Words — a platform where people save messages for the future.",

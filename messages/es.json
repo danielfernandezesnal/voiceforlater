@@ -830,6 +830,8 @@
     },
     "trustedContactNotify": {
       "subject": "Necesitamos tu ayuda con {senderName}",
+      "title": "Necesitamos tu ayuda",
+      "tagline": "mensajes que viajan en el tiempo",
       "eyebrow": "Persona de confianza",
       "heroTitle": "¿Sabes cómo\nestá {senderName}?",
       "intro": "Hace un tiempo, {senderName} te eligió como su persona de confianza en Carry my Words — una plataforma donde las personas guardan mensajes para el futuro.",
