@@ -95,6 +95,22 @@ export async function GET(request: NextRequest) {
                 continue;
             }
 
+            // [Telemetry] Log successful claim
+            try {
+                await supabase.from("events").insert({
+                    type: "message_claimed",
+                    user_id: message.owner_id,
+                    metadata: {
+                        message_id: message.id,
+                        flow: "date",
+                        claim_stamp: claimStamp,
+                        reclaimed_stale: message.delivery_claimed_at !== null
+                    }
+                });
+            } catch (telemetryErr) {
+                console.error("Telemetry error (claim):", telemetryErr);
+            }
+
             const profile = message.profiles as { id: string, first_name?: string, last_name?: string, locale?: string } | null;
             const senderName = `${profile?.first_name || ''} ${profile?.last_name || ''}`.trim() || 'Someone special';
             const senderFirstName = profile?.first_name || 'Someone';
@@ -102,6 +118,18 @@ export async function GET(request: NextRequest) {
             const recipient = message.recipients?.[0];
             if (!recipient || !recipient.email) {
                 results.errors.push(`Message ${message.id}: No recipient`);
+                
+                // [Telemetry] Log claim release
+                try {
+                    await supabase.from("events").insert({
+                        type: "message_claim_released",
+                        user_id: message.owner_id,
+                        metadata: { message_id: message.id, flow: "date", claim_stamp: claimStamp, reason: "no_recipient" }
+                    });
+                } catch (telemetryErr) {
+                    console.error("Telemetry error (release):", telemetryErr);
+                }
+
                 // Release claim - ONLY if we still own it
                 await supabase
                     .from("messages")
@@ -154,14 +182,60 @@ export async function GET(request: NextRequest) {
                     .select("id");
 
                 if (finalizeError || !finalized || finalized.length === 0) {
+                    // [Telemetry] Log finalize failure
+                    try {
+                        await supabase.from("events").insert({
+                            type: "message_finalize_failed",
+                            user_id: message.owner_id,
+                            metadata: { message_id: message.id, flow: "date", claim_stamp: claimStamp, reason: "ownership_lost" }
+                        });
+                    } catch (telemetryErr) {
+                        console.error("Telemetry error (finalize_failed):", telemetryErr);
+                    }
                     throw new Error("Finalize failed: claim ownership lost or concurrent update");
+                }
+
+                // [Telemetry] Log successful finalization
+                try {
+                    await supabase.from("events").insert({
+                        type: "message_delivery_finalized",
+                        user_id: message.owner_id,
+                        metadata: { message_id: message.id, flow: "date", claim_stamp: claimStamp }
+                    });
+                } catch (telemetryErr) {
+                    console.error("Telemetry error (finalized):", telemetryErr);
                 }
 
                 results.sent++;
 
             } catch (err) {
                 console.error(`Error processing message ${message.id}:`, err);
-                results.errors.push(`Message ${message.id}: ${String(err)}`);
+                const reason = String(err);
+                results.errors.push(`Message ${message.id}: ${reason}`);
+
+                // [Telemetry] Log send failure (if not already logged as finalize failure)
+                if (!reason.includes("Finalize failed")) {
+                    try {
+                        await supabase.from("events").insert({
+                            type: "message_send_failed",
+                            user_id: message.owner_id,
+                            metadata: { message_id: message.id, flow: "date", claim_stamp: claimStamp, reason }
+                        });
+                    } catch (telemetryErr) {
+                        console.error("Telemetry error (send_failed):", telemetryErr);
+                    }
+                }
+
+                // [Telemetry] Log claim release
+                try {
+                    await supabase.from("events").insert({
+                        type: "message_claim_released",
+                        user_id: message.owner_id,
+                        metadata: { message_id: message.id, flow: "date", claim_stamp: claimStamp, reason: "failure_rollback" }
+                    });
+                } catch (telemetryErr) {
+                    console.error("Telemetry error (release):", telemetryErr);
+                }
 
                 // 5. UNCLAIM ON FAILURE
                 // ONLY release if we still own the claim and status is still scheduled.
