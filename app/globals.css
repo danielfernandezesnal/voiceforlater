@@ -236,16 +236,18 @@ html {
     }
 
     .tl-step {
-      flex-direction: row !important;
-      align-items: flex-start !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
       text-align: left !important;
-      gap: 16px;
+      gap: 0;
+      background: #fffdf9;
+      border-radius: 4px;
+      border: 1px solid #e8e0d0;
+      padding: 22px 22px 20px;
     }
 
     .tl-step .tl-node-row {
-      width: auto;
-      margin-bottom: 0;
-      flex-shrink: 0;
+      display: none;
     }
 
     .tl-step .tl-content {
@@ -255,12 +257,28 @@ html {
 
     .tl-step .tl-content h3 {
       text-align: left;
+      font-size: 1.3rem;
+      margin-bottom: 6px;
     }
 
     .tl-step .tl-content p {
       text-align: left;
       margin: 0;
       max-width: none;
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: hsl(var(--ink) / 0.6);
+    }
+
+    .tl-step::before {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: hsl(var(--rose) / 0.25);
+      line-height: 1;
+      margin-bottom: 8px;
+      content: attr(data-step);
     }
 
     .tl-line {
@@ -268,8 +286,11 @@ html {
     }
 
     .tl-circle {
-      width: 40px;
-      height: 40px;
+      display: none;
+    }
+
+    .tl-step + .tl-step {
+      margin-top: 16px;
     }
   }
 
