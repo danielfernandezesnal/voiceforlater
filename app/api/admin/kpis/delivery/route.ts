@@ -42,33 +42,37 @@ export async function GET(request: NextRequest) {
 
         if (rpcError) throw rpcError;
 
+        // Separate exact 24h query for stall detection
+        const now = new Date();
+        const last24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        const { data: stallMetrics, error: stallError } = await supabase
+            .rpc('admin_delivery_metrics', {
+                p_date_from: last24h.toISOString(),
+                p_date_to: now.toISOString()
+            });
+
+        if (stallError) throw stallError;
+
         // Alert computation logic
-        const alerts: Array<{ type: string, severity: string, message: string, value: number | null }> = [];
+        const alerts: Array<{ type: string, severity: string, value: number | null }> = [];
         
+        // 1. System Stall (evaluates always on real 24h window)
+        if (stallMetrics && stallMetrics.total && stallMetrics.total.processed_count === 0) {
+            alerts.push({
+                 type: "system_stall",
+                 severity: "critical",
+                 value: 0
+            });
+        }
+
         if (metrics && metrics.total) {
             const { processed_count, success_rate, finalize_failed_count, stale_reclaim_count } = metrics.total;
-            
-            const fromDate = from ? new Date(from) : null;
-            const toDate = to ? new Date(to) : new Date();
-            const windowMs = fromDate ? toDate.getTime() - fromDate.getTime() : Infinity;
-            const isWindow24h = windowMs >= 24 * 60 * 60 * 1000;
-
-            // 1. System Stall
-            if (processed_count === 0 && isWindow24h) {
-                alerts.push({
-                    type: "system_stall",
-                    severity: "critical",
-                    message: "No messages processed in the time window (>= 24h).",
-                    value: 0
-                });
-            }
 
             // 2. Low Success Rate
             if (processed_count > 0 && success_rate < 95) {
                 alerts.push({
                     type: "low_success_rate",
                     severity: success_rate < 90 ? "critical" : "warning",
-                    message: `Success rate below threshold: ${success_rate}%`,
                     value: success_rate
                 });
             }
@@ -78,7 +82,6 @@ export async function GET(request: NextRequest) {
                 alerts.push({
                     type: "finalize_failure",
                     severity: "critical",
-                    message: `Finalize failures detected: ${finalize_failed_count}`,
                     value: finalize_failed_count
                 });
             }
@@ -88,7 +91,6 @@ export async function GET(request: NextRequest) {
                 alerts.push({
                     type: "reclaim_detected",
                     severity: "warning",
-                    message: `Stale reclaims detected: ${stale_reclaim_count}`,
                     value: stale_reclaim_count
                 });
             }

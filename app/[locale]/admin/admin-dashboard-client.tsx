@@ -10,7 +10,6 @@ interface Props {
 interface DeliveryAlert {
     type: 'low_success_rate' | 'finalize_failure' | 'system_stall' | 'reclaim_detected';
     severity: 'warning' | 'critical';
-    message: string;
     value: number | null;
 }
 
@@ -227,7 +226,7 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                                             {alert.severity}
                                         </span>
                                         <p className="text-sm font-medium leading-snug">
-                                            {(dict.admin.delivery.alerts[alert.type] || alert.message).replace('{value}', String(alert.value ?? 0))}
+                                            {dict.admin.delivery.alerts[alert.type].replace('{value}', String(alert.value ?? 0))}
                                         </p>
                                     </div>
                                 </div>
