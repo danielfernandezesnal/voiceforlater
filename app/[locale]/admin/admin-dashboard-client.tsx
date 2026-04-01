@@ -7,6 +7,13 @@ interface Props {
     dict: any;
 }
 
+interface DeliveryAlert {
+    type: 'low_success_rate' | 'finalize_failure' | 'system_stall' | 'reclaim_detected';
+    severity: 'warning' | 'critical';
+    message: string;
+    value: number | null;
+}
+
 interface DeliveryMetricSet {
     processed_count: number;
     delivered_count: number;
@@ -16,10 +23,12 @@ interface DeliveryMetricSet {
     success_rate: number;
 }
 
-interface DeliveryMetricsMap {
+interface DeliveryMetricsResponse {
     total: DeliveryMetricSet;
     date: DeliveryMetricSet;
     checkin: DeliveryMetricSet;
+    has_alerts?: boolean;
+    alerts?: DeliveryAlert[];
 }
 
 const EMPTY_METRICS: DeliveryMetricSet = {
@@ -35,8 +44,8 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
     const [totalUsers, setTotalUsers] = useState<number | null>(null);
     const [paidUsers, setPaidUsers] = useState<number | null>(null);
     const [storageMB, setStorageMB] = useState<number | null>(null);
-    const [deliveryMetrics, setDeliveryMetrics] = useState<DeliveryMetricsMap | null>(null);
-    const [activeTab, setActiveTab] = useState<keyof DeliveryMetricsMap>('total');
+    const [deliveryMetrics, setDeliveryMetrics] = useState<DeliveryMetricsResponse | null>(null);
+    const [activeTab, setActiveTab] = useState<'total' | 'date' | 'checkin'>('total');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [dateFrom, setDateFrom] = useState<string>('');
@@ -71,7 +80,7 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                 resUsers.json(),
                 resPaid.json(),
                 resStorage.json(),
-                resDelivery.json() as Promise<DeliveryMetricsMap>
+                resDelivery.json() as Promise<DeliveryMetricsResponse>
             ]);
 
             setTotalUsers(dataUsers.totalUsers);
@@ -192,6 +201,40 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                         <KPICard title={`${dict.admin.kpis.storageUsed} (MB)`} value={storageMB} loading={loading} error={error} subtext={dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.today} />
                     </div>
                 </div>
+
+                {/* Delivery Alerts Section */}
+                {deliveryMetrics?.has_alerts && deliveryMetrics.alerts && deliveryMetrics.alerts.length > 0 && (
+                    <div className="space-y-4 pt-4">
+                        <h3 className="text-sm font-bold tracking-widest text-muted-foreground uppercase px-1">{dict.admin.delivery.alerts.title}</h3>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            {deliveryMetrics.alerts.map((alert, idx) => (
+                                <div key={idx} className={`p-5 rounded-2xl border flex items-start gap-4 shadow-sm ${
+                                    alert.severity === 'critical' ? 'bg-destructive/10 border-destructive/20 text-destructive' : 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-500'
+                                }`}>
+                                    <div className="mt-0.5">
+                                        {alert.severity === 'critical' ? (
+                                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                            </svg>
+                                        ) : (
+                                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                            </svg>
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-bold text-xs uppercase tracking-wider opacity-90">
+                                            {alert.severity}
+                                        </span>
+                                        <p className="text-sm font-medium leading-snug">
+                                            {(dict.admin.delivery.alerts[alert.type] || alert.message).replace('{value}', String(alert.value ?? 0))}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* Delivery Metrics Section */}
                 <div className="space-y-6 pt-4">
