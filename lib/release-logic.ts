@@ -36,9 +36,13 @@ export async function releaseCheckinMessages(userId: string) {
         errors: [] as string[]
     };
 
+    // Stale claim expiration for self-recovery (15 minutes)
+    const DELIVERY_CLAIM_TIMEOUT_MINUTES = 15;
+    const staleThreshold = new Date(Date.now() - DELIVERY_CLAIM_TIMEOUT_MINUTES * 60 * 1000).toISOString();
+
     try {
         // 2. Fetch messages to release
-        // We only fetch messages that are scheduled and NOT already claimed.
+        // We fetch messages that are scheduled and unclaimed (OR stale orphaned claims).
         const { data: messages, error } = await supabase
             .from("messages")
             .select(`
@@ -54,7 +58,7 @@ export async function releaseCheckinMessages(userId: string) {
             `)
             .eq("owner_id", userId)
             .eq("status", "scheduled")
-            .is("delivery_claimed_at", null)
+            .or(`delivery_claimed_at.is.null,delivery_claimed_at.lt.${staleThreshold}`)
             .eq("delivery_rules.mode", "checkin");
 
         if (error) {
@@ -68,14 +72,14 @@ export async function releaseCheckinMessages(userId: string) {
 
         // 3. Process each message 
         for (const message of messages) {
-            // Atomic Claim
+            // Atomic Claim (Atomic reclaim of stale claims allowed)
             const claimStamp = new Date().toISOString();
             const { data: claimed, error: claimError } = await supabase
                 .from("messages")
                 .update({ delivery_claimed_at: claimStamp })
                 .eq("id", message.id)
                 .eq("status", "scheduled")
-                .is("delivery_claimed_at", null)
+                .or(`delivery_claimed_at.is.null,delivery_claimed_at.lt.${staleThreshold}`)
                 .select("id");
 
             if (claimError || !claimed || claimed.length === 0) {

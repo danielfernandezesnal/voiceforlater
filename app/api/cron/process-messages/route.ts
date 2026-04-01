@@ -26,6 +26,10 @@ export async function GET(request: NextRequest) {
 
     const supabase = getAdminClient();
     const now = new Date().toISOString();
+    
+    // Recovery: Allow reclaiming stalled claims older than 15 minutes.
+    const DELIVERY_CLAIM_TIMEOUT_MINUTES = 15;
+    const staleThreshold = new Date(Date.now() - DELIVERY_CLAIM_TIMEOUT_MINUTES * 60 * 1000).toISOString();
 
     const results = {
         processed: 0,
@@ -34,11 +38,11 @@ export async function GET(request: NextRequest) {
     };
 
     try {
-        // 1. Find potentially eligible messages that aren't already claimed
+        // 1. Find potentially eligible messages that aren't already claimed (or have stale claims)
         // status = 'scheduled'
         // delivery_rules.mode = 'date'
         // delivery_rules.deliver_at <= now
-        // delivery_claimed_at is NULL (important for idempotency)
+        // OR: delivery_claimed_at IS NULL OR older than 15m (recovery for orphaned claims)
         const { data: messages, error } = await supabase
             .from("messages")
             .select(`
@@ -56,7 +60,7 @@ export async function GET(request: NextRequest) {
                 )
             `)
             .eq("status", "scheduled")
-            .is("delivery_claimed_at", null)
+            .or(`delivery_claimed_at.is.null,delivery_claimed_at.lt.${staleThreshold}`)
             .eq("delivery_rules.mode", "date")
             .lte("delivery_rules.deliver_at", now);
 
@@ -77,13 +81,13 @@ export async function GET(request: NextRequest) {
             const claimStamp = new Date().toISOString();
 
             // We claim the message by setting delivery_claimed_at.
-            // Enforce status='scheduled' and delivery_claimed_at IS NULL for thread-safety.
+            // Enforce status='scheduled' and (unclaimed OR stale claim) for recovery/safety.
             const { data: claimed, error: claimError } = await supabase
                 .from("messages")
                 .update({ delivery_claimed_at: claimStamp })
                 .eq("id", message.id)
                 .eq("status", "scheduled")
-                .is("delivery_claimed_at", null)
+                .or(`delivery_claimed_at.is.null,delivery_claimed_at.lt.${staleThreshold}`)
                 .select("id");
 
             if (claimError || !claimed || claimed.length === 0) {
