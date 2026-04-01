@@ -906,12 +906,12 @@
     },
     "paymentFailed": {
       "subject": "Problema con el pago de tu suscripción en Carry my Words",
-      "eyebrow": "TU SUSCRIPCIÓN",
-      "title": "No pudimos procesar tu pago",
-      "intro": "Hubo un problema con el pago de tu suscripción. Para que tus mensajes sigan protegidos y listos para cuando llegue el momento, actualizá tu medio de pago.",
+      "eyebrow": "Tu suscripción",
+      "title": "No pudimos\nprocesar tu pago.",
+      "intro": "Hubo un problema con el pago de tu suscripción. Para que tus mensajes sigan protegidos y listos para cuando llegue el momento, actualiza tu medio de pago.",
       "action": "Actualizar medio de pago",
-      "footer": "Si tenés alguna duda, contactá a nuestro equipo de soporte.",
-      "tagline": "Mensajes para cuando realmente importa."
+      "footer": "Si tienes alguna duda, contacta a nuestro equipo de soporte.",
+      "tagline": "mensajes que viajan en el tiempo"
     }
   },
   "legal": {

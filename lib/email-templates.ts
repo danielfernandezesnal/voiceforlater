@@ -610,97 +610,87 @@ export const getMessagePosthumousTemplate = (
 
 export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { dashboardUrl: string }) => {
   const t = dict.emails.paymentFailed;
-  const html = `
-<!DOCTYPE html>
+  const titleLines = (t.title || '').split('\n');
+
+  const html = `<!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Source+Sans+3:wght@300;400;500&display=swap');
+    body { margin:0; padding:0; background:#f5f0e8; font-family:'Source Sans 3',Georgia,sans-serif; }
+    @media only screen and (max-width:600px) {
+      .wrapper { padding: 24px 16px !important; }
+      .hero-pad { padding: 36px 28px 0 !important; }
+      .htitle { font-size: 28px !important; }
+      .orn-pad { padding: 20px 28px !important; }
+      .card-inner { padding: 0 28px 28px !important; }
+      .footer-pad { padding: 16px 28px !important; }
+    }
+  </style>
 </head>
-<body style="margin:0;padding:0;background:#F0ECE4;font-family:Georgia,serif;">
+<body>
+<table width="100%" cellpadding="0" cellspacing="0" class="wrapper" style="background:#f5f0e8;padding:40px 20px;">
+  <tr><td align="center">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:580px;">
 
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#F0ECE4;padding:40px 16px;">
-  <tr>
-    <td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:650px;">
+    <!-- LOGO -->
+    <tr><td align="center" style="padding-bottom:32px;">
+      <a href="https://carrymywords.com" style="text-decoration:none;">
+        <div style="font-family:'Lora',Georgia,serif;font-style:italic;font-size:24px;color:#c4622a;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
+        <div style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:#c4724a;">${dict.emails.common.tagline}</div>
+      </a>
+    </td></tr>
 
-        <!-- CARD -->
-        <tr>
-          <td style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(42,37,32,0.08);">
+    <!-- CARD -->
+    <tr><td style="background:#fffdf9;border-radius:4px;border:1px solid #e8e0d0;overflow:hidden;">
 
-            <!-- HEADER -->
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="background:#C4623A;padding:32px 48px 28px;">
-                  <div style="font-family:Georgia,serif;font-style:italic;font-size:24px;color:#ffffff;margin-bottom:16px;">
-                    Carry my Words
-                  </div>
-                  <div style="font-family:Georgia,serif;font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">
-                    ${t.eyebrow}
-                  </div>
-                  <div style="font-family:Georgia,serif;font-size:30px;font-weight:600;color:#ffffff;line-height:1.25;">
-                    ${t.title}
-                  </div>
-                </td>
-              </tr>
-            </table>
-
-            <!-- CUERPO -->
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="padding:48px;">
-
-                  <p style="margin:0 0 32px;font-size:17px;line-height:1.7;color:#2D2D2D;">
-                    ${t.intro}
-                  </p>
-
-                  <!-- BOTÓN -->
-                  <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                      <td align="center" style="padding:8px 0 24px;">
-                        <a href="${data.dashboardUrl}" style="background-color:#C4623A;color:#ffffff;padding:16px 40px;text-decoration:none;border-radius:100px;font-family:sans-serif;font-weight:600;font-size:16px;display:inline-block;box-shadow:0 4px 12px rgba(196,98,58,0.2);">
-                          ${t.action}
-                        </a>
-                      </td>
-                    </tr>
-                  </table>
-
-                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
-
-                  <p style="margin:0 0 24px;font-size:13px;line-height:1.6;color:#9B8B7E;text-align:center;">
-                    ${t.footer}
-                  </p>
-                  <div style="height:1px;background:#EAE4D9;margin-bottom:24px;"></div>
-                  <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;text-align:center;">
-                    ${t.tagline}
-                  </p>
-
-                </td>
-              </tr>
-            </table>
-
-          </td>
-        </tr>
-
-        <!-- FOOTER -->
-        <tr>
-          <td style="padding:28px 16px 8px;" align="center">
-            <div style="margin:0 0 8px;font-family:Georgia,serif;font-style:italic;font-size:14px;color:#C4623A;font-weight:600;">
-              Carry my Words
-            </div>
-            <p style="margin:0;font-size:11px;color:#9B8B7E;line-height:1.6;">
-              <a href="https://carrymywords.com" style="color:#9B8B7E;text-decoration:none;">${dict.emails.common.externalFooter}</a>
-            </p>
-          </td>
-        </tr>
-
+      <!-- HERO -->
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr><td class="hero-pad" style="padding:48px 48px 0;">
+          <div style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#c4622a;font-weight:500;margin-bottom:16px;">${t.eyebrow}</div>
+          <div class="htitle" style="font-family:'Lora',Georgia,serif;font-size:38px;font-weight:400;color:#1a0e09;line-height:1.18;margin:0;">
+            ${titleLines[0]}<br><em style="font-style:italic;color:#c4622a;">${titleLines[1] || ''}</em>
+          </div>
+        </td></tr>
       </table>
-    </td>
-  </tr>
-</table>
 
+      <!-- SEPARADOR -->
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr><td class="orn-pad" style="padding:28px 48px;">
+          <table width="100%" cellpadding="0" cellspacing="0"><tr>
+            <td style="height:1px;background:linear-gradient(to right,transparent,#ddd0bc);"></td>
+            <td style="padding:0 12px;font-family:'Lora',serif;font-size:14px;color:#c4622a;opacity:0.55;white-space:nowrap;">◆</td>
+            <td style="height:1px;background:linear-gradient(to left,transparent,#ddd0bc);"></td>
+          </tr></table>
+        </td></tr>
+      </table>
+
+      <!-- BODY -->
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr><td class="card-inner" style="padding:0 48px 40px;">
+          <p style="font-size:14px;line-height:1.78;color:#4a3728;font-weight:300;margin:0 0 28px;">${t.intro}</p>
+          <table cellpadding="0" cellspacing="0">
+            <tr><td>
+              <a href="${data.dashboardUrl}" style="display:inline-block;background:#c4622a;color:#fff9f4;text-decoration:none;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:16px 44px;border-radius:2px;">${t.action}</a>
+            </td></tr>
+          </table>
+        </td></tr>
+      </table>
+
+    </td></tr>
+
+    <!-- FOOTER -->
+    <tr><td class="footer-pad" style="padding:20px 48px;background:#f5efe3;border-top:1px solid #ecdfd0;">
+      <p style="font-size:11px;color:#9a8070;font-weight:300;margin:0;line-height:1.65;">${t.footer}</p>
+    </td></tr>
+
+  </table>
+  </td></tr>
+</table>
 </body>
-</html>
-`;
+</html>`;
+
   return { subject: t.subject, html };
 };
