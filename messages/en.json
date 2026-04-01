@@ -691,6 +691,12 @@
     },
     "delivery": {
       "title": "Delivery Health",
+      "health": {
+        "title": "Platform Health",
+        "healthy": "Healthy",
+        "warning": "Warning",
+        "critical": "Critical"
+      },
       "alerts": {
         "title": "System Alerts",
         "system_stall": "No messages processed in 24h period. System potentially stalled.",

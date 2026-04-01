@@ -96,10 +96,20 @@ export async function GET(request: NextRequest) {
             }
         }
 
+        // Derive health status strictly from exhaustive evaluation of computed alerts
+        let health_status: 'healthy' | 'warning' | 'critical' = 'healthy';
+        const hasCritical = alerts.some(a => a.severity === 'critical');
+        if (hasCritical) {
+            health_status = 'critical';
+        } else if (alerts.length > 0) {
+            health_status = 'warning';
+        }
+
         const metricsResponse = {
             ...(metrics || {}),
             has_alerts: alerts.length > 0,
-            alerts
+            alerts,
+            health_status
         };
 
         return NextResponse.json(metricsResponse);

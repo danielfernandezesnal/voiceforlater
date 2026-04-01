@@ -28,6 +28,7 @@ interface DeliveryMetricsResponse {
     checkin: DeliveryMetricSet;
     has_alerts?: boolean;
     alerts?: DeliveryAlert[];
+    health_status: 'healthy' | 'warning' | 'critical';
 }
 
 const EMPTY_METRICS: DeliveryMetricSet = {
@@ -200,6 +201,39 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                         <KPICard title={`${dict.admin.kpis.storageUsed} (MB)`} value={storageMB} loading={loading} error={error} subtext={dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.today} />
                     </div>
                 </div>
+
+                {/* Delivery Health Block */}
+                {deliveryMetrics && (
+                    <div className="pt-4 px-1">
+                        <div className={`flex items-center justify-between p-4 rounded-2xl border shadow-sm ${
+                            deliveryMetrics.health_status === 'critical' ? 'bg-destructive/10 border-destructive/20 text-destructive' :
+                            deliveryMetrics.health_status === 'warning' ? 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-500' :
+                            'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-500'
+                        }`}>
+                            <div className="flex items-center gap-3">
+                                {deliveryMetrics.health_status === 'critical' && (
+                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                )}
+                                {deliveryMetrics.health_status === 'warning' && (
+                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                )}
+                                {deliveryMetrics.health_status === 'healthy' && (
+                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                )}
+                                <div>
+                                    <h3 className="text-xs font-bold uppercase tracking-widest opacity-80">{dict.admin.delivery.health.title}</h3>
+                                    <p className="text-lg font-extrabold">{dict.admin.delivery.health[deliveryMetrics.health_status]}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Delivery Alerts Section */}
                 {deliveryMetrics?.has_alerts && deliveryMetrics.alerts && deliveryMetrics.alerts.length > 0 && (
