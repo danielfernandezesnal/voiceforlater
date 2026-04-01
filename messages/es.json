@@ -785,20 +785,13 @@
       "tagline": "mensajes que viajan en el tiempo"
     },
     "messageDelivery": {
-      "subject": "Tienes un mensaje vía Carry my Words",
-      "title": "Tienes un mensaje de Carry my Words",
-      "intro": "Ha llegado un mensaje programado para ti.",
-      "footer": "Carry my Words - Mensajes para cuando realmente importa.",
-      "viewVideo": "Ver Video",
-      "listenAudio": "Escuchar Audio",
-      "linkValid": "Link válido por 15 días.",
-      "linkError": "Error generando link.",
-      "ctaButton": "Ver mi mensaje",
-      "ctaIntro": "Alguien te dejó un mensaje especial. Crea tu cuenta para acceder a él.",
+      "subject": "Tienes un mensaje via Carry my Words",
       "ctaSubject": "{senderName} te dejó un mensaje",
-      "preheader": "Este mensaje estuvo esperando el momento justo para llegar.",
-      "contentHidden": "Este mensaje fue guardado especialmente para ti.<br>Solo tú puedes leerlo.",
-      "tagline": "Mensajes para cuando realmente importa."
+      "ctaIntro": "Alguien pensó en ti. Guardó algo para este momento exacto.",
+      "ctaButton": "Ver mi mensaje",
+      "contentHidden": "Este mensaje viajó en el tiempo para llegar hasta ti.",
+      "linkValid": "Enlace válido por 15 días.",
+      "footer": "Este mensaje fue enviado a través de Carry my Words. Si tienes alguna duda, visita carrymywords.com"
     },
     "checkinReminder1": {
       "subject": "¿Estás bien?",
