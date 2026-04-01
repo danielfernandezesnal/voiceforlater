@@ -18,9 +18,39 @@ export async function TrustedContactNotificationEmail({
   const dict = await getDictionary(locale);
   const t = dict.emails.trustedContactNotify;
   const common = dict.emails.common;
-
   const subject = t.subject.replace('{senderName}', senderName);
-  const introParagraphs = t.intro.replace('{senderName}', senderName).split('\n\n').filter(Boolean);
+  const intro = t.intro.replace('{senderName}', senderName);
+  const heroTitle = t.heroTitle.replace('{senderName}', senderName);
+  const titleLines = heroTitle.split('\n');
+
+  const styles = checkinReminderStyles + `
+    body { background-color: #f5f0e8; }
+    .email-wrapper { max-width: 580px; }
+    .top-header { text-align: center; margin-bottom: 32px; }
+    .logo-title { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 24px; color: #c4622a; margin-bottom: 5px; }
+    .logo-subtitle { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: #c4724a; font-weight: 400; }
+    .card { background: #fffdf9; border-radius: 4px; border: 1px solid #e8e0d0; box-shadow: none; }
+    .eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #c4622a; font-weight: 500; margin-bottom: 16px; }
+    .hero { background: #fffdf9; padding: 48px 48px 0; }
+    .hero h1 { font-family: 'Lora', Georgia, serif; font-size: 38px; font-weight: 400; color: #1a0e09; line-height: 1.18; margin: 0; }
+    .hero h1 em { font-style: italic; color: #c4622a; }
+    .ornament { display: flex; align-items: center; gap: 12px; padding: 28px 48px; }
+    .ornament-line { flex: 1; height: 1px; background: #ddd0bc; }
+    .ornament-glyph { font-family: 'Lora', serif; font-size: 14px; color: #c4622a; opacity: 0.55; }
+    .body { padding: 0 48px 40px; }
+    .body p { font-size: 14px; line-height: 1.78; color: #4a3728; font-weight: 300; margin-bottom: 20px; }
+    .btn-primary { background: #c4622a; color: #fff9f4 !important; border-radius: 2px; padding: 16px 44px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; display: inline-block; }
+    .cta-hint { font-size: 11px; color: #a08878; margin-top: 12px; font-weight: 300; }
+    .footer { background: #f5efe3; border-top: 1px solid #ecdfd0; padding: 24px 48px; }
+    .footer-ignore { font-size: 11px; color: #b8a898; font-weight: 300; margin: 0; }
+    @media only screen and (max-width: 600px) {
+      .hero { padding: 36px 28px 0 !important; }
+      .hero h1 { font-size: 28px !important; }
+      .ornament { padding: 20px 28px !important; }
+      .body { padding: 0 28px 28px !important; }
+      .footer { padding: 20px 28px !important; }
+    }
+  `;
 
   return (
     <html lang={locale}>
@@ -28,48 +58,40 @@ export async function TrustedContactNotificationEmail({
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{subject}</title>
-        <style dangerouslySetInnerHTML={{ __html: checkinReminderStyles }} />
+        <style dangerouslySetInnerHTML={{ __html: styles }} />
       </head>
       <body>
         <div className="email-wrapper">
           <div className="top-header">
-            <div className="logo-title">{common.footerSignature}</div>
+            <div className="logo-title">
+              <a href="https://carrymywords.com" style={{ color: 'inherit', textDecoration: 'none' }}>
+                {common.footerSignature}
+              </a>
+            </div>
             <div className="logo-subtitle">{common.tagline}</div>
           </div>
           <div className="card">
             <div className="hero">
-              <h1>{t.title}</h1>
+              <div className="eyebrow">{t.eyebrow}</div>
+              <h1>
+                {titleLines[0]}<br />
+                <em>{titleLines[1]}</em>
+              </h1>
+            </div>
+            <div className="ornament">
+              <div className="ornament-line" />
+              <span className="ornament-glyph">◆</span>
+              <div className="ornament-line" />
             </div>
             <div className="body">
-              {introParagraphs.map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
-              ))}
+              <p>{intro}</p>
               <p>{t.body}</p>
-
-              <a href={verifyUrl} className="btn-primary" style={{ marginTop: '24px' }}>
-                {t.button}
-              </a>
-              <p style={{ fontSize: '13px', color: '#9B8B7E', textAlign: 'center', marginTop: '16px' }}>
-                {t.secondary}
-              </p>
-            </div>
-            <div className="sign-off">
-              <hr />
-              <p style={{ textAlign: 'center', color: '#9B8B7E' }}>{t.ignore}</p>
-
-              <div style={{ height: '1px', background: '#EAE4D9', margin: '24px 0' }}></div>
-              <p style={{ margin: 0, fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '14px', color: '#C4623A', textAlign: 'center' }}>
-                {t.tagline}
-              </p>
+              <p>{t.secondary}</p>
+              <a href={verifyUrl} className="btn-primary">{t.button}</a>
             </div>
           </div>
           <div className="footer">
-            <div className="footer-logo" style={{ marginBottom: '8px' }}>{common.footerSignature}</div>
-            <p style={{ marginBottom: '8px' }}>
-              <a href="https://carrymywords.com" style={{ color: '#8a7a6a', textDecoration: 'none' }}>
-                {common.externalFooter}
-              </a>
-            </p>
+            <p className="footer-ignore">{t.ignore}</p>
           </div>
         </div>
       </body>

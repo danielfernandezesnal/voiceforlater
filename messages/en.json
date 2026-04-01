@@ -771,7 +771,7 @@
   "emails": {
     "common": {
       "footerSignature": "Carry my Words",
-      "tagline": "Messages for when it really matters.",
+      "tagline": "messages that travel through time",
       "externalFooter": "Carry my Words · carrymywords.com",
       "dashboardLink": "Dashboard",
       "supportLink": "Support"
@@ -785,96 +785,93 @@
       "button": "Activate my account",
       "secondary": "Single-use link · Expires in 10 minutes",
       "ignore": "If you didn't create this account, you can ignore this message.",
-      "linkFallback": "If the button doesn't work, copy this link into your browser:",
-      "tagline": "messages that travel through time"
+      "linkFallback": "If the button doesn't work, copy this link into your browser:"
     },
     "messageDelivery": {
       "subject": "You have a message via Carry my Words",
-      "title": "You have a message from Carry my Words",
-      "intro": "A message scheduled for you has arrived.",
-      "footer": "Carry my Words - Messages for when it truly matters.",
-      "viewVideo": "View Video",
-      "listenAudio": "Listen to Audio",
-      "linkValid": "Link valid for 15 days.",
-      "linkError": "Error generating link.",
+      "ctaSubject": "{senderName} left you a message",
+      "ctaIntro": "Someone thought of you. They saved something for this exact moment.",
       "ctaButton": "See my message",
-      "ctaIntro": "Someone left a special message for you. Create your account to access it.",
-      "ctaSubject": "{senderName} te dejó un mensaje",
-      "preheader": "This message was waiting for just the right moment to arrive.",
-      "contentHidden": "This message was kept especially for you.<br>Only you can read it.",
-      "tagline": "Messages for when it really matters."
+      "contentHidden": "This message traveled through time to reach you.",
+      "linkValid": "Link valid for 15 days.",
+      "footer": "This message was sent via Carry my Words. If you have any questions, visit carrymywords.com"
     },
     "checkinReminder1": {
       "subject": "Are you okay?",
+      "eyebrow": "Check-in",
+      "heroTitle": "Are you\nokay?",
       "body": {
-        "line1": "Hi,",
-        "line2": "This is your first activity confirmation notice.",
-        "line3": "Your messages are still saved and protected. We just need to know you’re still active.",
-        "line4": "If you’re okay, you can confirm with a single click:",
+        "line1": "This is your first activity confirmation notice.",
+        "line2": "Your messages are safe and protected. We just need to know you’re still active.",
+        "line3": "If you’re okay, you can confirm it with a single click:",
         "cta": "Confirm I’m okay",
-        "footer": "If you can’t respond right now, that’s okay.\nWe’ll check again later."
+        "footer": "If you can’t respond right now, no worries.\nWe’ll try again later."
       }
     },
     "checkinReminder2": {
-      "subject": "We haven’t heard from you",
+      "subject": "We still haven’t heard from you",
+      "eyebrow": "Second notice",
+      "heroTitle": "We still haven’t\nheard from you.",
       "body": {
-        "line1": "Hi,",
-        "line2": "We reached out a few days ago, but haven’t heard back from you.",
-        "line3": "We understand that life gets busy… but sometimes a small action can bring peace of mind.",
-        "line4": "If you're okay, you can confirm here:",
-        "cta": "Confirm I'm okay",
-        "footer": "If you're okay, a single click is enough.\n\nThis helps us avoid reaching out to others on your behalf."
+        "line1": "A few days ago we tried to reach you, but received no response.",
+        "line2": "We know life gets busy… but sometimes a simple gesture can bring peace of mind.",
+        "line3": "If you’re okay, you can confirm it here:",
+        "cta": "Confirm I’m okay",
+        "footer": "We just want to know you’re okay. Nothing more."
       }
     },
     "checkinReminder3": {
       "subject": "It’s important that we hear from you",
+      "eyebrow": "Important notice",
+      "heroTitle": "We need to\nhear from you.",
       "body": {
-        "line1": "Hi,",
-        "line2": "We’ve tried reaching you several times, but haven’t received a response.",
-        "line3": "To make sure everything is okay, we need your confirmation.",
-        "line4": "If you're okay, you can confirm here:",
-        "cta": "Confirm I'm okay",
-        "footer": "If we’re unable to reach you, we’ll rely on the trusted person you selected.\n\nWith your confirmation, that won’t be necessary."
+        "line1": "We’ve tried to reach you several times but haven’t received a response.",
+        "line2": "To make sure everything is okay, we need your confirmation.",
+        "line3": "If you’re okay, you can confirm it here:",
+        "cta": "Confirm I’m okay",
+        "footer": "If we’re unable to reach you, we’ll reach out to the trusted contact you’ve chosen.\n\nYour confirmation makes that unnecessary."
       }
     },
     "trustedContactNotify": {
-      "subject": "{senderName} chose you as a trusted contact",
+      "subject": "We need your help with {senderName}",
       "title": "We need your help",
-      "intro": "{senderName} chose you as someone they trust for this moment.\n\nWe tried to reach them, but did not receive a response.",
-      "body": "Your response will help us understand their situation.",
+      "tagline": "messages that travel through time",
+      "eyebrow": "Trusted contact",
+      "heroTitle": "Do you know how\n{senderName} is doing?",
+      "intro": "Some time ago, {senderName} chose you as their trusted contact on Carry my Words — a platform where people save messages for the future.",
+      "body": "For several days now, they haven't responded to their activity confirmations. Before taking any action, we want to ask you first: do you know how they're doing?",
+      "secondary": "With one click you can let us know their status. It will only take a moment.",
       "button": "Share status",
-      "secondary": "This will only take a moment.",
-      "ignore": "If you don't know this person or believe this is a mistake, you can ignore this message.",
-      "tagline": "Messages for when it really matters."
+      "ignore": "If you believe this is an error, you can ignore this message."
     },
     "trustedContactVerify": {
       "subject": "{senderFirstName} needs your help",
       "eyebrow": "{contactFirstName}, we need your help",
       "eyebrowUnknown": "We need your help",
-      "title": "Do you know how {senderFirstName} is doing?",
+      "title": "Do you know how\n{senderFirstName} is doing?",
       "intro": "{senderFirstName} has messages saved in Carry my Words and has stopped responding to activity check-ins. As their trusted contact, you're the person who can help us understand what's happening.",
       "boxTitle": "Is {senderFirstName} unavailable?",
-      "boxText": "If you confirm, their messages will be sent to the people they chose.",
+      "boxText": "If you confirm they're unavailable, their messages will be sent to the people they chose.",
       "button": "Verify status",
       "secondary": "If you know they're fine, use the same link to report it. Expires in 48 hours.",
-      "tagline": "Messages for when it really matters."
+      "tagline": "messages that travel through time"
     },
     "trustedContactInvitation": {
       "subject": "{{firstName}}, someone thought of you",
       "preheader": "{{contactFirstName}}, someone thought of you",
-      "heading": "You were chosen for<br>something important",
+      "heading": "You were chosen for\nsomething important.",
       "p1": "There are people who think about others even before the moment arrives. <strong>{{senderFullName}}</strong> is one of them.",
       "p2": "{{senderFirstName}} chose you as their <strong>trusted person</strong> on Carry my Words — a platform for leaving messages that will arrive at the right moment, or when they can no longer send them themselves.",
       "roleTitle": "What does this role mean?",
       "roleP1": "If at any point {{senderFirstName}} stops responding to the platform's activity confirmations, we may contact you to verify their situation before proceeding with the delivery of their scheduled messages.",
       "roleP2": "<strong>You don't have to do anything for now.</strong> We just wanted you to know that {{senderFirstName}} trusted you for this role.",
       "moreTitle": "Want to know more?",
-      "moreText": "{{senderFirstName}} is the best person to tell you why they chose you. A conversation with them will explain what this means better than any email.",
+      "moreText": "{{senderFirstName}} is the best person to tell you why they chose you. A conversation with them will explain better than any email what this means.",
       "thanks": "Thank you for being part of this.",
       "signature": "— The Carry my Words team",
       "footerLogo": "Carry my Words",
-      "footerLegal": "You received this email because someone chose you as a trusted contact.<br>If you believe this is an error, you can ignore this message.",
-      "tagline": "Messages for when it really matters."
+      "footerLegal": "You received this email because someone chose you as a trusted contact. If you think this is an error, you can ignore this message.",
+      "tagline": "messages that travel through time"
     },
     "messageSpecial": {
       "subject": "Messages that travel through time",
@@ -902,12 +899,12 @@
     },
     "resetPassword": {
       "subject": "Reset your Carry my Words password",
-      "eyebrow": "YOUR ACCOUNT",
-      "title": "Reset your password",
-      "intro": "We got your request. Click below and you'll be back in your account in no time.",
+      "eyebrow": "Your account",
+      "title": "Create a new\npassword.",
+      "intro": "We got your request. Click below to get back into your account with a new password.",
       "cta": "Create new password",
       "securityNote": "This link expires in 1 hour. If this wasn't you, you can ignore this email — your account is safe.",
-      "tagline": "Messages for when it really matters."
+      "tagline": "messages that travel through time"
     },
     "paymentFailed": {
       "subject": "Payment issue with your Carry my Words subscription",
