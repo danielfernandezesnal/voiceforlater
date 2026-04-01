@@ -169,7 +169,7 @@ export default async function LocaleHomePage({
                             { step: '02', ...dict.landing.howItWorks.step2 },
                             { step: '03', ...dict.landing.howItWorks.step3 }
                         ].map((item, i) => (
-                            <div key={i} className="tl-step sr-hidden flex-1 flex flex-col items-center text-center">
+                            <div key={i} className="tl-step sr-hidden flex-1 flex flex-col items-center text-center" data-step={String(i + 1)}>
                                 {/* Node row with connecting lines */}
                                 <div className="tl-node-row flex items-center w-full mb-7">
                                     {i === 0
