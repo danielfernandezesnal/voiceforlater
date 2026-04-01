@@ -219,14 +219,22 @@ export default async function LocaleHomePage({
 
             {/* Video Testimonial */}
             <section className="py-12 px-6 md:py-16 flex flex-col items-center" style={{ background: 'hsl(var(--cream))' }}>
-                <div className="w-full max-w-[360px] md:max-w-[380px] mx-auto overflow-hidden rounded-2xl shadow-md">
-                    <video
-                        src="https://nrbnmuqjzyghwqlzbxts.supabase.co/storage/v1/object/public/videos/testimonio.mp4"
-                        className="w-full h-auto aspect-[9/16] object-cover"
-                        controls
-                        preload="metadata"
-                        playsInline
-                    />
+                <div className="w-full max-w-[360px] md:max-w-[380px] mx-auto">
+                    <p className="text-center mb-3" style={{ fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, color: '#C4623A' }}>
+                        {dict.landing.testimonial?.eyebrow ?? 'Una historia real'}
+                    </p>
+                    <h2 className="font-serif font-light text-center mb-6 leading-tight" style={{ fontSize: 'clamp(1.4rem, 4vw, 1.8rem)', color: 'hsl(var(--ink))' }}>
+                        {dict.landing.testimonial?.title ?? 'Así lo vivió alguien como tú'}
+                    </h2>
+                    <div className="overflow-hidden rounded-2xl shadow-md">
+                        <video
+                            src="https://nrbnmuqjzyghwqlzbxts.supabase.co/storage/v1/object/public/videos/testimonio.mp4"
+                            className="w-full h-auto aspect-[9/16] object-cover"
+                            controls
+                            preload="metadata"
+                            playsInline
+                        />
+                    </div>
                 </div>
             </section>
 
@@ -372,6 +380,31 @@ export default async function LocaleHomePage({
             {/* FAQ */}
             <LandingFaq t={(dict.landing as any).faq} />
 
+            {/* Closing — dark dramatic block */}
+            <ScrollReveal>
+                <section
+                    style={{
+                        background: '#6E6862',
+                        padding: '80px 24px',
+                        textAlign: 'center',
+                    }}
+                >
+                    <p
+                        className="font-serif font-light italic"
+                        style={{
+                            fontSize: 'clamp(2rem, 5vw, 4rem)',
+                            lineHeight: 1.2,
+                            color: 'rgba(253, 248, 240, 0.92)',
+                            maxWidth: '820px',
+                            margin: '0 auto',
+                            letterSpacing: '-0.01em',
+                        }}
+                    >
+                        &ldquo;{dict.landing.final_thought}&rdquo;
+                    </p>
+                </section>
+            </ScrollReveal>
+
             {/* Pricing */}
             <section className="py-24 px-6 border-b border-border/50">
                 <div className="max-w-5xl mx-auto text-center">
@@ -429,32 +462,6 @@ export default async function LocaleHomePage({
                     </ScrollReveal>
                 </div>
             </section>
-
-            {/* Closing — dark dramatic block */}
-            <ScrollReveal>
-                <section
-                    style={{
-                        background: '#6E6862',
-                        padding: '80px 24px',
-                        textAlign: 'center',
-                    }}
-                >
-                    <p
-                        className="font-serif font-light italic"
-                        style={{
-                            fontSize: 'clamp(2rem, 5vw, 4rem)',
-                            lineHeight: 1.2,
-                            color: 'rgba(253, 248, 240, 0.92)',
-                            maxWidth: '820px',
-                            margin: '0 auto',
-                            letterSpacing: '-0.01em',
-                        }}
-                    >
-                        &ldquo;{dict.landing.final_thought}&rdquo;
-                    </p>
-                </section>
-            </ScrollReveal>
-
 
             {/* Footer */}
             <footer className="py-12 px-6 border-t border-border mt-auto bg-card text-muted-foreground text-sm">
