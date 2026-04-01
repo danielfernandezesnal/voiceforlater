@@ -38,8 +38,7 @@ export async function releaseCheckinMessages(userId: string) {
 
     try {
         // 2. Fetch messages to release
-        // We cannot use 'processing' status as it violates the check constraint (draft, scheduled, delivered).
-        // Since this function is called inside an atomic token claim (idempotent), we can process directly.
+        // We only fetch messages that are scheduled and NOT already claimed.
         const { data: messages, error } = await supabase
             .from("messages")
             .select(`
@@ -55,6 +54,7 @@ export async function releaseCheckinMessages(userId: string) {
             `)
             .eq("owner_id", userId)
             .eq("status", "scheduled")
+            .is("delivery_claimed_at", null)
             .eq("delivery_rules.mode", "checkin");
 
         if (error) {
@@ -67,17 +67,20 @@ export async function releaseCheckinMessages(userId: string) {
         }
 
         // 3. Process each message 
-        // We use Optimistic Concurrency Control by re-checking status inside the loop.
         for (const message of messages) {
-            // Double-check status 'scheduled' immediately before sending (Optimistic Concurrency Control).
-            const { data: currentMsg, error: staleCheck } = await supabase
+            // Atomic Claim
+            const claimStamp = new Date().toISOString();
+            const { data: claimed, error: claimError } = await supabase
                 .from("messages")
-                .select("status")
+                .update({ delivery_claimed_at: claimStamp })
                 .eq("id", message.id)
-                .single();
+                .eq("status", "scheduled")
+                .is("delivery_claimed_at", null)
+                .select("id");
 
-            if (staleCheck || currentMsg.status !== 'scheduled') {
-                continue; // Skip if already processed
+            if (claimError || !claimed || claimed.length === 0) {
+                // Skip if another process already claimed it
+                continue;
             }
 
             results.processed++;
@@ -88,6 +91,12 @@ export async function releaseCheckinMessages(userId: string) {
             const recipient = message.recipients?.[0];
             if (!recipient || !recipient.email) {
                 results.errors.push(`Message ${message.id}: No recipient`);
+                // Release claim - ONLY if we still own it
+                await supabase
+                    .from("messages")
+                    .update({ delivery_claimed_at: null })
+                    .eq("id", message.id)
+                    .eq("delivery_claimed_at", claimStamp);
                 continue;
             }
 
@@ -105,9 +114,7 @@ export async function releaseCheckinMessages(userId: string) {
                 });
                 
                 if (!linkData?.properties?.action_link) {
-                    console.error(`Failed to generate magic link for ${recipient.email}`);
-                    results.errors.push(`Message ${message.id}: Magic link generation failed`);
-                    continue;
+                    throw new Error("Magic link generation failed");
                 }
 
                 const magicLink = linkData.properties.action_link;
@@ -122,19 +129,21 @@ export async function releaseCheckinMessages(userId: string) {
                 );
 
                 if (sendError) {
-                    results.errors.push(`Message ${message.id}: Send failed`);
-                    continue;
+                    throw new Error(`Email send failed: ${String(sendError)}`);
                 }
 
                 // Update status to delivered
-                const { error: updateError } = await supabase
+                // BUT ONLY where we still own the claim.
+                const { data: finalized, error: updateError } = await supabase
                     .from("messages")
                     .update({ status: "delivered" })
                     .eq("id", message.id)
-                    .eq("status", "scheduled");
+                    .eq("status", "scheduled")
+                    .eq("delivery_claimed_at", claimStamp)
+                    .select("id");
 
-                if (updateError) {
-                    results.errors.push(`Message ${message.id}: Failed to update status after sending.`);
+                if (updateError || !finalized || finalized.length === 0) {
+                    results.errors.push(`Message ${message.id}: Failed to finalize delivery state after sending (claim ownership lost or record changed).`);
                 } else {
                     results.sent++;
                 }
@@ -142,6 +151,14 @@ export async function releaseCheckinMessages(userId: string) {
             } catch (sendError) {
                 console.error(`Error sending message ${message.id}:`, sendError);
                 results.errors.push(`Message ${message.id}: ${String(sendError)}`);
+
+                // Release claim on failure - ONLY if we still own it
+                await supabase
+                    .from("messages")
+                    .update({ delivery_claimed_at: null })
+                    .eq("id", message.id)
+                    .eq("status", "scheduled")
+                    .eq("delivery_claimed_at", claimStamp);
             }
         }
 
