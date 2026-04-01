@@ -848,13 +848,13 @@
       "subject": "{senderFirstName} needs your help",
       "eyebrow": "{contactFirstName}, we need your help",
       "eyebrowUnknown": "We need your help",
-      "title": "Do you know how {senderFirstName} is doing?",
+      "title": "Do you know how\n{senderFirstName} is doing?",
       "intro": "{senderFirstName} has messages saved in Carry my Words and has stopped responding to activity check-ins. As their trusted contact, you're the person who can help us understand what's happening.",
       "boxTitle": "Is {senderFirstName} unavailable?",
-      "boxText": "If you confirm, their messages will be sent to the people they chose.",
+      "boxText": "If you confirm they're unavailable, their messages will be sent to the people they chose.",
       "button": "Verify status",
       "secondary": "If you know they're fine, use the same link to report it. Expires in 48 hours.",
-      "tagline": "Messages for when it really matters."
+      "tagline": "messages that travel through time"
     },
     "trustedContactInvitation": {
       "subject": "{{firstName}}, someone thought of you",
