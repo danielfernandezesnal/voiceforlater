@@ -2,27 +2,38 @@ import * as React from 'react';
 import { Locale } from '@/lib/i18n';
 
 export const checkinReminderStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background-color: #e8e0d5; font-family: 'Source Sans 3', sans-serif; padding: 40px 20px; color: #2c2318; }
-  .email-wrapper { max-width: 650px; margin: 0 auto; }
-  .top-header { text-align: center; margin-bottom: 24px; }
-  .logo-title { font-family: 'Lora', serif; font-style: italic; font-size: 30px; color: #c0622a; margin-bottom: 4px; }
-  .logo-subtitle { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #c0622a; font-weight: 500; }
-  .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
-  .hero { background-color: #c0622a; padding: 32px 48px 28px; }
-  .hero h1 { font-family: 'Lora', serif; font-size: 30px; font-weight: 700; color: #fff; line-height: 1.25; margin: 0; }
-  .body { padding: 40px 48px; }
-  .body p { font-size: 17px; line-height: 1.65; color: #3a2e24; margin-bottom: 20px; }
-  hr { border: none; border-top: 1px solid #e0d8cf; margin: 28px 0; }
-  .btn-primary { display: block; background: #c0622a; color: #fff !important; text-decoration: none; text-align: center; padding: 16px 24px; border-radius: 8px; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  body { background-color: #f5f0e8; font-family: 'Source Sans 3', sans-serif; padding: 40px 20px; color: #2c2318; }
+  .email-wrapper { max-width: 580px; margin: 0 auto; }
+  .top-header { text-align: center; margin-bottom: 32px; }
+  .logo-title { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 24px; color: #c4622a; margin-bottom: 5px; }
+  .logo-subtitle { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: #c4724a; font-weight: 400; }
+  .card { background: #fffdf9; border-radius: 4px; border: 1px solid #e8e0d0; box-shadow: none; overflow: hidden; }
+  .eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #c4622a; font-weight: 500; margin-bottom: 16px; }
+  .hero { background: #fffdf9; padding: 48px 48px 0; }
+  .hero h1 { font-family: 'Lora', Georgia, serif; font-size: 38px; font-weight: 400; color: #1a0e09; line-height: 1.18; margin: 0; }
+  .hero h1 em { font-style: italic; color: #c4622a; }
+  .ornament { display: flex; align-items: center; gap: 12px; padding: 28px 48px; }
+  .ornament-line { flex: 1; height: 1px; background: #ddd0bc; }
+  .ornament-glyph { font-family: 'Lora', serif; font-size: 14px; color: #c4622a; opacity: 0.55; }
+  .body { padding: 0 48px 32px; }
+  .body p { font-size: 14px; line-height: 1.78; color: #4a3728; font-weight: 300; margin-bottom: 20px; }
+  hr { border: none; border-top: 1px solid #f0e8d8; margin: 0; }
+  .btn-primary { display: inline-block; background: #c4622a; color: #fff9f4 !important; text-decoration: none; text-align: center; padding: 16px 44px; border-radius: 2px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
   .sign-off { padding: 0 48px 36px; }
-  .sign-off p { font-size: 15px; color: #3a2e24; line-height: 1.6; margin-bottom: 4px; }
-  .sign-off .firma { font-family: 'Lora', serif; font-style: italic; color: #8a6a50; font-size: 15px; }
-  .footer { text-align: center; padding: 20px 0 0; }
-  .footer .footer-logo { font-family: 'Lora', serif; font-style: italic; font-size: 16px; color: #c0622a; margin-bottom: 8px; }
-  .footer p { font-size: 12px; color: #8a7a6a; line-height: 1.6; }
-  .footer a { color: #8a7a6a; text-decoration: underline; }
+  .sign-off p { font-size: 13px; color: #6b5040; line-height: 1.7; margin-bottom: 4px; font-weight: 300; white-space: pre-wrap; }
+  .firma { font-family: 'Lora', Georgia, serif; font-style: italic; color: #c4622a; font-size: 15px; margin-top: 8px; }
+  .footer { background: #f5efe3; border-top: 1px solid #ecdfd0; padding: 16px 48px; display: flex; justify-content: space-between; align-items: center; }
+  .footer a { font-size: 11px; color: #a08878; text-decoration: none; font-weight: 300; }
+  @media only screen and (max-width: 600px) {
+    .hero { padding: 36px 28px 0 !important; }
+    .hero h1 { font-size: 28px !important; }
+    .ornament { padding: 20px 28px !important; }
+    .body { padding: 0 28px 28px !important; }
+    .sign-off { padding: 0 28px 28px !important; }
+    .footer { padding: 16px 28px !important; flex-direction: column; gap: 8px; text-align: center; }
+  }
 `;
 
 interface CommonStrings {
@@ -37,6 +48,7 @@ interface CheckinReminderLayoutProps {
   locale: Locale;
   title: string;
   heroTitle: string;
+  heroEyebrow: string;
   checkinUrl: string;
   dashboardUrl: string;
   supportUrl: string;
@@ -45,7 +57,6 @@ interface CheckinReminderLayoutProps {
     line1: string;
     line2: string;
     line3: string;
-    line4: string;
     cta: string;
     footer: string;
   };
@@ -55,12 +66,14 @@ export function CheckinReminderLayout({
   locale,
   title,
   heroTitle,
+  heroEyebrow,
   checkinUrl,
   dashboardUrl,
   supportUrl,
   common,
   body,
 }: CheckinReminderLayoutProps) {
+  const titleLines = heroTitle.split('\n');
   return (
     <html lang={locale}>
       <head>
@@ -72,44 +85,42 @@ export function CheckinReminderLayout({
       <body>
         <div className="email-wrapper">
           <div className="top-header">
-            <div className="logo-title">{common.footerSignature}</div>
+            <div className="logo-title">
+              <a href="https://carrymywords.com" style={{ color: 'inherit', textDecoration: 'none' }}>
+                {common.footerSignature}
+              </a>
+            </div>
             <div className="logo-subtitle">{common.tagline}</div>
           </div>
           <div className="card">
             <div className="hero">
-              <h1>{heroTitle}</h1>
+              <div className="eyebrow">{heroEyebrow}</div>
+              <h1>
+                {titleLines[0]}{titleLines[1] && <><br /><em>{titleLines[1]}</em></>}
+              </h1>
+            </div>
+            <div className="ornament">
+              <div className="ornament-line" />
+              <span className="ornament-glyph">◆</span>
+              <div className="ornament-line" />
             </div>
             <div className="body">
               <p>{body.line1}</p>
               <p>{body.line2}</p>
               <p>{body.line3}</p>
-              <p>{body.line4}</p>
-
-              <a href={checkinUrl} className="btn-primary" style={{ marginTop: '24px' }}>
+              <a href={checkinUrl} className="btn-primary" style={{ marginTop: '8px' }}>
                 {body.cta}
               </a>
             </div>
+            <hr />
             <div className="sign-off">
-              <hr />
-              <p style={{ whiteSpace: 'pre-wrap' }}>{body.footer}</p>
+              <p style={{ marginTop: '24px' }}>{body.footer}</p>
               <p className="firma">— {common.footerSignature}</p>
-
-              <div style={{ height: '1px', background: '#EAE4D9', margin: '24px 0' }}></div>
-              <p style={{ margin: 0, fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '14px', color: '#C4623A', textAlign: 'center' }}>
-                {common.tagline}
-              </p>
             </div>
           </div>
           <div className="footer">
-            <div className="footer-logo" style={{ marginBottom: '8px' }}>{common.footerSignature}</div>
-            <p style={{ marginBottom: '8px' }}>
-              <a href="https://carrymywords.com" style={{ color: '#8a7a6a', textDecoration: 'none' }}>
-                {common.externalFooter}
-              </a>
-            </p>
-            <p>
-              <a href={dashboardUrl}>{common.dashboardLink}</a> · <a href={supportUrl}>{common.supportLink}</a>
-            </p>
+            <a href={dashboardUrl}>{common.dashboardLink}</a>
+            <a href={supportUrl}>{common.supportLink}</a>
           </div>
         </div>
       </body>
