@@ -833,14 +833,14 @@
       }
     },
     "trustedContactNotify": {
-      "subject": "{senderName} chose you as a trusted contact",
-      "title": "We need your help",
-      "intro": "{senderName} chose you as someone they trust for this moment.\n\nWe tried to reach them, but did not receive a response.",
-      "body": "Your response will help us understand their situation.",
+      "subject": "We need your help with {senderName}",
+      "eyebrow": "Trusted contact",
+      "heroTitle": "Do you know how\n{senderName} is doing?",
+      "intro": "Some time ago, {senderName} chose you as their trusted contact on Carry my Words — a platform where people save messages for the future.",
+      "body": "For several days now, they haven't responded to their activity confirmations. Before taking any action, we want to ask you first: do you know how they're doing?",
+      "secondary": "With one click you can let us know their status. It will only take a moment.",
       "button": "Share status",
-      "secondary": "This will only take a moment.",
-      "ignore": "If you don't know this person or believe this is a mistake, you can ignore this message.",
-      "tagline": "Messages for when it really matters."
+      "ignore": "If you believe this is an error, you can ignore this message."
     },
     "trustedContactVerify": {
       "subject": "{senderFirstName} needs your help",
