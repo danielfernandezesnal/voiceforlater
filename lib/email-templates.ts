@@ -12,33 +12,36 @@ export type EmailDictionary = {
     };
     checkinReminder1: {
       subject: string;
+      eyebrow: string;
+      heroTitle: string;
       body: {
         line1: string;
         line2: string;
         line3: string;
-        line4: string;
         cta: string;
         footer: string;
       };
     };
     checkinReminder2: {
       subject: string;
+      eyebrow: string;
+      heroTitle: string;
       body: {
         line1: string;
         line2: string;
         line3: string;
-        line4: string;
         cta: string;
         footer: string;
       };
     };
     checkinReminder3: {
       subject: string;
+      eyebrow: string;
+      heroTitle: string;
       body: {
         line1: string;
         line2: string;
         line3: string;
-        line4: string;
         cta: string;
         footer: string;
       };

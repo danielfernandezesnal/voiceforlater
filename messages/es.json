@@ -794,33 +794,36 @@
     },
     "checkinReminder1": {
       "subject": "¿Estás bien?",
+      "eyebrow": "Check-in",
+      "heroTitle": "¿Estás\nbien?",
       "body": {
-        "line1": "Hola,",
-        "line2": "Este es tu primer aviso de confirmación de actividad.",
-        "line3": "Tus mensajes siguen guardados y protegidos. Solo necesitamos saber que estás activo.",
-        "line4": "Si estás bien, puedes confirmarlo con un solo clic:",
+        "line1": "Este es tu primer aviso de confirmación de actividad.",
+        "line2": "Tus mensajes siguen guardados y protegidos. Solo necesitamos saber que estás activo.",
+        "line3": "Si estás bien, puedes confirmarlo con un solo clic:",
         "cta": "Confirmar que estoy bien",
         "footer": "Si no puedes responder en este momento, no pasa nada.\nVolveremos a intentarlo más adelante."
       }
     },
     "checkinReminder2": {
       "subject": "Seguimos sin tener noticias tuyas",
+      "eyebrow": "Segundo aviso",
+      "heroTitle": "Seguimos sin\nsaber de ti.",
       "body": {
-        "line1": "Hola,",
-        "line2": "Hace unos días intentamos contactarte, pero no recibimos respuesta.",
-        "line3": "Sabemos que pueden pasar muchas cosas… pero también que a veces un simple gesto puede traer tranquilidad.",
-        "line4": "Si estás bien, puedes confirmarlo en el siguiente enlace:",
+        "line1": "Hace unos días intentamos contactarte, pero no recibimos respuesta.",
+        "line2": "Sabemos que pueden pasar muchas cosas… pero también que a veces un simple gesto puede traer tranquilidad.",
+        "line3": "Si estás bien, puedes confirmarlo en el siguiente enlace:",
         "cta": "Confirmar que estoy bien",
-        "footer": "Si estás bien, con un solo clic es suficiente.\n\nEsto ayuda a evitar que tengamos que contactar a otras personas por ti."
+        "footer": "Solo queremos saber que estás bien. Nada más."
       }
     },
     "checkinReminder3": {
       "subject": "Es importante que podamos saber de ti",
+      "eyebrow": "Aviso importante",
+      "heroTitle": "Necesitamos\nsaber de ti.",
       "body": {
-        "line1": "Hola,",
-        "line2": "Intentamos contactarte en varias ocasiones, pero aún no recibimos respuesta.",
-        "line3": "Para asegurarnos de que todo esté bien, necesitamos tu confirmación.",
-        "line4": "Si estás bien, puedes confirmarlo en el siguiente enlace:",
+        "line1": "Intentamos contactarte en varias ocasiones, pero aún no recibimos respuesta.",
+        "line2": "Para asegurarnos de que todo esté bien, necesitamos tu confirmación.",
+        "line3": "Si estás bien, puedes confirmarlo en el siguiente enlace:",
         "cta": "Confirmar que estoy bien",
         "footer": "En caso de no poder contactarte, nos apoyaremos en la persona de confianza que hayas elegido.\n\nCon tu confirmación, no será necesario."
       }

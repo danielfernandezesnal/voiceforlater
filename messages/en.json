@@ -798,35 +798,38 @@
     },
     "checkinReminder1": {
       "subject": "Are you okay?",
+      "eyebrow": "Check-in",
+      "heroTitle": "Are you\nokay?",
       "body": {
-        "line1": "Hi,",
-        "line2": "This is your first activity confirmation notice.",
-        "line3": "Your messages are still saved and protected. We just need to know you’re still active.",
-        "line4": "If you’re okay, you can confirm with a single click:",
+        "line1": "This is your first activity confirmation notice.",
+        "line2": "Your messages are safe and protected. We just need to know you’re still active.",
+        "line3": "If you’re okay, you can confirm it with a single click:",
         "cta": "Confirm I’m okay",
-        "footer": "If you can’t respond right now, that’s okay.\nWe’ll check again later."
+        "footer": "If you can’t respond right now, no worries.\nWe’ll try again later."
       }
     },
     "checkinReminder2": {
-      "subject": "We haven’t heard from you",
+      "subject": "We still haven’t heard from you",
+      "eyebrow": "Second notice",
+      "heroTitle": "We still haven’t\nheard from you.",
       "body": {
-        "line1": "Hi,",
-        "line2": "We reached out a few days ago, but haven’t heard back from you.",
-        "line3": "We understand that life gets busy… but sometimes a small action can bring peace of mind.",
-        "line4": "If you're okay, you can confirm here:",
-        "cta": "Confirm I'm okay",
-        "footer": "If you're okay, a single click is enough.\n\nThis helps us avoid reaching out to others on your behalf."
+        "line1": "A few days ago we tried to reach you, but received no response.",
+        "line2": "We know life gets busy… but sometimes a simple gesture can bring peace of mind.",
+        "line3": "If you’re okay, you can confirm it here:",
+        "cta": "Confirm I’m okay",
+        "footer": "We just want to know you’re okay. Nothing more."
       }
     },
     "checkinReminder3": {
       "subject": "It’s important that we hear from you",
+      "eyebrow": "Important notice",
+      "heroTitle": "We need to\nhear from you.",
       "body": {
-        "line1": "Hi,",
-        "line2": "We’ve tried reaching you several times, but haven’t received a response.",
-        "line3": "To make sure everything is okay, we need your confirmation.",
-        "line4": "If you're okay, you can confirm here:",
-        "cta": "Confirm I'm okay",
-        "footer": "If we’re unable to reach you, we’ll rely on the trusted person you selected.\n\nWith your confirmation, that won’t be necessary."
+        "line1": "We’ve tried to reach you several times but haven’t received a response.",
+        "line2": "To make sure everything is okay, we need your confirmation.",
+        "line3": "If you’re okay, you can confirm it here:",
+        "cta": "Confirm I’m okay",
+        "footer": "If we’re unable to reach you, we’ll reach out to the trusted contact you’ve chosen.\n\nYour confirmation makes that unnecessary."
       }
     },
     "trustedContactNotify": {

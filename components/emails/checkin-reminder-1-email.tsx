@@ -23,7 +23,8 @@ export async function CheckinReminder1Email({
     <CheckinReminderLayout
       locale={locale}
       title={t.subject}
-      heroTitle={t.subject}
+      heroTitle={t.heroTitle}
+      heroEyebrow={t.eyebrow}
       checkinUrl={checkinUrl}
       dashboardUrl={dashboardUrl}
       supportUrl={supportUrl}
