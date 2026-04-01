@@ -11,6 +11,8 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
     const [totalUsers, setTotalUsers] = useState<number | null>(null);
     const [paidUsers, setPaidUsers] = useState<number | null>(null);
     const [storageMB, setStorageMB] = useState<number | null>(null);
+    const [deliveryMetrics, setDeliveryMetrics] = useState<any>(null);
+    const [activeTab, setActiveTab] = useState<'total' | 'date' | 'checkin'>('total');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [dateFrom, setDateFrom] = useState<string>('');
@@ -29,34 +31,29 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                 params.set('to', end.toISOString());
             }
 
-            const [resUsers, resPaid, resStorage] = await Promise.all([
+            const [resUsers, resPaid, resStorage, resDelivery] = await Promise.all([
                 fetch(`/api/admin/kpis/total-users?${params.toString()}`),
                 fetch(`/api/admin/kpis/paid-users?${params.toString()}`),
-                fetch(`/api/admin/kpis/storage-used?${params.toString()}`)
+                fetch(`/api/admin/kpis/storage-used?${params.toString()}`),
+                fetch(`/api/admin/kpis/delivery?${params.toString()}`)
             ]);
 
-            if (!resUsers.ok) {
-                const data = await resUsers.json();
-                throw new Error(data.error || 'Failed to fetch Total Users KPI');
-            }
-            if (!resPaid.ok) {
-                const data = await resPaid.json();
-                throw new Error(data.error || 'Failed to fetch Paid Users KPI');
-            }
-            if (!resStorage.ok) {
-                const data = await resStorage.json();
-                throw new Error(data.error || 'Failed to fetch Storage KPI');
-            }
+            if (!resUsers.ok) throw new Error('Failed to fetch Total Users KPI');
+            if (!resPaid.ok) throw new Error('Failed to fetch Paid Users KPI');
+            if (!resStorage.ok) throw new Error('Failed to fetch Storage KPI');
+            if (!resDelivery.ok) throw new Error('Failed to fetch Delivery Metrics');
 
-            const [dataUsers, dataPaid, dataStorage] = await Promise.all([
+            const [dataUsers, dataPaid, dataStorage, dataDelivery] = await Promise.all([
                 resUsers.json(),
                 resPaid.json(),
-                resStorage.json()
+                resStorage.json(),
+                resDelivery.json()
             ]);
 
             setTotalUsers(dataUsers.totalUsers);
             setPaidUsers(dataPaid.paidUsers);
             setStorageMB(dataStorage.storageMB);
+            setDeliveryMetrics(dataDelivery);
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'Unknown error');
         } finally {
@@ -90,6 +87,15 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
         setDateTo(formatDate(now));
     };
 
+    const activeData = deliveryMetrics?.[activeTab] || {
+        processed_count: 0,
+        delivered_count: 0,
+        send_failed_count: 0,
+        finalize_failed_count: 0,
+        stale_reclaim_count: 0,
+        success_rate: 0
+    };
+
     return (
         <div className="min-h-screen bg-background text-foreground p-6 sm:p-10 space-y-10 font-sans">
             <header className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -100,7 +106,7 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                 <div></div>
             </header>
 
-            <main className="max-w-7xl mx-auto space-y-8">
+            <main className="max-w-7xl mx-auto space-y-12">
                 {/* Filters Row */}
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 bg-card border border-border rounded-2xl p-6 shadow-sm">
                     <div className="space-y-4 w-full">
@@ -157,95 +163,107 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                     </button>
                 </div>
 
-                {/* KPIs Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="relative overflow-hidden group p-8 bg-card border border-border rounded-3xl shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300">
-                        {/* Decorative Background Element */}
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
+                {/* Main KPIs Section */}
+                <div className="space-y-6">
+                    <h2 className="text-xl font-bold tracking-tight px-1 flex items-center gap-2">
+                        <span className="w-1.5 h-6 bg-primary rounded-full"></span>
+                        {dict.admin.sidebar.dashboard}
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <KPICard title={dict.admin.kpis.totalUsers} value={totalUsers} loading={loading} error={error} subtext={dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.today} />
+                        <KPICard title={dict.admin.kpis.paidUsers} value={paidUsers} loading={loading} error={error} subtext={dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.active} />
+                        <KPICard title={`${dict.admin.kpis.storageUsed} (MB)`} value={storageMB} loading={loading} error={error} subtext={dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.today} />
+                    </div>
+                </div>
 
-                        <div className="relative z-10">
-                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{dict.admin.kpis.totalUsers}</h3>
-                            {loading ? (
-                                <div className="mt-4 flex items-baseline gap-1">
-                                    <div className="h-10 w-24 bg-muted animate-pulse rounded-lg"></div>
-                                </div>
-                            ) : error ? (
-                                <div className="mt-4 text-destructive font-medium bg-destructive/10 p-3 rounded-xl text-sm border border-destructive/20 line-clamp-2">
-                                    {error}
-                                </div>
-                            ) : (
-                                <div className="mt-2 flex flex-col">
-                                    <span className="text-5xl font-black text-primary tracking-tighter">
-                                        {totalUsers?.toLocaleString() ?? 0}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground mt-1 font-medium italic">
-                                        {dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.today}
-                                    </span>
-                                </div>
-                            )}
+                {/* Delivery Metrics Section */}
+                <div className="space-y-6 pt-4">
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 px-1">
+                        <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
+                            <span className="w-1.5 h-6 bg-primary rounded-full"></span>
+                            {dict.admin.delivery.title}
+                        </h2>
+                        {/* Tabs Navigation */}
+                        <div className="flex bg-muted p-1 rounded-xl w-fit">
+                            {(['total', 'date', 'checkin'] as const).map((tab) => (
+                                <button
+                                    key={tab}
+                                    onClick={() => setActiveTab(tab)}
+                                    className={`px-4 py-1.5 text-xs font-bold transition-all rounded-lg ${
+                                        activeTab === tab 
+                                        ? "bg-card text-foreground shadow-sm" 
+                                        : "text-muted-foreground hover:text-foreground"
+                                    }`}
+                                >
+                                    {dict.admin.delivery.tabs[tab]}
+                                </button>
+                            ))}
                         </div>
                     </div>
 
-                    <div className="relative overflow-hidden group p-8 bg-card border border-border rounded-3xl shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
-                        <div className="relative z-10">
-                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{dict.admin.kpis.paidUsers}</h3>
-                            {loading ? (
-                                <div className="mt-4 flex items-baseline gap-1">
-                                    <div className="h-10 w-24 bg-muted animate-pulse rounded-lg"></div>
-                                </div>
-                            ) : error ? (
-                                <div className="mt-4 text-destructive font-medium bg-destructive/10 p-3 rounded-xl text-sm border border-destructive/20 line-clamp-2">
-                                    {error}
-                                </div>
-                            ) : (
-                                <div className="mt-2 flex flex-col">
-                                    <span className="text-5xl font-black text-primary tracking-tighter">
-                                        {paidUsers?.toLocaleString() ?? 0}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground mt-1 font-medium italic">
-                                        {dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.active}
-                                    </span>
-                                </div>
-                            )}
-                        </div>
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+                        <DeliveryStatCard label={dict.admin.delivery.stats.processed} value={activeData.processed_count} loading={loading} />
+                        <DeliveryStatCard label={dict.admin.delivery.stats.delivered} value={activeData.delivered_count} variant="success" loading={loading} />
+                        <DeliveryStatCard label={dict.admin.delivery.stats.sendFailed} value={activeData.send_failed_count} variant="danger" loading={loading} />
+                        <DeliveryStatCard label={dict.admin.delivery.stats.finalizeFailed} value={activeData.finalize_failed_count} variant="warning" loading={loading} />
+                        <DeliveryStatCard label={dict.admin.delivery.stats.staleReclaims} value={activeData.stale_reclaim_count} loading={loading} />
+                        <DeliveryStatCard label={dict.admin.delivery.stats.successRate} value={`${activeData.success_rate}%`} variant="highlight" loading={loading} />
                     </div>
-
-                    <div className="relative overflow-hidden group p-8 bg-card border border-border rounded-3xl shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
-                        <div className="relative z-10">
-                            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{dict.admin.kpis.storageUsed} (MB)</h3>
-                            {loading ? (
-                                <div className="mt-4 flex items-baseline gap-1">
-                                    <div className="h-10 w-24 bg-muted animate-pulse rounded-lg"></div>
-                                </div>
-                            ) : error ? (
-                                <div className="mt-4 text-destructive font-medium bg-destructive/10 p-3 rounded-xl text-sm border border-destructive/20 line-clamp-2">
-                                    {error}
-                                </div>
-                            ) : (
-                                <div className="mt-2 flex flex-col">
-                                    <span className="text-5xl font-black text-primary tracking-tighter">
-                                        {storageMB?.toLocaleString() ?? 0}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground mt-1 font-medium italic">
-                                        {dateFrom || dateTo ? dict.admin.kpis.inRange : dict.admin.kpis.today}
-                                    </span>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Placeholder Cards for Future KPIs */}
-                    {[1].map((i) => (
-                        <div key={i} className="p-8 bg-muted/20 border border-dashed border-border rounded-3xl flex flex-col items-center justify-center text-center opacity-50">
-                            <div className="w-10 h-10 bg-muted rounded-full mb-3 shadow-inner"></div>
-                            <div className="h-4 w-24 bg-muted rounded mb-2"></div>
-                            <div className="h-3 w-32 bg-muted rounded"></div>
-                        </div>
-                    ))}
                 </div>
             </main>
         </div>
     );
 }
+
+function KPICard({ title, value, loading, error, subtext }: { title: string, value: number | null, loading: boolean, error: string | null, subtext: string }) {
+    return (
+        <div className="relative overflow-hidden group p-8 bg-card border border-border rounded-3xl shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors"></div>
+            <div className="relative z-10">
+                <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{title}</h3>
+                {loading ? (
+                    <div className="mt-4 flex items-baseline gap-1">
+                        <div className="h-10 w-24 bg-muted animate-pulse rounded-lg"></div>
+                    </div>
+                ) : error ? (
+                    <div className="mt-4 text-destructive font-medium bg-destructive/10 p-3 rounded-xl text-sm border border-destructive/20 line-clamp-2">
+                        {error}
+                    </div>
+                ) : (
+                    <div className="mt-2 flex flex-col">
+                        <span className="text-5xl font-black text-primary tracking-tighter">
+                            {value?.toLocaleString() ?? 0}
+                        </span>
+                        <span className="text-xs text-muted-foreground mt-1 font-medium italic">
+                            {subtext}
+                        </span>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+function DeliveryStatCard({ label, value, loading, variant = 'default' }: { label: string, value: string | number, loading: boolean, variant?: 'default' | 'success' | 'danger' | 'warning' | 'highlight' }) {
+    const variants = {
+        default: "text-foreground",
+        success: "text-emerald-500",
+        danger: "text-rose-500",
+        warning: "text-amber-500",
+        highlight: "text-primary"
+    };
+
+    return (
+        <div className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[120px] group hover:border-primary/20 transition-all">
+            <h4 className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{label}</h4>
+            {loading ? (
+                <div className="h-6 w-16 bg-muted animate-pulse rounded-md mt-2"></div>
+            ) : (
+                <span className={`text-2xl font-black tracking-tight mt-1 ${variants[variant]}`}>
+                    {value}
+                </span>
+            )}
+        </div>
+    );
+}
+

@@ -681,6 +681,22 @@
       "active": "Activos",
       "today": "Hoy"
     },
+    "delivery": {
+      "title": "Métricas de Entrega",
+      "tabs": {
+        "total": "Total",
+        "date": "Por Fecha",
+        "checkin": "Check-in"
+      },
+      "stats": {
+        "processed": "Procesados",
+        "delivered": "Entregados",
+        "sendFailed": "Fallos Envío",
+        "finalizeFailed": "Fallos Finalizado",
+        "staleReclaims": "Recuperación Stale",
+        "successRate": "Tasa de Éxito"
+      }
+    },
     "filters": {
       "title": "Filtros",
       "fromDate": "Desde",

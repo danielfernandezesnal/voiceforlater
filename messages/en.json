@@ -685,6 +685,22 @@
       "active": "Active",
       "today": "Today"
     },
+    "delivery": {
+      "title": "Delivery Health",
+      "tabs": {
+        "total": "Total",
+        "date": "By Date",
+        "checkin": "Check-in"
+      },
+      "stats": {
+        "processed": "Processed",
+        "delivered": "Delivered",
+        "sendFailed": "Send Failed",
+        "finalizeFailed": "Finalize Failed",
+        "staleReclaims": "Stale Reclaims",
+        "successRate": "Success Rate"
+      }
+    },
     "filters": {
       "title": "Filters",
       "fromDate": "From",
