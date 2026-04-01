@@ -874,14 +874,15 @@
     },
     "messageSpecial": {
       "subject": "Mensajes que viajan en el tiempo",
-      "preheader": "{{RECIPIENT_NAME}}, HOY ES UN DÍA ESPECIAL",
-      "heading": "Alguien que te quiere lo sabía de antemano",
+      "preheader": "{{RECIPIENT_NAME}}, hoy es un día especial",
+      "heading": "Alguien que te quiere\nlo sabía de antemano.",
       "p1": "{{SENDER_NAME}} programó un mensaje para vos hace un tiempo, con la intención de que lo recibieras exactamente hoy.",
       "p2": "Es algo pensado, elegido y guardado con cuidado hasta este momento.",
-      "button": "🎙 Acceder al mensaje",
+      "button": "Acceder al mensaje",
       "closing": "Porque algunas palabras merecen llegar en el momento justo.",
       "signature": "— El equipo de Carry my Words",
-      "tagline": "Mensajes para cuando realmente importa."
+      "linkFallback": "Si el botón no funciona, copiá y pegá este link en tu navegador:",
+      "tagline": "mensajes que viajan en el tiempo."
     },
     "messagePosthumous": {
       "subject": "Mensajes que viajan en el tiempo",

@@ -878,14 +878,15 @@
     },
     "messageSpecial": {
       "subject": "Messages that travel through time",
-      "preheader": "{{RECIPIENT_NAME}}, TODAY IS A SPECIAL DAY",
-      "heading": "Someone who loves you knew in advance",
+      "preheader": "{{RECIPIENT_NAME}}, today is a special day",
+      "heading": "Someone who loves you\nknew in advance.",
       "p1": "{{SENDER_NAME}} scheduled a message for you some time ago, with the intention that you would receive it exactly today.",
       "p2": "It is something thought out, chosen, and carefully kept until this moment.",
-      "button": "🎙 Access the message",
+      "button": "Access the message",
       "closing": "Because some words deserve to arrive at just the right moment.",
       "signature": "— The Carry my Words team",
-      "tagline": "Messages for when it really matters."
+      "linkFallback": "If the button doesn't work, copy and paste this link into your browser:",
+      "tagline": "messages that travel through time."
     },
     "messagePosthumous": {
       "subject": "Messages that travel through time",
