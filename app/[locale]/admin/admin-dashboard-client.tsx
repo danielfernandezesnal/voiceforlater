@@ -7,12 +7,36 @@ interface Props {
     dict: any;
 }
 
+interface DeliveryMetricSet {
+    processed_count: number;
+    delivered_count: number;
+    send_failed_count: number;
+    finalize_failed_count: number;
+    stale_reclaim_count: number;
+    success_rate: number;
+}
+
+interface DeliveryMetricsMap {
+    total: DeliveryMetricSet;
+    date: DeliveryMetricSet;
+    checkin: DeliveryMetricSet;
+}
+
+const EMPTY_METRICS: DeliveryMetricSet = {
+    processed_count: 0,
+    delivered_count: 0,
+    send_failed_count: 0,
+    finalize_failed_count: 0,
+    stale_reclaim_count: 0,
+    success_rate: 0
+};
+
 export default function AdminDashboardClient({ locale, dict }: Props) {
     const [totalUsers, setTotalUsers] = useState<number | null>(null);
     const [paidUsers, setPaidUsers] = useState<number | null>(null);
     const [storageMB, setStorageMB] = useState<number | null>(null);
-    const [deliveryMetrics, setDeliveryMetrics] = useState<any>(null);
-    const [activeTab, setActiveTab] = useState<'total' | 'date' | 'checkin'>('total');
+    const [deliveryMetrics, setDeliveryMetrics] = useState<DeliveryMetricsMap | null>(null);
+    const [activeTab, setActiveTab] = useState<keyof DeliveryMetricsMap>('total');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [dateFrom, setDateFrom] = useState<string>('');
@@ -47,7 +71,7 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                 resUsers.json(),
                 resPaid.json(),
                 resStorage.json(),
-                resDelivery.json()
+                resDelivery.json() as Promise<DeliveryMetricsMap>
             ]);
 
             setTotalUsers(dataUsers.totalUsers);
@@ -87,14 +111,7 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
         setDateTo(formatDate(now));
     };
 
-    const activeData = deliveryMetrics?.[activeTab] || {
-        processed_count: 0,
-        delivered_count: 0,
-        send_failed_count: 0,
-        finalize_failed_count: 0,
-        stale_reclaim_count: 0,
-        success_rate: 0
-    };
+    const activeData = deliveryMetrics ? deliveryMetrics[activeTab] : EMPTY_METRICS;
 
     return (
         <div className="min-h-screen bg-background text-foreground p-6 sm:p-10 space-y-10 font-sans">
