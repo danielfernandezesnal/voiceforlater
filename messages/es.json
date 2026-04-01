@@ -767,7 +767,7 @@
   "emails": {
     "common": {
       "footerSignature": "Carry my Words",
-      "tagline": "Mensajes para cuando realmente importa.",
+      "tagline": "mensajes que viajan en el tiempo",
       "externalFooter": "Carry my Words · carrymywords.com",
       "dashboardLink": "Dashboard",
       "supportLink": "Soporte"
@@ -781,24 +781,16 @@
       "button": "Activar mi cuenta",
       "secondary": "Enlace de uso único · Expira en 10 minutos",
       "ignore": "Si no creaste esta cuenta, puedes ignorar este mensaje.",
-      "linkFallback": "Si el botón no funciona, copia este enlace en tu navegador:",
-      "tagline": "mensajes que viajan en el tiempo"
+      "linkFallback": "Si el botón no funciona, copia este enlace en tu navegador:"
     },
     "messageDelivery": {
-      "subject": "Tienes un mensaje vía Carry my Words",
-      "title": "Tienes un mensaje de Carry my Words",
-      "intro": "Ha llegado un mensaje programado para ti.",
-      "footer": "Carry my Words - Mensajes para cuando realmente importa.",
-      "viewVideo": "Ver Video",
-      "listenAudio": "Escuchar Audio",
-      "linkValid": "Link válido por 15 días.",
-      "linkError": "Error generando link.",
-      "ctaButton": "Ver mi mensaje",
-      "ctaIntro": "Alguien te dejó un mensaje especial. Crea tu cuenta para acceder a él.",
+      "subject": "Tienes un mensaje via Carry my Words",
       "ctaSubject": "{senderName} te dejó un mensaje",
-      "preheader": "Este mensaje estuvo esperando el momento justo para llegar.",
-      "contentHidden": "Este mensaje fue guardado especialmente para ti.<br>Solo tú puedes leerlo.",
-      "tagline": "Mensajes para cuando realmente importa."
+      "ctaIntro": "Alguien pensó en ti. Guardó algo para este momento exacto.",
+      "ctaButton": "Ver mi mensaje",
+      "contentHidden": "Este mensaje viajó en el tiempo para llegar hasta ti.",
+      "linkValid": "Enlace válido por 15 días.",
+      "footer": "Este mensaje fue enviado a través de Carry my Words. Si tienes alguna duda, visita carrymywords.com"
     },
     "checkinReminder1": {
       "subject": "¿Estás bien?",
@@ -899,13 +891,13 @@
       "tagline": "Mensajes para cuando realmente importa."
     },
     "resetPassword": {
-      "subject": "Restablecé tu contraseña de Carry my Words",
-      "eyebrow": "TU CUENTA",
-      "title": "Restablecé tu contraseña",
-      "intro": "Recibimos tu solicitud. Hacé clic abajo y en un minuto vas a poder entrar de nuevo con una contraseña nueva.",
+      "subject": "Restablece tu contraseña de Carry my Words",
+      "eyebrow": "Tu cuenta",
+      "title": "Crea una nueva\ncontraseña.",
+      "intro": "Recibimos tu solicitud. Haz clic abajo para poder entrar de nuevo con una contraseña nueva.",
       "cta": "Crear nueva contraseña",
-      "securityNote": "Este enlace expira en 1 hora. Si no fuiste vos, podés ignorar este email — tu cuenta está segura.",
-      "tagline": "Mensajes para cuando realmente importa."
+      "securityNote": "Este enlace expira en 1 hora. Si no fuiste tú, puedes ignorar este email — tu cuenta está segura.",
+      "tagline": "mensajes que viajan en el tiempo"
     },
     "paymentFailed": {
       "subject": "Problema con el pago de tu suscripción en Carry my Words",
