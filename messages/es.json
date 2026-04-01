@@ -844,16 +844,16 @@
       "tagline": "Mensajes para cuando realmente importa."
     },
     "trustedContactVerify": {
-      "subject": "{senderFirstName} necesita que lo ayudes",
+      "subject": "{senderFirstName} necesita tu ayuda",
       "eyebrow": "{contactFirstName}, necesitamos tu ayuda",
       "eyebrowUnknown": "Necesitamos tu ayuda",
-      "title": "¿Sabés cómo está {senderFirstName}?",
-      "intro": "{senderFirstName} tiene mensajes guardados en Carry my Words y dejó de responder sus confirmaciones de actividad. Como persona de confianza, sos quien puede ayudarnos a entender qué está pasando.",
+      "title": "¿Sabes cómo\nestá {senderFirstName}?",
+      "intro": "{senderFirstName} tiene mensajes guardados en Carry my Words y dejó de responder sus confirmaciones de actividad. Como persona de confianza, eres quien puede ayudarnos a entender qué está pasando.",
       "boxTitle": "¿{senderFirstName} no está disponible?",
-      "boxText": "Si confirmás, sus mensajes serán enviados a quienes él eligió.",
+      "boxText": "Si confirmas que no está disponible, sus mensajes serán enviados a quienes él eligió.",
       "button": "Verificar estado",
-      "secondary": "Si sabés que está bien, usá el mismo enlace para reportarlo. Expira en 48 horas.",
-      "tagline": "Mensajes para cuando realmente importa."
+      "secondary": "Si sabes que está bien, usa el mismo enlace para reportarlo. Expira en 48 horas.",
+      "tagline": "mensajes que viajan en el tiempo"
     },
     "trustedContactInvitation": {
       "subject": "{{firstName}}, alguien pensó en vos",
