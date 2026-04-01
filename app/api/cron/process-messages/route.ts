@@ -97,7 +97,7 @@ export async function GET(request: NextRequest) {
             }
 
             // [Telemetry] Log successful claim
-            await logDeliveryEvent(supabase, {
+            void logDeliveryEvent(supabase, {
                 type: "message_claimed",
                 userId: message.owner_id,
                 metadata: {
@@ -117,7 +117,7 @@ export async function GET(request: NextRequest) {
                 results.errors.push(`Message ${message.id}: No recipient`);
                 
                 // [Telemetry] Log claim release
-                await logDeliveryEvent(supabase, {
+                void logDeliveryEvent(supabase, {
                     type: "message_claim_released",
                     userId: message.owner_id,
                     metadata: { message_id: message.id, flow: "date", claim_stamp: claimStamp, reason: "no_recipient" }
@@ -176,7 +176,7 @@ export async function GET(request: NextRequest) {
 
                 if (finalizeError || !finalized || finalized.length === 0) {
                     // [Telemetry] Log finalize failure
-                    await logDeliveryEvent(supabase, {
+                    void logDeliveryEvent(supabase, {
                         type: "message_finalize_failed",
                         userId: message.owner_id,
                         metadata: { message_id: message.id, flow: "date", claim_stamp: claimStamp, reason: "ownership_lost" }
@@ -185,7 +185,7 @@ export async function GET(request: NextRequest) {
                 }
 
                 // [Telemetry] Log successful finalization
-                await logDeliveryEvent(supabase, {
+                void logDeliveryEvent(supabase, {
                     type: "message_delivery_finalized",
                     userId: message.owner_id,
                     metadata: { message_id: message.id, flow: "date", claim_stamp: claimStamp }
@@ -200,7 +200,7 @@ export async function GET(request: NextRequest) {
 
                 // [Telemetry] Log send failure (if not already logged as finalize failure)
                 if (!reason.includes("Finalize failed")) {
-                    await logDeliveryEvent(supabase, {
+                    void logDeliveryEvent(supabase, {
                         type: "message_send_failed",
                         userId: message.owner_id,
                         metadata: { message_id: message.id, flow: "date", claim_stamp: claimStamp, reason }
@@ -208,7 +208,7 @@ export async function GET(request: NextRequest) {
                 }
 
                 // [Telemetry] Log claim release
-                await logDeliveryEvent(supabase, {
+                void logDeliveryEvent(supabase, {
                     type: "message_claim_released",
                     userId: message.owner_id,
                     metadata: { message_id: message.id, flow: "date", claim_stamp: claimStamp, reason: "failure_rollback" }

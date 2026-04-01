@@ -88,7 +88,7 @@ export async function releaseCheckinMessages(userId: string) {
             }
 
             // [Telemetry] Log successful claim
-            await logDeliveryEvent(supabase, {
+            void logDeliveryEvent(supabase, {
                 type: "message_claimed",
                 userId: message.owner_id,
                 metadata: {
@@ -109,7 +109,7 @@ export async function releaseCheckinMessages(userId: string) {
                 results.errors.push(`Message ${message.id}: No recipient`);
 
                 // [Telemetry] Log claim release
-                await logDeliveryEvent(supabase, {
+                void logDeliveryEvent(supabase, {
                     type: "message_claim_released",
                     userId: message.owner_id,
                     metadata: { message_id: message.id, flow: "checkin", claim_stamp: claimStamp, reason: "no_recipient" }
@@ -168,7 +168,7 @@ export async function releaseCheckinMessages(userId: string) {
 
                 if (updateError || !finalized || finalized.length === 0) {
                     // [Telemetry] Log finalize failure
-                    await logDeliveryEvent(supabase, {
+                    void logDeliveryEvent(supabase, {
                         type: "message_finalize_failed",
                         userId: message.owner_id,
                         metadata: {
@@ -181,7 +181,7 @@ export async function releaseCheckinMessages(userId: string) {
                     results.errors.push(`Message ${message.id}: Failed to finalize delivery state after sending (claim ownership lost or record changed).`);
                 } else {
                     // [Telemetry] Log successful finalization
-                    await logDeliveryEvent(supabase, {
+                    void logDeliveryEvent(supabase, {
                         type: "message_delivery_finalized",
                         userId: message.owner_id,
                         metadata: { message_id: message.id, flow: "checkin", claim_stamp: claimStamp }
@@ -195,18 +195,19 @@ export async function releaseCheckinMessages(userId: string) {
                 results.errors.push(`Message ${message.id}: ${reason}`);
 
                 // [Telemetry] Log send failure
-                await logDeliveryEvent(supabase, {
+                void logDeliveryEvent(supabase, {
                     type: "message_send_failed",
                     userId: message.owner_id,
                     metadata: { message_id: message.id, flow: "checkin", claim_stamp: claimStamp, reason }
                 });
 
                 // [Telemetry] Log claim release
-                await logDeliveryEvent(supabase, {
+                void logDeliveryEvent(supabase, {
                     type: "message_claim_released",
                     userId: message.owner_id,
                     metadata: { message_id: message.id, flow: "checkin", claim_stamp: claimStamp, reason: "failure_rollback" }
                 });
+
 
                 // Release claim on failure - ONLY if we still own it
                 await supabase
