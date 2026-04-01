@@ -72,7 +72,7 @@ export async function MagicLinkEmail({
                 {common.footerSignature}
               </a>
             </div>
-            <div className="logo-subtitle">{t.tagline}</div>
+            <div className="logo-subtitle">{common.tagline}</div>
           </div>
 
           <div className="card">
@@ -117,7 +117,7 @@ export async function MagicLinkEmail({
               {t.linkFallback}<br />
               <a href={magicLink}>{magicLink}</a>
             </p>
-            <div className="footer-tagline">{t.tagline}</div>
+            <div className="footer-tagline">{common.tagline}</div>
             <p className="footer-ignore">{t.ignore}</p>
           </div>
 

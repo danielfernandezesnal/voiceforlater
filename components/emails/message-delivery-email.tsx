@@ -21,23 +21,39 @@ export async function MessageDeliveryEmail({
   const t = dict.emails.messageDelivery;
   const common = dict.emails.common;
   const subject = t.ctaSubject.replace('{senderName}', senderName);
+  const titleLine2 = locale === 'es' ? 'te dejó algo <em>especial.</em>' : 'left you something <em>special.</em>';
 
-  // Inline styles to extend checkinReminderStyles with message-delivery-specific overrides
-  const extraStyles = `
-    .hero h1 { font-size: 24px; }
-    .content-hidden-block {
-      background: #f5f0e8;
-      border-radius: 12px;
-      padding: 28px 32px;
-      text-align: center;
-      font-family: 'Lora', serif;
-      color: #6b5e52;
-      font-style: italic;
-      font-size: 1.05rem;
-      line-height: 1.6;
-      margin-bottom: 32px;
+  const styles = checkinReminderStyles + `
+    body { background-color: #f5f0e8; }
+    .email-wrapper { max-width: 580px; }
+    .top-header { text-align: center; margin-bottom: 32px; }
+    .logo-title { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 24px; color: #c4622a; margin-bottom: 5px; }
+    .logo-subtitle { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: #c4724a; font-weight: 400; }
+    .card { background: #fffdf9; border-radius: 4px; border: 1px solid #e8e0d0; box-shadow: none; }
+    .eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #c4622a; font-weight: 500; margin-bottom: 16px; }
+    .hero { background: #fffdf9; padding: 48px 48px 0; }
+    .hero h1 { font-family: 'Lora', Georgia, serif; font-size: 38px; font-weight: 400; color: #1a0e09; line-height: 1.18; margin: 0; }
+    .hero h1 em { font-style: italic; color: #c4622a; }
+    .ornament { display: flex; align-items: center; gap: 12px; padding: 28px 48px; }
+    .ornament-line { flex: 1; height: 1px; background: #ddd0bc; }
+    .ornament-glyph { font-family: 'Lora', serif; font-size: 14px; color: #c4622a; opacity: 0.55; }
+    .body { padding: 0 48px 40px; }
+    .body p { font-size: 14px; line-height: 1.78; color: #4a3728; font-weight: 300; margin-bottom: 24px; }
+    .sealed-block { background: #f5efe3; border: 1px solid #e8d8c4; border-radius: 4px; padding: 28px 32px; text-align: center; margin-bottom: 28px; }
+    .sealed-icon { font-size: 18px; color: #c4622a; opacity: 0.7; margin-bottom: 12px; }
+    .sealed-text { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 16px; color: #6b5040; line-height: 1.65; }
+    .btn-primary { background: #c4622a; color: #fff9f4 !important; border-radius: 2px; padding: 16px 44px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; display: inline-block; }
+    .cta-hint { font-size: 11px; color: #a08878; margin-top: 12px; font-weight: 300; }
+    .footer { background: #f5efe3; border-top: 1px solid #ecdfd0; padding: 24px 48px; text-align: left; }
+    .footer-note { font-size: 11px; color: #b8a898; font-weight: 300; margin: 0; }
+    @media only screen and (max-width: 600px) {
+      .hero { padding: 36px 28px 0 !important; }
+      .hero h1 { font-size: 28px !important; }
+      .ornament { padding: 20px 28px !important; }
+      .body { padding: 0 28px 28px !important; }
+      .sealed-block { padding: 20px !important; }
+      .footer { padding: 20px 28px !important; }
     }
-    .link-valid { text-align: center; font-size: 12px; color: #9B8B7E; margin-top: 16px; }
   `;
 
   return (
@@ -46,53 +62,59 @@ export async function MessageDeliveryEmail({
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{subject}</title>
-        <style dangerouslySetInnerHTML={{ __html: checkinReminderStyles + extraStyles }} />
+        <style dangerouslySetInnerHTML={{ __html: styles }} />
       </head>
       <body>
         <div className="email-wrapper">
+
+          {/* LOGO */}
           <div className="top-header">
-            <div className="logo-title">{common.footerSignature}</div>
+            <div className="logo-title">
+              <a href="https://carrymywords.com" style={{ color: 'inherit', textDecoration: 'none' }}>
+                {common.footerSignature}
+              </a>
+            </div>
             <div className="logo-subtitle">{common.tagline}</div>
           </div>
+
           <div className="card">
+
+            {/* HERO */}
             <div className="hero">
-              <h1>{subject}</h1>
+              <div className="eyebrow">{locale === 'es' ? 'Tienes un mensaje' : 'You have a message'}</div>
+              <h1>
+                {senderName}<br />
+                <span dangerouslySetInnerHTML={{ __html: titleLine2 }} />
+              </h1>
             </div>
+
+            {/* SEPARADOR */}
+            <div className="ornament">
+              <div className="ornament-line" />
+              <span className="ornament-glyph">◆</span>
+              <div className="ornament-line" />
+            </div>
+
+            {/* BODY */}
             <div className="body">
               <p>{t.ctaIntro}</p>
-
-              {/* Sealed content block — intentionally does not show message content */}
-              <div className="content-hidden-block"
-                dangerouslySetInnerHTML={{ __html: t.contentHidden }}
-              />
-
-              <a href={magicLink} className="btn-primary" style={{ marginTop: '8px' }}>
+              <div className="sealed-block">
+                <div className="sealed-icon">✦</div>
+                <div className="sealed-text">{t.contentHidden}</div>
+              </div>
+              <a href={magicLink} className="btn-primary">
                 {t.ctaButton}
               </a>
-              <p className="link-valid">{t.linkValid}</p>
+              <p className="cta-hint">{t.linkValid}</p>
             </div>
-            <div className="sign-off">
-              <hr />
-              <p style={{ textAlign: 'center', fontSize: '12px', color: '#9B8B7E' }}>
-                {t.footer}
-              </p>
-              <p className="firma" style={{ textAlign: 'center', marginTop: '8px' }}>
-                — {common.footerSignature}
-              </p>
-              <div style={{ height: '1px', background: '#EAE4D9', margin: '24px 0' }}></div>
-              <p style={{ margin: 0, fontFamily: "'Lora', serif", fontStyle: 'italic', fontSize: '14px', color: '#C4623A', textAlign: 'center' }}>
-                {common.tagline}
-              </p>
-            </div>
+
           </div>
+
+          {/* FOOTER */}
           <div className="footer">
-            <div className="footer-logo" style={{ marginBottom: '8px' }}>{common.footerSignature}</div>
-            <p style={{ marginBottom: '8px' }}>
-              <a href="https://carrymywords.com" style={{ color: '#8a7a6a', textDecoration: 'none' }}>
-                {common.externalFooter}
-              </a>
-            </p>
+            <p className="footer-note">{t.footer}</p>
           </div>
+
         </div>
       </body>
     </html>
