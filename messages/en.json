@@ -262,6 +262,10 @@
     },
     "closing": "",
     "final_thought": "Words matter, so does the moment.",
+    "testimonial": {
+      "eyebrow": "A real story",
+      "title": "How someone like you experienced it"
+    },
     "cta_hero": "Record your first message",
     "cta_after_how": "Get started now",
     "cta_after_delivery": "Leave something that lasts",
