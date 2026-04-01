@@ -831,12 +831,14 @@
     "trustedContactNotify": {
       "subject": "Necesitamos tu ayuda con {senderName}",
       "title": "Necesitamos tu ayuda",
-      "intro": "{senderName} te eligió como una persona de confianza para este momento.\n\nIntentamos comunicarnos, pero no obtuvimos respuesta.",
-      "body": "Tu respuesta nos va a ayudar a entender cómo se encuentra.",
+      "tagline": "mensajes que viajan en el tiempo",
+      "eyebrow": "Persona de confianza",
+      "heroTitle": "¿Sabes cómo\nestá {senderName}?",
+      "intro": "Hace un tiempo, {senderName} te eligió como su persona de confianza en Carry my Words — una plataforma donde las personas guardan mensajes para el futuro.",
+      "body": "Desde hace varios días no responde sus confirmaciones de actividad. Antes de tomar cualquier acción, queremos preguntarte a ti primero: ¿sabes cómo está?",
+      "secondary": "Con un clic puedes indicarnos su estado. Solo te llevará un momento.",
       "button": "Indicar estado",
-      "secondary": "Solo te va a llevar un momento.",
-      "ignore": "Si no conocés a esta persona o creés que esto es un error, podés ignorar este mensaje.",
-      "tagline": "Mensajes para cuando realmente importa."
+      "ignore": "Si crees que esto es un error, puedes ignorar este mensaje."
     },
     "trustedContactVerify": {
       "subject": "{senderFirstName} necesita que lo ayudes",
