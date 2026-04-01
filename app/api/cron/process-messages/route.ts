@@ -73,11 +73,14 @@ export async function GET(request: NextRequest) {
             results.processed++;
 
             // 2. ATOMIC CLAIM
+            // Capture a unique claim timestamp for this specific message processing attempt.
+            const claimStamp = new Date().toISOString();
+
             // We claim the message by setting delivery_claimed_at.
             // Enforce status='scheduled' and delivery_claimed_at IS NULL for thread-safety.
             const { data: claimed, error: claimError } = await supabase
                 .from("messages")
-                .update({ delivery_claimed_at: now })
+                .update({ delivery_claimed_at: claimStamp })
                 .eq("id", message.id)
                 .eq("status", "scheduled")
                 .is("delivery_claimed_at", null)
@@ -95,8 +98,12 @@ export async function GET(request: NextRequest) {
             const recipient = message.recipients?.[0];
             if (!recipient || !recipient.email) {
                 results.errors.push(`Message ${message.id}: No recipient`);
-                // Release claim even if it has no recipient (so it can be re-audited or cleaned up)
-                await supabase.from("messages").update({ delivery_claimed_at: null }).eq("id", message.id);
+                // Release claim - ONLY if we still own it
+                await supabase
+                    .from("messages")
+                    .update({ delivery_claimed_at: null })
+                    .eq("id", message.id)
+                    .eq("delivery_claimed_at", claimStamp);
                 continue;
             }
 
@@ -133,10 +140,18 @@ export async function GET(request: NextRequest) {
                 }
 
                 // 4. MARK DELIVERED (SUCCESS)
-                await supabase
+                // Verify we still own the claim before committing the state change.
+                const { data: finalized, error: finalizeError } = await supabase
                     .from("messages")
                     .update({ status: "delivered" })
-                    .eq("id", message.id);
+                    .eq("id", message.id)
+                    .eq("status", "scheduled")
+                    .eq("delivery_claimed_at", claimStamp)
+                    .select("id");
+
+                if (finalizeError || !finalized || finalized.length === 0) {
+                    throw new Error("Finalize failed: claim ownership lost or concurrent update");
+                }
 
                 results.sent++;
 
@@ -144,13 +159,14 @@ export async function GET(request: NextRequest) {
                 console.error(`Error processing message ${message.id}:`, err);
                 results.errors.push(`Message ${message.id}: ${String(err)}`);
 
-                // 5. UNCLAIM ON FAILURE (ONLY if still scheduled)
-                // This ensures it stays eligible for retry in the next cycle.
+                // 5. UNCLAIM ON FAILURE
+                // ONLY release if we still own the claim and status is still scheduled.
                 await supabase
                     .from("messages")
                     .update({ delivery_claimed_at: null })
                     .eq("id", message.id)
-                    .eq("status", "scheduled");
+                    .eq("status", "scheduled")
+                    .eq("delivery_claimed_at", claimStamp);
             }
         }
 
