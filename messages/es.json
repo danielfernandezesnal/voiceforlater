@@ -154,13 +154,18 @@
       }
     },
     "trust": {
-      "title": "Tranquilidad y control",
-      "reassurance": "",
+      "eyebrow": "Tu tranquilidad primero",
+      "title": "Tú tienes el control,\nsiempre.",
       "item1": "Tú decides qué se envía, a quién y cuándo",
-      "item2": "Puedes modificar o borrar tus mensajes mientras estés activo",
+      "item1desc": "Nada sale sin que lo hayas definido. Cada mensaje, cada destinatario, cada momento — elegido por ti.",
+      "item2": "Podés modificar o borrar tus mensajes en cualquier momento",
+      "item2desc": "Mientras estés activo, tus mensajes son tuyos. Edita, actualiza o elimina cuando quieras.",
       "item3": "Nada se envía sin que tú lo hayas definido antes",
+      "item3desc": "El sistema solo actúa cuando se cumple exactamente la condición que elegiste. Sin excepciones.",
+      "encryption": "Tus mensajes están encriptados y nunca los leemos. Solo tú y tus destinatarios tienen acceso.",
       "clarification": "Carry my Words solo entrega lo que grabaste, exactamente como lo dejaste.",
-      "encryption": "Tus mensajes están encriptados y nunca los leemos. Solo tú y tus destinatarios tienen acceso."
+      "owasp": "Diseñado siguiendo las buenas prácticas de seguridad recomendadas por OWASP.",
+      "reassurance": ""
     },
     "notWhat": {
       "title": "Lo que Carry my Words NO es",

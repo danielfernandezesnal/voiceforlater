@@ -154,13 +154,18 @@
       }
     },
     "trust": {
-      "title": "Private. Secure. Respectful.",
-      "reassurance": "Your messages are encrypted and only released when you decide.",
-      "item1": "Your messages are private.",
-      "item2": "Only delivered when conditions are met.",
-      "item3": "You stay in control at all times.",
+      "eyebrow": "Your peace of mind first",
+      "title": "You are in control,\nalways.",
+      "item1": "You decide what gets sent, to whom, and when",
+      "item1desc": "Nothing leaves without your definition. Every message, every recipient, every moment — chosen by you.",
+      "item2": "You can modify or delete your messages at any time",
+      "item2desc": "While you're active, your messages are yours. Edit, update or delete whenever you want.",
+      "item3": "Nothing is sent without you having defined it first",
+      "item3desc": "The system only acts when exactly the condition you chose is met. No exceptions.",
       "encryption": "Your messages are encrypted and we never read them. Only you and your recipients have access.",
-      "clarification": "Carry my Words only delivers what you recorded, exactly as you left it."
+      "clarification": "Carry my Words only delivers what you recorded, exactly as you left it.",
+      "owasp": "Designed following OWASP security best practices.",
+      "reassurance": ""
     },
     "notWhat": {
       "title": "What Carry my Words is NOT",
