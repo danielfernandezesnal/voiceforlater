@@ -292,6 +292,16 @@ html {
     .tl-circle {
       display: none;
     }
+
+    /* Format cards — stack en mobile */
+    .format-card {
+      grid-column: 1 / -1;
+    }
+
+    /* Trust grid — stack en mobile */
+    .trust-grid {
+      grid-template-columns: 1fr !important;
+    }
   }
 
   /* Examples section tag pill */
