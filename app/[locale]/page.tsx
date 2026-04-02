@@ -299,7 +299,7 @@ export default async function LocaleHomePage({
                     </ScrollReveal>
 
                     <ScrollReveal childSelector=".format-card" staggerMs={120}>
-                        <div className="grid md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
                             <div className="format-card sr-hidden" style={{ background: '#fffdf9', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
                                 <div style={{ width: '100%', aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
@@ -369,7 +369,7 @@ export default async function LocaleHomePage({
                     </ScrollReveal>
 
                     <ScrollReveal childSelector=".trust-item" staggerMs={110}>
-                        <div className="grid md:grid-cols-3 trust-grid mb-10" style={{ gap: '2px', background: '#e8e0d0', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
+                        <div className="grid grid-cols-1 md:grid-cols-3 trust-grid mb-10" style={{ gap: '2px', background: '#e8e0d0', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
                             <div className="trust-item sr-hidden" style={{ background: '#fffdf9', padding: '36px 28px' }}>
                                 <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'rgba(196,98,58,0.2)', lineHeight: 1, marginBottom: '16px' }}>1</div>
                                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 400, color: 'hsl(var(--ink))', lineHeight: 1.3, marginBottom: '10px' }}>{dict.landing.trust.item1}</h3>
