@@ -145,13 +145,20 @@
       }
     },
     "audio": {
-      "title": "Choose how you want to say it",
+      "eyebrow": "Your way of expressing yourself",
+      "title": "Choose how you want to say it.",
       "description": "Your voice, your face, your written words. Everyone has their own way of saying what they feel. Use yours.",
       "pills": {
         "text": "Text",
         "audio": "Audio",
         "video": "Video"
-      }
+      },
+      "textTitle": "Text",
+      "textDesc": "For those who choose every word carefully. A letter that arrives when it needs to.",
+      "audioTitle": "Audio",
+      "audioDesc": "Your voice, with all its nuance. Some things can only be said out loud.",
+      "videoTitle": "Video",
+      "videoDesc": "Your face, your expression, your presence. The most complete message you can leave."
     },
     "trust": {
       "eyebrow": "Your peace of mind first",

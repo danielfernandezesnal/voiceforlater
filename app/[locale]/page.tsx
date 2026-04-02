@@ -283,37 +283,72 @@ export default async function LocaleHomePage({
             </section>
 
             {/* Audio Section */}
-            <section className="py-16 px-6 bg-surface/50 border-t border-border/50">
-                <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-                    <ScrollReveal className="order-1">
-                        <h2 className="font-serif font-light text-[hsl(var(--ink))] mb-6 leading-tight"
-                            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
+            {/* Formats — Texto / Audio / Video */}
+            <section className="py-24 px-6 border-t border-border/50" style={{ background: 'hsl(var(--cream))' }}>
+                <div className="max-w-5xl mx-auto">
+                    <ScrollReveal>
+                        <p className="text-center mb-4" style={{ fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, color: TC }}>
+                            {dict.landing.audio.eyebrow}
+                        </p>
+                        <h2 className="font-serif font-light text-center mb-4" style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', color: 'hsl(var(--ink))', lineHeight: 1.15 }}>
                             {dict.landing.audio.title}
                         </h2>
-                        <p className="text-base text-muted-foreground leading-relaxed mb-8">
+                        <p className="text-center mb-16" style={{ fontSize: '14px', color: '#6b5040', fontWeight: 300, lineHeight: 1.75, maxWidth: '520px', margin: '0 auto 56px' }}>
                             {dict.landing.audio.description}
                         </p>
-                        <div className="flex flex-wrap gap-3">
-                            {[
-                                (dict.landing.audio as any).pills?.text,
-                                (dict.landing.audio as any).pills?.audio,
-                                (dict.landing.audio as any).pills?.video
-                            ].filter(Boolean).map((pill) => (
-                                <span key={pill} className="px-5 py-2 rounded-full text-sm font-medium" style={{ background: TC_BG, color: TC }}>
-                                    {pill}
-                                </span>
-                            ))}
-                        </div>
                     </ScrollReveal>
-                    <ScrollReveal className="order-2" threshold={0.08}>
-                        <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-white/50 relative group">
-                            <Image
-                                src="/assets/media-recording.png"
-                                alt="Recording a message"
-                                fill
-                                className="object-cover transform scale-100 group-hover:scale-105 transition-transform duration-700"
-                            />
-                            <div className="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+
+                    <ScrollReveal childSelector=".format-card" staggerMs={120}>
+                        <div className="grid md:grid-cols-3 gap-4">
+
+                            <div className="format-card sr-hidden" style={{ background: '#fffdf9', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
+                                <div style={{ width: '100%', aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
+                                    <Image src="/assets/uses-writing.png" alt={dict.landing.audio.textTitle} fill style={{ objectFit: 'cover', filter: 'sepia(12%) saturate(0.9) brightness(1.02)' }} />
+                                </div>
+                                <div style={{ padding: '20px 22px 24px' }}>
+                                    <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', fontWeight: 400, color: 'hsl(var(--ink))', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                            <path d="M4 6h16M4 12h12M4 18h8"/>
+                                        </svg>
+                                        {dict.landing.audio.textTitle}
+                                    </h3>
+                                    <p style={{ fontSize: '13px', color: '#6b5040', fontWeight: 300, lineHeight: 1.7, margin: 0 }}>{dict.landing.audio.textDesc}</p>
+                                </div>
+                            </div>
+
+                            <div className="format-card sr-hidden" style={{ background: '#fffdf9', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
+                                <div style={{ width: '100%', aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
+                                    <Image src="/assets/uses-moment.png" alt={dict.landing.audio.audioTitle} fill style={{ objectFit: 'cover', filter: 'sepia(12%) saturate(0.9) brightness(1.02)' }} />
+                                </div>
+                                <div style={{ padding: '20px 22px 24px' }}>
+                                    <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', fontWeight: 400, color: 'hsl(var(--ink))', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                            <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/>
+                                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                            <line x1="12" y1="19" x2="12" y2="23"/>
+                                        </svg>
+                                        {dict.landing.audio.audioTitle}
+                                    </h3>
+                                    <p style={{ fontSize: '13px', color: '#6b5040', fontWeight: 300, lineHeight: 1.7, margin: 0 }}>{dict.landing.audio.audioDesc}</p>
+                                </div>
+                            </div>
+
+                            <div className="format-card sr-hidden" style={{ background: '#fffdf9', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
+                                <div style={{ width: '100%', aspectRatio: '4/3', position: 'relative', overflow: 'hidden' }}>
+                                    <Image src="/assets/media-recording.png" alt={dict.landing.audio.videoTitle} fill style={{ objectFit: 'cover', filter: 'sepia(12%) saturate(0.9) brightness(1.02)' }} />
+                                </div>
+                                <div style={{ padding: '20px 22px 24px' }}>
+                                    <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.35rem', fontWeight: 400, color: 'hsl(var(--ink))', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                            <polygon points="23 7 16 12 23 17 23 7"/>
+                                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                                        </svg>
+                                        {dict.landing.audio.videoTitle}
+                                    </h3>
+                                    <p style={{ fontSize: '13px', color: '#6b5040', fontWeight: 300, lineHeight: 1.7, margin: 0 }}>{dict.landing.audio.videoDesc}</p>
+                                </div>
+                            </div>
+
                         </div>
                     </ScrollReveal>
                 </div>
