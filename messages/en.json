@@ -15,6 +15,7 @@
     "view": "View Message",
     "delete": "Delete",
     "price": "USD {amount} / year",
+    "perYear": "year",
     "sentAt": "Sent on ",
     "backToHome": "Back to home",
     "backToDashboard": "Back to dashboard"
