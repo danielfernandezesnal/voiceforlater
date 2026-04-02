@@ -161,86 +161,93 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
     );
 
     return (
-        <div className="border border-border/60 rounded-2xl bg-card shadow-sm w-full p-5">
-            <div className="flex items-start justify-between gap-4">
-                {/* Content stack */}
-                <div className="flex-1 min-w-0 flex flex-col gap-2.5">
+        <div className="w-full flex items-stretch gap-0" style={{ background: '#fffdf9', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
+            {/* Borde izquierdo de color */}
+            <div style={{ width: '3px', flexShrink: 0, background: isDelivered ? '#34d399' : '#c4622a' }} />
 
-                    {/* Row 1 — Recipient + status badge */}
+            {/* Contenido */}
+            <div className="flex-1 flex items-start justify-between gap-4 p-5 min-w-0">
+                <div className="flex-1 min-w-0 flex flex-col gap-2">
+
+                    {/* Fila 1: destinatarios + badges */}
                     <div className="flex flex-wrap items-center gap-2">
-                        <div className="flex flex-wrap gap-x-1">
+                        <div className="flex flex-wrap gap-x-1.5 items-baseline">
                             {visibleRecipients.map((r: any, i: number) => (
-                                <span key={i} className="text-lg font-semibold text-foreground leading-snug">{formatName(r.name)}</span>
+                                <span key={i} style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', fontWeight: 400, color: 'hsl(var(--ink))', lineHeight: 1.1 }}>
+                                    {formatName(r.name)}
+                                </span>
                             ))}
                             {extraCount > 0 && (
-                                <span className="text-base text-muted-foreground">+{extraCount}</span>
+                                <span className="text-sm text-muted-foreground">+{extraCount}</span>
                             )}
                         </div>
+                        {/* Badge tipo */}
+                        <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '100px', background: '#f0ece4', color: '#9a8070' }}>
+                            {type === 'text' && dict.dashboard.messageCard.type.text}
+                            {type === 'audio' && dict.dashboard.messageCard.type.audio}
+                            {type === 'video' && dict.dashboard.messageCard.type.video}
+                        </span>
+                        {/* Badge status */}
                         {isSent ? (
-                            <span className="inline-flex items-center gap-1 px-3 py-1 text-xs rounded-full bg-[#34D399] text-white font-medium shadow-sm">
-                                <svg className="w-3 h-3 text-white fill-current" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
+                            <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '100px', background: 'rgba(52,211,153,0.12)', color: '#059669', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
                                 {dict.dashboard.messageCard.status.delivered}
                             </span>
                         ) : (
-                            <span className={`inline-flex items-center px-2 py-1 text-xs rounded-full ${status === 'scheduled' ? 'bg-primary/10 text-primary' : status === 'delivered' ? 'bg-[#34D399] text-white' : 'bg-secondary text-muted-foreground'}`}>
+                            <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '100px', background: status === 'scheduled' ? 'rgba(196,98,58,0.1)' : status === 'delivered' ? 'rgba(52,211,153,0.12)' : '#f0ece4', color: status === 'scheduled' ? '#c4622a' : status === 'delivered' ? '#059669' : '#9a8070' }}>
                                 {dict.dashboard.messageCard.status[status as 'draft' | 'scheduled' | 'delivered']}
                             </span>
                         )}
                     </div>
 
-                    {/* Row 2 — Title */}
-                    <div className={`truncate ${hasTitle ? 'font-semibold text-base text-foreground' : 'text-sm italic text-muted-foreground'}`}>
+                    {/* Fila 2: título o preview */}
+                    <div style={{ fontSize: '13px', color: hasTitle ? '#4a3728' : '#9a8070', fontStyle: hasTitle ? 'normal' : 'italic', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {hasTitle ? message.title : contentFallback}
                     </div>
 
-                    {/* Row 3 — Delivery (prominent) */}
-                    {scheduledDateOnly ? (
-                        <>
-                            {/* Desktop: single line */}
-                            <div className="hidden md:block text-sm font-medium text-foreground">
-                                <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
-                                {scheduledDate}
-                            </div>
-                            {/* Mobile: date and time on separate lines */}
-                            <div className="md:hidden flex flex-col gap-1">
-                                <div className="text-sm font-medium text-foreground">
-                                    <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
-                                    {scheduledDateOnly}
-                                </div>
-                                <div className="text-sm font-medium text-foreground">
-                                    <span className="text-muted-foreground">{labels?.hour}:</span>{' '}
-                                    {scheduledTime}
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        <div className="text-sm font-medium text-foreground">
-                            <span className="text-muted-foreground">{scheduledLabel}:</span>{' '}
-                            {scheduledDate}
-                        </div>
-                    )}
-
-                    {/* Row 4 — Created (subtle) */}
-                    <div className="text-xs text-muted-foreground/70">
-                        {labels?.created}: {createdDate}
-                    </div>
-
-                    {/* Trusted contact info */}
-                    {deliveryMode === 'checkin' && hasTrusted && (
-                        <div className="flex items-center gap-1 text-sm">
-                            <span className="text-muted-foreground">{labels?.contact}:</span>
-                            <span className="font-medium text-foreground truncate">
-                                {trustedList.map((c: any) => formatName(c.name)).join(', ')}
+                    {/* Fila 3: metadata */}
+                    <div className="flex flex-wrap gap-x-4 gap-y-1">
+                        {scheduledDateOnly ? (
+                            <>
+                                <span style={{ fontSize: '12px', color: '#9a8070', fontWeight: 300 }}>
+                                    {scheduledLabel}: <strong style={{ color: '#4a3728', fontWeight: 400 }}>{scheduledDateOnly} · {scheduledTime}</strong>
+                                </span>
+                            </>
+                        ) : (
+                            <span style={{ fontSize: '12px', color: '#9a8070', fontWeight: 300 }}>
+                                {scheduledLabel}: <strong style={{ color: '#4a3728', fontWeight: 400 }}>{scheduledDate}</strong>
                             </span>
-                        </div>
-                    )}
+                        )}
+                        {deliveryMode === 'checkin' && hasTrusted && (
+                            <span style={{ fontSize: '12px', color: '#9a8070', fontWeight: 300 }}>
+                                {labels?.contact}: <strong style={{ color: '#4a3728', fontWeight: 400 }}>{trustedList.map((c: any) => formatName(c.name)).join(', ')}</strong>
+                            </span>
+                        )}
+                        <span style={{ fontSize: '12px', color: '#9a8070', fontWeight: 300 }}>
+                            {labels?.created}: <strong style={{ color: '#4a3728', fontWeight: 400 }}>{createdDate}</strong>
+                        </span>
+                    </div>
 
                     <ContactAlert />
                 </div>
 
-                {/* Actions — top-right */}
-                <div className="flex flex-col gap-2 shrink-0">
-                    <ActionButtonsDesktop />
+                {/* Acciones */}
+                <div className="flex flex-col gap-1 shrink-0">
+                    <Link
+                        href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`}
+                        style={{ fontSize: '12px', fontWeight: 400, padding: '5px 12px', borderRadius: '2px', border: '1px solid #e8e0d0', background: 'transparent', color: '#6b5040', textDecoration: 'none', display: 'block', textAlign: 'center', whiteSpace: 'nowrap' }}
+                    >
+                        {isDelivered ? dict.common.view : dict.common.edit}
+                    </Link>
+                    {!isDelivered && (
+                        <button
+                            onClick={handleDelete}
+                            disabled={isLoading}
+                            style={{ fontSize: '12px', fontWeight: 400, padding: '5px 12px', borderRadius: '2px', border: '1px solid transparent', background: 'transparent', color: '#c4622a', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                        >
+                            {isLoading ? '...' : dict.common.delete}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
