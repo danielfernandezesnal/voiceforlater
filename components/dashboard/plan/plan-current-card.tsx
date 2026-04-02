@@ -20,13 +20,13 @@ export function PlanCurrentCard({ planName, status }: PlanCurrentCardProps) {
     const badge = STATUS_LABELS[status]
 
     return (
-        <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
+        <div className="bg-card border border-border p-6" style={{ borderRadius: '4px' }}>
             <div className="flex items-center justify-between">
                 <div>
                     <p className="text-sm text-muted-foreground mb-1">Plan actual</p>
                     <div className="flex items-center gap-3">
-                        <h2 className="font-serif font-semibold text-lg text-foreground mb-4">
-                            {isPro ? '✨ Pro' : 'Free'}
+                        <h2 className="font-serif font-light text-2xl text-foreground mb-4">
+                            {isPro ? 'Pro' : 'Free'}
                         </h2>
                         {badge && (
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${badge.className}`}>
