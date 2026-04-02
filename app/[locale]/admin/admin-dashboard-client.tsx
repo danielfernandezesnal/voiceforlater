@@ -50,6 +50,9 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
     const [deliveryError, setDeliveryError] = useState<string | null>(null);
     const [dateFrom, setDateFrom] = useState<string>('');
     const [dateTo, setDateTo] = useState<string>('');
+    const [testMessageId, setTestMessageId] = useState('');
+    const [testLoading, setTestLoading] = useState(false);
+    const [testStatus, setTestStatus] = useState<{ ok: boolean; msg: string } | null>(null);
 
     const fetchKPI = useCallback(async () => {
         setLoading(true);
@@ -129,6 +132,29 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
     };
 
     const activeData = deliveryMetrics ? deliveryMetrics[activeTab] : EMPTY_METRICS;
+
+    async function handleMakeEligible() {
+        if (!testMessageId.trim()) return;
+        setTestLoading(true);
+        setTestStatus(null);
+        try {
+            const res = await fetch('/api/admin/messages/make-eligible', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messageId: testMessageId.trim() }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setTestStatus({ ok: true, msg: `Eligible. deliver_at set to ${data.eligibleAt}` });
+            } else {
+                setTestStatus({ ok: false, msg: data.error ?? 'Unknown error' });
+            }
+        } catch {
+            setTestStatus({ ok: false, msg: 'Network error' });
+        } finally {
+            setTestLoading(false);
+        }
+    }
 
     return (
         <div className="min-h-screen bg-background text-foreground p-6 sm:p-10 space-y-10 font-sans">
@@ -291,6 +317,40 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                         </div>
                     </div>
                 )}
+
+                {/* Cron Test — make a scheduled message immediately eligible */}
+                <div className="space-y-4 pt-4">
+                    <h2 className="text-xl font-bold tracking-tight flex items-center gap-2 px-1">
+                        <span className="w-1.5 h-6 bg-amber-500 rounded-full"></span>
+                        Cron Test
+                    </h2>
+                    <div className="bg-card border border-border rounded-2xl p-6 shadow-sm space-y-4">
+                        <p className="text-xs text-muted-foreground">
+                            Set <code className="font-mono bg-muted px-1 rounded">deliver_at</code> to 1 minute ago on a scheduled date-mode message, making it immediately eligible for the next cron run.
+                        </p>
+                        <div className="flex gap-3 items-center flex-wrap">
+                            <input
+                                type="text"
+                                placeholder="message UUID"
+                                value={testMessageId}
+                                onChange={(e) => { setTestMessageId(e.target.value); setTestStatus(null); }}
+                                className="flex-1 min-w-[260px] bg-background border border-border rounded-xl px-4 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-amber-500/30 transition-all"
+                            />
+                            <button
+                                onClick={handleMakeEligible}
+                                disabled={testLoading || !testMessageId.trim()}
+                                className="px-6 py-2 bg-amber-500 text-white rounded-xl text-sm font-bold shadow hover:bg-amber-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                            >
+                                {testLoading ? 'Working…' : 'Make eligible'}
+                            </button>
+                        </div>
+                        {testStatus && (
+                            <p className={`text-xs font-mono px-3 py-2 rounded-lg ${testStatus.ok ? 'bg-emerald-500/10 text-emerald-600' : 'bg-destructive/10 text-destructive'}`}>
+                                {testStatus.ok ? '✓ ' : '✗ '}{testStatus.msg}
+                            </p>
+                        )}
+                    </div>
+                </div>
 
                 {/* Delivery Metrics Section */}
                 {!deliveryError && (
