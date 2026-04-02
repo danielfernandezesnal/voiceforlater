@@ -53,6 +53,8 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
     const [testMessageId, setTestMessageId] = useState('');
     const [testLoading, setTestLoading] = useState(false);
     const [testStatus, setTestStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+    const [diagLoading, setDiagLoading] = useState(false);
+    const [diagResult, setDiagResult] = useState<any | null>(null);
 
     const fetchKPI = useCallback(async () => {
         setLoading(true);
@@ -132,6 +134,25 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
     };
 
     const activeData = deliveryMetrics ? deliveryMetrics[activeTab] : EMPTY_METRICS;
+
+    async function handleDebug() {
+        if (!testMessageId.trim()) return;
+        setDiagLoading(true);
+        setDiagResult(null);
+        try {
+            const res = await fetch('/api/admin/messages/debug-eligibility', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messageId: testMessageId.trim() }),
+            });
+            const data = await res.json();
+            setDiagResult({ ok: res.ok, data });
+        } catch {
+            setDiagResult({ ok: false, data: { error: 'Network error' } });
+        } finally {
+            setDiagLoading(false);
+        }
+    }
 
     async function handleMakeEligible() {
         if (!testMessageId.trim()) return;
@@ -349,6 +370,21 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                                 {testStatus.ok ? '✓ ' : '✗ '}{testStatus.msg}
                             </p>
                         )}
+                        <div className="border-t border-border pt-4 space-y-3">
+                            <p className="text-xs text-muted-foreground">Check why a message is or is not eligible for the cron, using the same conditions as <code className="font-mono bg-muted px-1 rounded">process-messages</code>.</p>
+                            <button
+                                onClick={handleDebug}
+                                disabled={diagLoading || !testMessageId.trim()}
+                                className="px-6 py-2 bg-muted text-foreground border border-border rounded-xl text-sm font-bold hover:bg-muted/80 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                            >
+                                {diagLoading ? 'Checking…' : 'Debug eligibility'}
+                            </button>
+                            {diagResult && (
+                                <div className={`rounded-xl border p-4 text-xs font-mono whitespace-pre-wrap break-all ${diagResult.ok ? 'bg-muted border-border' : 'bg-destructive/10 border-destructive/20 text-destructive'}`}>
+                                    {JSON.stringify(diagResult.data, null, 2)}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 
