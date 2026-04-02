@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
     try {
-        const { supabase } = await requireAdmin();
+        const { adminClient } = await requireAdmin();
 
         const body = await request.json();
         const { messageId } = body;
@@ -14,8 +14,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "messageId is required" }, { status: 400 });
         }
 
-        // Verify message exists and is scheduled
-        const { data: message, error: msgError } = await supabase
+        // Verify message exists and is scheduled (service role — bypasses RLS)
+        const { data: message, error: msgError } = await adminClient
             .from("messages")
             .select("id, status")
             .eq("id", messageId)
@@ -28,8 +28,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: `Message status is '${message.status}', expected 'scheduled'` }, { status: 400 });
         }
 
-        // Verify delivery rule exists and uses date mode
-        const { data: rule, error: ruleError } = await supabase
+        // Verify delivery rule exists and uses date mode (service role — bypasses RLS)
+        const { data: rule, error: ruleError } = await adminClient
             .from("delivery_rules")
             .select("mode")
             .eq("message_id", messageId)
@@ -42,16 +42,17 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: `Delivery mode is '${rule.mode}', expected 'date'` }, { status: 400 });
         }
 
-        // Set deliver_at to 1 minute ago — immediately eligible for cron
+        // Set deliver_at to 1 minute ago — immediately eligible for cron (service role — bypasses RLS)
         const eligibleAt = new Date(Date.now() - 60 * 1000).toISOString();
-        const { error: updateError } = await supabase
+        const { data: updated, error: updateError } = await adminClient
             .from("delivery_rules")
             .update({ deliver_at: eligibleAt })
-            .eq("message_id", messageId);
+            .eq("message_id", messageId)
+            .select("message_id");
 
-        if (updateError) {
-            console.error("[make-eligible] Update failed:", updateError);
-            return NextResponse.json({ error: "Failed to update delivery rule" }, { status: 500 });
+        if (updateError || !updated || updated.length === 0) {
+            console.error("[make-eligible] Update failed:", updateError, "rows:", updated?.length);
+            return NextResponse.json({ error: "Failed to update delivery rule — 0 rows affected" }, { status: 500 });
         }
 
         console.log(`[make-eligible] message ${messageId} set to eligible at ${eligibleAt}`);
