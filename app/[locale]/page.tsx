@@ -319,61 +319,56 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
-            {/* Trust & Privacy */}
+            {/* Trust / Seguridad */}
             <section className="py-24 px-6 border-t border-border/50">
-                <div className="max-w-4xl mx-auto text-center">
+                <div className="max-w-4xl mx-auto">
                     <ScrollReveal>
-                        <h2 className="text-4xl md:text-5xl font-serif font-light mb-12">{dict.landing.trust.title}</h2>
+                        <p className="text-center mb-4" style={{ fontSize: '0.72rem', letterSpacing: '0.16em', textTransform: 'uppercase', fontWeight: 500, color: TC }}>
+                            {dict.landing.trust.eyebrow}
+                        </p>
+                        <h2 className="font-serif font-light text-center mb-16" style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', color: 'hsl(var(--ink))', lineHeight: 1.15 }}>
+                            {dict.landing.trust.title.split('\n').map((line: string, i: number) => (
+                                <span key={i}>{line}{i === 0 && <br />}</span>
+                            ))}
+                        </h2>
                     </ScrollReveal>
+
                     <ScrollReveal childSelector=".trust-item" staggerMs={110}>
-                        <ul className="grid md:grid-cols-3 gap-8">
-                            {/* 🔒 → lock */}
-                            <li className="trust-item sr-hidden flex flex-col items-center gap-4">
-                                <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z" />
-                                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                    </svg>
-                                </div>
-                                <span className="font-medium">{dict.landing.trust.item1}</span>
-                            </li>
-                            {/* 🤝 → check-circle */}
-                            <li className="trust-item sr-hidden flex flex-col items-center gap-4">
-                                <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                                        <polyline points="22 4 12 14.01 9 11.01" />
-                                    </svg>
-                                </div>
-                                <span className="font-medium">{dict.landing.trust.item2}</span>
-                            </li>
-                            {/* ⚡ → shield */}
-                            <li className="trust-item sr-hidden flex flex-col items-center gap-4">
-                                <div style={{ width: 52, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 14, background: TC_BG }}>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                    </svg>
-                                </div>
-                                <span className="font-medium">{dict.landing.trust.item3}</span>
-                            </li>
-                        </ul>
-                    </ScrollReveal>
-                    <ScrollReveal className="mt-12">
-                        <div className="flex flex-col items-center gap-3 bg-card border border-border/50 shadow-sm rounded-2xl md:rounded-full px-4 md:px-6 py-4 w-full max-w-[95%] md:max-w-3xl mx-auto text-center break-words">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={TC} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                            </svg>
-                            <span className="font-medium text-[hsl(var(--ink))] text-sm md:text-base leading-snug">
-                                {(dict.landing.trust as any).encryption}
-                            </span>
+                        <div className="grid md:grid-cols-3 trust-grid mb-10" style={{ gap: '2px', background: '#e8e0d0', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
+                            <div className="trust-item sr-hidden" style={{ background: '#fffdf9', padding: '36px 28px' }}>
+                                <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'rgba(196,98,58,0.2)', lineHeight: 1, marginBottom: '16px' }}>1</div>
+                                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 400, color: 'hsl(var(--ink))', lineHeight: 1.3, marginBottom: '10px' }}>{dict.landing.trust.item1}</h3>
+                                <p style={{ fontSize: '13px', color: '#6b5040', fontWeight: 300, lineHeight: 1.72, margin: 0 }}>{dict.landing.trust.item1desc}</p>
+                            </div>
+                            <div className="trust-item sr-hidden" style={{ background: '#fffdf9', padding: '36px 28px' }}>
+                                <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'rgba(196,98,58,0.2)', lineHeight: 1, marginBottom: '16px' }}>2</div>
+                                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 400, color: 'hsl(var(--ink))', lineHeight: 1.3, marginBottom: '10px' }}>{dict.landing.trust.item2}</h3>
+                                <p style={{ fontSize: '13px', color: '#6b5040', fontWeight: 300, lineHeight: 1.72, margin: 0 }}>{dict.landing.trust.item2desc}</p>
+                            </div>
+                            <div className="trust-item sr-hidden" style={{ background: '#fffdf9', padding: '36px 28px' }}>
+                                <div style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'rgba(196,98,58,0.2)', lineHeight: 1, marginBottom: '16px' }}>3</div>
+                                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', fontWeight: 400, color: 'hsl(var(--ink))', lineHeight: 1.3, marginBottom: '10px' }}>{dict.landing.trust.item3}</h3>
+                                <p style={{ fontSize: '13px', color: '#6b5040', fontWeight: 300, lineHeight: 1.72, margin: 0 }}>{dict.landing.trust.item3desc}</p>
+                            </div>
                         </div>
                     </ScrollReveal>
-                    {(dict.landing.trust as any).clarification && (
-                        <p className="text-center text-sm text-muted-foreground mt-10 max-w-xl mx-auto italic">
-                            {(dict.landing.trust as any).clarification}
-                        </p>
-                    )}
+
+                    <ScrollReveal>
+                        <div style={{ background: '#2c1810', borderRadius: '4px', padding: '28px 36px', display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(196,98,58,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '2px' }}>
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            <div>
+                                <p style={{ fontSize: '14px', color: 'rgba(253,248,240,0.85)', fontWeight: 300, lineHeight: 1.72, margin: '0 0 8px' }}>
+                                    <strong style={{ color: '#fff9f4', fontWeight: 500 }}>{dict.landing.trust.encryption}</strong>
+                                    {' '}{dict.landing.trust.clarification}
+                                </p>
+                                <span style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '13px', color: 'rgba(196,98,58,0.7)' }}>
+                                    {dict.landing.trust.owasp}
+                                </span>
+                            </div>
+                        </div>
+                    </ScrollReveal>
                 </div>
             </section>
 
