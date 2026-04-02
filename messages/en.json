@@ -717,6 +717,10 @@
         "finalize_failure": "Critical delivery finalize failure: {value} message(s).",
         "reclaim_detected": "Stale message reclaims detected: {value} message(s)."
       },
+      "errors": {
+        "title": "Delivery Error",
+        "fetchFailed": "Failed to load delivery metrics."
+      },
       "tabs": {
         "total": "Total",
         "date": "By Date",

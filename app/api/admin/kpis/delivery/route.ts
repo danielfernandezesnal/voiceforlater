@@ -51,7 +51,9 @@ export async function GET(request: NextRequest) {
                 p_date_to: now.toISOString()
             });
 
-        if (stallError) throw stallError;
+        if (stallError) {
+             console.warn("Delivery metrics stall check failed. Continuing with partial alerts.", stallError);
+        }
 
         // Alert computation logic
         const alerts: Array<{ type: string, severity: string, value: number | null }> = [];

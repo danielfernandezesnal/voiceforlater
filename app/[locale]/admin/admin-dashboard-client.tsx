@@ -47,12 +47,14 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
     const [activeTab, setActiveTab] = useState<'total' | 'date' | 'checkin'>('total');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [deliveryError, setDeliveryError] = useState<string | null>(null);
     const [dateFrom, setDateFrom] = useState<string>('');
     const [dateTo, setDateTo] = useState<string>('');
 
     const fetchKPI = useCallback(async () => {
         setLoading(true);
         setError(null);
+        setDeliveryError(null);
         try {
             const params = new URLSearchParams();
             if (dateFrom) params.set('from', new Date(dateFrom).toISOString());
@@ -73,19 +75,26 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
             if (!resUsers.ok) throw new Error('Failed to fetch Total Users KPI');
             if (!resPaid.ok) throw new Error('Failed to fetch Paid Users KPI');
             if (!resStorage.ok) throw new Error('Failed to fetch Storage KPI');
-            if (!resDelivery.ok) throw new Error('Failed to fetch Delivery Metrics');
 
-            const [dataUsers, dataPaid, dataStorage, dataDelivery] = await Promise.all([
+            const [dataUsers, dataPaid, dataStorage] = await Promise.all([
                 resUsers.json(),
                 resPaid.json(),
-                resStorage.json(),
-                resDelivery.json() as Promise<DeliveryMetricsResponse>
+                resStorage.json()
             ]);
 
             setTotalUsers(dataUsers.totalUsers);
             setPaidUsers(dataPaid.paidUsers);
             setStorageMB(dataStorage.storageMB);
-            setDeliveryMetrics(dataDelivery);
+
+            if (resDelivery.ok) {
+                const dataDelivery = await resDelivery.json();
+                setDeliveryMetrics(dataDelivery);
+                setDeliveryError(null);
+            } else {
+                setDeliveryMetrics(null);
+                setDeliveryError('Failed to fetch Delivery Metrics');
+                console.warn('Failed to fetch Delivery Metrics');
+            }
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'Unknown error');
         } finally {
@@ -201,8 +210,23 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                     </div>
                 </div>
 
+                {/* Delivery Error Block */}
+                {deliveryError && (
+                    <div className="pt-4 px-1">
+                        <div className="flex items-center gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive shadow-sm">
+                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <div>
+                                <h3 className="text-xs font-bold uppercase tracking-widest opacity-80">{dict.admin.delivery.errors.title}</h3>
+                                <p className="text-sm font-medium leading-snug">{dict.admin.delivery.errors.fetchFailed}</p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Delivery Health Block */}
-                {deliveryMetrics && (
+                {deliveryMetrics && !deliveryError && (
                     <div className="pt-4 px-1">
                         <div className={`flex items-center justify-between p-4 rounded-2xl border shadow-sm ${
                             deliveryMetrics.health_status === 'critical' ? 'bg-destructive/10 border-destructive/20 text-destructive' :
@@ -235,7 +259,7 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                 )}
 
                 {/* Delivery Alerts Section */}
-                {deliveryMetrics?.alerts && deliveryMetrics.alerts.length > 0 && (
+                {deliveryMetrics?.alerts && deliveryMetrics.alerts.length > 0 && !deliveryError && (
                     <div className="space-y-4 pt-4">
                         <h3 className="text-sm font-bold tracking-widest text-muted-foreground uppercase px-1">{dict.admin.delivery.alerts.title}</h3>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -269,8 +293,9 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                 )}
 
                 {/* Delivery Metrics Section */}
-                <div className="space-y-6 pt-4">
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 px-1">
+                {!deliveryError && (
+                    <div className="space-y-6 pt-4">
+                        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 px-1">
                         <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
                             <span className="w-1.5 h-6 bg-primary rounded-full"></span>
                             {dict.admin.delivery.title}
@@ -302,6 +327,7 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
                         <DeliveryStatCard label={dict.admin.delivery.stats.successRate} value={`${activeData.success_rate}%`} variant="highlight" loading={loading} />
                     </div>
                 </div>
+                )}
             </main>
         </div>
     );
