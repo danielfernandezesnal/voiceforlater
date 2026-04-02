@@ -145,13 +145,20 @@
       }
     },
     "audio": {
-      "title": "Elige tu forma de decirlo",
+      "eyebrow": "Tu manera de expresarte",
+      "title": "Elige cómo quieres decirlo.",
       "description": "Tu voz, tu cara, tus palabras escritas. Cada persona tiene su manera de decir lo que siente. Usa la tuya.",
       "pills": {
         "text": "Texto",
         "audio": "Audio",
         "video": "Video"
-      }
+      },
+      "textTitle": "Texto",
+      "textDesc": "Para los que eligen cada palabra con cuidado. Una carta que llega cuando tiene que llegar.",
+      "audioTitle": "Audio",
+      "audioDesc": "Tu voz, con todos sus matices. Hay cosas que solo se pueden decir hablando.",
+      "videoTitle": "Video",
+      "videoDesc": "Tu cara, tu expresión, tu presencia. El mensaje más completo que puedes dejar."
     },
     "trust": {
       "eyebrow": "Tu tranquilidad primero",
