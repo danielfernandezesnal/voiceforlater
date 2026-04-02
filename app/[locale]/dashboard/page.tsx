@@ -202,16 +202,23 @@ export default async function DashboardPage({
                 </div>
 
                 {/* Card 2: Next delivery */}
-                <div className="bg-card border border-border/60 rounded-2xl p-5 overflow-hidden">
-                    <p className="text-[0.65rem] font-[600] uppercase tracking-widest text-muted-foreground mb-1 truncate">
-                        {dict.dashboard.stats.nextDelivery}
-                    </p>
-                    <p className="font-serif text-base font-semibold text-foreground leading-snug mt-1 truncate">
+                <div className="bg-card border border-border/60 p-5 overflow-hidden flex flex-col justify-between" style={{ borderRadius: '4px' }}>
+                    <div className="flex items-center gap-2 mb-3">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C4623A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/>
+                        </svg>
+                        <p className="text-[0.65rem] font-medium uppercase tracking-widest text-muted-foreground truncate">
+                            {dict.dashboard.stats.nextDelivery}
+                        </p>
+                    </div>
+                    <p className="font-serif font-light text-xl text-foreground leading-snug truncate">
                         {nextDeliveryDateStr}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-1 truncate">
-                        {nextDeliveryRecipient}
-                    </p>
+                    {nextDeliveryRecipient && (
+                        <p className="text-xs text-muted-foreground mt-1.5 truncate" style={{ color: '#C4623A', opacity: 0.7 }}>
+                            {nextDeliveryRecipient}
+                        </p>
+                    )}
                 </div>
             </div>
 
