@@ -212,14 +212,17 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({ error: "Invalid date format" }, { status: 400 });
             }
 
-            const now = new Date();
-            const minDate = new Date(now.getTime() + 5 * 60 * 1000); // Now + 5m
+            // Skip future-date enforcement outside production (admin/dev testing)
+            if (process.env.NODE_ENV === 'production') {
+                const now = new Date();
+                const minDate = new Date(now.getTime() + 5 * 60 * 1000); // Now + 5m
 
-            if (scheduleDate < minDate) {
-                return NextResponse.json({
-                    error: "Delivery date must be at least 5 minutes in the future.",
-                    code: "INVALID_SCHEDULE"
-                }, { status: 400 });
+                if (scheduleDate < minDate) {
+                    return NextResponse.json({
+                        error: "Delivery date must be at least 5 minutes in the future.",
+                        code: "INVALID_SCHEDULE"
+                    }, { status: 400 });
+                }
             }
         }
 

@@ -359,7 +359,9 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
         },
     ], [step4Dict])
 
+    const ENABLE_PAST_DATES = process.env.NEXT_PUBLIC_ENABLE_PAST_DATES === 'true'
     const [minDate] = useState(() => {
+        if (ENABLE_PAST_DATES) return '1970-01-01'
         const tomorrow = new Date()
         tomorrow.setDate(tomorrow.getDate() + 1)
         const y = tomorrow.getFullYear()
@@ -369,13 +371,13 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
     })
 
     const currentDate = useMemo(() => {
-        if (!data.deliverAt) return minDate
+        if (!data.deliverAt) return ENABLE_PAST_DATES ? new Date().toISOString().slice(0, 10) : minDate
         const d = new Date(data.deliverAt)
         const year = d.getFullYear()
         const month = String(d.getMonth() + 1).padStart(2, '0')
         const day = String(d.getDate()).padStart(2, '0')
         return `${year}-${month}-${day}`
-    }, [data.deliverAt, minDate])
+    }, [data.deliverAt, minDate, ENABLE_PAST_DATES])
 
     const currentTime = useMemo(() => {
         if (!data.deliverAt) return '12:00'
