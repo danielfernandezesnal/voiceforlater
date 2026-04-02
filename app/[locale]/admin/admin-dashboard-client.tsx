@@ -73,19 +73,24 @@ export default function AdminDashboardClient({ locale, dict }: Props) {
             if (!resUsers.ok) throw new Error('Failed to fetch Total Users KPI');
             if (!resPaid.ok) throw new Error('Failed to fetch Paid Users KPI');
             if (!resStorage.ok) throw new Error('Failed to fetch Storage KPI');
-            if (!resDelivery.ok) throw new Error('Failed to fetch Delivery Metrics');
 
-            const [dataUsers, dataPaid, dataStorage, dataDelivery] = await Promise.all([
+            const [dataUsers, dataPaid, dataStorage] = await Promise.all([
                 resUsers.json(),
                 resPaid.json(),
-                resStorage.json(),
-                resDelivery.json() as Promise<DeliveryMetricsResponse>
+                resStorage.json()
             ]);
 
             setTotalUsers(dataUsers.totalUsers);
             setPaidUsers(dataPaid.paidUsers);
             setStorageMB(dataStorage.storageMB);
-            setDeliveryMetrics(dataDelivery);
+
+            if (resDelivery.ok) {
+                const dataDelivery = await resDelivery.json();
+                setDeliveryMetrics(dataDelivery);
+            } else {
+                setDeliveryMetrics(null);
+                console.warn('Failed to fetch Delivery Metrics');
+            }
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'Unknown error');
         } finally {
