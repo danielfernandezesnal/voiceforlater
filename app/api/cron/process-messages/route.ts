@@ -35,6 +35,7 @@ export async function GET(request: NextRequest) {
     const results = {
         processed: 0,
         sent: 0,
+        skipped: 0,
         errors: [] as string[]
     };
 
@@ -83,16 +84,38 @@ export async function GET(request: NextRequest) {
 
             // We claim the message by setting delivery_claimed_at.
             // Enforce status='scheduled' and (unclaimed OR stale claim) for recovery/safety.
-            const { data: claimed, error: claimError } = await supabase
+            // Split into two separate UPDATEs — PostgREST's .or() with is.null is unreliable
+            // on PATCH requests, causing the claim to silently return 0 rows even when the row
+            // is unclaimed. Using .is() and .lt() separately generates correct predicates.
+
+            // Attempt 1: claim a fresh (never-claimed) message
+            const { data: claimedFresh, error: claimFreshError } = await supabase
                 .from("messages")
                 .update({ delivery_claimed_at: claimStamp })
                 .eq("id", message.id)
                 .eq("status", "scheduled")
-                .or(`delivery_claimed_at.is.null,delivery_claimed_at.lt.${staleThreshold}`)
+                .is("delivery_claimed_at", null)
                 .select("id");
 
+            // Attempt 2: reclaim a stale claim (orphaned by a prior crashed instance)
+            let claimed = claimedFresh;
+            let claimError = claimFreshError;
+            if (!claimFreshError && (!claimedFresh || claimedFresh.length === 0)) {
+                const { data: claimedStale, error: claimStaleError } = await supabase
+                    .from("messages")
+                    .update({ delivery_claimed_at: claimStamp })
+                    .eq("id", message.id)
+                    .eq("status", "scheduled")
+                    .lt("delivery_claimed_at", staleThreshold)
+                    .select("id");
+                claimed = claimedStale;
+                claimError = claimStaleError;
+            }
+
             if (claimError || !claimed || claimed.length === 0) {
-                // Skip: Another instance claimed it just as we were starting
+                // Skip: Another instance claimed it just as we were starting (race condition guard)
+                console.log(`[cron] Claim failed for message ${message.id} — skipped (claimError: ${claimError?.message ?? 'none'}, rows: ${claimed?.length ?? 'null'})`);
+                results.skipped++;
                 continue;
             }
 
