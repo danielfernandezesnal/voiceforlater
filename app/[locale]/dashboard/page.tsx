@@ -171,7 +171,7 @@ export default async function DashboardPage({
                     <p className="text-[0.72rem] font-medium uppercase tracking-widest mb-1" style={{ color: '#C4623A' }}>
                         {greetingText}
                     </p>
-                    <h1 className="font-serif font-semibold text-[1.9rem] leading-tight text-foreground">
+                    <h1 className="font-serif font-light text-[1.9rem] leading-tight text-foreground">
                         {dict.dashboard.title}
                     </h1>
                     <p className="text-sm text-muted-foreground mt-1.5">
@@ -182,7 +182,7 @@ export default async function DashboardPage({
                     isLimitReached={isLimitReached}
                     dictionary={dict}
                     locale={locale}
-                    className="inline-flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 text-xs md:text-sm bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/25"
+                    className="inline-flex items-center gap-1.5 md:gap-2 px-4 py-2 md:px-5 md:py-2.5 text-xs md:text-sm bg-primary text-primary-foreground rounded-full font-medium hover:bg-primary/90 transition-colors"
                 />
             </div>
 

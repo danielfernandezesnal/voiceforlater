@@ -65,7 +65,9 @@ export default async function DashboardLayout({
         profile: locale === 'es' ? 'Perfil' : 'Profile',
         plan: locale === 'es' ? 'Plan' : 'Plan',
         workspace: locale === 'es' ? 'Mi espacio' : 'My workspace',
-        tagline: (dict.dashboard as any).sidebarTagline || ''
+        tagline: (dict.dashboard as any).sidebarTagline || '',
+        terms: locale === 'es' ? 'Términos de servicio' : 'Terms of Service',
+        privacy: locale === 'es' ? 'Política de privacidad' : 'Privacy Policy',
     }
 
     // Prepare user object for client component

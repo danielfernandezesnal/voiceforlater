@@ -13,6 +13,8 @@ interface SideNavProps {
         plan: string
         workspace: string
         tagline: string
+        terms: string
+        privacy: string
     }
     user: {
         email?: string
@@ -120,8 +122,8 @@ export function SideNav({ locale, labels, user, plan }: SideNavProps) {
             </div>
             {/* Trust Layer footer links */}
             <div className="px-5 pb-5 pt-2 flex flex-col gap-1 text-[11px] text-muted-foreground/60 font-medium">
-                <Link href={`/${locale}/terms`} className="hover:text-foreground transition-colors">Terms of Service</Link>
-                <Link href={`/${locale}/privacy`} className="hover:text-foreground transition-colors">Privacy Policy</Link>
+                <Link href={`/${locale}/terms`} className="hover:text-foreground transition-colors">{labels.terms}</Link>
+                <Link href={`/${locale}/privacy`} className="hover:text-foreground transition-colors">{labels.privacy}</Link>
             </div>
         </aside>
     )
