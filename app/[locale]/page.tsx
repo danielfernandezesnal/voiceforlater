@@ -416,45 +416,39 @@ export default async function LocaleHomePage({
                     <ScrollReveal childSelector=".pricing-card" staggerMs={130}>
                         <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
                             {/* Free Plan */}
-                            <div className="pricing-card sr-hidden bg-card p-8 rounded-2xl border border-border shadow-sm card-hover flex flex-col">
-                                <h3 className="text-xl font-bold mb-1">{dict.landing.pricing.free.title}</h3>
-                                <p className="text-xs text-muted-foreground italic mb-4">{(dict.landing.pricing.free as { tagline?: string }).tagline}</p>
-                                <div className="text-3xl font-bold mb-6">{dict.landing.pricing.free.price}</div>
-                                <ul className="space-y-4 mb-8 text-left flex-1">
+                            <div className="pricing-card sr-hidden bg-card flex flex-col" style={{ border: '1px solid #e8e0d0', borderRadius: '12px', padding: '28px 28px 24px' }}>
+                                <h3 className="font-serif font-normal mb-1" style={{ fontSize: '1.6rem', color: 'hsl(var(--ink))' }}>{dict.landing.pricing.free.title}</h3>
+                                <p className="italic mb-5" style={{ fontSize: '12px', color: '#9a8070', fontWeight: 300 }}>{(dict.landing.pricing.free as { tagline?: string }).tagline}</p>
+                                <div className="font-serif font-normal mb-5" style={{ fontSize: '2.2rem', color: 'hsl(var(--ink))', lineHeight: 1 }}>{dict.landing.pricing.free.price}</div>
+                                <ul className="mb-6 text-left flex-1" style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                     {dict.landing.pricing.free.features.map((f, i) => (
-                                        <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                                            <span style={{ color: TC }} className="font-bold">✓</span> {f}
+                                        <li key={i} style={{ fontSize: '13px', color: '#4a3728', fontWeight: 300, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <span style={{ color: TC }}>✓</span> {f}
                                         </li>
                                     ))}
                                 </ul>
-                                <Link
-                                    href={`/${locale}/auth/login`}
-                                    className="w-full py-3 text-white font-semibold text-center transition-all duration-200"
-                                    style={{ background: TC, borderRadius: '100px', display: 'block' }}
-                                >
+                                <Link href={`/${locale}/auth/login`} className="w-full py-3 text-center transition-all duration-200" style={{ background: 'transparent', color: TC, border: `1px solid ${TC}`, borderRadius: '100px', display: 'block', fontSize: '12px', fontWeight: 500, letterSpacing: '0.06em', textDecoration: 'none' }}>
                                     {(dict.landing.pricing.free as any).cta}
                                 </Link>
                             </div>
                             {/* Pro Plan */}
-                            <div className="pricing-card sr-hidden bg-card p-8 rounded-2xl shadow-xl card-hover relative flex flex-col" style={{ border: `2px solid ${TC}` }}>
-                                <div className="absolute top-0 right-0 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg" style={{ background: TC }}>
+                            <div className="pricing-card sr-hidden flex flex-col" style={{ background: '#fffdf9', border: `2px solid ${TC}`, borderRadius: '12px', padding: '28px 28px 24px', position: 'relative' }}>
+                                <div style={{ position: 'absolute', top: 0, right: 0, background: TC, color: '#fff9f4', fontSize: '9px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '5px 12px', borderRadius: '0 10px 0 6px' }}>
                                     {dict.landing.pricing.recommended}
                                 </div>
-                                <h3 className="text-xl font-bold mb-1" style={{ color: TC }}>{dict.landing.pricing.pro.title}</h3>
-                                <p className="text-xs italic mb-4" style={{ color: `${TC}99` }}>{(dict.landing.pricing.pro as { tagline?: string }).tagline}</p>
-                                <div className="text-3xl font-bold mb-6">{dict.common.price.replace('{amount}', '10')}</div>
-                                <ul className="space-y-4 mb-8 text-left flex-1">
+                                <h3 className="font-serif font-normal mb-1" style={{ fontSize: '1.6rem', color: TC }}>{dict.landing.pricing.pro.title}</h3>
+                                <p className="italic mb-5" style={{ fontSize: '12px', color: `${TC}99`, fontWeight: 300 }}>{(dict.landing.pricing.pro as { tagline?: string }).tagline}</p>
+                                <div className="font-serif font-normal mb-5" style={{ fontSize: '2.2rem', color: 'hsl(var(--ink))', lineHeight: 1 }}>
+                                    {dict.common.price.replace('{amount}', '10').split(' /')[0]} <span style={{ fontSize: '13px', fontWeight: 300, color: '#9a8070', fontFamily: 'sans-serif' }}>/ {dict.common.perYear}</span>
+                                </div>
+                                <ul className="mb-6 text-left flex-1" style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                     {dict.landing.pricing.pro.features.map((f, i) => (
-                                        <li key={i} className="flex items-center gap-2 text-sm">
-                                            <span style={{ color: TC }} className="font-bold">✓</span> {f}
+                                        <li key={i} style={{ fontSize: '13px', color: '#4a3728', fontWeight: 300, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <span style={{ color: TC }}>✓</span> {f}
                                         </li>
                                     ))}
                                 </ul>
-                                <Link
-                                    href={`/${locale}/auth/login`}
-                                    className="w-full py-3 text-white font-semibold text-center transition-all duration-200"
-                                    style={{ background: TC, borderRadius: '100px', display: 'block' }}
-                                >
+                                <Link href={`/${locale}/auth/login`} className="w-full py-3 text-center transition-all duration-200" style={{ background: TC, color: '#fff9f4', borderRadius: '100px', display: 'block', fontSize: '12px', fontWeight: 500, letterSpacing: '0.06em', textDecoration: 'none' }}>
                                     {dict.landing.pricing.pro.cta}
                                 </Link>
                             </div>

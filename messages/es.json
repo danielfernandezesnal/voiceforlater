@@ -15,6 +15,7 @@
     "getStarted": "Crear mi primer mensaje",
     "seeHow": "Cómo funciona",
     "price": "USD {amount} / año",
+    "perYear": "año",
     "sentAt": "Enviado el ",
     "backToHome": "Volver al inicio",
     "backToDashboard": "Volver al panel"
