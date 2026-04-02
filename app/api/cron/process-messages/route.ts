@@ -21,6 +21,22 @@ export const runtime = 'nodejs';
  * Called by Vercel Cron to send scheduled messages
  */
 export async function GET(request: NextRequest) {
+    const authHeader = request.headers.get("authorization");
+    const cronSecret = process.env.CRON_SECRET;
+
+    console.log("[CRON DEBUG]", {
+      hasAuthHeader: !!authHeader,
+      authStartsWithBearer: authHeader?.startsWith("Bearer ") ?? false,
+      headerLength: authHeader?.startsWith("Bearer ")
+        ? authHeader.slice(7).length
+        : 0,
+      secretLength: cronSecret?.length ?? 0,
+      sameValue:
+        authHeader?.startsWith("Bearer ") && cronSecret
+          ? authHeader.slice(7) === cronSecret
+          : false,
+    });
+
     if (!isAuthorized(request)) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
