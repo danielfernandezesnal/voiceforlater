@@ -64,11 +64,19 @@ export function MobileNav({ locale, labels }: MobileNavProps) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`py-3.5 px-6 text-sm font-medium transition-colors hover:bg-muted/50 ${
+                  className={`py-3.5 px-6 text-sm font-medium transition-colors hover:bg-muted/50 flex items-center gap-3 ${
                     isActive ? 'text-primary' : 'text-muted-foreground'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
+                  <span style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    flexShrink: 0,
+                    background: isActive ? '#C4623A' : 'transparent',
+                    border: isActive ? 'none' : '1.5px solid transparent',
+                  }} />
                   {link.label}
                 </Link>
               )
