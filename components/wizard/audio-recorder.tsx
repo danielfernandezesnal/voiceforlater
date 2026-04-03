@@ -17,7 +17,13 @@ interface AudioRecorderProps {
     existingAudioUrl?: string | null
     onRecordingComplete: (blob: Blob, duration: number) => void
     onDelete: () => void
+    locale?: string
 }
+
+const ACCEPTED_AUDIO_FORMATS = ['audio/mpeg', 'audio/mp4', 'audio/wav', 'audio/ogg', 'audio/m4a', 'audio/x-m4a']
+const ACCEPTED_AUDIO_EXTENSIONS = '.mp3,.m4a,.wav,.ogg'
+const MAX_AUDIO_MB = 25
+const MAX_AUDIO_BYTES = MAX_AUDIO_MB * 1024 * 1024
 
 export function AudioRecorder({
     dictionary,
@@ -26,8 +32,12 @@ export function AudioRecorder({
     existingAudioUrl,
     onRecordingComplete,
     onDelete,
+    locale,
 }: AudioRecorderProps) {
     const [isRecording, setIsRecording] = useState(false)
+    const [activeTab, setActiveTab] = useState<'record' | 'upload'>('record')
+    const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+    const [uploadError, setUploadError] = useState<string | null>(null)
     const [recordingTime, setRecordingTime] = useState(0)
     const [audioUrl, setAudioUrl] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
@@ -127,6 +137,30 @@ export function AudioRecorder({
         }
     }
 
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUploadError(null)
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        const isValidFormat = ACCEPTED_AUDIO_FORMATS.includes(file.type) ||
+            ACCEPTED_AUDIO_EXTENSIONS.split(',').some(ext => file.name.toLowerCase().endsWith(ext.replace('.', '')))
+
+        if (!isValidFormat) {
+            setUploadError(locale === 'es'
+                ? `Formato no válido. Usá MP3, M4A, WAV u OGG.`
+                : `Invalid format. Use MP3, M4A, WAV or OGG.`)
+            return
+        }
+        if (file.size > MAX_AUDIO_BYTES) {
+            setUploadError(locale === 'es'
+                ? `El archivo supera el límite de ${MAX_AUDIO_MB}MB.`
+                : `File exceeds the ${MAX_AUDIO_MB}MB limit.`)
+            return
+        }
+        setUploadedFile(file)
+        onRecordingComplete(file, 0)
+    }
+
     // Has existing recording (either blob or existing)
     const finalAudioUrl = audioUrl || existingAudioUrl
 
@@ -156,76 +190,163 @@ export function AudioRecorder({
     }
 
     return (
-        <div className="p-6 bg-card border border-border rounded-xl space-y-6">
-            {error && (
-                <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3 flex flex-col items-center">
-                    <p className="font-medium break-words max-w-full">{error}</p>
-                    <p className="text-xs opacity-90 max-w-[280px]">
-                        Si bloqueaste el acceso antes, habilitalo desde el ícono del candado 🔒 en la barra de direcciones y recargá la página.
+        <div className="space-y-6">
+            {/* Tabs */}
+            <div className="flex border-b border-border">
+                <button
+                    onClick={() => setActiveTab('record')}
+                    className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
+                        activeTab === 'record'
+                            ? 'border-primary text-primary'
+                            : 'border-transparent text-muted-foreground hover:text-foreground'
+                    }`}
+                >
+                    {locale === 'es' ? 'Grabar' : 'Record'}
+                </button>
+                <button
+                    onClick={() => setActiveTab('upload')}
+                    className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
+                        activeTab === 'upload'
+                            ? 'border-primary text-primary'
+                            : 'border-transparent text-muted-foreground hover:text-foreground'
+                    }`}
+                >
+                    {locale === 'es' ? 'Subir archivo' : 'Upload file'}
+                </button>
+            </div>
+
+            {/* Tab: Grabar */}
+            {activeTab === 'record' && (
+                <div className="p-6 bg-card border border-border rounded-xl space-y-6">
+                    {error && (
+                        <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3 flex flex-col items-center">
+                            <p className="font-medium break-words max-w-full">{error}</p>
+                            <p className="text-xs opacity-90 max-w-[280px]">
+                                Si bloqueaste el acceso antes, habilitalo desde el ícono del candado 🔒 en la barra de direcciones y recargá la página.
+                            </p>
+                            <button
+                                type="button"
+                                onClick={() => startRecording()}
+                                disabled={isInitializing}
+                                className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors disabled:opacity-50 mt-1"
+                            >
+                                {isInitializing ? 'Intentando...' : 'Intentar de nuevo'}
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Timer Display */}
+                    <div className="text-center">
+                        <div className={`text-4xl font-mono font-bold ${isRecording ? 'text-error' : 'text-foreground'}`}>
+                            {formatTime(recordingTime)}
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-2">
+                            {dictionary.timeLimit.replace('{seconds}', String(maxSeconds))}
+                        </div>
+                    </div>
+
+                    {/* Recording visualization */}
+                    {isRecording && (
+                        <div className="flex justify-center items-center gap-1 h-12">
+                            {[...Array(5)].map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="w-2 bg-primary rounded-full animate-pulse"
+                                    style={{
+                                        height: '24px',
+                                        animationDelay: `${i * 0.1}s`,
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Record Button */}
+                    <div className="flex justify-center">
+                        {isRecording ? (
+                            <button
+                                onClick={stopRecording}
+                                className="w-20 h-20 rounded-full bg-error hover:bg-error/90 text-white flex items-center justify-center transition-all shadow-lg shadow-error/25"
+                            >
+                                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                                    <rect x="6" y="6" width="12" height="12" rx="2" />
+                                </svg>
+                            </button>
+                        ) : (
+                            <button
+                                onClick={startRecording}
+                                className="w-20 h-20 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center transition-all shadow-lg shadow-primary/25"
+                            >
+                                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                </svg>
+                            </button>
+                        )}
+                    </div>
+
+                    <p className="text-center text-sm text-muted-foreground">
+                        {isRecording ? dictionary.stop : dictionary.start}
                     </p>
-                    <button
-                        type="button"
-                        onClick={() => startRecording()}
-                        disabled={isInitializing}
-                        className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors disabled:opacity-50 mt-1"
-                    >
-                        {isInitializing ? 'Intentando...' : 'Intentar de nuevo'}
-                    </button>
                 </div>
             )}
 
-            {/* Timer Display */}
-            <div className="text-center">
-                <div className={`text-4xl font-mono font-bold ${isRecording ? 'text-error' : 'text-foreground'}`}>
-                    {formatTime(recordingTime)}
-                </div>
-                <div className="text-sm text-muted-foreground mt-2">
-                    {dictionary.timeLimit.replace('{seconds}', String(maxSeconds))}
-                </div>
-            </div>
-
-            {/* Recording visualization */}
-            {isRecording && (
-                <div className="flex justify-center items-center gap-1 h-12">
-                    {[...Array(5)].map((_, i) => (
-                        <div
-                            key={i}
-                            className="w-2 bg-primary rounded-full animate-pulse"
-                            style={{
-                                height: '24px', // Static height or use CSS animation for height
-                                animationDelay: `${i * 0.1}s`,
-                            }}
+            {/* Tab: Subir */}
+            {activeTab === 'upload' && (
+                <div className="p-6 bg-card border border-border rounded-xl space-y-4">
+                    <label
+                        htmlFor="audio-upload"
+                        className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-border rounded-xl p-8 cursor-pointer hover:border-primary/50 hover:bg-accent/5 transition-all"
+                    >
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <div className="text-center">
+                            <p className="text-sm font-medium text-foreground">
+                                {locale === 'es' ? 'Seleccionar archivo de audio' : 'Select audio file'}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                {locale === 'es'
+                                    ? `MP3, M4A, WAV, OGG · Máx. ${MAX_AUDIO_MB}MB`
+                                    : `MP3, M4A, WAV, OGG · Max. ${MAX_AUDIO_MB}MB`}
+                            </p>
+                        </div>
+                        <input
+                            id="audio-upload"
+                            type="file"
+                            accept={ACCEPTED_AUDIO_EXTENSIONS}
+                            className="hidden"
+                            onChange={handleFileUpload}
                         />
-                    ))}
+                    </label>
+
+                    {uploadError && (
+                        <p className="text-sm text-destructive text-center">{uploadError}</p>
+                    )}
+
+                    {uploadedFile && (
+                        <div className="flex items-center gap-3 p-3 bg-accent/10 rounded-lg border border-border">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary flex-shrink-0">
+                                <path d="M9 18V5l12-2v13"/>
+                                <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                            </svg>
+                            <span className="text-sm text-foreground truncate flex-1">{uploadedFile.name}</span>
+                            <span className="text-xs text-muted-foreground flex-shrink-0">
+                                {(uploadedFile.size / (1024 * 1024)).toFixed(1)}MB
+                            </span>
+                            <button
+                                onClick={() => { setUploadedFile(null); onDelete() }}
+                                className="text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
-
-            {/* Record Button */}
-            <div className="flex justify-center">
-                {isRecording ? (
-                    <button
-                        onClick={stopRecording}
-                        className="w-20 h-20 rounded-full bg-error hover:bg-error/90 text-white flex items-center justify-center transition-all shadow-lg shadow-error/25"
-                    >
-                        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                            <rect x="6" y="6" width="12" height="12" rx="2" />
-                        </svg>
-                    </button>
-                ) : (
-                    <button
-                        onClick={startRecording}
-                        className="w-20 h-20 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center transition-all shadow-lg shadow-primary/25"
-                    >
-                        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                        </svg>
-                    </button>
-                )}
-            </div>
-
-            <p className="text-center text-sm text-muted-foreground">
-                {isRecording ? dictionary.stop : dictionary.start}
-            </p>
         </div>
     )
 }
