@@ -130,6 +130,14 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                 })
             }
 
+            // Upload photos
+            if (data.photos && data.photos.length > 0) {
+                data.photos.forEach((photo, i) => {
+                    formData.append(`photos[${i}]`, photo.file, photo.file.name)
+                    formData.append(`photosCaptions[${i}]`, photo.caption || '')
+                })
+            }
+
             if (data.deliveryMode === 'date') {
                 formData.append('deliverAt', data.deliverAt)
             } else {
