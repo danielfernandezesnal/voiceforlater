@@ -65,6 +65,7 @@ export default async function PlanPage({
             <PlanCompare
                 currentPlan={planName}
                 comparisonData={dict.dashboard.plan?.compare}
+                locale={locale}
             />
         </div>
     );

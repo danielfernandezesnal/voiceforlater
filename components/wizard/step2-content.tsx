@@ -43,7 +43,7 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                     <p className="text-muted-foreground mt-2">{dictionary.subtitle}</p>
                 </div>
 
-                <div className="max-w-2xl mx-auto space-y-4">
+                <div className="w-full max-w-2xl mx-auto space-y-4">
                     <div className="space-y-2">
                         <label htmlFor="title" className="block text-sm font-medium text-foreground">
                             {dictionary.titleLabel}
@@ -104,7 +104,7 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                 <p className="text-muted-foreground mt-2">{dictionary.subtitle}</p>
             </div>
 
-            <div className="max-w-md mx-auto space-y-8">
+            <div className="w-full max-w-md mx-auto space-y-6">
                 <div className="space-y-2 text-left">
                     <label htmlFor="title" className="block text-sm font-medium text-foreground">
                         {dictionary.titleLabel}

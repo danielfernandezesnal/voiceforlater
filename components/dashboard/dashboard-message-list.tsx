@@ -85,17 +85,20 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                 </h2>
                 
                 {messages.length === 0 ? (
-                    <div className="bg-card border-2 border-dashed border-border/40 rounded-2xl py-12 px-6 text-center flex flex-col items-center gap-3">
-                        <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-xl"
-                            style={{ background: 'rgba(196,98,58,0.08)' }}>
-                            ✉️
+                    <div className="border border-dashed border-border/50 py-16 px-6 text-center flex flex-col items-center gap-4" style={{ borderRadius: '4px' }}>
+                        <div className="w-12 h-12 flex items-center justify-center" style={{ background: 'rgba(196,98,58,0.06)', borderRadius: '10px' }}>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C4623A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
                         </div>
-                        <p className="font-serif font-semibold text-lg text-foreground">
-                            {dict.dashboard.empty.title}
-                        </p>
-                        <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-                            {dict.dashboard.empty.description}
-                        </p>
+                        <div>
+                            <p className="font-serif font-light text-xl text-foreground mb-1">
+                                {dict.dashboard.empty.title}
+                            </p>
+                            <p className="text-sm text-muted-foreground max-w-xs leading-relaxed font-light">
+                                {dict.dashboard.empty.description}
+                            </p>
+                        </div>
                     </div>
                 ) : (
                     <div className="grid gap-4">

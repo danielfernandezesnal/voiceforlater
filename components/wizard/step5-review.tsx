@@ -151,14 +151,14 @@ export function Step5Review({
                     <p className="text-sm text-muted-foreground font-medium">
                         {locale === 'es' ? `Fotos adjuntas (${data.photos.length})` : `Attached photos (${data.photos.length})`}
                     </p>
-                    <div className={`grid gap-2 ${data.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                    <div className={`grid gap-4 ${data.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
                         {data.photos.map((photo, i) => (
-                            <div key={i} className="relative rounded-xl overflow-hidden aspect-[4/3] bg-muted">
-                                <img src={photo.previewUrl} alt={photo.caption} className="w-full h-full object-cover" />
+                            <div key={i}>
+                                <div className="rounded-xl overflow-hidden aspect-[4/3] bg-muted">
+                                    <img src={photo.previewUrl} alt={photo.caption} className="w-full h-full object-cover" />
+                                </div>
                                 {photo.caption && (
-                                    <div className="absolute bottom-0 inset-x-0 bg-black/40 px-2 py-1">
-                                        <p className="text-white text-xs truncate">{photo.caption}</p>
-                                    </div>
+                                    <p className="text-xs text-muted-foreground mt-1 truncate">{photo.caption}</p>
                                 )}
                             </div>
                         ))}
