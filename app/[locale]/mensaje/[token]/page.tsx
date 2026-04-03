@@ -53,6 +53,7 @@ export default async function MessagePage({ params }: PageProps) {
                 type,
                 text_content,
                 audio_path,
+                photo_paths,
                 created_at,
                 delivery_claimed_at,
                 owner_id,
@@ -174,6 +175,16 @@ export default async function MessagePage({ params }: PageProps) {
         mediaUrl = signedUrlData?.signedUrl || '';
     }
 
+    const photoUrls: string[] = []
+    if (message.photo_paths && Array.isArray(message.photo_paths) && message.photo_paths.length > 0) {
+        for (const path of message.photo_paths) {
+            const { data: photoData } = await supabase.storage
+                .from('audio')
+                .createSignedUrl(path, 3600)
+            if (photoData?.signedUrl) photoUrls.push(photoData.signedUrl)
+        }
+    }
+
     return (
         <div className="min-h-screen bg-[#F0EBE4] font-sans selection:bg-primary/20 overflow-x-hidden">
             <style dangerouslySetInnerHTML={{
@@ -222,6 +233,7 @@ export default async function MessagePage({ params }: PageProps) {
                             date={createdAt}
                             isPosthumous={isPosthumous}
                             t={t}
+                            photoUrls={photoUrls}
                         />
                     )}
 
@@ -232,6 +244,7 @@ export default async function MessagePage({ params }: PageProps) {
                             date={createdAt}
                             isPosthumous={isPosthumous}
                             t={t}
+                            photoUrls={photoUrls}
                         />
                     )}
 
@@ -292,7 +305,10 @@ export default async function MessagePage({ params }: PageProps) {
 
 // Layout Subcomponents
 
-function TextCard({ content, senderName, date, isPosthumous, t }: { content: string, senderName: string, date: string, isPosthumous: boolean, t: any }) {
+function TextCard({ content, senderName, date, isPosthumous, t, photoUrls = [] }: {
+    content: string, senderName: string, date: string,
+    isPosthumous: boolean, t: any, photoUrls?: string[]
+}) {
     return (
         <div className="bg-white rounded-[2rem] overflow-hidden shadow-[0_12px_44px_rgba(0,0,0,0.04)] border border-black/[0.04] flex flex-col">
             <div className={`px-8 py-5 flex items-center justify-between border-b border-white/5 ${isPosthumous ? 'bg-[#3D2C1E]' : 'bg-[#C4623A]'}`}>
@@ -303,6 +319,22 @@ function TextCard({ content, senderName, date, isPosthumous, t }: { content: str
                     {date}
                 </div>
             </div>
+
+            {/* Fotos — arriba del texto */}
+            {photoUrls.length > 0 && (
+                <div className={`grid gap-0 ${photoUrls.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                    {photoUrls.map((url, i) => (
+                        <img
+                            key={i}
+                            src={url}
+                            alt=""
+                            className="w-full object-cover"
+                            style={{ maxHeight: '280px' }}
+                        />
+                    ))}
+                </div>
+            )}
+
             <div className="px-8 py-16 sm:px-16 sm:py-24 space-y-12 text-center relative overflow-hidden">
                 <div className="text-primary/10 text-8xl font-serif absolute top-4 left-1/2 -translate-x-1/2 z-0 leading-none select-none italic">“</div>
                 <div className="font-lora italic text-xl sm:text-2xl text-[#2A2520] leading-[1.8] whitespace-pre-wrap relative z-10 antialiased">
@@ -319,7 +351,10 @@ function TextCard({ content, senderName, date, isPosthumous, t }: { content: str
     );
 }
 
-function AudioCard({ audioUrl, senderName, date, isPosthumous, t }: { audioUrl: string, senderName: string, date: string, isPosthumous: boolean, t: any }) {
+function AudioCard({ audioUrl, senderName, date, isPosthumous, t, photoUrls = [] }: {
+    audioUrl: string, senderName: string, date: string,
+    isPosthumous: boolean, t: any, photoUrls?: string[]
+}) {
     return (
         <div className="bg-white rounded-[2rem] overflow-hidden shadow-[0_12px_44px_rgba(0,0,0,0.04)] border border-black/[0.04]">
             <div className={`px-8 py-5 flex items-center justify-between border-b border-white/5 ${isPosthumous ? 'bg-[#3D2C1E]' : 'bg-[#C4623A]'}`}>
@@ -340,6 +375,14 @@ function AudioCard({ audioUrl, senderName, date, isPosthumous, t }: { audioUrl: 
                         <div className="text-[10px] tracking-[0.2em] text-primary/80 font-bold uppercase">{t.voiceLabel}</div>
                     </div>
                 </div>
+
+                {photoUrls.length > 0 && (
+                    <div className={`grid gap-2 rounded-2xl overflow-hidden ${photoUrls.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                        {photoUrls.map((url, i) => (
+                            <img key={i} src={url} alt="" className="w-full object-cover rounded-xl" style={{ maxHeight: '220px' }} />
+                        ))}
+                    </div>
+                )}
 
                 <div className="bg-[#FAF7F2] rounded-3xl p-8 border border-black/[0.02]">
                     <AudioPlayer src={audioUrl} />
