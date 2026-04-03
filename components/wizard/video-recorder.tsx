@@ -45,7 +45,7 @@ export function VideoRecorder({
     const [videoUrl, setVideoUrl] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [isStreamReady, setIsStreamReady] = useState(false)
-    const [activeTab, setActiveTab] = useState<'record' | 'upload'>('record')
+    const [mode, setMode] = useState<null | 'record' | 'upload'>(null)
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
     const [uploadError, setUploadError] = useState<string | null>(null)
     const [isUploading, setIsUploading] = useState(false)
@@ -119,8 +119,9 @@ export function VideoRecorder({
         }
     }, [dictionary.errorCamera, existingVideoUrl, videoBlob])
 
-    // Initialize camera on mount
+    // Initialize camera when mode is record
     useEffect(() => {
+        if (mode !== 'record') return
         initCamera()
 
         // Cleanup function
@@ -133,7 +134,7 @@ export function VideoRecorder({
                 clearInterval(timerRef.current)
             }
         }
-    }, [initCamera]) // Re-run if initCamera changes (which depends on videoBlob/existingVideoUrl)
+    }, [mode, initCamera])
 
     // Re-attach stream to video element if ref changes or state updates
     useEffect(() => {
@@ -322,33 +323,88 @@ export function VideoRecorder({
     }
 
     return (
-        <div className="space-y-6">
-            {/* Tabs */}
-            <div className="flex border-b border-border">
-                <button
-                    onClick={() => setActiveTab('record')}
-                    className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
-                        activeTab === 'record'
-                            ? 'border-primary text-primary'
-                            : 'border-transparent text-muted-foreground hover:text-foreground'
-                    }`}
-                >
-                    {locale === 'es' ? 'Grabar' : 'Record'}
-                </button>
-                <button
-                    onClick={() => setActiveTab('upload')}
-                    className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
-                        activeTab === 'upload'
-                            ? 'border-primary text-primary'
-                            : 'border-transparent text-muted-foreground hover:text-foreground'
-                    }`}
-                >
-                    {locale === 'es' ? 'Subir video' : 'Upload video'}
-                </button>
-            </div>
+        <div className="space-y-4">
+            {/* Selector de modo — solo se muestra si no eligió nada todavía */}
+            {mode === null && (
+                <div className="flex flex-col gap-3">
+                    {/* Card: Grabar */}
+                    <button
+                        type="button"
+                        onClick={() => setMode('record')}
+                        className="w-full flex items-center gap-5 p-5 bg-card border border-border/70 rounded-xl hover:border-primary/60 hover:bg-accent/5 transition-all text-left group"
+                    >
+                        <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(196,98,58,0.08)' }}>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C4623A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground">
+                                {locale === 'es' ? 'Grabar desde la plataforma' : 'Record from the platform'}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-0.5 font-light">
+                                {locale === 'es' ? 'Usá tu cámara para grabar un video directo desde el navegador' : 'Use your camera to record a video directly from the browser'}
+                            </p>
+                        </div>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0"><path d="M9 18l6-6-6-6" /></svg>
+                    </button>
 
-            {/* Tab: Grabar */}
-            {activeTab === 'record' && (
+                    {/* Divider */}
+                    <div className="flex items-center gap-3">
+                        <div className="flex-1 h-px bg-border/50" />
+                        <span className="text-xs text-muted-foreground">
+                            {locale === 'es' ? 'o' : 'or'}
+                        </span>
+                        <div className="flex-1 h-px bg-border/50" />
+                    </div>
+
+                    {/* Card: Subir */}
+                    <button
+                        type="button"
+                        onClick={() => setMode('upload')}
+                        className="w-full flex items-center gap-5 p-5 bg-card border border-border/70 rounded-xl hover:border-primary/60 hover:bg-accent/5 transition-all text-left group"
+                    >
+                        <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(196,98,58,0.08)' }}>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C4623A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="17 8 12 3 7 8" />
+                                <line x1="12" y1="3" x2="12" y2="15" />
+                            </svg>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground">
+                                {locale === 'es' ? 'Subir un video desde tu dispositivo' : 'Upload a video from your device'}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-0.5 font-light">
+                                {locale === 'es' ? `MP4, MOV, WEBM · Máx. ${MAX_VIDEO_MB}MB` : `MP4, MOV, WEBM · Max. ${MAX_VIDEO_MB}MB`}
+                            </p>
+                        </div>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0"><path d="M9 18l6-6-6-6" /></svg>
+                    </button>
+                </div>
+            )}
+
+            {/* Botón volver — aparece cuando ya eligió un modo */}
+            {mode !== null && (
+                <button
+                    type="button"
+                    onClick={() => {
+                        setMode(null)
+                        if (streamRef.current) {
+                            streamRef.current.getTracks().forEach(track => track.stop())
+                            streamRef.current = null
+                            setIsStreamReady(false)
+                        }
+                    }}
+                    className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+                >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
+                    {locale === 'es' ? 'Cambiar método' : 'Change method'}
+                </button>
+            )}
+
+            {/* Contenido: Grabar */}
+            {mode === 'record' && (
                 <div className="p-6 bg-card border border-border rounded-xl space-y-6">
                     {error && (
                         <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3 flex flex-col items-center">
@@ -441,8 +497,8 @@ export function VideoRecorder({
                 </div>
             )}
 
-            {/* Tab: Subir */}
-            {activeTab === 'upload' && (
+            {/* Contenido: Subir */}
+            {mode === 'upload' && (
                 <div className="p-6 bg-card border border-border rounded-xl space-y-4">
                     {!uploadedFile ? (
                         <label
@@ -450,7 +506,7 @@ export function VideoRecorder({
                             className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-border rounded-xl p-8 cursor-pointer hover:border-primary/50 hover:bg-accent/5 transition-all"
                         >
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
-                                <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                                <polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
                             </svg>
                             <div className="text-center">
                                 <p className="text-sm font-medium text-foreground">
@@ -460,26 +516,26 @@ export function VideoRecorder({
                                     {locale === 'es' ? `MP4, MOV, WEBM · Máx. ${MAX_VIDEO_MB}MB` : `MP4, MOV, WEBM · Max. ${MAX_VIDEO_MB}MB`}
                                 </p>
                             </div>
-                                <input
-                                    id="video-upload"
-                                    type="file"
-                                    accept={ACCEPTED_VIDEO_EXTENSIONS}
-                                    className="hidden"
-                                    onChange={handleFileUpload}
-                                    disabled={isUploading}
-                                />
-                                {isUploading && (
-                                    <div className="flex items-center gap-2 mt-2">
-                                        <svg className="w-4 h-4 animate-spin text-primary" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        <span className="text-xs text-muted-foreground">
-                                            {locale === 'es' ? 'Subiendo contenido...' : 'Uploading content...'}
-                                        </span>
-                                    </div>
-                                )}
-                            </label>
+                            <input
+                                id="video-upload"
+                                type="file"
+                                accept={ACCEPTED_VIDEO_EXTENSIONS}
+                                className="hidden"
+                                onChange={handleFileUpload}
+                                disabled={isUploading}
+                            />
+                            {isUploading && (
+                                <div className="flex items-center gap-2 mt-2">
+                                    <svg className="w-4 h-4 animate-spin text-primary" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <span className="text-xs text-muted-foreground">
+                                        {locale === 'es' ? 'Subiendo contenido...' : 'Uploading content...'}
+                                    </span>
+                                </div>
+                            )}
+                        </label>
                     ) : (
                         <div className="space-y-3">
                             {thumbnailUrl && (
@@ -487,14 +543,14 @@ export function VideoRecorder({
                                     <img src={thumbnailUrl} alt="preview" className="w-full h-full object-cover opacity-90" />
                                     <div className="absolute inset-0 flex items-center justify-center">
                                         <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3" /></svg>
                                         </div>
                                     </div>
                                 </div>
                             )}
                             <div className="flex items-center gap-3 p-3 bg-accent/10 rounded-lg border border-border">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary flex-shrink-0">
-                                    <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                                    <polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
                                 </svg>
                                 <span className="text-sm text-foreground truncate flex-1">{uploadedFile.name}</span>
                                 <span className="text-xs text-muted-foreground flex-shrink-0">
@@ -505,7 +561,7 @@ export function VideoRecorder({
                                     className="text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
                                 >
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                                     </svg>
                                 </button>
                             </div>
