@@ -80,7 +80,7 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
         <div className="mt-8">
             {/* Sent Messages Section */}
             <div>
-                <h2 className="font-serif font-semibold text-lg text-foreground mb-4">
+                <h2 className="font-serif font-light text-lg text-foreground mb-4">
                     {dict.dashboard.sectionTitle}
                 </h2>
                 
