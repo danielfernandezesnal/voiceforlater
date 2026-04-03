@@ -113,9 +113,21 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
             if (data.messageType === 'text') {
                 formData.append('textContent', data.textContent)
             } else if (data.audioBlob) {
-                const filename = 'recording.webm'
-                const fileKey = data.messageType === 'video' ? 'video' : 'audio'
-                formData.append(fileKey, data.audioBlob, filename)
+                if (data.messageType === 'video') {
+                    const filename = data.audioBlob instanceof File ? data.audioBlob.name : 'recording.webm'
+                    formData.append('video', data.audioBlob, filename)
+                } else {
+                    const filename = data.audioBlob instanceof File ? data.audioBlob.name : 'recording.webm'
+                    formData.append('audio', data.audioBlob, filename)
+                }
+            }
+
+            // Upload photos
+            if (data.photos && data.photos.length > 0) {
+                data.photos.forEach((photo, i) => {
+                    formData.append(`photos[${i}]`, photo.file, photo.file.name)
+                    formData.append(`photosCaptions[${i}]`, photo.caption || '')
+                })
             }
 
             // Upload photos
