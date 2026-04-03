@@ -108,10 +108,11 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
                 ) : (
                     <>
                         <a 
-                            href={status === 'available' ? `/${locale}/mensaje/${message.token}` : `/api/messages/download?token=${message.token}`}
+                            href={!message.token ? '#' : status === 'available' ? `/${locale}/mensaje/${message.token}` : `/api/messages/download?token=${message.token}`}
+                            onClick={!message.token ? (e) => e.preventDefault() : undefined}
                             target={status === 'available' ? "_blank" : "_self"}
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white rounded-full whitespace-nowrap transition-all hover:opacity-90 active:scale-95 shadow-sm sm:w-auto w-full"
+                            className={`inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white rounded-full whitespace-nowrap transition-all hover:opacity-90 active:scale-95 shadow-sm sm:w-auto w-full ${!message.token ? 'opacity-50 cursor-not-allowed grayscale-[0.3]' : ''}`}
                             style={{ background: '#C4623A' }}
                         >
                             <Icon size={16} />
