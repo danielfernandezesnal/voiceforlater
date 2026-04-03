@@ -16,6 +16,7 @@ export interface WizardData {
     audioBlob: Blob | null
     existingAudioUrl?: string | null
     audioDuration: number
+    photos: Array<{ file: File; caption: string; previewUrl: string }>
 
     // Step 3: Recipient
     recipients: Array<{ name: string; email: string }>
@@ -46,6 +47,7 @@ const initialData: WizardData = {
     audioBlob: null,
     existingAudioUrl: null,
     audioDuration: 0,
+    photos: [],
     recipients: [{ name: '', email: '' }],
     deliveryMode: null,
     deliverAt: '',

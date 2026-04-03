@@ -3,6 +3,7 @@
 import { useWizard } from './wizard-context'
 import { AudioRecorder } from './audio-recorder'
 import { VideoRecorder } from './video-recorder'
+import { PhotoUploader } from './photo-uploader'
 
 interface Step2Props {
     dictionary: {
@@ -83,6 +84,11 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                                 .replace('{max}', String(maxTextChars))}
                         </div>
                     </div>
+                    <PhotoUploader
+                        photos={data.photos}
+                        onChange={(photos) => updateData({ photos })}
+                        locale={locale}
+                    />
                 </div>
             </div>
         )
@@ -148,6 +154,13 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                         onDelete={() => {
                             updateData({ audioBlob: null, audioDuration: 0, existingAudioUrl: null })
                         }}
+                        locale={locale}
+                    />
+                )}
+                {!isVideo && (
+                    <PhotoUploader
+                        photos={data.photos}
+                        onChange={(photos) => updateData({ photos })}
                         locale={locale}
                     />
                 )}

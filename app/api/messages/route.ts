@@ -323,6 +323,25 @@ export async function POST(request: NextRequest) {
             audioPath = fileName;
         }
 
+        // Upload photos (text and audio messages only)
+        const photoUrls: string[] = []
+        if (type === 'text' || type === 'audio') {
+            const photoFiles: File[] = []
+            for (let i = 0; i < 2; i++) {
+                const photo = formData.get(`photos[${i}]`) as File | null
+                if (photo && photo.size > 0) photoFiles.push(photo)
+            }
+            for (let i = 0; i < photoFiles.length; i++) {
+                const photo = photoFiles[i]
+                const ext = photo.name.split('.').pop() || 'jpg'
+                const fileName = `${user.id}/photos/${uuidv4()}.${ext}`
+                const { error: photoError } = await supabase.storage
+                    .from('audio')
+                    .upload(fileName, photo, { contentType: photo.type })
+                if (!photoError) photoUrls.push(fileName)
+            }
+        }
+
         // Create message
         const { data: message, error: messageError } = await supabase
             .from("messages")
@@ -334,6 +353,7 @@ export async function POST(request: NextRequest) {
                 text_content: textContent || null,
                 audio_path: audioPath,
                 file_size_bytes: fileSizeBytes,
+                photo_paths: photoUrls.length > 0 ? photoUrls : null,
             })
             .select()
             .single();
@@ -592,6 +612,26 @@ export async function PUT(request: NextRequest) {
             updates.file_size_bytes = null;
         }
 
+        // Upload photos (text and audio messages only)
+        const photoUrls: string[] = []
+        if (type === 'text' || type === 'audio') {
+            const photoFiles: File[] = []
+            for (let i = 0; i < 2; i++) {
+                const photo = formData.get(`photos[${i}]`) as File | null
+                if (photo && photo.size > 0) photoFiles.push(photo)
+            }
+            for (let i = 0; i < photoFiles.length; i++) {
+                const photo = photoFiles[i]
+                const ext = photo.name.split('.').pop() || 'jpg'
+                const fileName = `${user.id}/photos/${uuidv4()}.${ext}`
+                const { error: photoError } = await supabase.storage
+                    .from('audio')
+                    .upload(fileName, photo, { contentType: photo.type })
+                if (!photoError) photoUrls.push(fileName)
+            }
+        }
+        updates.photo_paths = photoUrls.length > 0 ? photoUrls : null
+
         // Update Message
         const { error: messageError } = await supabase
             .from("messages")
@@ -715,6 +755,12 @@ export async function DELETE(request: NextRequest) {
             await supabase.storage
                 .from("audio")
                 .remove([message.audio_path]);
+        }
+
+        // Delete photos from storage
+        const { data: msgWithPhotos } = await supabase.from('messages').select('photo_paths').eq('id', id).single()
+        if (msgWithPhotos?.photo_paths && Array.isArray(msgWithPhotos.photo_paths)) {
+            await supabase.storage.from('audio').remove(msgWithPhotos.photo_paths)
         }
 
         // Delete message dependencies (cascade should handle them, but explicit is safer)
