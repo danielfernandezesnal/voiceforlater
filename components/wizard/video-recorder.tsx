@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { v4 as uuidv4 } from 'uuid'
 
 interface VideoRecorderProps {
     dictionary: {
@@ -18,13 +20,14 @@ interface VideoRecorderProps {
     videoBlob: Blob | null
     existingVideoUrl?: string | null
     onRecordingComplete: (blob: Blob, duration: number) => void
+    onUploadComplete: (path: string) => void
     onDelete: () => void
     locale?: string
 }
 
 const ACCEPTED_VIDEO_FORMATS = ['video/mp4', 'video/quicktime', 'video/webm']
 const ACCEPTED_VIDEO_EXTENSIONS = '.mp4,.mov,.webm'
-const MAX_VIDEO_MB = 100
+const MAX_VIDEO_MB = 50
 const MAX_VIDEO_BYTES = MAX_VIDEO_MB * 1024 * 1024
 
 export function VideoRecorder({
@@ -33,6 +36,7 @@ export function VideoRecorder({
     videoBlob,
     existingVideoUrl,
     onRecordingComplete,
+    onUploadComplete,
     onDelete,
     locale,
 }: VideoRecorderProps) {
@@ -44,6 +48,7 @@ export function VideoRecorder({
     const [activeTab, setActiveTab] = useState<'record' | 'upload'>('record')
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
     const [uploadError, setUploadError] = useState<string | null>(null)
+    const [isUploading, setIsUploading] = useState(false)
     const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null)
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
@@ -248,8 +253,10 @@ export function VideoRecorder({
         setUploadError(null)
         const file = e.target.files?.[0]
         if (!file) return
+
         const isValidFormat = ACCEPTED_VIDEO_FORMATS.includes(file.type) ||
             ACCEPTED_VIDEO_EXTENSIONS.split(',').some(ext => file.name.toLowerCase().endsWith(ext.replace('.', '')))
+        
         if (!isValidFormat) {
             setUploadError(locale === 'es' ? 'Formato no válido. Usá MP4, MOV o WEBM.' : 'Invalid format. Use MP4, MOV or WEBM.')
             return
@@ -258,10 +265,38 @@ export function VideoRecorder({
             setUploadError(locale === 'es' ? `El archivo supera el límite de ${MAX_VIDEO_MB}MB.` : `File exceeds the ${MAX_VIDEO_MB}MB limit.`)
             return
         }
-        setUploadedFile(file)
-        const thumb = await generateThumbnail(file)
-        setThumbnailUrl(thumb)
-        onRecordingComplete(file, 0)
+
+        setIsUploading(true)
+        try {
+            const supabase = createClient()
+            const { data: { user } } = await supabase.auth.getUser()
+            
+            if (!user) {
+                throw new Error("No authenticated user")
+            }
+
+            const ext = file.name.split('.').pop() || 'mp4'
+            const path = `${user.id}/${uuidv4()}.${ext}`
+
+            const { error } = await supabase.storage
+                .from('audio')
+                .upload(path, file, { 
+                    contentType: file.type,
+                    upsert: false
+                })
+
+            if (error) throw error
+
+            setUploadedFile(file)
+            const thumb = await generateThumbnail(file)
+            setThumbnailUrl(thumb)
+            onUploadComplete(path)
+        } catch (err) {
+            console.error('Video upload error:', err)
+            setUploadError(locale === 'es' ? 'Error al subir el video.' : 'Upload failed.')
+        } finally {
+            setIsUploading(false)
+        }
     }
 
     // Has existing recording
@@ -425,14 +460,26 @@ export function VideoRecorder({
                                     {locale === 'es' ? `MP4, MOV, WEBM · Máx. ${MAX_VIDEO_MB}MB` : `MP4, MOV, WEBM · Max. ${MAX_VIDEO_MB}MB`}
                                 </p>
                             </div>
-                            <input
-                                id="video-upload"
-                                type="file"
-                                accept={ACCEPTED_VIDEO_EXTENSIONS}
-                                className="hidden"
-                                onChange={handleFileUpload}
-                            />
-                        </label>
+                                <input
+                                    id="video-upload"
+                                    type="file"
+                                    accept={ACCEPTED_VIDEO_EXTENSIONS}
+                                    className="hidden"
+                                    onChange={handleFileUpload}
+                                    disabled={isUploading}
+                                />
+                                {isUploading && (
+                                    <div className="flex items-center gap-2 mt-2">
+                                        <svg className="w-4 h-4 animate-spin text-primary" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        <span className="text-xs text-muted-foreground">
+                                            {locale === 'es' ? 'Subiendo contenido...' : 'Uploading content...'}
+                                        </span>
+                                    </div>
+                                )}
+                            </label>
                     ) : (
                         <div className="space-y-3">
                             {thumbnailUrl && (

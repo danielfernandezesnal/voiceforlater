@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { v4 as uuidv4 } from 'uuid'
 
 interface AudioRecorderProps {
     dictionary: {
@@ -16,6 +18,7 @@ interface AudioRecorderProps {
     audioBlob: Blob | null
     existingAudioUrl?: string | null
     onRecordingComplete: (blob: Blob, duration: number) => void
+    onUploadComplete: (path: string) => void
     onDelete: () => void
     locale?: string
 }
@@ -31,6 +34,7 @@ export function AudioRecorder({
     audioBlob,
     existingAudioUrl,
     onRecordingComplete,
+    onUploadComplete,
     onDelete,
     locale,
 }: AudioRecorderProps) {
@@ -38,6 +42,7 @@ export function AudioRecorder({
     const [activeTab, setActiveTab] = useState<'record' | 'upload'>('record')
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
     const [uploadError, setUploadError] = useState<string | null>(null)
+    const [isUploading, setIsUploading] = useState(false)
     const [recordingTime, setRecordingTime] = useState(0)
     const [audioUrl, setAudioUrl] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
@@ -137,7 +142,7 @@ export function AudioRecorder({
         }
     }
 
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         setUploadError(null)
         const file = e.target.files?.[0]
         if (!file) return
@@ -157,8 +162,36 @@ export function AudioRecorder({
                 : `File exceeds the ${MAX_AUDIO_MB}MB limit.`)
             return
         }
-        setUploadedFile(file)
-        onRecordingComplete(file, 0)
+
+        setIsUploading(true)
+        try {
+            const supabase = createClient()
+            const { data: { user } } = await supabase.auth.getUser()
+
+            if (!user) {
+                throw new Error("No authenticated user")
+            }
+
+            const ext = file.name.split('.').pop() || 'mp3'
+            const path = `${user.id}/${uuidv4()}.${ext}`
+
+            const { error } = await supabase.storage
+                .from('audio')
+                .upload(path, file, { 
+                    contentType: file.type,
+                    upsert: false
+                })
+
+            if (error) throw error
+
+            setUploadedFile(file)
+            onUploadComplete(path)
+        } catch (err) {
+            console.error('Audio upload error:', err)
+            setUploadError(locale === 'es' ? 'Error al subir el audio.' : 'Upload failed.')
+        } finally {
+            setIsUploading(false)
+        }
     }
 
     // Has existing recording (either blob or existing)
@@ -318,7 +351,19 @@ export function AudioRecorder({
                             accept={ACCEPTED_AUDIO_EXTENSIONS}
                             className="hidden"
                             onChange={handleFileUpload}
+                            disabled={isUploading}
                         />
+                        {isUploading && (
+                             <div className="flex items-center gap-2 mt-2">
+                                <svg className="w-4 h-4 animate-spin text-primary" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span className="text-xs text-muted-foreground">
+                                    {locale === 'es' ? 'Subiendo contenido...' : 'Uploading content...'}
+                                </span>
+                            </div>
+                        )}
                     </label>
 
                     {uploadError && (
