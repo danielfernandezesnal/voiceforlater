@@ -186,7 +186,7 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                 if (data.messageType === 'text') {
                     return data.textContent.trim().length > 0
                 }
-                return data.audioBlob !== null || (!!data.existingAudioUrl && data.messageType === 'audio')
+                return data.audioBlob !== null || !!data.existingAudioUrl
             case 3:
                 return data.recipients.length > 0 &&
                     data.recipients.every(r => r.name.trim().length > 0 && r.email.includes('@'))
