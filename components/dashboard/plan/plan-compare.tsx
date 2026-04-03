@@ -72,7 +72,7 @@ export function PlanCompare({ currentPlan, comparisonData, locale }: PlanCompare
             proNote: null,
         },
         {
-            name: locale === 'es' ? 'Subir video y audio externos' : 'Upload external video & audio',
+            name: locale === 'es' ? 'Subir videos externos' : 'Upload external videos',
             free: false,
             pro: true,
             freeNote: null,
