@@ -59,7 +59,10 @@ export async function GET(request: NextRequest) {
         const alerts: Array<{ type: string, severity: string, value: number | null }> = [];
         
         // 1. System Stall (evaluates always on real 24h window)
-        if (stallMetrics && stallMetrics.total && stallMetrics.total.processed_count === 0) {
+        // Only fire when the system has historically processed messages — avoids false critical
+        // on new/test systems where the events table is empty.
+        const hasHistoricalActivity = metrics?.total && metrics.total.processed_count > 0;
+        if (hasHistoricalActivity && stallMetrics?.total && stallMetrics.total.processed_count === 0) {
             alerts.push({
                  type: "system_stall",
                  severity: "critical",

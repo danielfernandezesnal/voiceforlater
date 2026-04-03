@@ -2,6 +2,7 @@
 
 interface PlanCompareProps {
     currentPlan: string
+    locale: string
     comparisonData?: {
         title: string
         free: string
@@ -21,7 +22,7 @@ interface PlanCompareProps {
     }
 }
 
-export function PlanCompare({ currentPlan, comparisonData }: PlanCompareProps) {
+export function PlanCompare({ currentPlan, comparisonData, locale }: PlanCompareProps) {
     const isFree = currentPlan.toLowerCase() !== 'pro'
     const t = comparisonData?.features
 
@@ -70,6 +71,13 @@ export function PlanCompare({ currentPlan, comparisonData }: PlanCompareProps) {
             freeNote: null,
             proNote: null,
         },
+        {
+            name: locale === 'es' ? 'Subir video y audio externos' : 'Upload external video & audio',
+            free: false,
+            pro: true,
+            freeNote: null,
+            proNote: null,
+        },
     ]
 
     return (
@@ -84,7 +92,7 @@ export function PlanCompare({ currentPlan, comparisonData }: PlanCompareProps) {
                         <span className="text-sm font-bold text-stone-700">{comparisonData.free}</span>
                     </div>
                     <div className="py-5 px-4 sm:px-5 text-center bg-primary rounded-tr-xl">
-                        <span className="text-sm font-bold text-white uppercase tracking-wider">✨ {comparisonData.pro}</span>
+                        <span className="text-sm font-bold text-white uppercase tracking-wider">{comparisonData.pro}</span>
                     </div>
                 </div>
 

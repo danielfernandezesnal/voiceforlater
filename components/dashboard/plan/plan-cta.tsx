@@ -88,8 +88,8 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
     return (
         <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm text-center space-y-4">
             <div>
-                <h3 className="text-lg font-semibold mb-1">
-                    ✨ Estás en el plan Pro
+                <h3 className="font-serif font-light text-2xl mb-1">
+                    Estás en el plan Pro
                 </h3>
                 <p className="text-sm text-muted-foreground max-w-md mx-auto">
                     Tenés acceso completo a todas las funcionalidades.
