@@ -53,7 +53,7 @@ export async function GET() {
                    first_name,
                    last_name
                 ),
-                delivery_tokens (
+                delivery_tokens!left (
                     token
                 ),
                 recipients!inner (

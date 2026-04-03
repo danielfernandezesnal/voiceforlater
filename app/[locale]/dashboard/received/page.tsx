@@ -35,7 +35,7 @@ export default async function ReceivedMessagesPage({
                    first_name,
                    last_name
                 ),
-                delivery_tokens (
+                delivery_tokens!left (
                     token
                 ),
                 recipients!inner (
