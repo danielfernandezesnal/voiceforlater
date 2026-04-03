@@ -145,6 +145,26 @@ export function Step5Review({
                     </div>
                 ))}
             </div>
+            
+            {data.photos && data.photos.length > 0 && (
+                <div className="max-w-md mx-auto space-y-2 mt-6">
+                    <p className="text-sm text-muted-foreground font-medium">
+                        {locale === 'es' ? `Fotos adjuntas (${data.photos.length})` : `Attached photos (${data.photos.length})`}
+                    </p>
+                    <div className={`grid gap-2 ${data.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                        {data.photos.map((photo, i) => (
+                            <div key={i} className="relative rounded-xl overflow-hidden aspect-[4/3] bg-muted">
+                                <img src={photo.previewUrl} alt={photo.caption} className="w-full h-full object-cover" />
+                                {photo.caption && (
+                                    <div className="absolute bottom-0 inset-x-0 bg-black/40 px-2 py-1">
+                                        <p className="text-white text-xs truncate">{photo.caption}</p>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
 
             {!isReadOnly && (
