@@ -478,7 +478,7 @@ export default async function LocaleHomePage({
                                         </li>
                                     ))}
                                     <li style={{ fontSize: '13px', color: '#4a3728', fontWeight: 300, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <span style={{ color: TC }}>✓</span> {locale === 'es' ? 'Subir video y audio externos' : 'Upload external video & audio'}
+                                        <span style={{ color: TC }}>✓</span> {locale === 'es' ? 'Subir videos externos' : 'Upload external videos'}
                                     </li>
                                 </ul>
                                 <Link href={`/${locale}/auth/login`} className="w-full py-3 text-center transition-all duration-200" style={{ background: TC, color: '#fff9f4', borderRadius: '100px', display: 'block', fontSize: '12px', fontWeight: 500, letterSpacing: '0.06em', textDecoration: 'none' }}>
