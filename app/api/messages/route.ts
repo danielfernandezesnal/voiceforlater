@@ -161,6 +161,7 @@ export async function POST(request: NextRequest) {
         const title = formData.get("title") as string | null;
         const deliveryMode = formData.get("deliveryMode") as "date" | "checkin";
         const textContent = formData.get("textContent") as string | null;
+        const existingAudioUrl = formData.get("existingAudioUrl") as string | null;
         const audioFile = formData.get("audio") as File | null;
         const videoFile = formData.get("video") as File | null;
         const deliverAt = formData.get("deliverAt") as string | null;
@@ -274,6 +275,11 @@ export async function POST(request: NextRequest) {
 
         let audioPath: string | null = null;
         let fileSizeBytes: number | null = null;
+
+        // If direct upload from client happened, use the path provided
+        if (existingAudioUrl && !audioFile && !videoFile) {
+            audioPath = existingAudioUrl;
+        }
 
         // Upload audio file
         if (type === "audio" && audioFile) {
@@ -532,6 +538,7 @@ export async function PUT(request: NextRequest) {
         const title = formData.get("title") as string | null;
         const deliveryMode = formData.get("deliveryMode") as "date" | "checkin";
         const textContent = formData.get("textContent") as string | null;
+        const existingAudioUrl = formData.get("existingAudioUrl") as string | null;
         const audioFile = formData.get("audio") as File | null;
         const deliverAt = formData.get("deliverAt") as string | null;
         const checkinIntervalDays = formData.get("checkinIntervalDays") as string | null;
@@ -587,6 +594,11 @@ export async function PUT(request: NextRequest) {
             text_content: type === 'text' ? textContent : null,
             status: 'scheduled' // Reset status if it was delivered? Or keep? Usually editing implies re-scheduling.
         };
+
+        // If direct upload from client happened, use the path provided
+        if (existingAudioUrl && !audioFile && (type === 'audio' || type === 'video')) {
+            updates.audio_path = existingAudioUrl;
+        }
 
         // Handle Audio/Video Update
         if ((type === 'audio' || type === 'video') && audioFile) {

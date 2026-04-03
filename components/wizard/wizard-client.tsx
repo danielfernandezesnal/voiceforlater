@@ -112,6 +112,10 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
 
             if (data.messageType === 'text') {
                 formData.append('textContent', data.textContent)
+            } else if (data.existingAudioUrl && !data.audioBlob) {
+                // If we have an existing URL (e.g. uploaded directly to storage) 
+                // and NO new recording blob, pass the URL/path to the server
+                formData.append('existingAudioUrl', data.existingAudioUrl)
             } else if (data.audioBlob) {
                 if (data.messageType === 'video') {
                     const filename = data.audioBlob instanceof File ? data.audioBlob.name : 'recording.webm'

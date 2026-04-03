@@ -137,6 +137,9 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                         onRecordingComplete={(blob, duration) => {
                             updateData({ audioBlob: blob, audioDuration: duration })
                         }}
+                        onUploadComplete={(path) => {
+                            updateData({ existingAudioUrl: path, audioBlob: null, audioDuration: 0 })
+                        }}
                         onDelete={() => {
                             updateData({ audioBlob: null, audioDuration: 0, existingAudioUrl: null })
                         }}
@@ -150,6 +153,9 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                         existingAudioUrl={data.existingAudioUrl}
                         onRecordingComplete={(blob, duration) => {
                             updateData({ audioBlob: blob, audioDuration: duration })
+                        }}
+                        onUploadComplete={(path) => {
+                            updateData({ existingAudioUrl: path, audioBlob: null, audioDuration: 0 })
                         }}
                         onDelete={() => {
                             updateData({ audioBlob: null, audioDuration: 0, existingAudioUrl: null })
