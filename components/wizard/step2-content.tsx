@@ -28,9 +28,10 @@ interface Step2Props {
     }
     maxTextChars: number
     maxAudioSeconds: number
+    locale: string
 }
 
-export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds }: Step2Props) {
+export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale }: Step2Props) {
     const { data, updateData } = useWizard()
 
     if (data.messageType === 'text') {
@@ -146,6 +147,7 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds }: Step
                         onDelete={() => {
                             updateData({ audioBlob: null, audioDuration: 0, existingAudioUrl: null })
                         }}
+                        locale={locale}
                     />
                 )}
             </div>

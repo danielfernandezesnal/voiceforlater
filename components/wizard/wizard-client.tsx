@@ -201,6 +201,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                         dictionary={dictionary.wizard.step2}
                         maxTextChars={maxTextChars}
                         maxAudioSeconds={maxAudioSeconds}
+                        locale={locale}
                     />
                 )}
                 {!isReadOnly && step === 3 && <Step3Recipient dictionary={dictionary.wizard.step3} userEmail={userEmail} />}
