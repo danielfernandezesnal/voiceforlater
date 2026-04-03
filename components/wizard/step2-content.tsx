@@ -134,6 +134,7 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                         onDelete={() => {
                             updateData({ audioBlob: null, audioDuration: 0, existingAudioUrl: null })
                         }}
+                        locale={locale}
                     />
                 ) : (
                     <AudioRecorder

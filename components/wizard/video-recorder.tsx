@@ -19,7 +19,13 @@ interface VideoRecorderProps {
     existingVideoUrl?: string | null
     onRecordingComplete: (blob: Blob, duration: number) => void
     onDelete: () => void
+    locale?: string
 }
+
+const ACCEPTED_VIDEO_FORMATS = ['video/mp4', 'video/quicktime', 'video/webm']
+const ACCEPTED_VIDEO_EXTENSIONS = '.mp4,.mov,.webm'
+const MAX_VIDEO_MB = 100
+const MAX_VIDEO_BYTES = MAX_VIDEO_MB * 1024 * 1024
 
 export function VideoRecorder({
     dictionary,
@@ -28,12 +34,17 @@ export function VideoRecorder({
     existingVideoUrl,
     onRecordingComplete,
     onDelete,
+    locale,
 }: VideoRecorderProps) {
     const [isRecording, setIsRecording] = useState(false)
     const [recordingTime, setRecordingTime] = useState(0)
     const [videoUrl, setVideoUrl] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [isStreamReady, setIsStreamReady] = useState(false)
+    const [activeTab, setActiveTab] = useState<'record' | 'upload'>('record')
+    const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+    const [uploadError, setUploadError] = useState<string | null>(null)
+    const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null)
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
     const chunksRef = useRef<Blob[]>([])
@@ -214,6 +225,45 @@ export function VideoRecorder({
     }
 
 
+    const generateThumbnail = (file: File): Promise<string> => {
+        return new Promise((resolve) => {
+            const video = document.createElement('video')
+            video.preload = 'metadata'
+            video.src = URL.createObjectURL(file)
+            video.onloadeddata = () => { video.currentTime = 0.5 }
+            video.onseeked = () => {
+                const canvas = document.createElement('canvas')
+                canvas.width = 320
+                canvas.height = 180
+                const ctx = canvas.getContext('2d')
+                ctx?.drawImage(video, 0, 0, canvas.width, canvas.height)
+                const thumb = canvas.toDataURL('image/jpeg', 0.7)
+                URL.revokeObjectURL(video.src)
+                resolve(thumb)
+            }
+        })
+    }
+
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUploadError(null)
+        const file = e.target.files?.[0]
+        if (!file) return
+        const isValidFormat = ACCEPTED_VIDEO_FORMATS.includes(file.type) ||
+            ACCEPTED_VIDEO_EXTENSIONS.split(',').some(ext => file.name.toLowerCase().endsWith(ext.replace('.', '')))
+        if (!isValidFormat) {
+            setUploadError(locale === 'es' ? 'Formato no válido. Usá MP4, MOV o WEBM.' : 'Invalid format. Use MP4, MOV or WEBM.')
+            return
+        }
+        if (file.size > MAX_VIDEO_BYTES) {
+            setUploadError(locale === 'es' ? `El archivo supera el límite de ${MAX_VIDEO_MB}MB.` : `File exceeds the ${MAX_VIDEO_MB}MB limit.`)
+            return
+        }
+        setUploadedFile(file)
+        const thumb = await generateThumbnail(file)
+        setThumbnailUrl(thumb)
+        onRecordingComplete(file, 0)
+    }
+
     // Has existing recording
     const finalVideoUrl = videoUrl || existingVideoUrl
 
@@ -237,97 +287,186 @@ export function VideoRecorder({
     }
 
     return (
-        <div className="p-6 bg-card border border-border rounded-xl space-y-6">
-            {error && (
-                <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3 flex flex-col items-center">
-                    <p className="font-medium break-words max-w-full">{error}</p>
-                    <p className="text-xs opacity-90 max-w-[280px]">
-                        Si bloqueaste el acceso antes, habilitalo desde el ícono del candado 🔒 en la barra de direcciones y recargá la página.
+        <div className="space-y-6">
+            {/* Tabs */}
+            <div className="flex border-b border-border">
+                <button
+                    onClick={() => setActiveTab('record')}
+                    className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
+                        activeTab === 'record'
+                            ? 'border-primary text-primary'
+                            : 'border-transparent text-muted-foreground hover:text-foreground'
+                    }`}
+                >
+                    {locale === 'es' ? 'Grabar' : 'Record'}
+                </button>
+                <button
+                    onClick={() => setActiveTab('upload')}
+                    className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
+                        activeTab === 'upload'
+                            ? 'border-primary text-primary'
+                            : 'border-transparent text-muted-foreground hover:text-foreground'
+                    }`}
+                >
+                    {locale === 'es' ? 'Subir video' : 'Upload video'}
+                </button>
+            </div>
+
+            {/* Tab: Grabar */}
+            {activeTab === 'record' && (
+                <div className="p-6 bg-card border border-border rounded-xl space-y-6">
+                    {error && (
+                        <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3 flex flex-col items-center">
+                            <p className="font-medium break-words max-w-full">{error}</p>
+                            <p className="text-xs opacity-90 max-w-[280px]">
+                                Si bloqueaste el acceso antes, habilitalo desde el ícono del candado 🔒 en la barra de direcciones y recargá la página.
+                            </p>
+                            <button
+                                type="button"
+                                onClick={() => initCamera()}
+                                disabled={isInitializing}
+                                className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors disabled:opacity-50 mt-1"
+                            >
+                                {isInitializing ? 'Intentando...' : 'Intentar de nuevo'}
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Timer Display */}
+                    <div className="text-center">
+                        <div className={`text-4xl font-mono font-bold ${isRecording ? 'text-error' : 'text-foreground'}`}>
+                            {formatTime(recordingTime)}
+                        </div>
+                        <div className="text-sm text-muted-foreground mt-2">
+                            {dictionary.timeLimit.replace('{seconds}', String(maxSeconds))}
+                        </div>
+                    </div>
+
+                    {/* Camera Preview */}
+                    <div className="aspect-video bg-black rounded-lg overflow-hidden relative">
+                        <video
+                            ref={videoPreviewRef}
+                            muted
+                            playsInline
+                            className={`w-full h-full object-cover transition-opacity duration-300 ${isStreamReady ? 'opacity-100' : 'opacity-0'}`}
+                        />
+
+                        {/* Loading State */}
+                        {!isStreamReady && !error && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-muted text-muted-foreground">
+                                <div className="flex flex-col items-center gap-2">
+                                    <svg className="w-8 h-8 animate-spin" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <span>{dictionary.loadingCamera}</span>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Recording Indicator */}
+                        {isRecording && (
+                            <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/50 px-2 py-1 rounded-full backdrop-blur-sm">
+                                <div className="w-3 h-3 bg-error rounded-full animate-pulse" />
+                                <span className="text-white text-xs font-medium">REC</span>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Record Button */}
+                    <div className="flex justify-center">
+                        {isRecording ? (
+                            <button
+                                onClick={stopRecording}
+                                className="w-20 h-20 rounded-full bg-error hover:bg-error/90 text-white flex items-center justify-center transition-all shadow-lg shadow-error/25 scale-100 hover:scale-105 active:scale-95"
+                            >
+                                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                                    <rect x="6" y="6" width="12" height="12" rx="2" />
+                                </svg>
+                            </button>
+                        ) : (
+                            <button
+                                onClick={startRecording}
+                                disabled={!isStreamReady}
+                                className={`w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-lg ${isStreamReady
+                                    ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/25 scale-100 hover:scale-105 active:scale-95'
+                                    : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
+                                    }`}
+                            >
+                                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                            </button>
+                        )}
+                    </div>
+
+                    <p className="text-center text-sm text-muted-foreground">
+                        {isRecording ? dictionary.stop : dictionary.start}
                     </p>
-                    <button
-                        type="button"
-                        onClick={() => initCamera()}
-                        disabled={isInitializing}
-                        className="px-4 py-2 bg-error text-white rounded-lg hover:bg-error/90 transition-colors disabled:opacity-50 mt-1"
-                    >
-                        {isInitializing ? 'Intentando...' : 'Intentar de nuevo'}
-                    </button>
                 </div>
             )}
 
-
-            {/* Timer Display */}
-            <div className="text-center">
-                <div className={`text-4xl font-mono font-bold ${isRecording ? 'text-error' : 'text-foreground'}`}>
-                    {formatTime(recordingTime)}
-                </div>
-                <div className="text-sm text-muted-foreground mt-2">
-                    {dictionary.timeLimit.replace('{seconds}', String(maxSeconds))}
-                </div>
-            </div>
-
-            {/* Camera Preview */}
-            <div className="aspect-video bg-black rounded-lg overflow-hidden relative">
-                {/* Always show video element if we don't have a blob */}
-                <video
-                    ref={videoPreviewRef}
-                    muted
-                    playsInline
-                    className={`w-full h-full object-cover transition-opacity duration-300 ${isStreamReady ? 'opacity-100' : 'opacity-0'}`}
-                />
-
-                {/* Loading State */}
-                {!isStreamReady && !error && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-muted text-muted-foreground">
-                        <div className="flex flex-col items-center gap-2">
-                            <svg className="w-8 h-8 animate-spin" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            {/* Tab: Subir */}
+            {activeTab === 'upload' && (
+                <div className="p-6 bg-card border border-border rounded-xl space-y-4">
+                    {!uploadedFile ? (
+                        <label
+                            htmlFor="video-upload"
+                            className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-border rounded-xl p-8 cursor-pointer hover:border-primary/50 hover:bg-accent/5 transition-all"
+                        >
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
+                                <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
                             </svg>
-                            <span>{dictionary.loadingCamera}</span>
+                            <div className="text-center">
+                                <p className="text-sm font-medium text-foreground">
+                                    {locale === 'es' ? 'Seleccionar video' : 'Select video'}
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                    {locale === 'es' ? `MP4, MOV, WEBM · Máx. ${MAX_VIDEO_MB}MB` : `MP4, MOV, WEBM · Max. ${MAX_VIDEO_MB}MB`}
+                                </p>
+                            </div>
+                            <input
+                                id="video-upload"
+                                type="file"
+                                accept={ACCEPTED_VIDEO_EXTENSIONS}
+                                className="hidden"
+                                onChange={handleFileUpload}
+                            />
+                        </label>
+                    ) : (
+                        <div className="space-y-3">
+                            {thumbnailUrl && (
+                                <div className="relative rounded-xl overflow-hidden aspect-video bg-black">
+                                    <img src={thumbnailUrl} alt="preview" className="w-full h-full object-cover opacity-90" />
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="flex items-center gap-3 p-3 bg-accent/10 rounded-lg border border-border">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary flex-shrink-0">
+                                    <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                                </svg>
+                                <span className="text-sm text-foreground truncate flex-1">{uploadedFile.name}</span>
+                                <span className="text-xs text-muted-foreground flex-shrink-0">
+                                    {(uploadedFile.size / (1024 * 1024)).toFixed(1)}MB
+                                </span>
+                                <button
+                                    onClick={() => { setUploadedFile(null); setThumbnailUrl(null); onDelete() }}
+                                    className="text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
+                                >
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                )}
-
-                {/* Recording Indicator */}
-                {isRecording && (
-                    <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/50 px-2 py-1 rounded-full backdrop-blur-sm">
-                        <div className="w-3 h-3 bg-error rounded-full animate-pulse" />
-                        <span className="text-white text-xs font-medium">REC</span>
-                    </div>
-                )}
-            </div>
-
-            {/* Record Button */}
-            <div className="flex justify-center">
-                {isRecording ? (
-                    <button
-                        onClick={stopRecording}
-                        className="w-20 h-20 rounded-full bg-error hover:bg-error/90 text-white flex items-center justify-center transition-all shadow-lg shadow-error/25 scale-100 hover:scale-105 active:scale-95"
-                    >
-                        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                            <rect x="6" y="6" width="12" height="12" rx="2" />
-                        </svg>
-                    </button>
-                ) : (
-                    <button
-                        onClick={startRecording}
-                        disabled={!isStreamReady}
-                        className={`w-20 h-20 rounded-full flex items-center justify-center transition-all shadow-lg ${isStreamReady
-                            ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/25 scale-100 hover:scale-105 active:scale-95'
-                            : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
-                            }`}
-                    >
-                        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                    </button>
-                )}
-            </div>
-
-            <p className="text-center text-sm text-muted-foreground">
-                {isRecording ? dictionary.stop : dictionary.start}
-            </p>
+                    )}
+                    {uploadError && <p className="text-sm text-destructive text-center">{uploadError}</p>}
+                </div>
+            )}
         </div>
     )
 }
