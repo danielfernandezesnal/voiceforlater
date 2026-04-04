@@ -231,7 +231,7 @@ export default function UserTable({ dict }: UserTableProps) {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-sm text-muted-foreground whitespace-nowrap">
-                                        {new Date(user.created_at).toLocaleDateString(undefined, {
+                                        {new Date(user.created_at).toLocaleDateString('es-ES', {
                                             year: 'numeric',
                                             month: 'short',
                                             day: 'numeric'
@@ -255,7 +255,7 @@ export default function UserTable({ dict }: UserTableProps) {
                                     </td>
                                     <td className="px-6 py-4 text-center text-sm text-muted-foreground whitespace-nowrap">
                                         {isPro && user.renewal_date ? (
-                                            new Date(user.renewal_date).toLocaleDateString(undefined, {
+                                            new Date(user.renewal_date).toLocaleDateString('es-ES', {
                                                 year: 'numeric',
                                                 month: 'short',
                                                 day: 'numeric'
