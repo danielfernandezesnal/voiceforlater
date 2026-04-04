@@ -1,75 +1,115 @@
-import { createClient } from "@/lib/supabase/server";
+'use client';
+
+import { useState, useEffect, use } from 'react';
+import { createClient } from "@/lib/supabase/client";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { ReceivedMessageList } from "@/components/dashboard/received-message-list";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
-export default async function ReceivedMessagesPage({
-    params,
-}: {
+interface PageProps {
     params: Promise<{ locale: string }>;
-}) {
-    const { locale: localeParam } = await params;
+}
+
+export default function ReceivedMessagesPage({ params }: PageProps) {
+    const { locale: localeParam } = use(params);
     const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
-    const dict = await getDictionary(locale);
+    
+    const [mounted, setMounted] = useState(false);
+    const [dict, setDict] = useState<any>(null);
+    const [receivedMessages, setReceivedMessages] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    useEffect(() => {
+        setMounted(true);
 
-    let receivedMessages: any[] = [];
+        const fetchData = async () => {
+            try {
+                // Fetch dictionary on client
+                const d = await getDictionary(locale);
+                setDict(d);
 
-    if (user) {
-        // Fetch received messages
-        const { data: receivedData } = await supabase
-            .from('messages')
-            .select(`
-                id,
-                type,
-                status,
-                title,
-                text_content,
-                audio_path,
-                photo_paths,
-                created_at,
-                delivery_claimed_at,
-                owner_id,
-                profiles (
-                   first_name,
-                   last_name
-                ),
-                delivery_tokens!left (
-                    token
-                ),
-                recipients!inner (
-                    email
-                )
-            `)
-            .eq('status', 'delivered')
-            .eq('recipients.email', user.email)
-            .order('created_at', { ascending: false });
+                // Fetch messages on client
+                const supabase = createClient();
+                const { data: { user } } = await supabase.auth.getUser();
 
-        receivedMessages = (receivedData || []).map((msg: any) => ({
-            ...msg,
-            sender_name: `${msg.profiles?.first_name || ''} ${msg.profiles?.last_name || ''}`.trim() || null,
-            token: msg.delivery_tokens?.[0]?.token || null,
-            delivered_at: msg.delivery_claimed_at || msg.created_at
-        }));
+                if (user) {
+                    const { data: receivedData } = await supabase
+                        .from('messages')
+                        .select(`
+                            id,
+                            type,
+                            status,
+                            title,
+                            text_content,
+                            audio_path,
+                            photo_paths,
+                            created_at,
+                            delivery_claimed_at,
+                            owner_id,
+                            profiles (
+                                first_name,
+                                last_name
+                            ),
+                            delivery_tokens!left (
+                                token
+                            ),
+                            recipients!inner (
+                                email
+                            )
+                        `)
+                        .eq('status', 'delivered')
+                        .eq('recipients.email', user.email)
+                        .order('created_at', { ascending: false });
+
+                    const msgs = (receivedData || []).map((msg: any) => ({
+                        ...msg,
+                        sender_name: `${msg.profiles?.first_name || ''} ${msg.profiles?.last_name || ''}`.trim() || null,
+                        token: msg.delivery_tokens?.[0]?.token || null,
+                        delivered_at: msg.delivery_claimed_at || msg.created_at
+                    }));
+                    setReceivedMessages(msgs);
+                }
+            } catch (err) {
+                console.error("Error loading received messages:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [locale]);
+
+    // Render skeleton during hydration or data loading
+    if (!mounted || loading || !dict) {
+        return (
+            <div className="max-w-5xl mx-auto py-8">
+                <div className="animate-pulse space-y-8">
+                    <div>
+                        <div className="h-10 w-64 bg-muted/60 rounded-xl mb-3" />
+                        <div className="h-4 w-32 bg-muted/40 rounded-lg" />
+                    </div>
+                    <div className="space-y-4">
+                        {[1, 2, 3].map(i => (
+                            <div key={i} className="h-24 bg-card border border-border/40 rounded-2xl" />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
     }
 
-    const title = (dict.dashboard as any).receivedMessages?.title || 'Received Messages';
-    const emptyStateText = (dict.dashboard as any).receivedMessages?.empty || "You haven't received any messages yet.";
+    const title = dict.dashboard.receivedMessages?.title || 'Received Messages';
+    const emptyStateText = dict.dashboard.receivedMessages?.empty || "You haven't received any messages yet.";
 
     return (
         <div className="animate-in fade-in duration-500 slide-in-from-bottom-2">
-             <div className="mb-8">
+            <div className="mb-8">
                 <h1 className="font-serif font-semibold text-[1.9rem] leading-tight text-foreground">
                     {title}
                 </h1>
                 <p className="text-sm text-muted-foreground mt-1.5">
                     {receivedMessages.length} {receivedMessages.length === 1
-                        ? (dict.dashboard as any).receivedMessages?.messageCount_one
-                        : (dict.dashboard as any).receivedMessages?.messageCount_other}
+                        ? dict.dashboard.receivedMessages?.messageCount_one
+                        : dict.dashboard.receivedMessages?.messageCount_other}
                 </p>
             </div>
 
