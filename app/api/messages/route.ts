@@ -47,6 +47,9 @@ export async function GET() {
                 type,
                 status,
                 title,
+                text_content,
+                audio_path,
+                photo_paths,
                 created_at,
                 owner_id,
                 profiles (
