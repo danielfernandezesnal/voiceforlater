@@ -3,7 +3,7 @@ import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/
 import { Suspense } from "react";
 import { CheckinStatusWidget } from "@/components/dashboard/checkin-status";
 import { CreateMessageButton } from "@/components/dashboard/create-message-button";
-import { DashboardMessageList } from "@/components/dashboard/dashboard-message-list";
+import { DashboardMessageList, type MessageWithRecipient } from "@/components/dashboard/dashboard-message-list";
 
 import { AutoCheckin } from "@/components/dashboard/auto-checkin";
 import { UpgradeSuccessModal } from "@/components/dashboard/upgrade-success-modal";
@@ -14,23 +14,6 @@ import { type Plan } from "@/lib/plans";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-interface MessageWithRecipient {
-    id: string;
-    type: 'text' | 'audio' | 'video';
-    status: 'draft' | 'scheduled' | 'delivered';
-    title: string | null;
-    text_content: string | null;
-    created_at: string;
-    recipients: { name: string; email: string }[];
-    delivery_rules: { mode: 'date' | 'checkin'; deliver_at: string | null } | { mode: 'date' | 'checkin'; deliver_at: string | null }[] | null;
-    message_trusted_contacts: {
-        trusted_contacts: {
-            id: string;
-            name: string;
-            email: string;
-        } | null
-    }[];
-}
 
 export default async function DashboardPage({
     params,
@@ -69,9 +52,12 @@ export default async function DashboardPage({
             .from('messages')
             .select(`
                 id,
+                type,
                 title,
                 status,
                 text_content,
+                audio_path,
+                photo_paths,
                 created_at,
                 recipients (name, email),
                 delivery_rules (mode, deliver_at),

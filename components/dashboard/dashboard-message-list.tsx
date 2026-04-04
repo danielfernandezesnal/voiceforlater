@@ -12,6 +12,8 @@ export interface MessageWithRecipient {
     status: 'draft' | 'scheduled' | 'delivered';
     title: string | null;
     text_content: string | null;
+    audio_path: string | null;
+    photo_paths: string[] | null;
     created_at: string;
     recipients: { name: string; email: string }[];
     delivery_rules: { mode: 'date' | 'checkin'; deliver_at: string | null } | { mode: 'date' | 'checkin'; deliver_at: string | null }[] | null;
