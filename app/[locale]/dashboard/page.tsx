@@ -211,7 +211,7 @@ export default async function DashboardPage({
             {/* Check-in status widget (only show if user has check-in messages AND is Pro) */}
             {hasCheckinMessages && userPlan === 'pro' && (
                 <div className="mb-8">
-                    <CheckinStatusWidget dictionary={dict.checkin} />
+                    <CheckinStatusWidget dictionary={dict.checkin} locale={locale} />
                 </div>
             )}
 
