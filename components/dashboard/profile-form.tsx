@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { COUNTRIES } from '@/lib/countries'
+import { COUNTRIES, getCountryByCode, getPhonePlaceholder, type Country } from '@/lib/countries'
 import { CALLING_CODES, parsePhone } from '@/lib/callingCodes'
+import { CountrySelect } from '@/components/country-select'
 import type { Dictionary } from '@/lib/i18n'
 
 interface ProfileData {
@@ -22,10 +23,26 @@ interface ProfileFormProps {
     locale?: string
 }
 
+// Resolve stored value (may be legacy name like "Uruguay" or ISO code "UY") to a code
+function resolveCountryCode(stored: string): string {
+    if (!stored) return ''
+    // Already a code?
+    if (COUNTRIES.find(c => c.code === stored)) return stored
+    // Legacy: match by name (nameES or nameEN)
+    const match = COUNTRIES.find(
+        c => c.nameES.toLowerCase() === stored.toLowerCase() ||
+             c.nameEN.toLowerCase() === stored.toLowerCase()
+    )
+    return match?.code ?? ''
+}
+
 export function ProfileForm({ initialData, dictionary, onboarding = false, locale }: ProfileFormProps) {
     const t = dictionary.profile.form
     const router = useRouter()
-    const [form, setForm] = useState<ProfileData>(initialData)
+    const [form, setForm] = useState<ProfileData>({
+        ...initialData,
+        country: resolveCountryCode(initialData.country),
+    })
     const [isSaving, setIsSaving] = useState(false)
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
     const [isResettingPassword, setIsResettingPassword] = useState(false)
@@ -50,6 +67,14 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
         const cleaned = value.replace(/[^\d\s]/g, '')
         setLocalNumber(cleaned)
         if (message) setMessage(null)
+    }
+
+    function handleCountryChange(code: string, country: Country) {
+        handleChange('country', code)
+        // Auto-sync dial code when country changes
+        if (country.dialCode) {
+            setDialCode(country.dialCode)
+        }
     }
 
     async function handlePasswordReset() {
@@ -218,20 +243,13 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
                         <label className="block text-sm font-medium mb-1.5" htmlFor="country">
                             {t.country} <span className="text-red-400">*</span>
                         </label>
-                        <select
+                        <CountrySelect
                             id="country"
                             value={form.country}
-                            onChange={e => handleChange('country', e.target.value)}
-                            required
-                            className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
-                        >
-                            <option value="">{t.countryPlaceholder}</option>
-                            {COUNTRIES.map(c => (
-                                <option key={c.code} value={c.name}>
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
+                            onChange={handleCountryChange}
+                            locale={locale}
+                            placeholder={t.countryPlaceholder}
+                        />
                     </div>
                     <div>
                         <label className="block text-sm font-medium mb-1.5" htmlFor="city">
@@ -271,7 +289,7 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
                             type="tel"
                             value={localNumber}
                             onChange={e => handleLocalNumberChange(e.target.value)}
-                            placeholder={t.phonePlaceholder}
+                            placeholder={getPhonePlaceholder(dialCode)}
                             className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
                         />
                     </div>
