@@ -25,40 +25,14 @@ interface CheckinData {
 export function CheckinStatusWidget({ dictionary }: CheckinStatusProps) {
     const [checkin, setCheckin] = useState<CheckinData | null>(null)
     const [isLoading, setIsLoading] = useState(true)
-    const [isConfirming, setIsConfirming] = useState(false)
-    const [justConfirmed, setJustConfirmed] = useState(false)
 
     useEffect(() => {
-        fetchCheckinStatus()
+        fetch('/api/checkin/confirm')
+            .then(res => res.json())
+            .then(data => setCheckin(data))
+            .catch(err => console.error('Error fetching checkin status:', err))
+            .finally(() => setIsLoading(false))
     }, [])
-
-    const fetchCheckinStatus = async () => {
-        try {
-            const res = await fetch('/api/checkin/confirm')
-            const data = await res.json()
-            setCheckin(data)
-        } catch (error) {
-            console.error('Error fetching checkin status:', error)
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
-    const handleConfirm = async () => {
-        setIsConfirming(true)
-        try {
-            const res = await fetch('/api/checkin/confirm', { method: 'POST' })
-            if (res.ok) {
-                setJustConfirmed(true)
-                await fetchCheckinStatus()
-                setTimeout(() => setJustConfirmed(false), 3000)
-            }
-        } catch (error) {
-            console.error('Error confirming checkin:', error)
-        } finally {
-            setIsConfirming(false)
-        }
-    }
 
     if (isLoading) {
         return (
@@ -82,48 +56,24 @@ export function CheckinStatusWidget({ dictionary }: CheckinStatusProps) {
     }
 
     return (
-        <div className={`p-4 rounded-xl border ${checkin.isOverdue
-                ? 'bg-error/10 border-error/30'
-                : justConfirmed
-                    ? 'bg-success/10 border-success/30'
-                    : 'bg-card border-border'
-            }`}>
-            <div className="flex items-center justify-between">
-                <div>
-                    <h3 className="font-medium flex items-center gap-2">
-                        <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        {dictionary.title}
-                    </h3>
+        <div className={`p-4 rounded-xl border ${checkin.isOverdue ? 'bg-error/10 border-error/30' : 'bg-card border-border'}`}>
+            <h3 className="font-medium flex items-center gap-2">
+                <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {dictionary.title}
+            </h3>
 
-                    {justConfirmed ? (
-                        <p className="text-sm text-success mt-1">{dictionary.confirmed}</p>
-                    ) : checkin.isOverdue ? (
-                        <p className="text-sm text-error mt-1">{dictionary.overdue}</p>
-                    ) : (
-                        <p className="text-sm text-muted-foreground mt-1">
-                            {dictionary.nextCheckin}: {formatDate(checkin.nextDueAt)}
-                            <span className="ml-2">
-                                ({checkin.daysRemaining} {dictionary.daysRemaining})
-                            </span>
-                        </p>
-                    )}
-                </div>
-
-                {!justConfirmed && (
-                    <button
-                        onClick={handleConfirm}
-                        disabled={isConfirming}
-                        className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${checkin.isOverdue
-                                ? 'bg-error text-white hover:bg-error/90'
-                                : 'bg-primary text-primary-foreground hover:bg-primary/90'
-                            } disabled:opacity-50`}
-                    >
-                        {isConfirming ? dictionary.confirming : dictionary.confirmButton}
-                    </button>
-                )}
-            </div>
+            {checkin.isOverdue ? (
+                <p className="text-sm text-error mt-1">{dictionary.overdue}</p>
+            ) : (
+                <p className="text-sm text-muted-foreground mt-1">
+                    {dictionary.nextCheckin}: {formatDate(checkin.nextDueAt)}
+                    <span className="ml-2">
+                        ({checkin.daysRemaining} {dictionary.daysRemaining})
+                    </span>
+                </p>
+            )}
         </div>
     )
 }

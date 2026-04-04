@@ -1,5 +1,6 @@
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export async function generateMetadata(): Promise<Metadata> {
     return { title: "Privacy Policy | Carry my Words" };
@@ -21,6 +22,17 @@ export default async function PrivacyPage({
 
     return (
         <section className="min-h-screen bg-background py-24 px-6">
+            <div className="mx-auto max-w-3xl">
+                <Link
+                    href={`/${locale}`}
+                    className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+                >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                    {locale === 'es' ? 'Volver al inicio' : 'Back to home'}
+                </Link>
+            </div>
             <div className="mx-auto max-w-3xl prose">
                 <h1>{title}</h1>
                 <p className="text-sm italic text-muted-foreground">
