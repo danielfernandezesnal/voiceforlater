@@ -60,10 +60,10 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
             <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm text-center space-y-4">
                 <div>
                     <h3 className="text-lg font-semibold mb-1">
-                        Llevá tu legado al siguiente nivel
+                        Lleva tu legado al siguiente nivel
                     </h3>
                     <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                        Con Pro tenés video, más contactos de confianza y mensajes sellados.
+                        Con Pro tienes video, más contactos de confianza y mensajes sellados.
                     </p>
                 </div>
 

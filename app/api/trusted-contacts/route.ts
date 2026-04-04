@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
 
         if (normalizedEmail === user.email?.toLowerCase()) {
             return NextResponse.json({
-                error: 'No podés agregarte a vos mismo como contacto de confianza.',
+                error: 'No puedes agregarte a ti mismo como contacto de confianza.',
                 code: 'SELF_CONTACT'
             }, { status: 400 });
         }

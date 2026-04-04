@@ -259,7 +259,7 @@ export function VideoRecorder({
             ACCEPTED_VIDEO_EXTENSIONS.split(',').some(ext => file.name.toLowerCase().endsWith(ext.replace('.', '')))
         
         if (!isValidFormat) {
-            setUploadError(locale === 'es' ? 'Formato no válido. Usá MP4, MOV o WEBM.' : 'Invalid format. Use MP4, MOV or WEBM.')
+            setUploadError(locale === 'es' ? 'Formato no válido. Usa MP4, MOV o WEBM.' : 'Invalid format. Use MP4, MOV or WEBM.')
             return
         }
         if (file.size > MAX_VIDEO_BYTES) {
@@ -343,7 +343,7 @@ export function VideoRecorder({
                                 {locale === 'es' ? 'Grabar desde la plataforma' : 'Record from the platform'}
                             </p>
                             <p className="text-xs text-muted-foreground mt-0.5 font-light">
-                                {locale === 'es' ? 'Usá tu cámara para grabar un video directo desde el navegador' : 'Use your camera to record a video directly from the browser'}
+                                {locale === 'es' ? 'Usa tu cámara para grabar un video directamente desde el navegador' : 'Use your camera to record a video directly from the browser'}
                             </p>
                         </div>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0"><path d="M9 18l6-6-6-6" /></svg>

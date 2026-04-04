@@ -238,7 +238,7 @@ export default async function LocaleHomePage({
                 </div>
             </section>
 
-            {/* Delivery Options — "Vos elegís el momento" */}
+            {/* Delivery Options — "Tú eliges el momento" */}
             <section className="py-16 px-6 max-w-5xl mx-auto w-full">
                 <ScrollReveal>
                     <p className="text-sm font-medium tracking-widest text-center uppercase mb-4" style={{ color: TC }}>

@@ -152,7 +152,7 @@ export function AudioRecorder({
 
         if (!isValidFormat) {
             setUploadError(locale === 'es'
-                ? `Formato no válido. Usá MP3, M4A, WAV u OGG.`
+                ? `Formato no válido. Usa MP3, M4A, WAV u OGG.`
                 : `Invalid format. Use MP3, M4A, WAV or OGG.`)
             return
         }
