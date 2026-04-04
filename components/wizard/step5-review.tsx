@@ -88,8 +88,8 @@ export function Step5Review({
             value: data.messageType === 'text'
                 ? dictionary.formatText
                 : data.messageType === 'audio'
-                    ? `🎤 ${dictionary.formatAudio} (${Math.round(data.audioDuration)}s)`
-                    : `📹 ${dictionary.formatVideo} (${Math.round(data.audioDuration)}s)`,
+                    ? `🎤 ${dictionary.formatAudio}${data.audioDuration > 0 ? ` (${Math.round(data.audioDuration)}s)` : ''}`
+                    : `📹 ${dictionary.formatVideo}${data.audioDuration > 0 ? ` (${Math.round(data.audioDuration)}s)` : ''}`,
             step: 1
         },
         {

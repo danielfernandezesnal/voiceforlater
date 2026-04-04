@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
-import { ReceivedMessageCard } from "@/components/dashboard/received-message-card";
+import { ReceivedMessageList } from "@/components/dashboard/received-message-list";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -81,16 +81,11 @@ export default async function ReceivedMessagesPage({
                     </p>
                 </div>
             ) : (
-                <div className="grid gap-4">
-                    {receivedMessages.map((msg) => (
-                        <ReceivedMessageCard
-                            key={msg.id}
-                            message={msg}
-                            locale={locale}
-                            dict={dict}
-                        />
-                    ))}
-                </div>
+                <ReceivedMessageList
+                    messages={receivedMessages}
+                    locale={locale}
+                    dict={dict}
+                />
             )}
             
             {/* Quote strip */}

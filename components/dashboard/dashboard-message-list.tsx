@@ -33,8 +33,37 @@ interface Props {
     dict: Dictionary;
 }
 
+type SortKey = 'created_at' | 'deliver_at' | 'recipient';
+
+function sortMessages(msgs: MessageWithRecipient[], key: SortKey): MessageWithRecipient[] {
+    return [...msgs].sort((a, b) => {
+        if (key === 'created_at') {
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        }
+        if (key === 'deliver_at') {
+            const getDeliverAt = (m: MessageWithRecipient) => {
+                const rules = Array.isArray(m.delivery_rules) ? m.delivery_rules[0] : m.delivery_rules;
+                return rules?.deliver_at ?? null;
+            };
+            const da = getDeliverAt(a);
+            const db = getDeliverAt(b);
+            if (!da && !db) return 0;
+            if (!da) return 1;
+            if (!db) return -1;
+            return new Date(da).getTime() - new Date(db).getTime();
+        }
+        if (key === 'recipient') {
+            const ra = a.recipients?.[0]?.name ?? '';
+            const rb = b.recipients?.[0]?.name ?? '';
+            return ra.localeCompare(rb);
+        }
+        return 0;
+    });
+}
+
 export function DashboardMessageList({ initialMessages, userPlan, locale, dict }: Props) {
     const [messages, setMessages] = useState<MessageWithRecipient[]>(initialMessages);
+    const [sortKey, setSortKey] = useState<SortKey>('created_at');
 
     // Sync state with props when router.refresh() is called
     useEffect(() => {
@@ -75,15 +104,35 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
 
 
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
+    const sortedMessages = sortMessages(messages, sortKey);
+
+    const sortLabels: Record<SortKey, string> = {
+        created_at: locale === 'es' ? 'Fecha de creación' : 'Date created',
+        deliver_at: locale === 'es' ? 'Fecha de entrega' : 'Delivery date',
+        recipient: locale === 'es' ? 'Destinatario' : 'Recipient',
+    };
 
     return (
         <div className="mt-8">
             {/* Sent Messages Section */}
             <div>
-                <h2 className="font-serif font-light text-lg text-foreground mb-4">
-                    {dict.dashboard.sectionTitle}
-                </h2>
-                
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="font-serif font-light text-lg text-foreground">
+                        {dict.dashboard.sectionTitle}
+                    </h2>
+                    {messages.length > 1 && (
+                        <select
+                            value={sortKey}
+                            onChange={(e) => setSortKey(e.target.value as SortKey)}
+                            className="text-xs text-muted-foreground bg-card border border-border/60 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                        >
+                            {(Object.keys(sortLabels) as SortKey[]).map(key => (
+                                <option key={key} value={key}>{sortLabels[key]}</option>
+                            ))}
+                        </select>
+                    )}
+                </div>
+
                 {messages.length === 0 ? (
                     <div className="border border-dashed border-border/50 py-16 px-6 text-center flex flex-col items-center gap-4" style={{ borderRadius: '4px' }}>
                         <div className="w-12 h-12 flex items-center justify-center" style={{ background: 'rgba(196,98,58,0.06)', borderRadius: '10px' }}>
@@ -102,7 +151,7 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                     </div>
                 ) : (
                     <div className="grid gap-4">
-                        {messages.map((message) => (
+                        {sortedMessages.map((message) => (
                             <MessageCard
                                 key={message.id}
                                 message={message}
