@@ -392,7 +392,7 @@
     },
     "upgradeSuccess": {
       "title": "¡Bienvenido a PRO!",
-      "description": "Ya tenés acceso a todas las funcionalidades del plan PRO. Creá mensajes ilimitados, usá video, y mucho más.",
+      "description": "Ya tienes acceso a todas las funcionalidades del plan PRO. Crea mensajes ilimitados, usa video, y mucho más.",
       "cta": "¡Entendido!"
     },
     "success": {
@@ -654,7 +654,7 @@
     "confirmEmailPlaceholder": "maria@ejemplo.com",
     "emailMismatch": "Los correos electrónicos no coinciden",
     "ownEmailError": "No puedes usar tu propio correo como contacto de confianza.",
-    "invalidEmail": "Ingresá un email válido.",
+    "invalidEmail": "Ingresa un email válido.",
     "save": "Guardar Contacto",
     "saving": "Guardando...",
     "saved": "¡Contacto guardado!",
@@ -923,12 +923,12 @@
       "subject": "Mensajes que viajan en el tiempo",
       "preheader": "{{RECIPIENT_NAME}}, hoy es un día especial",
       "heading": "Alguien que te quiere\nlo sabía de antemano.",
-      "p1": "{{SENDER_NAME}} programó un mensaje para vos hace un tiempo, con la intención de que lo recibieras exactamente hoy.",
+      "p1": "{{SENDER_NAME}} programó un mensaje para ti hace un tiempo, con la intención de que lo recibieras exactamente hoy.",
       "p2": "Es algo pensado, elegido y guardado con cuidado hasta este momento.",
       "button": "Acceder al mensaje",
       "closing": "Porque algunas palabras merecen llegar en el momento justo.",
       "signature": "— El equipo de Carry my Words",
-      "linkFallback": "Si el botón no funciona, copiá y pegá este link en tu navegador:",
+      "linkFallback": "Si el botón no funciona, copia y pega este link en tu navegador:",
       "tagline": "mensajes que viajan en el tiempo."
     },
     "messagePosthumous": {
