@@ -12,7 +12,6 @@ export function LandingFaq({ t }: { t: any }) {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
     const [showAll, setShowAll] = useState(false);
     const titleRef = useScrollReveal<HTMLHeadingElement>()
-    const listRef = useScrollReveal<HTMLDivElement>({ childSelector: '.faq-item', staggerMs: 60 })
 
     const items: FaqItem[] = t.items || [];
     const visibleItems = showAll ? items : items.slice(0, 5);
@@ -24,14 +23,14 @@ export function LandingFaq({ t }: { t: any }) {
                     {t.title}
                 </h2>
 
-                <div ref={listRef} className="flex flex-col gap-0">
+                <div className="flex flex-col gap-0">
                     {visibleItems.map((item, i) => {
                         const isOpen = openIndex === i;
                         return (
                             <div
                                 key={i}
                                 className={[
-                                    "faq-item sr-hidden border-x border-t last:border-b rounded-none first:rounded-t-2xl last:rounded-b-2xl overflow-hidden transition-colors duration-300",
+                                    "faq-item border-x border-t last:border-b rounded-none first:rounded-t-2xl last:rounded-b-2xl overflow-hidden transition-colors duration-300",
                                     isOpen ? "bg-white border-border shadow-sm" : "bg-transparent border-border/60 hover:border-border"
                                 ].filter(Boolean).join(" ")}
                             >
