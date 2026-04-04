@@ -115,24 +115,24 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.4)' }}>
                     <div className="bg-card border border-border rounded-2xl p-6 max-w-sm w-full shadow-xl space-y-4">
                         <h3 className="font-serif font-light text-xl text-foreground">
-                            ¿Cancelar suscripción?
+                            Antes de irte...
                         </h3>
                         <p className="text-sm text-muted-foreground leading-relaxed">
-                            Perderás acceso a video, contactos adicionales y mensajes sellados al finalizar el período actual.
+                            Estás por cancelar tu suscripción. Los mensajes programados después del vencimiento de tu plan no se enviarán, pero quedarán guardados en tu dashboard.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3 pt-2">
                             <button
                                 onClick={() => setShowCancelModal(false)}
                                 className="flex-1 px-4 py-2.5 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors text-sm"
                             >
-                                Mantener Pro
+                                Seguir dejando huella en quienes amo
                             </button>
                             <button
                                 onClick={() => { setShowCancelModal(false); handleManage(); }}
                                 disabled={isLoading}
                                 className="flex-1 px-4 py-2.5 border border-border text-muted-foreground font-medium rounded-lg hover:bg-muted/50 transition-colors text-sm disabled:opacity-50"
                             >
-                                {isLoading ? 'Abriendo portal...' : 'Sí, cancelar'}
+                                {isLoading ? 'Abriendo portal...' : 'Confirmar cancelación'}
                             </button>
                         </div>
                     </div>
