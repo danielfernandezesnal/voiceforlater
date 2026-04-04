@@ -12,6 +12,7 @@ interface CheckinStatusProps {
         confirming: string
         confirmed: string
     }
+    locale: string
 }
 
 interface CheckinData {
@@ -22,7 +23,7 @@ interface CheckinData {
     isOverdue: boolean
 }
 
-export function CheckinStatusWidget({ dictionary }: CheckinStatusProps) {
+export function CheckinStatusWidget({ dictionary, locale }: CheckinStatusProps) {
     const [checkin, setCheckin] = useState<CheckinData | null>(null)
     const [isLoading, setIsLoading] = useState(true)
 
@@ -48,7 +49,7 @@ export function CheckinStatusWidget({ dictionary }: CheckinStatusProps) {
     }
 
     const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString(undefined, {
+        return new Date(dateString).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', {
             month: 'short',
             day: 'numeric',
             year: 'numeric',

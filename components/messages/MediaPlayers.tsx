@@ -59,7 +59,7 @@ export function AudioPlayer({ src }: { src: string }) {
                         key={i}
                         className={`w-1 sm:w-1.5 rounded-full transition-all duration-300 ${isPlaying ? 'animate-pulse' : ''}`}
                         style={{
-                            height: `${20 + Math.sin(i * 0.5) * 15 + Math.random() * 20}%`,
+                            height: `${20 + Math.sin(i * 0.5) * 15 + (i * 7 % 20)}%`,
                             animationDelay: `${i * 0.05}s`,
                             backgroundColor: (currentTime / duration) > (i / 24) ? '#C4623A' : '#E0D8CC'
                         }}
