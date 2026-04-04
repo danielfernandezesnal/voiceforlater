@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { UpgradeButton } from '@/components/stripe/upgrade-button';
 import { type Dictionary } from '@/lib/i18n';
 
 interface CreateMessageButtonProps {
@@ -43,43 +42,24 @@ export function CreateMessageButton({ isLimitReached, dictionary, locale, classN
 
             {showModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="bg-card w-full max-w-md p-6 rounded-xl shadow-2xl border border-border animate-in zoom-in-95 duration-200">
+                    <div className="w-full max-w-sm p-6 rounded-2xl shadow-2xl border border-border animate-in zoom-in-95 duration-200" style={{ background: '#F5F0E8' }}>
                         <div className="flex flex-col items-center text-center space-y-4">
-                            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                                <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                            </div>
-
-                            <h3 className="text-xl font-bold">{dictionary.dashboard.limitReached.title}</h3>
-                            <p className="text-muted-foreground">
+                            <span className="text-3xl">🔒</span>
+                            <h3 className="font-serif text-xl font-semibold text-foreground">
+                                {dictionary.dashboard.limitReached.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
                                 {dictionary.dashboard.limitReached.description}
                             </p>
-
-                            <div className="w-full text-left space-y-3 py-2">
-                                <p className="font-semibold text-base">
-                                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                    {(dictionary.dashboard.limitReached as any).subtitle || 'Podrás:'}
-                                </p>
-                                <ul className="space-y-2">
-                                    {dictionary.dashboard.limitReached.features && dictionary.dashboard.limitReached.features.map((feature: string, index: number) => (
-                                        <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
-                                            <span className="text-primary font-bold mt-0.5">✓</span>
-                                            <span>{feature}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <div className="flex flex-col gap-3 w-full pt-4">
-                                <UpgradeButton
-                                    dictionary={{
-                                        ...dictionary.stripe,
-                                        upgrade: dictionary.stripe.upgradeModal || dictionary.stripe.upgrade
-                                    }}
-                                    isPro={false}
-                                    className="w-full justify-center"
-                                />
+                            <div className="flex flex-col gap-3 w-full pt-2">
+                                <Link
+                                    href={`/${locale}/dashboard/plan`}
+                                    onClick={() => setShowModal(false)}
+                                    className="w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-center text-white transition-all hover:opacity-90"
+                                    style={{ background: '#C4623A' }}
+                                >
+                                    {dictionary.dashboard.limitReached.upgrade}
+                                </Link>
                                 <button
                                     onClick={() => setShowModal(false)}
                                     className="w-full py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"

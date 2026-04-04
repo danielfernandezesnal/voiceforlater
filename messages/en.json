@@ -350,16 +350,10 @@
       "cta": "Create Your First Message"
     },
     "limitReached": {
-      "title": "Message limit reached",
-      "description": "To access more features, upgrade to PRO.",
-      "subtitle": "For just USD 10 you can:",
-      "features": [
-        "Send unlimited messages",
-        "Send text, audio, and video messages!",
-        "Designate up to 3 trusted contacts for your messages",
-        "Send the same message to multiple recipients"
-      ],
-      "cancel": "Cancel"
+      "title": "Limit reached",
+      "description": "With the Free plan you can create 1 message. Upgrade to Pro for unlimited messages.",
+      "upgrade": "See Pro plan",
+      "cancel": "Go back"
     },
     "upgradeSuccess": {
       "title": "Welcome to PRO!",
