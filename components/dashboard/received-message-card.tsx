@@ -143,7 +143,7 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
                             </span>
                         </div>
                         <p className="text-[10px] text-muted-foreground mt-1">
-                            {(dict.dashboard as any).receivedMessages?.delivered || 'Delivered on'} {date}
+                            {(dict.dashboard as any).receivedMessages?.delivered || 'Delivered on'} {mounted ? date : '...'}
                         </p>
                     </div>
                 </div>
