@@ -289,10 +289,14 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
         } else if (mode === 'date') {
             const updates: Partial<WizardData> = { deliveryMode: 'date' }
             if (!data.deliverAt) {
-                const tomorrow = new Date()
-                tomorrow.setDate(tomorrow.getDate() + 1)
-                tomorrow.setHours(12, 0, 0, 0)
-                updates.deliverAt = tomorrow.toISOString()
+                const defaultDate = new Date()
+                defaultDate.setHours(defaultDate.getHours() + 1, 0, 0, 0)
+                // If already past 23:00, roll to next day at 9am
+                if (defaultDate.getHours() === 0) {
+                    defaultDate.setDate(defaultDate.getDate() + 1)
+                    defaultDate.setHours(9, 0, 0, 0)
+                }
+                updates.deliverAt = defaultDate.toISOString()
             }
             updateData(updates)
         }
@@ -362,11 +366,10 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
     const ENABLE_PAST_DATES = process.env.NEXT_PUBLIC_ENABLE_PAST_DATES === 'true'
     const [minDate] = useState(() => {
         if (ENABLE_PAST_DATES) return '1970-01-01'
-        const tomorrow = new Date()
-        tomorrow.setDate(tomorrow.getDate() + 1)
-        const y = tomorrow.getFullYear()
-        const m = String(tomorrow.getMonth() + 1).padStart(2, '0')
-        const d = String(tomorrow.getDate()).padStart(2, '0')
+        const now = new Date()
+        const y = now.getFullYear()
+        const m = String(now.getMonth() + 1).padStart(2, '0')
+        const d = String(now.getDate()).padStart(2, '0')
         return `${y}-${m}-${d}`
     })
 
