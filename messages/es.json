@@ -165,7 +165,7 @@
       "title": "Tú tienes el control,\nsiempre.",
       "item1": "Tú decides qué se envía, a quién y cuándo",
       "item1desc": "Nada sale sin que lo hayas definido. Cada mensaje, cada destinatario, cada momento — elegido por ti.",
-      "item2": "Podés modificar o borrar tus mensajes en cualquier momento",
+      "item2": "Puedes modificar o borrar tus mensajes en cualquier momento",
       "item2desc": "Mientras estés activo, tus mensajes son tuyos. Edita, actualiza o elimina cuando quieras.",
       "item3": "Nada se envía sin que tú lo hayas definido antes",
       "item3desc": "El sistema solo actúa cuando se cumple exactamente la condición que elegiste. Sin excepciones.",
@@ -397,7 +397,7 @@
     },
     "success": {
       "title": "Tu mensaje ya está listo",
-      "body": "Se va a entregar en la fecha que elegiste.\nPodés editarlo cuando quieras antes de ese momento.",
+      "body": "Se va a entregar en la fecha que elegiste.\nPuedes editarlo cuando quieras antes de ese momento.",
       "emotional": "Tus palabras van a estar ahí cuando más importen.",
       "dismiss": "Cerrar"
     },
@@ -1165,7 +1165,7 @@
     "success": {
       "title": "Todo está bien",
       "body": "Gracias por confirmar.\nNo es necesario hacer nada más.\n\nNo vamos a contactar a nadie.\nTodo sigue como lo configuraste.",
-      "close": "Podés cerrar esta página cuando quieras."
+      "close": "Puedes cerrar esta página cuando quieras."
     },
     "errors": {
       "invalidToken": "Este enlace no es válido. Por favor, verifica que lo copiaste correctamente.",
