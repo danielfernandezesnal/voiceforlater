@@ -243,10 +243,10 @@ export async function POST(request: NextRequest) {
         if (type === "text" && (!textContent || textContent.trim().length === 0)) {
             return NextResponse.json({ error: "Text content is required" }, { status: 400 });
         }
-        if (type === "audio" && !audioFile) {
+        if (type === "audio" && !audioFile && !existingAudioUrl) {
             return NextResponse.json({ error: "Audio file is required" }, { status: 400 });
         }
-        if (type === "video" && !videoFile) {
+        if (type === "video" && !videoFile && !existingAudioUrl) {
             return NextResponse.json({ error: "Video file is required" }, { status: 400 });
         }
 
