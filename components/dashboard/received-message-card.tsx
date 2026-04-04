@@ -74,18 +74,13 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
     const { status, daysRemaining } = getMessageAvailability(message.delivered_at || message.created_at);
 
     // Determine button text and icon based on message type
-    let buttonText = message.type === 'audio' 
+    const buttonText = message.type === 'audio' 
         ? dict.dashboard.receivedMessages?.viewAudio || 'Escuchar mensaje'
         : message.type === 'video'
         ? dict.dashboard.receivedMessages?.viewVideo || 'Ver video'
         : dict.dashboard.receivedMessages?.view || 'Ver mensaje';
 
-    let Icon = message.type === 'audio' ? MicIcon : message.type === 'video' ? VideoIcon : FileTextIcon;
-
-    if (mounted && status === 'download_only') {
-        buttonText = dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje';
-        Icon = DownloadIcon;
-    }
+    const Icon = message.type === 'audio' ? MicIcon : message.type === 'video' ? VideoIcon : FileTextIcon;
 
     const typeLabel = message.type === 'audio' ? dict.dashboard.messageCard.type.audio : message.type === 'video' ? dict.dashboard.messageCard.type.video : dict.dashboard.messageCard.type.text;
 
@@ -138,12 +133,12 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
                                 className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium whitespace-nowrap"
                                 style={{ background: 'rgba(196,98,58,0.1)', color: '#C4623A' }}
                             >
-                                {status === 'expired' && mounted ? null : <Icon size={10} />}
+                                {mounted ? (status === 'expired' ? null : (status === 'download_only' ? <DownloadIcon size={10} /> : <Icon size={10} />)) : <Icon size={10} />}
                                 {typeLabel}
                             </span>
                         </div>
                         <p className="text-[10px] text-muted-foreground mt-1">
-                            {(dict.dashboard as any).receivedMessages?.delivered || 'Delivered on'} {date}
+                            {(dict.dashboard as any).receivedMessages?.delivered || 'Delivered on'} {mounted ? date : '...'}
                         </p>
                     </div>
                 </div>
@@ -163,8 +158,10 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
                                     className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white rounded-full whitespace-nowrap transition-all hover:opacity-90 active:scale-95 shadow-sm sm:w-auto w-full"
                                     style={{ background: '#C4623A' }}
                                 >
-                                    <Icon size={16} />
-                                    {buttonText}
+                                    {status === 'download_only' ? <DownloadIcon size={16} /> : <Icon size={16} />}
+                                    {status === 'download_only' 
+                                        ? (dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje')
+                                        : buttonText}
                                 </button>
                                 <p className={`text-[10px] font-medium text-center ${status === 'download_only' ? 'text-orange-600' : 'text-[#C4623A]/70'}`}>
                                     {status === 'available' 
@@ -175,7 +172,7 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
                             </>
                         )
                     ) : (
-                        <div className="h-10 w-32 bg-muted/20 animate-pulse rounded-full" />
+                        <div className="w-full sm:w-32 h-10 bg-muted/20 animate-pulse rounded-full" />
                     )}
                 </div>
             </div>
