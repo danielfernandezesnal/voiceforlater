@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AudioPlayer, VideoPlayer } from "@/components/messages/MediaPlayers";
 import { getMessageAvailability } from "@/lib/message-availability";
 
@@ -53,9 +53,14 @@ interface ReceivedMessageCardProps {
 }
 
 export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCardProps) {
+    const [mounted, setMounted] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [mediaUrls, setMediaUrls] = useState<{ audio: string | null; photos: string[] } | null>(null);
     const [loadingMedia, setLoadingMedia] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const date = new Date(message.created_at).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', {
         day: 'numeric',
@@ -77,7 +82,7 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
 
     let Icon = message.type === 'audio' ? MicIcon : message.type === 'video' ? VideoIcon : FileTextIcon;
 
-    if (status === 'download_only') {
+    if (mounted && status === 'download_only') {
         buttonText = dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje';
         Icon = DownloadIcon;
     }
@@ -133,7 +138,7 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
                                 className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium whitespace-nowrap"
                                 style={{ background: 'rgba(196,98,58,0.1)', color: '#C4623A' }}
                             >
-                                {status === 'expired' ? null : <Icon size={10} />}
+                                {status === 'expired' && mounted ? null : <Icon size={10} />}
                                 {typeLabel}
                             </span>
                         </div>
@@ -143,36 +148,40 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
                     </div>
                 </div>
                 
-                <div className="flex flex-col items-center gap-2 sm:w-auto w-full">
-                    {status === 'expired' ? (
-                        <div className="text-center px-4 py-2 bg-muted/30 rounded-full border border-border/40">
-                            <p className="text-xs font-medium text-muted-foreground">
-                                {dict.dashboard.receivedMessages?.expired}
-                            </p>
-                        </div>
+                <div className="flex flex-col items-center gap-2 sm:w-auto w-full min-h-[52px] justify-center">
+                    {mounted ? (
+                        status === 'expired' ? (
+                            <div className="text-center px-4 py-2 bg-muted/30 rounded-full border border-border/40">
+                                <p className="text-xs font-medium text-muted-foreground">
+                                    {dict.dashboard.receivedMessages?.expired}
+                                </p>
+                            </div>
+                        ) : (
+                            <>
+                                <button 
+                                    onClick={handleOpen}
+                                    className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white rounded-full whitespace-nowrap transition-all hover:opacity-90 active:scale-95 shadow-sm sm:w-auto w-full"
+                                    style={{ background: '#C4623A' }}
+                                >
+                                    <Icon size={16} />
+                                    {buttonText}
+                                </button>
+                                <p className={`text-[10px] font-medium text-center ${status === 'download_only' ? 'text-orange-600' : 'text-[#C4623A]/70'}`}>
+                                    {status === 'available' 
+                                        ? dict.dashboard.receivedMessages?.availableDays?.replace('{days}', daysRemaining.toString())
+                                        : dict.dashboard.receivedMessages?.downloadOnly?.replace('{days}', daysRemaining.toString())
+                                    }
+                                </p>
+                            </>
+                        )
                     ) : (
-                        <>
-                            <button 
-                                onClick={handleOpen}
-                                className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white rounded-full whitespace-nowrap transition-all hover:opacity-90 active:scale-95 shadow-sm sm:w-auto w-full"
-                                style={{ background: '#C4623A' }}
-                            >
-                                <Icon size={16} />
-                                {buttonText}
-                            </button>
-                            <p className={`text-[10px] font-medium text-center ${status === 'download_only' ? 'text-orange-600' : 'text-[#C4623A]/70'}`}>
-                                {status === 'available' 
-                                    ? dict.dashboard.receivedMessages?.availableDays?.replace('{days}', daysRemaining.toString())
-                                    : dict.dashboard.receivedMessages?.downloadOnly?.replace('{days}', daysRemaining.toString())
-                                }
-                            </p>
-                        </>
+                        <div className="h-10 w-32 bg-muted/20 animate-pulse rounded-full" />
                     )}
                 </div>
             </div>
 
             {/* Modal de Visualización */}
-            {isOpen && (
+            {isOpen && mounted && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300">
                     <div 
                         className="absolute inset-0 bg-black/60 backdrop-blur-md" 
@@ -226,7 +235,7 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
                                         {/* Photos Grid */}
                                         {mediaUrls?.photos && mediaUrls.photos.length > 0 && (
                                             <div className={`grid gap-4 ${mediaUrls.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
-                                                {mediaUrls.photos.map((url, i) => (
+                                                {mediaUrls.photos.map((url: string, i: number) => (
                                                     <div key={i} className="aspect-square sm:aspect-video rounded-3xl overflow-hidden border border-black/[0.05] shadow-sm">
                                                         <img src={url} alt="" className="w-full h-full object-cover" />
                                                     </div>
