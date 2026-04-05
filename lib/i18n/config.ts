@@ -20,6 +20,13 @@ export const localeFlags: Record<Locale, string> = {
 export const localeCodes: Record<Locale, string> = {
   es: 'ES',
   en: 'EN',
+  pt: 'PT',
+  fr: 'FR'
+};
+
+export const localeCountryCodes: Record<Locale, string> = {
+  es: 'ES',
+  en: 'GB',
   pt: 'BR',
   fr: 'FR'
 };
