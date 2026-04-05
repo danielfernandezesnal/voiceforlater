@@ -79,8 +79,11 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
                   : "text-muted-foreground/80 hover:text-foreground"
               }`}
             >
-              <span className="text-lg grayscale-0 drop-shadow-sm">{locale.flag}</span>
-              <span className="font-medium">{locale.iso}</span>
+              <div className="flex items-center gap-2 min-w-[70px]">
+                <span className="text-lg grayscale-0 drop-shadow-sm">{locale.flag}</span>
+                <span className="font-bold text-[11px] uppercase opacity-70">{locale.iso}</span>
+              </div>
+              <span className="font-semibold">{locale.iso}</span>
               <span className="flex-1 text-xs opacity-60 text-right">{locale.label}</span>
               {currentLocale === locale.code && (
                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
