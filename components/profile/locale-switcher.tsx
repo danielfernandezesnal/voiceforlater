@@ -2,13 +2,14 @@
 import { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-import { locales, localeNames, localeFlags, localeCodes, type Locale } from "@/lib/i18n/config";
+import { locales, localeNames, localeFlags, localeCodes, localeCountryCodes, type Locale } from "@/lib/i18n/config";
 
 const LOCALES = locales.map(code => ({
   code,
   label: localeNames[code],
   flag: localeFlags[code],
-  iso: localeCodes[code]
+  iso: localeCodes[code],
+  country: localeCountryCodes[code]
 }));
 
 export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
@@ -81,7 +82,7 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
             >
               <div className="flex items-center gap-2 min-w-[70px]">
                 <span className="text-lg grayscale-0 drop-shadow-sm">{locale.flag}</span>
-                <span className="font-bold text-[11px] uppercase opacity-70">{locale.iso}</span>
+                <span className="font-bold text-[11px] uppercase opacity-70">{locale.country}</span>
               </div>
               <span className="font-semibold">{locale.iso}</span>
               <span className="flex-1 text-xs opacity-60 text-right">{locale.label}</span>
