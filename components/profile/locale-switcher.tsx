@@ -79,7 +79,7 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
                   : "text-muted-foreground/80 hover:text-foreground"
               }`}
             >
-              <span className="text-2xl">{locale.flag}</span>
+              <span className="text-2xl" style={{ fontFamily: '"Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif' }}>{locale.flag}</span>
               <span className="font-semibold">{locale.iso}</span>
               <span className="flex-1 text-xs opacity-60 text-right">{locale.label}</span>
               {currentLocale === locale.code && (
