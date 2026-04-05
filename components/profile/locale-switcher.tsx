@@ -1,13 +1,24 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import ES from 'country-flag-icons/react/3x2/ES'
+import GB from 'country-flag-icons/react/3x2/GB'
+import BR from 'country-flag-icons/react/3x2/BR'
+import FR from 'country-flag-icons/react/3x2/FR'
 
-import { locales, localeNames, localeFlags, localeCodes, type Locale } from "@/lib/i18n/config";
+import { locales, localeNames, localeCodes, type Locale } from "@/lib/i18n/config";
+
+const FLAG_COMPONENTS = {
+  es: ES,
+  en: GB,
+  pt: BR,
+  fr: FR
+} as const;
 
 const LOCALES = locales.map(code => ({
   code,
   label: localeNames[code],
-  flag: localeFlags[code],
+  FlagComponent: FLAG_COMPONENTS[code],
   iso: localeCodes[code]
 }));
 
@@ -79,7 +90,7 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
                   : "text-muted-foreground/80 hover:text-foreground"
               }`}
             >
-              <span className="text-2xl" style={{ fontFamily: '"Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif' }}>{locale.flag}</span>
+              <locale.FlagComponent className="w-8 h-6 rounded-sm overflow-hidden shadow-sm border border-border/10" />
               <span className="font-semibold">{locale.iso}</span>
               <span className="flex-1 text-xs opacity-60 text-right">{locale.label}</span>
               {currentLocale === locale.code && (
