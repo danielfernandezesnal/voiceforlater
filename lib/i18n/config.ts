@@ -24,12 +24,6 @@ export const localeCodes: Record<Locale, string> = {
   fr: 'FR'
 };
 
-export const localeCountryCodes: Record<Locale, string> = {
-  es: 'ES',
-  en: 'GB',
-  pt: 'BR',
-  fr: 'FR'
-};
 
 export function isValidLocale(locale: string): locale is Locale {
     return locales.includes(locale as Locale)
