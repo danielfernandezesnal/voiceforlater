@@ -2,12 +2,14 @@
 import { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-const LOCALES = [
-  { code: "es", label: "Español", flag: "🇪🇸" },
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "pt", label: "Português", flag: "🇧🇷" },
-  { code: "fr", label: "Français", flag: "🇫🇷" },
-];
+import { locales, localeNames, localeFlags, localeCodes, type Locale } from "@/lib/i18n/config";
+
+const LOCALES = locales.map(code => ({
+  code,
+  label: localeNames[code],
+  flag: localeFlags[code],
+  iso: localeCodes[code]
+}));
 
 export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
   const [open, setOpen] = useState(false);
@@ -39,28 +41,31 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+        className="flex items-center gap-1.5 h-9 px-2 rounded-full hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground border border-transparent hover:border-border"
         aria-label="Seleccionar idioma"
       >
+        <span className="text-sm font-semibold tracking-tight">{localeCodes[currentLocale as Locale]}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
+          width="14"
+          height="14"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="1.75"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
+          className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         >
-          <circle cx="12" cy="12" r="10" />
-          <line x1="2" y1="12" x2="22" y2="12" />
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          <path d="m6 9 6 6 6-6" />
         </svg>
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-44 bg-background border border-border rounded-xl shadow-lg z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
+        <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
+          <div className="px-3 py-2 text-[10px] uppercase tracking-wider font-bold text-muted-foreground bg-muted/30 border-b border-border">
+            Idioma / Language
+          </div>
           {LOCALES.map((locale) => (
             <button
               key={locale.code}
@@ -68,16 +73,17 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
                 router.push(getPathForLocale(locale.code));
                 setOpen(false);
               }}
-              className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-muted/50 flex items-center gap-3 ${
+              className={`w-full text-left px-4 py-3 text-sm transition-colors hover:bg-primary/5 flex items-center gap-3 ${
                 currentLocale === locale.code
-                  ? "text-primary font-semibold"
-                  : "text-muted-foreground"
+                  ? "text-primary font-bold bg-primary/5"
+                  : "text-muted-foreground/80 hover:text-foreground"
               }`}
             >
-              <span className="text-base">{locale.flag}</span>
-              <span className="flex-1">{locale.label}</span>
+              <span className="text-lg grayscale-0 drop-shadow-sm">{locale.flag}</span>
+              <span className="font-medium">{locale.iso}</span>
+              <span className="flex-1 text-xs opacity-60 text-right">{locale.label}</span>
               {currentLocale === locale.code && (
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
               )}
             </button>
           ))}
