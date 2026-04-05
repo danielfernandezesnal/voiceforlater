@@ -3,8 +3,10 @@ import { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 const LOCALES = [
-  { code: "es", label: "Español" },
-  { code: "en", label: "English" },
+  { code: "es", label: "Español", flag: "🇪🇸" },
+  { code: "en", label: "English", flag: "🇬🇧" },
+  { code: "pt", label: "Português", flag: "🇧🇷" },
+  { code: "fr", label: "Français", flag: "🇫🇷" },
 ];
 
 export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
@@ -58,7 +60,7 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-36 bg-background border border-border rounded-xl shadow-lg z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
+        <div className="absolute right-0 mt-2 w-44 bg-background border border-border rounded-xl shadow-lg z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
           {LOCALES.map((locale) => (
             <button
               key={locale.code}
@@ -66,19 +68,17 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
                 router.push(getPathForLocale(locale.code));
                 setOpen(false);
               }}
-              className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-muted/50 flex items-center gap-2 ${
+              className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-muted/50 flex items-center gap-3 ${
                 currentLocale === locale.code
                   ? "text-primary font-semibold"
                   : "text-muted-foreground"
               }`}
             >
+              <span className="text-base">{locale.flag}</span>
+              <span className="flex-1">{locale.label}</span>
               {currentLocale === locale.code && (
-                <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               )}
-              {currentLocale !== locale.code && (
-                <span className="w-1.5 h-1.5 inline-block" />
-              )}
-              {locale.label}
             </button>
           ))}
         </div>
