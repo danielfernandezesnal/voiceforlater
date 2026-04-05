@@ -17,6 +17,13 @@ export const localeFlags: Record<Locale, string> = {
   fr: '🇫🇷'
 };
 
+export const localeCodes: Record<Locale, string> = {
+  es: 'ES',
+  en: 'EN',
+  pt: 'BR',
+  fr: 'FR'
+};
+
 export function isValidLocale(locale: string): locale is Locale {
     return locales.includes(locale as Locale)
 }
