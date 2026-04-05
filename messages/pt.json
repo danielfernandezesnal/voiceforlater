@@ -1,0 +1,1176 @@
+{
+  "common": {
+    "appName": "Carry my Words",
+    "loading": "Carregando...",
+    "error": "Algo deu errado",
+    "retry": "Tentar novamente",
+    "next": "Próximo",
+    "back": "Voltar",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "edit": "Editar",
+    "view": "Ver mensagem",
+    "delete": "Excluir",
+    "confirm": "Confirmar",
+    "getStarted": "Criar minha primeira mensagem",
+    "seeHow": "Como funciona",
+    "price": "USD {amount} / ano",
+    "perYear": "ano",
+    "sentAt": "Enviado em ",
+    "backToHome": "Voltar ao início",
+    "backToDashboard": "Voltar ao painel"
+  },
+  "landing": {
+    "nav": {
+      "login": "Entrar"
+    },
+    "hero": {
+      "tag": "Mensagens que viajam no tempo",
+      "title_plain": "Suas palavras quando ",
+      "title_em": "mais importam",
+      "subtitle": "Grave mensagens de voz, texto ou vídeo para seus entes queridos. Você escolhe quando elas chegam.",
+      "cta": "Criar minha primeira mensagem",
+      "microcopy": "Leva você ao criador de mensagens. Sem cartão. Sem compromisso."
+    },
+    "emotional": {
+      "title": "Sua presença, no momento certo.",
+      "items": [
+        "Uma mensagem para sua família.",
+        "Uma nota para alguém importante.",
+        "Sua voz e sua imagem, mesmo quando você não puder mais estar presente."
+      ]
+    },
+    "uses": {
+      "tag": "Para quem, para quando",
+      "scenarios": {
+        "eyebrow": "Para quem, para quando",
+        "title": "Três momentos que",
+        "titleEm": "mudam tudo",
+        "s1": {
+          "tag": "Para o futuro",
+          "question": "O que você diria ao seu filho no dia em que ele fizer 18 anos?",
+          "heading": "Grave hoje o que você quer que ele ouça amanhã",
+          "body": "Há palavras que hoje você sente com clareza, mas que o tempo pode apagar. Grave essa mensagem agora, e nós cuidaremos para que ela chegue exatamente quando você escolher."
+        },
+        "s2": {
+          "tag": "O que é difícil de dizer",
+          "question": "Há algo que você quer dizer, mas não sabe como?",
+          "heading": "Cuidamos para que chegue no momento certo",
+          "body": "Às vezes, as palavras mais importantes são as que mais custam a ser ditas. Leve o tempo que precisar para dizê-las bem. Nós as guardamos até que seja o momento."
+        },
+        "s3": {
+          "tag": "Para sempre",
+          "question": "E se amanhã você não pudesse estar presente?",
+          "heading": "Suas palavras chegam da mesma forma",
+          "body": "No aniversário, na formatura, no dia do casamento. No momento e para a pessoa que você escolheu, respeitando sua vontade."
+        }
+      },
+      "cards": [
+        {
+          "icon": "👶",
+          "title": "Para seu filho quando ele crescer",
+          "description": "Palavras que chegarão quando ele estiver pronto para recebê-las."
+        },
+        {
+          "icon": "📅",
+          "title": "Para uma data importante",
+          "description": "Aniversários, celebrações, formaturas. No momento exato que você escolher."
+        },
+        {
+          "icon": "💬",
+          "title": "Algo que você quer dizer, mas não agora",
+          "description": "Guarde. Chegará quando o momento for o correto."
+        },
+        {
+          "icon": "🤝",
+          "title": "Uma mensagem de apoio antecipada",
+          "description": "Para alguém que você sabe que precisará dela mais adiante."
+        },
+        {
+          "icon": "🔇",
+          "title": "O que custa dizer pessoalmente",
+          "description": "Às vezes as palavras fluem melhor quando não há olhares envolvidos."
+        },
+        {
+          "icon": "⏳",
+          "title": "Uma cápsula do tempo",
+          "description": "Uma mensagem para você mesmo no futuro. O que você diria?"
+        },
+        {
+          "icon": "🌐",
+          "title": "Para alguém com quem hoje você não pode falar",
+          "description": "As distâncias mudam. As palavras podem esperar."
+        },
+        {
+          "icon": "📝",
+          "title": "Algo que você não quer esquecer de dizer",
+          "description": "Deixe guardado. Que não se perca por falta de tempo."
+        },
+        {
+          "icon": "🕊️",
+          "title": "Para quando você não estiver mais presente",
+          "description": "Suas palavras chegam da mesma forma. No momento e para a pessoa que você escolheu."
+        }
+      ]
+    },
+    "howItWorks": {
+      "title": "Como funciona",
+      "step1": {
+        "title": "Grave uma mensagem",
+        "description": "Texto, áudio ou vídeo. Como você preferir se expressar."
+      },
+      "step2": {
+        "title": "Escolha a quem se dirige",
+        "description": "Uma pessoa querida, várias, ou até você mesmo no futuro."
+      },
+      "step3": {
+        "title": "É entregue quando você definir",
+        "description": "Uma data, um aniversário, ou quando você não estiver mais presente."
+      }
+    },
+    "videoTestimonial": {
+      "caption": "Uma história real de alguém que escolheu não ficar em silêncio."
+    },
+    "delivery": {
+      "eyebrow": "Você escolhe o momento",
+      "title": "Cada mensagem,",
+      "titleEm": "no seu momento certo",
+      "date": {
+        "title": "Em uma data específica",
+        "description": "Você define quando deve chegar. E chega exatamente naquele dia, naquela hora."
+      },
+      "checkin": {
+        "title": "Quando você não estiver mais presente",
+        "description": "Quando você se for, seguimos suas indicações. Suas mensagens chegam nos momentos e para as pessoas que você escolheu, respeitando sua vontade e seu tempo."
+      }
+    },
+    "audio": {
+      "eyebrow": "Sua maneira de se expressar",
+      "title": "Escolha como você quer dizer.",
+      "description": "Sua voz, seu rosto, suas palavras escritas. Cada pessoa tem sua maneira de dizer o que sente. Use a sua.",
+      "pills": {
+        "text": "Texto",
+        "audio": "Áudio",
+        "video": "Vídeo"
+      },
+      "textTitle": "Texto",
+      "textDesc": "Para quem escolhe cada palavra com cuidado. Uma carta que chega quando tem que chegar.",
+      "audioTitle": "Áudio",
+      "audioDesc": "Sua voz, com todas as suas nuances. Há coisas que só podem ser ditas falando.",
+      "videoTitle": "Vídeo",
+      "videoDesc": "Seu rosto, sua expressão, sua presença. A mensagem mais completa que você pode deixar."
+    },
+    "trust": {
+      "eyebrow": "Sua tranquilidade primeiro",
+      "title": "Você tem o controle,\nsempre.",
+      "item1": "Você decide o que é enviado, para quem e quando",
+      "item1desc": "Nada sai sem que você tenha definido. Cada mensagem, cada destinatário, cada momento — escolhido por você.",
+      "item2": "Você pode modificar ou excluir suas mensagens a qualquer momento",
+      "item2desc": "Enquanto você estiver ativo, suas mensagens são suas. Edite, atualize ou exclua quando quiser.",
+      "item3": "Nada é enviado sem que você tenha definido antes",
+      "item3desc": "O sistema só atua quando a condição que você escolheu é cumprida exatamente. Sem exceções.",
+      "encryption": "Suas mensagens são criptografadas e nós nunca as lemos. Somente você e seus destinatários têm acesso.",
+      "clarification": "Carry my Words apenas entrega o que você gravou, exatamente como você deixou.",
+      "owasp": "Projetado seguindo as boas práticas de segurança recomendadas pela OWASP.",
+      "reassurance": ""
+    },
+    "notWhat": {
+      "title": "O que o Carry my Words NÃO é",
+      "items": [
+        "Não é um testamento",
+        "Not legal advice",
+        "Não é um substituto de nenhuma pessoa",
+        "Não toma decisões por você"
+      ],
+      "clarification": "Carry my Words apenas entrega as mensagens que você deixou, exatamente como você as gravou."
+    },
+    "faq": {
+      "title": "Perguntas Frequentes",
+      "showMore": "Ver todas as perguntas",
+      "showLess": "Ver menos",
+      "items": [
+        {
+          "q": "O que é o Carry my Words?",
+          "a": "Carry my Words é um serviço que permite criar hoje mensagens que serão entregues no futuro. Você pode escrever uma mensagem, gravar áudio ou vídeo, escolher quem a receberá e decidir quando ela deve ser entregue. Algumas pessoas utilizam para enviar mensagens em datas importantes, outras usam para deixar palavras para seus entes queridos caso algum dia não possam mais fazê-lo."
+        },
+        {
+          "q": "Como funciona a entrega das mensagens?",
+          "a": "Ao criar uma mensagem, você escolhe como ela deve ser entregue. Pode selecionar: uma data e hora específicas, ou uma condição em que a mensagem seja entregue se você deixar de confirmar que está ativo. Até que chegue o momento da entrega, você sempre mantém o controle total sobre suas mensagens."
+        },
+        {
+          "q": "Minhas mensagens são privadas?",
+          "a": "Sim. Suas mensagens são privadas e só podem ser acessadas da sua conta ou pelas pessoas a quem você decidir enviá-las.\nUtilizamos conexões seguras (HTTPS), controles rigorosos de acesso em nível de banco de dados, e links de entrega com tokens únicos que evitam acessos não autorizados.\nA plataforma foi projetada seguindo boas práticas de segurança recomendadas pela OWASP."
+        },
+        {
+          "q": "Como funcionam as confirmações de atividade?",
+          "a": "Para mensagens configuradas com a opção \"quando eu não estiver mais presente\", o sistema verifica periodicamente se você continua ativo. Se você deixar de responder, primeiro tentamos entrar em contato com você. Se não recebermos resposta, podemos contatar a pessoa de confiança que você escolheu. Se a situação for confirmada, começa a entrega de mensagens. Esse processo existe para evitar entregas acidentais."
+        },
+        {
+          "q": "Qual a diferença entre o plano Free e Pro?",
+          "a": "Free: 1 mensagem, texto e áudio, 1 pessoa de confiança. PRO: mensagens ilimitadas, texto, áudio e vídeo, até 3 pessoas de confiança."
+        },
+        {
+          "q": "Posso editar ou excluir minhas mensagens?",
+          "a": "Sim, você pode editar, atualizar ou excluir suas mensagens a qualquer momento. Nada é enviado sem o seu consentimento."
+        },
+        {
+          "q": "O que é uma pessoa de confiança?",
+          "a": "É alguém que você escolhe para ajudar a confirmar sua situação se o sistema não conseguir se comunicar com você. Essa pessoa não pode ler nem modificar suas mensagens. Sua única função é ajudar a confirmar se você continua ativo."
+        },
+        {
+          "q": "Que tipos de mensagens posso criar?",
+          "a": "Com o plano Free você pode enviar 1 mensagem de texto ou áudio. Com o plano PRO você pode enviar mensagens de texto, áudio ou vídeo, sem limite de quantidade."
+        },
+        {
+          "q": "Quando as mensagens são realmente enviadas?",
+          "a": "As mensagens só são entregues quando a condição que você escolheu é cumprida. Até esse momento, elas permanecem privadas e sob seu controle."
+        },
+        {
+          "q": "Para que usar o Carry my Words?",
+          "a": "As pessoas o utilizam por diferentes razões. Alguns escrevem mensagens para aniversários, celebrações ou momentos importantes do futuro. Outros querem deixar palavras para sua família ou entes queridos para garantir que essas mensagens cheguem algum dia.\nÉ simplesmente uma forma de ter a tranquilidade de que as palavras importantes sempre encontrarão seu momento."
+        },
+        {
+          "q": "Posso cancelar minha conta?",
+          "a": "Sim. Você pode cancelar sua conta a qualquer momento. Se fizer isso, suas mensagens não serão enviadas, a menos que a condição de entrega já tenha sido ativada."
+        },
+        {
+          "q": "Como posso entrar em contato se tiver dúvidas?",
+          "a": "Você pode nos escrever através do formulário de contato disponível no site e responderemos o mais rápido possível."
+        }
+      ]
+    },
+    "pricing": {
+      "title": "Preços Simples",
+      "justification": "USD 10 por ano. Menos do que você imagina para algo que dura para sempre.",
+      "recommended": "RECOMENDADO",
+      "free": {
+        "title": "Free",
+        "tagline": "Para testar",
+        "features": [
+          "1 mensagem",
+          "Texto",
+          "Áudio",
+          "1 pessoa de confiança"
+        ],
+        "price": "USD 0",
+        "cta": "Testar agora"
+      },
+      "pro": {
+        "title": "Pro",
+        "tagline": "Para deixar tudo pronto de verdade",
+        "features": [
+          "Mensagens ilimitadas",
+          "Texto",
+          "Áudio",
+          "Vídeo",
+          "Até 3 pessoas de confiança",
+          "Mensagens para múltiplos destinatários"
+        ],
+        "cta": "Começar com plano PRO"
+      }
+    },
+    "closing": "",
+    "final_thought": "As palavras importam, o momento também.",
+    "testimonial": {
+      "eyebrow": "Uma história real",
+      "title": "Assim viveu alguém como você"
+    },
+    "cta_hero": "Grave sua primeira mensagem",
+    "cta_after_how": "Começar agora",
+    "cta_after_delivery": "Deixe algo que dure",
+    "cta_final": "Deixar minhas palavras hoje",
+    "cta_bridge": "Porque há palavras que não podem esperar para sempre.",
+    "footer": {
+      "privacy": "Privacidade",
+      "terms": "Termos",
+      "contact": "Contato",
+      "cancel": "Cancelar"
+    }
+  },
+  "auth": {
+    "login": "Entrar",
+    "logout": "Sair",
+    "continueWithGoogle": "Continuar com Google",
+    "orContinueWithEmail": "Ou continuar com email",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Senha",
+    "emailPlaceholder": "voce@exemplo.com",
+    "submit": "Entrar",
+    "submitMagic": "Entrar com link mágico",
+    "createAccount": "Nova conta",
+    "forgotPassword": "Esqueci minha senha",
+    "magicLink": {
+      "title": "Carry my Words",
+      "subtitle": "Insira seu e-mail para acessar",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "voce@exemplo.com",
+      "submit": "Receber Link de Acesso",
+      "sending": "Enviando...",
+      "success": {
+        "title": "Verifique seu e-mail",
+        "message": "Enviamos um link para {email}. Clique no link para entrar."
+      },
+      "error": "Não conseguimos enviar o link. Por favor, tente novamente."
+    },
+    "setPassword": {
+      "title": "Criar senha",
+      "subtitle": "Para maior segurança, defina uma senha para sua conta.",
+      "label": "Senha",
+      "submit": "Salvar senha",
+      "success": "Senha salva"
+    },
+    "resetPassword": {
+      "title": "Redefinir senha",
+      "subtitle": "Insira seu e-mail para receber uma nova senha provisória.",
+      "submit": "Redefinir senha",
+      "success": "Enviamos uma nova senha para seu e-mail."
+    }
+  },
+  "dashboard": {
+    "title": "Suas mensagens",
+    "subtitle": "Aqui você pode criar, editar ou excluir as mensagens que deixou gravadas.",
+    "greeting": "Olá, {name} 👋",
+    "status": "Você tem {count} mensagem(s) salva(s) · Plano {plan} ativo",
+    "stats": {
+      "savedMessages": "Mensagens salvas",
+      "ofOne": "de 1 no seu plano",
+      "ofUnlimited": "de ilimitadas no seu plano",
+      "nextDelivery": "Próxima entrega",
+      "trustedContacts": "Contatos de confiança",
+      "ofMax": "de {max} possíveis no seu plano"
+    },
+    "sectionTitle": "Mensagens salvas",
+    "sidebarTagline": "MENSAGENS QUE VIAJAM NO TEMPO",
+    "quote": "As palavras que mais importam merecem chegar no momento certo.",
+    "empty": {
+      "title": "Você ainda não tem mensagens salvas",
+      "description": "Grave sua primeira mensagem e escolha quando e para quem ela chegará.",
+      "cta": "Criar Sua Primeira Mensagem"
+    },
+    "createMessage": "Nova mensagem",
+    "messageCard": {
+      "recipient": "Para: {name}",
+      "status": {
+        "draft": "Rascunho",
+        "scheduled": "Agendado",
+        "delivered": "Enviado"
+      },
+      "type": {
+        "text": "📝 Mensagem de Texto",
+        "audio": "🎙️ Mensagem de Áudio",
+        "video": "🎥 Mensagem de Vídeo"
+      },
+      "deliveryLabel": "📅 Entrega",
+      "checkinModeStatus": "a mensagem está configurada para ser enviada automaticamente se você deixar de confirmar sua atividade",
+      "labels": {
+        "to": "Para",
+        "created": "Criado",
+        "scheduledFor": "Agendado para",
+        "delivery": "Entrega",
+        "contact": "Contato de confiança",
+        "hour": "Hora"
+      },
+      "deliveryType": {
+        "date": "Data específica",
+        "checkin": "Quando eu não estiver mais presente"
+      },
+      "whenNoLongerPresent": "Quando eu não estiver mais presente",
+      "noContactAssigned": "Sem contato atribuído",
+      "noContactAssignedDesc": "Não será enviado automaticamente até que você adicione um.",
+      "addContactShort": "+ Adicionar",
+      "addContactLong": "+ Adicionar contato"
+    },
+    "limitReached": {
+      "title": "Limite atingido",
+      "description": "Com o plano Free você pode criar 1 mensagem. Atualize para o Pro para criar mensagens ilimitadas.",
+      "upgrade": "Ver plano Pro",
+      "cancel": "Voltar"
+    },
+    "upgradeSuccess": {
+      "title": "Bem-vindo ao PRO!",
+      "description": "Você já tem acesso a todas as funcionalidades do plano PRO. Crie mensagens ilimitadas, use vídeo e muito mais.",
+      "cta": "Entendido!"
+    },
+    "success": {
+      "title": "Sua mensagem já está pronta",
+      "body": "Ela será entregue na data que você escolheu.\nVocê pode editá-la quando quiser antes desse momento.",
+      "emotional": "Suas palavras estarão lá quando mais importarem.",
+      "dismiss": "Fechar"
+    },
+    "plan": {
+      "title": "Meu Plano",
+      "compare": {
+        "title": "Funcionalidade",
+        "free": "Free",
+        "pro": "Pro",
+        "features": {
+          "messages": "Mensagens",
+          "messagesFree": "1 mensagem",
+          "messagesPro": "Ilimitadas",
+          "text": "Mensagem de texto",
+          "audio": "Mensagem de áudio",
+          "video": "Mensagem de vídeo",
+          "trustedContacts": "Pessoas de confiança",
+          "trustedContactsFree": "Até 1",
+          "trustedContactsPro": "Até 3",
+          "multipleRecipients": "Mensagens para múltiplos destinatários"
+        }
+      }
+    },
+    "receivedMessages": {
+      "title": "Mensagens recebidas",
+      "empty": "Você ainda não recebeu nenhuma mensagem.",
+      "from": "De: {name}",
+      "delivered": "Entregue em",
+      "view": "Ver mensagem",
+      "viewAudio": "Ouvir mensagem",
+      "viewVideo": "Ver vídeo",
+      "availableDays": "Disponível por mais {days} dias",
+      "downloadOnly": "Apenas download · mais {days} dias",
+      "expired": "Esta mensagem não está mais disponível",
+      "downloadButton": "Baixar mensagem",
+      "someoneSpecial": "Alguém especial",
+      "messageCount_one": "mensagem recebida",
+      "messageCount_other": "mensagens recebidas"
+    }
+  },
+  "nav": {
+    "dashboard": "Enviados",
+    "received": "Recebidos",
+    "settings": "Configurações",
+    "upgrade": "Atualizar para Pro",
+    "contacts": "Contatos"
+  },
+  "wizard": {
+    "title": "Criar Mensagem",
+    "steps": {
+      "type": "Tipo",
+      "content": "Conteúdo",
+      "recipient": "Destinatário",
+      "delivery": "Entrega",
+      "review": "Revisar"
+    },
+    "step1": {
+      "title": "O que você quer gravar?",
+      "subtitle": "Escolha o formato que for mais natural para você. Você pode escrever, gravar sua voz ou gravar um vídeo. Não precisa ser perfeito — você pode editar ou excluir quando quiser.",
+      "text": {
+        "title": "Escrever mensagem",
+        "description": "Coloque em palavras o que você sente. Você pode escrever tanto quanto quiser."
+      },
+      "audio": {
+        "title": "Gravar áudio",
+        "description": "Que ouçam sua voz. Um áudio tem um calor que as palavras escritas nem sempre transmitem."
+      },
+      "video": {
+        "title": "Gravar vídeo",
+        "description": "A forma mais completa de estar presente. Seu rosto, sua voz, seu olhar.",
+        "upgradeToPro": "Atualizar para PRO"
+      }
+    },
+    "step2": {
+      "title": "Escreva sua mensagem",
+      "titleAudio": "Grave sua mensagem",
+      "subtitle": "Não há pressa. Esta mensagem vai esperar até o momento exato que você escolher. Escreva com calma.",
+      "titleLabel": "Título",
+      "titlePlaceholder": "Ex: Para o dia que você fizer 18 anos, Para quando você mais precisar...",
+      "textPlaceholder": "Escreva aqui sua mensagem...",
+      "charLimit": "{count} / {max} caracteres",
+      "recording": {
+        "start": "Iniciar Gravação",
+        "stop": "Parar Gravação",
+        "preview": "Pré-visualizar",
+        "delete": "Excluir",
+        "timeLimit": "Máx. {seconds} segundos",
+        "timer": "{time}",
+        "errorMicrophone": "Não foi possível acessar o microfone. Verifique as permissões.",
+        "errorCamera": "Não foi possível acessar a câmera ou microfone. Verifique as permissões.",
+        "errorStart": "Erro ao iniciar a gravação.",
+        "loadingCamera": "Carregando câmera..."
+      }
+    },
+    "step3": {
+      "title": "A quem se dirige esta mensagem?",
+      "subtitle": "Você pode adicionar até 10 pessoas. Todas receberão a mesma mensagem.",
+      "nameLabel": "Nome do destinatário",
+      "namePlaceholder": "João Silva",
+      "emailLabel": "E-mail do destinatário",
+      "emailPlaceholder": "joao@exemplo.com",
+      "addRecipient": "Adicionar destinatário",
+      "recipientN": "Destinatário {n}",
+      "posthumousContactWarning": "⚠️ Este tipo de mensagem requer um contato de confiança. Você poderá atribuí-lo no próximo passo.",
+      "selfRecipientError": "Você não pode enviar esta mensagem para si mesmo. Escolha outra pessoa como destinatário."
+    },
+    "step4": {
+      "title": "Quando você quer que seja entregue?",
+      "subtitle": "Este é o coração do Carry my Words. Escolha se quer que chegue em uma data especial ou que fique guardada para quando você não estiver mais presente.",
+      "date": {
+        "title": "Em uma data específica",
+        "description": "Aniversário, formatura, celebração ou simplesmente algo que hoje você quer dizer mas que tem que chegar no momento certo.",
+        "label": "Data de entrega",
+        "timeLabel": "Hora de entrega",
+        "timeError": "Insira uma hora válida (ex: 14:30)",
+        "optionalContactNote": "Não é necessário um contato de confiança para esta modalidade. A mensagem será enviada automaticamente na data e hora escolhidas."
+      },
+      "checkin": {
+        "title": "Quando você não estiver mais presente",
+        "description": "Suas palavras chegarão da mesma forma à pessoa que você escolheu, respeitando sua vontade.",
+        "interval": "Intervalo de confirmação",
+        "intervalHelp": "De tempos em tempos pediremos que você confirme que está ativo. Se você não responder, contataremos seu contato de confiança para confirmar sua ausência antes de iniciar o processo de entrega da mensagem.",
+        "days7": "A cada 7 dias",
+        "days30": "A cada 30 dias",
+        "days60": "A cada 60 dias",
+        "days90": "A cada 90 dias",
+        "intervals": {
+          "1_test": "1 dia (para teste)",
+          "30": "30 dias",
+          "60": "60 dias",
+          "90": "90 dias"
+        },
+        "freeNote": "Plano Free: intervalo de 7 dias com 1 lembrete. Atualize para o Pro para intervalos mais longos e contato de confiança.",
+        "trustedContacts": "Contatos de confiança",
+        "freeLimit": "Limite Free: 1",
+        "contactLabel": "Contato de confiança",
+        "contactLabelNumbered": "Contato de confiança {number}",
+        "selectPlaceholder": "Selecionar ou criar um novo",
+        "addNew": "+ Adicionar novo contato...",
+        "posthumousContactRequired": "Para este tipo de mensagem, você deve atribuir pelo menos 1 contato de confiança. Selecione-o da lista ou crie um novo."
+      }
+    },
+    "step5": {
+      "title": "Revise sua mensagem",
+      "subtitle": "Revise se tudo está como você quer antes de salvar. Uma vez salva, a mensagem fica protegida e esperando. Você pode editá-la ou excluí-la a qualquer momento enquanto estiver ativo.",
+      "messageType": "Formato",
+      "formatText": "Mensagem de texto",
+      "formatAudio": "Mensagem de áudio",
+      "formatVideo": "Mensagem de vídeo",
+      "titleLabel": "Título",
+      "content": "Conteúdo",
+      "recipient": "Destinatário",
+      "deliveryRule": "Entrega",
+      "deliveryDate": "{date}",
+      "deliveryCheckin": "Quando eu não estiver mais presente",
+      "submit": "Salvar mensagem",
+      "editMessage": "Editar mensagem",
+      "submitting": "Criando...",
+      "audioContent": "🎤 {seconds}s áudio",
+      "videoContent": "📹 {seconds}s vídeo",
+      "noContactWarning": "Esta mensagem não será enviada automaticamente até que você atribua um contato de confiança.",
+      "posthumousSaveWarning": "Para mensagens do tipo 'Quando eu não estiver mais presente', é obrigatório atribuir um contato de confiança antes de salvar.",
+      "agreeTerms": "Aceito os ",
+      "termsLink": "termos e condições"
+    },
+    "tosModal": {
+      "title": "Uma Breve Formalidade",
+      "subtitle": "Para manter um espaço seguro e de confiança, pedimos que aceite nossos Termos de Serviço. Isso simplesmente confirma que o Carry my Words será utilizado com um propósito valioso e genuíno.",
+      "checkboxPre": "Li e aceito os ",
+      "checkboxMid": " e a ",
+      "checkboxTerms": "Termos de Serviço",
+      "checkboxPrivacy": "Política de Privacidade",
+      "cancel": "Cancelar",
+      "confirm": "Continuar para salvar"
+    }
+  },
+  "profile": {
+    "title": "Meu Perfil",
+    "subtitle": "Seu nome aparecerá nas mensagens que você enviar. Seu país nos ajuda a formatar datas corretamente.",
+    "onboardingBanner": {
+      "heading": "Antes de começar",
+      "body": "Precisamos de alguns dados para garantir que suas palavras cheguem quando mais importarem."
+    },
+    "form": {
+      "personalData": "Dados pessoais",
+      "firstName": "Nome",
+      "firstNamePlaceholder": "Seu nome",
+      "lastName": "Sobrenome",
+      "lastNamePlaceholder": "Seu sobrenome",
+      "email": "E-mail",
+      "emailPlaceholder": "seu@email.com",
+      "emailNote": "O e-mail não pode ser modificado. É o que você usou para criar sua conta.",
+      "locationContact": "Localização",
+      "country": "País",
+      "countryPlaceholder": "Selecionar país",
+      "city": "Cidade",
+      "cityOptional": "(opcional)",
+      "cityPlaceholder": "Ex: São Paulo",
+      "phone": "Telefone",
+      "phoneOptional": "(opcional)",
+      "phonePlaceholder": "Ex: 11 91234 5678",
+      "save": "Salvar alterações",
+      "saving": "Salvando...",
+      "errors": {
+        "countryRequired": "O país é obrigatório.",
+        "saveFallback": "Erro ao salvar",
+        "saveError": "Erro ao salvar o perfil."
+      },
+      "success": {
+        "saved": "Perfil salvo com sucesso.",
+        "emailConfirmation": " Foi enviado um e-mail de confirmação para o seu novo endereço de e-mail."
+      },
+      "security": {
+        "title": "Segurança",
+        "changePassword": "Senha",
+        "changePasswordDesc": "Enviaremos um e-mail para que você possa alterá-la.",
+        "sendResetEmail": "Alterar senha",
+        "sending": "Enviando...",
+        "resetEmailSent": "Enviamos um e-mail. Verifique sua caixa de entrada.",
+        "resetError": "Não foi possível enviar o e-mail. Tente novamente."
+      }
+    }
+  },
+  "checkin": {
+    "title": "Status de Confirmação",
+    "nextCheckin": "Próxima confirmação",
+    "daysRemaining": "dias restantes",
+    "overdue": "Sua confirmação está vencida! Por favor confirme que está ativo.",
+    "confirmButton": "Estou Ativo",
+    "confirming": "Confirmando...",
+    "confirmed": "Confirmação bem-sucedida! ✓",
+    "contactNotification": {
+      "subject": "Você foi escolhido como contato de confiança",
+      "title": "Você foi escolhido como contato de confiança",
+      "intro": "{name} escolheu você como contato de confiança no Carry my Words.",
+      "explanation": "Isso significa que, se essa pessoa não confirmar sua atividade dentro do período estabelecido, você poderá receber uma notificação relacionada às mensagens que ela deixou agendadas.",
+      "noAction": "Nenhuma ação é necessária da sua parte por enquanto. Apenas queríamos informar e agradecer por acompanhar {name} neste papel de confiança.",
+      "signature": "Carry my Words",
+      "tagline": "Para que suas palavras cheguem quando tiverem que chegar."
+    }
+  },
+  "trustedContact": {
+    "pageTitle": "Contatos de confiança",
+    "pageDescription1": "Eles nos ajudarão a confirmar que você está bem.",
+    "pageDescription2": "Caso você deixe de responder às confirmações de atividade, a pessoa de confiança que você selecionar em cada mensagem será a que contataremos para verificar sua ausência antes de iniciar o envio das mensagens agendadas.",
+    "title": "Pessoas de confiança",
+    "sectionSubtitle": "",
+    "description": "Esta pessoa será contatada se você deixar de confirmar.",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Maria Silva",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "maria@exemplo.com",
+    "confirmEmailLabel": "Confirmar e-mail",
+    "confirmEmailPlaceholder": "maria@exemplo.com",
+    "emailMismatch": "Os e-mails não coincidem",
+    "ownEmailError": "Você não pode usar seu próprio e-mail como contato de confiança.",
+    "invalidEmail": "Insira um e-mail válido.",
+    "save": "Salvar Contato",
+    "saving": "Salvando...",
+    "saved": "Contato salvo!",
+    "deleteConfirm": "Tem certeza que deseja excluir este contato?",
+    "remove": "Excluir",
+    "addContact": "Adicionar contato",
+    "contactCounter": "{current} de {max} contatos",
+    "noContact": "Sem contato de confiança",
+    "proRequired": "Contato de confiança requer plano Pro",
+    "newContactTitle": "Novo Contato de Confiança",
+    "errorCreating": "Erro ao salvar o contato",
+    "howItWorks": {
+      "title": "Como funciona?",
+      "item1": "Você pode adicionar até 3 contatos de confiança com o plano Pro.",
+      "item2": "Quando você atribuir um contato a uma mensagem, enviaremos um e-mail para notificá-lo.",
+      "item3": "Seus contatos não podem ver o conteúdo de suas mensagens."
+    },
+    "emptyStateNote": "Quando você adicionar um contato, recomendamos contar a ele que você o escolheu. Saber que você confia nele faz com que tudo tenha mais sentido quando chegar o momento.",
+    "listNote": "Você já avisou a eles? Que seus contatos saibam que você os escolheu faz com que suas mensagens cheguem com o peso que merecem."
+  },
+  "stripe": {
+    "upgrade": "Melhorar para PRO",
+    "upgradeModal": "Melhorar para PRO por apenas\nUSD 10 por ano",
+    "upgrading": "Redirecionando...",
+    "manageSub": "Gerenciar Assinatura",
+    "proBadge": "PRO",
+    "freeBadge": "GRÁTIS",
+    "proPrice": "Apenas $10/ano!",
+    "proFeatures": "Mensagens ilimitadas, gravação de vídeo, até 3 pessoas de confiança.",
+    "upgradeSuccess": "Bem-vindo ao Pro! 🎉",
+    "upgradeCancelled": "Melhoria cancelada"
+  },
+  "admin": {
+    "title": "Painel de Administração",
+    "kpis": {
+      "totalUsers": "Total de Usuários",
+      "paidUsers": "Usuários Pagos",
+      "storageUsed": "Armazenamento",
+      "emailsSent": "E-mails Enviados",
+      "inRange": "No intervalo",
+      "active": "Ativos",
+      "today": "Hoje"
+    },
+    "delivery": {
+      "title": "Métricas de Entrega",
+      "health": {
+        "title": "Saúde da Plataforma",
+        "healthy": "Saudável",
+        "warning": "Alerta",
+        "critical": "Crítico"
+      },
+      "alerts": {
+        "title": "Alertas do Sistema",
+        "system_stall": "Nenhuma mensagem processada no período de 24h. Sistema potencialmente parado.",
+        "low_success_rate": "Taxa de sucesso abaixo do limite esperado ({value}%).",
+        "finalize_failure": "Falha crítica na finalização da entrega: {value} mensagem(s).",
+        "reclaim_detected": "Recuperação de mensagens 'stale' detectada: {value} mensagem(s)."
+      },
+      "errors": {
+        "title": "Erro de Entrega",
+        "fetchFailed": "Não foi possível carregar as métricas de entrega."
+      },
+      "tabs": {
+        "total": "Total",
+        "date": "Por Data",
+        "checkin": "Check-in"
+      },
+      "stats": {
+        "processed": "Processados",
+        "delivered": "Entregues",
+        "sendFailed": "Falhas no Envio",
+        "finalizeFailed": "Falhas na Finalização",
+        "staleReclaims": "Recuperação Stale",
+        "successRate": "Taxa de Sucesso"
+      }
+    },
+    "filters": {
+      "title": "Filtros",
+      "fromDate": "Desde",
+      "toDate": "Até",
+      "clear": "Limpar"
+    },
+    "sidebar": {
+      "dashboard": "Painel de Controle",
+      "users": "Usuários",
+      "back": "Voltar para o App"
+    },
+    "users": {
+      "title": "Gestão de Usuários",
+      "searchPlaceholder": "Buscar por e-mail...",
+      "noResults": "Não foram encontrados usuários.",
+      "loading": "Carregando...",
+      "table": {
+        "email": "E-mail",
+        "joined": "Registro",
+        "plan": "Plano",
+        "renewal": "Renovação",
+        "planPro": "Pro",
+        "planFree": "Free",
+        "statusActive": "Ativo",
+        "statusTrialing": "Teste",
+        "statusPastDue": "Vencido",
+        "statusCanceled": "Cancelado",
+        "statusInactive": "Inativo",
+        "messages": "Mensagens",
+        "storage": "Espaço",
+        "emails": "E-mails",
+        "actions": "Ações"
+      }
+    },
+    "analytics": {
+      "title": "Analítica de Produto",
+      "funnel": "Funil de Conversão",
+      "events": "Contagem de Eventos",
+      "steps": {
+        "signup": "Registros",
+        "activation": "Primeira Mensagem",
+        "checkout": "Checkout Iniciado",
+        "conversion": "Convertido para Pro"
+      },
+      "rates": {
+        "activation": "Taxa de Ativação",
+        "conversion": "Taxa de Conversão"
+      }
+    },
+    "accessDenied": {
+      "title": "Acesso Negado",
+      "message": "Você não tem permissão para ver este painel."
+    },
+    "rateLimited": "Muitas solicitações. Por favor, aguarde um momento.",
+    "actions": {
+      "export": "Exportar CSV",
+      "refresh": "Atualizar",
+      "reset": "Reiniciar",
+      "copy": "Copiar",
+      "copied": "Copiado!",
+      "close": "Fechar"
+    },
+    "presets": {
+      "today": "Hoje",
+      "last7": "Últimos 7 dias",
+      "last30": "Últimos 30 dias",
+      "thisMonth": "Este Mês",
+      "lastMonth": "Mês Passado"
+    },
+    "userDetail": {
+      "title": "Detalhes do Usuário",
+      "id": "ID de Usuário",
+      "email": "E-mail",
+      "created": "Criado",
+      "plan": "Plano",
+      "status": "Estado",
+      "stats": "Estatísticas",
+      "messages": "Mensagens",
+      "contacts": "Contatos",
+      "storage": "Armazenamento",
+      "emails": "E-mails Enviados"
+    }
+  },
+  "emails": {
+    "common": {
+      "footerSignature": "Carry my Words",
+      "tagline": "mensagens que viajam no tempo",
+      "externalFooter": "Carry my Words · carrymywords.com",
+      "dashboardLink": "Painel",
+      "supportLink": "Suporte"
+    },
+    "magicLink": {
+      "subject": "Sua conta está pronta — ative seu acesso agora",
+      "subjectAdmin": "Acesso de administrador - Carry my Words",
+      "title": "Você já faz parte\nde algo especial.",
+      "adminBadge": "Acesso de administrador",
+      "intro": "Você criou sua conta no Carry my Words. Agora você pode começar a gravar mensagens para o futuro — para alguém que você ama, ou para você mesmo.\n\nUse o link a seguir para ativar sua conta e configurar sua senha:",
+      "button": "Ativar minha conta",
+      "secondary": "Link de uso único · Expira em 10 minutos",
+      "ignore": "Se você não criou esta conta, pode ignorar esta mensagem.",
+      "linkFallback": "Se o botão não funcionar, copie este link no seu navegador:"
+    },
+    "messageDelivery": {
+      "subject": "Você tem uma mensagem via Carry my Words",
+      "ctaSubject": "{senderName} deixou uma mensagem para você",
+      "ctaIntro": "Alguém pensou em você. Guardou algo para este momento exato.",
+      "ctaButton": "Ver minha mensagem",
+      "contentHidden": "Esta mensagem viajou no tempo para chegar até você.",
+      "linkValid": "Link válido por 15 dias.",
+      "footer": "Esta mensagem foi enviada através do Carry my Words. Se tiver alguma dúvida, visite carrymywords.com"
+    },
+    "checkinReminder1": {
+      "subject": "Você está bem?",
+      "eyebrow": "Check-in",
+      "heroTitle": "Você está\nbem?",
+      "body": {
+        "line1": "Este é o seu primeiro aviso de confirmação de atividade.",
+        "line2": "Suas mensagens continuam salvas e protegidas. Só precisamos saber que você está ativo.",
+        "line3": "Se você estiver bem, pode confirmar com um único clique:",
+        "cta": "Confirmar que estou bem",
+        "footer": "Se você não puder responder agora, não tem problema.\nTentaremos novamente mais tarde."
+      }
+    },
+    "checkinReminder2": {
+      "subject": "Continuamos sem notícias suas",
+      "eyebrow": "Segundo aviso",
+      "heroTitle": "Continuamos sem\nsaber de você.",
+      "body": {
+        "line1": "Há alguns dias tentamos entrar em contato com você, mas não recebemos resposta.",
+        "line2": "Sabemos que muita coisa pode acontecer... mas também que às vezes um simples gesto pode trazer tranquilidade.",
+        "line3": "Se você estiver bem, pode confirmar no link a seguir:",
+        "cta": "Confirmar que estou bem",
+        "footer": "Só queremos saber se você está bem. Nada mais."
+      }
+    },
+    "checkinReminder3": {
+      "subject": "É importante que possamos saber de você",
+      "eyebrow": "Aviso importante",
+      "heroTitle": "Precisamos\nsaber de você.",
+      "body": {
+        "line1": "Tentamos entrar em contato em várias ocasiões, mas ainda não recebemos resposta.",
+        "line2": "Para garantir que tudo esteja bem, precisamos da sua confirmação.",
+        "line3": "Se você estiver bem, pode confirmar no link a seguir:",
+        "cta": "Confirmar que estou bem",
+        "footer": "Caso não consigamos entrar em contato, contaremos com a pessoa de confiança que você escolheu.\n\nCom sua confirmação, não será necessário."
+      }
+    },
+    "trustedContactNotify": {
+      "subject": "Precisamos da sua ajuda com {senderName}",
+      "title": "Precisamos da sua ajuda",
+      "tagline": "mensagens que viajam no tempo",
+      "eyebrow": "Pessoa de confiança",
+      "heroTitle": "Você sabe como\nestá {senderName}?",
+      "intro": "Há algum tempo, {senderName} escolheu você como sua pessoa de confiança no Carry my Words — uma plataforma onde as pessoas guardam mensagens para o futuro.",
+      "body": "Há vários dias ele não responde às suas confirmações de atividade. Antes de tomar qualquer ação, queremos perguntar a você primeiro: você sabe como ele está?",
+      "secondary": "Com um clique você pode nos indicar o estado dele. Levará apenas um momento.",
+      "button": "Indicar estado",
+      "ignore": "Se você acredita que isso é um erro, pode ignorar esta mensagem."
+    },
+    "trustedContactVerify": {
+      "subject": "{senderFirstName} precisa da sua ajuda",
+      "eyebrow": "{contactFirstName}, precisamos da sua ajuda",
+      "eyebrowUnknown": "Precisamos da sua ajuda",
+      "title": "Você sabe como\nestá {senderFirstName}?",
+      "intro": "{senderFirstName} tem mensagens salvas no Carry my Words e parou de responder às suas confirmações de atividade. Como pessoa de confiança, você é quem pode nos ajudar a entender o que está acontecendo.",
+      "boxTitle": "{senderFirstName} não está disponível?",
+      "boxText": "Se você confirmar que ele não está disponível, suas mensagens serão enviadas a quem ele escolheu.",
+      "button": "Verificar estado",
+      "secondary": "Se você souber que ele está bem, use o mesmo link para reportar. Expira em 48 horas.",
+      "tagline": "mensagens que viajam no tempo"
+    },
+    "trustedContactInvitation": {
+      "subject": "{{firstName}}, alguém pensou em você",
+      "preheader": "{{contactFirstName}}, alguém pensou em você",
+      "heading": "Escolheram você para\nalgo importante.",
+      "p1": "Há pessoas que pensam nos outros antes mesmo de o momento chegar. <strong>{{senderFullName}}</strong> é uma delas.",
+      "p2": "{{senderFirstName}} escolheu você como sua <strong>pessoa de confiança</strong> no Carry my Words — uma plataforma para deixar mensagens que chegarão no momento certo, ou quando ele mesmo não puder mais enviá-las.",
+      "roleTitle": "O que significa este papel?",
+      "roleP1": "Se em algum momento {{senderFirstName}} deixar de responder às confirmações de atividade da plataforma, é possível que entremos em contato com você para verificar sua situação antes de proceder com o envio de suas mensagens agendadas.",
+      "roleP2": "<strong>Você não precisa fazer nada por enquanto.</strong> Só queríamos que soubesse que {{senderFirstName}} confiou em você para este papel.",
+      "moreTitle": "Quer saber mais?",
+      "moreText": "{{senderFirstName}} é a melhor pessoa para contar por que ele escolheu você. Uma conversa com ele explicará melhor do que qualquer e-mail o que isso significa.",
+      "thanks": "Obrigado por fazer parte disso.",
+      "signature": "— A equipe do Carry my Words",
+      "footerLogo": "Carry my Words",
+      "footerLegal": "Você recebeu este e-mail porque alguém o escolheu como contato de confiança. Se você acredita que é um erro, pode ignorar esta mensagem.",
+      "tagline": "mensagens que viajam no tempo"
+    },
+    "messageSpecial": {
+      "subject": "Mensagens que viajam no tempo",
+      "preheader": "{{RECIPIENT_NAME}}, hoje é um dia especial",
+      "heading": "Alguém que ama você\nsabia disso antecipadamente.",
+      "p1": "{{SENDER_NAME}} programou uma mensagem para você há algum tempo, com a intenção de que você a recebesse exatamente hoje.",
+      "p2": "É algo pensado, escolhido e guardado com cuidado até este momento.",
+      "button": "Acessar a mensagem",
+      "closing": "Porque algumas palavras merecem chegar no momento certo.",
+      "signature": "— A equipe do Carry my Words",
+      "linkFallback": "Se o botão não funcionar, copie e cole este link no seu navegador:",
+      "tagline": "mensagens que viajam no tempo."
+    },
+    "messagePosthumous": {
+      "subject": "Mensagens que viajam no tempo",
+      "epigraph": "Há pessoas que encontram a maneira de continuar presentes.",
+      "preheader": "{{RECIPIENT_NAME}}, há uma mensagem para você",
+      "heading": "{{SENDER_NAME}} preparou\numa mensagem para você.",
+      "p1": "{{SENDER_NAME}} guardou esta mensagem com cuidado, e pediu que ela chegasse até você neste momento.",
+      "p2": "Ele tinha coisas para dizer a você — embora não possa mais estar presente para dizê-las pessoalmente.",
+      "button": "Acessar a mensagem",
+      "linkFallback": "Você também pode copiar este link no seu navegador:",
+      "closing": "Porque há palavras que merecem chegar, não importa quando.",
+      "signature": "— A equipe do Carry my Words",
+      "footerLegal": "Você recebeu este e-mail porque alguém deixou uma mensagem para você. Se você acredita que é um erro, pode ignorar esta mensagem.",
+      "tagline": "mensagens que viajam no tempo"
+    },
+    "resetPassword": {
+      "subject": "Redefina sua senha do Carry my Words",
+      "eyebrow": "Sua conta",
+      "title": "Crie uma nova\nsenha.",
+      "intro": "Recebemos sua solicitação. Clique abaixo para poder entrar novamente com uma senha nova.",
+      "cta": "Criar nova senha",
+      "securityNote": "Este link expira em 1 hora. Se não foi você, pode ignorar este e-mail — sua conta está segura.",
+      "tagline": "mensagens que viajam no tempo"
+    },
+    "paymentFailed": {
+      "subject": "Problema com o pagamento da sua assinatura no Carry my Words",
+      "eyebrow": "Sua assinatura",
+      "title": "Não conseguimos\nprocessar seu pagamento.",
+      "intro": "Houve um problema com o pagamento da sua assinatura. Para que suas mensagens continuem protegidas e prontas para quando chegar o momento, atualize seu meio de pagamento.",
+      "action": "Atualizar meio de pagamento",
+      "footer": "Se tiver alguma dúvida, entre em contato com nossa equipe de suporte.",
+      "tagline": "mensagens que viajam no tempo"
+    }
+  },
+  "legal": {
+    "terms": {
+      "version": "Versão 1.0",
+      "lastUpdated": "Última atualização: Março 2026",
+      "title": "Termos de Serviço",
+      "sections": [
+        {
+          "heading": "1. Introdução e Aceitação",
+          "body": "Bem-vindo ao Carry my Words. Ao acessar ou utilizar nossa plataforma, você aceita formar um acordo vinculativo conosco sob estes termos. Se você não concordar, por favor, não utilize nosso serviço."
+        },
+        {
+          "heading": "2. Elegibilidade",
+          "body": "Você deve ter pelo menos 16 anos para utilizar o Carry my Words. Menores de idade exigem o consentimento de um pai ou tutor para realizar compras ou utilizar funções premium."
+        },
+        {
+          "heading": "3. Segurança da Conta",
+          "body": "Você é responsável por manter a confidencialidade e segurança da sua conta, incluindo seus links mágicos e senhas. Notifique-nos imediatamente sobre qualquer uso não autorizado."
+        },
+        {
+          "heading": "4. Uso Aceitável",
+          "body": "O Carry my Words foi projetado para mensagens pessoais e afetivas. Você concorda em não utilizar nossa plataforma para distribuir conteúdo ilegal, assédio, ameaças, spam ou material malicioso."
+        },
+        {
+          "heading": "5. Conteúdo do Usuário e Propriedade",
+          "body": "Você mantém a propriedade total e os direitos de propriedade intelectual sobre todas as suas mensagens de texto, áudio e vídeo. Você apenas nos concede a licença necessária para armazenar seus dados de forma segura e entregá-los estritamente de acordo com as regras e prazos que você estabelecer."
+        },
+        {
+          "heading": "6. Entrega de Mensagens e Programação",
+          "body": "Embora façamos o nosso melhor para alcançar uma entrega precisa, nosso serviço depende de provedores de e-mail de terceiros. Portanto, não podemos garantir 100% de tempo de atividade, a chegada à caixa de entrada principal ou uma formatação idêntica no lado do destinatário."
+        },
+        {
+          "heading": "7. Contatos de Confiança e Check-ins",
+          "body": "Ao atribuir contatos de confiança, você nos autoriza a contatá-los se você não responder aos seus check-ins durante o período especificado. Não somos responsáveis se os dados de contato que você fornecer estiverem incorretos, desatualizados ou não responderem."
+        },
+        {
+          "heading": "8. Taxas e Assinaturas",
+          "body": "Certas funções (funções Pro) exigem pagamento através do nosso processador de pagamentos autorizado (Stripe). As assinaturas são renovadas automaticamente ao final do seu ciclo de faturamento, a menos que você as cancele antecipadamente."
+        },
+        {
+          "heading": "9. Política de Reembolso",
+          "body": "Você pode solicitar um reembolso total dentro de 14 dias após a sua compra inicial, desde que não tenha utilizado ativamente as funções premium (como agendar múltiplas mensagens ou carregar vídeo/áudio). Fora deste período, os pagamentos não são reembolsáveis."
+        },
+        {
+          "heading": "10. Isenção de Responsabilidade",
+          "body": "Nosso serviço é fornecido \"como está\" e \"conforme disponível\". Carry my Words é uma ferramenta de mensageria; não substitui um testamento legal, diretivas de saúde nem assessoria legal ou financeira profissional."
+        },
+        {
+          "heading": "11. Limite de Responsabilidade",
+          "body": "Na máxima extensão permitida por lei, nossa responsabilidade total para com você por qualquer dano, perda ou causa de ação não excederá o valor total que você nos pagou nos doze (12) meses anteriores ao incidente. Não assumimos qualquer responsabilidade por problemas emocionais decorrentes de mensagens atrasadas ou não entregues."
+        },
+        {
+          "heading": "12. Rescisão",
+          "body": "Reservamo-nos o direito de suspender ou encerrar sua conta a nosso critério exclusivo se acreditarmos razoavelmente que você violou estes Termos de Serviço, em particular as disposições sobre uso aceitável."
+        },
+        {
+          "heading": "13. Lei Aplicável",
+          "body": "Estes termos são regidos pelas leis do Estado de Delaware, Estados Unidos, sem levar em conta seus princípios de conflito de leis."
+        },
+        {
+          "heading": "14. Alterações e Contato",
+          "body": "Podemos atualizar ocasionalmente estes termos (refletido no número da versão acima). Se tiver perguntas sobre estes termos, por favor, entre em contato conosco."
+        },
+        {
+          "heading": "15. Escopo do serviço",
+          "body": "Carry my Words é um serviço de entrega de mensagens pessoais. Para fins de seu uso, é importante notar que: não é um testamento nem substitui qualquer instrumento legal; não constitui assessoria legal, financeira ou de qualquer outro tipo; não substitui uma pessoa nem atua em seu nome; não toma decisões pelo usuário. Carry my Words apenas entrega as mensagens que o usuário deixou gravadas, exatamente como foram registradas, no momento e para as pessoas que o usuário definiu."
+        }
+      ]
+    },
+    "privacy": {
+      "version": "Versão 1.0",
+      "lastUpdated": "Última atualização: Março 2026",
+      "title": "Política de Privacidade",
+      "sections": [
+        {
+          "heading": "1. Introdução",
+          "body": "Estamos profundamente comprometidos com sua privacidade. Esta política explica como coletamos, utilizamos e protegemos suas informações ao usar o Carry my Words. Atuamos como um processador de dados para o conteúdo de suas mensagens."
+        },
+        {
+          "heading": "2. Dados que Coletamos",
+          "body": "Coletamos as informações que você nos fornece diretamente: seu e-mail, nome, endereço IP (por razões de segurança) e o conteúdo bruto das mensagens (texto, áudio e vídeo) que você compõe."
+        },
+        {
+          "heading": "3. Conta e Autenticação",
+          "body": "Lidamos com a autenticação através de tokens seguros (links mágicos) e senhas criptografadas através do Supabase Auth. Não temos acesso à sua senha em formato bruto."
+        },
+        {
+          "heading": "4. Pagamentos (Stripe)",
+          "body": "O processamento de pagamentos é gerenciado de forma segura pelo Stripe. Não armazenamos, processamos nem transmitimos o número completo do seu cartão de crédito em nossos servidores."
+        },
+        {
+          "heading": "5. Armazenamento e Segurança de Conteúdo",
+          "body": "Seus arquivos de texto, áudio e vídeo são criptografados e armazenados de forma segura nas bases de dados e repositórios de armazenamento do Supabase. Suas mensagens são mantidas estritamente privadas e só são liberadas quando suas condições de entrega definidas são cumpridas."
+        },
+        {
+          "heading": "6. Cookies e Rastreamento",
+          "body": "Utilizamos cookies estritamente necessários para manter sua sessão e garantir a segurança da plataforma. Adotamos uma abordagem minimalista para o rastreamento e não empregamos cookies publicitários invasivos de terceiros."
+        },
+        {
+          "heading": "7. Analítica",
+          "body": "Podemos coletar e analisar eventos anônimos de uso (por exemplo, o número de eventos de 'Mensagem criada') para medir e melhorar nossa aplicação. Esses dados nunca incluem nem expõem o conteúdo pessoal de suas mensagens."
+        },
+        {
+          "heading": "8. Retenção e Exclusão",
+          "body": "Você tem controle total sobre suas mensagens ativas e pode excluí-las a qualquer momento. Ao excluir uma mensagem, ela é apagada permanentemente de nossas bases de dados ativas junto com os arquivos multimídia anexados."
+        },
+        {
+          "heading": "9. Direitos do Usuário",
+          "body": "Dependendo da sua localização (por exemplo, sob GDPR ou CCPA), você tem o direito de acessar, corrigir, exportar ou solicitar a exclusão de seus dados pessoais."
+        },
+        {
+          "heading": "10. Privacidade Infantil",
+          "body": "Carry my Words não é direcionado a menores de 13 anos e não coletamos intencionalmente dados pessoais deles."
+        },
+        {
+          "heading": "11. Transferências Internacionais",
+          "body": "Seus dados são armazenados principalmente em servidores localizados nos Estados Unidos. Ao utilizar nosso serviço, você aceita esta transferência e processamento internacional de forma segura."
+        },
+        {
+          "heading": "12. Medidas de Segurança",
+          "body": "Aplicamos Segurança em Nível de Linha (RLS) rigorosa em nosso banco de dados, criptografamos todos os dados em trânsito via TLS e restringimos fortemente o acesso administrativo aos nossos ambientes de produção."
+        },
+        {
+          "heading": "13. Contato",
+          "body": "Se tiver alguma dúvida, preocupação ou solicitação sobre esta Política de Privacidade, por favor, entre em contato conosco."
+        }
+      ]
+    }
+  },
+  "contact": {
+    "title": "Contato",
+    "emailLabel": "E-mail",
+    "emailPlaceholder": "voce@exemplo.com",
+    "subjectLabel": "Assunto",
+    "subjectPlaceholder": "Como podemos ajudar?",
+    "messageLabel": "Mensagem",
+    "messagePlaceholder": "Escreva sua mensagem aqui...",
+    "submit": "Enviar Mensagem",
+    "sending": "Enviando...",
+    "success": "Mensagem enviada com sucesso!",
+    "error": "Erro ao enviar a mensagem. Por favor, tente novamente.",
+    "invalid": "Formato de envio inválido. Por favor, verifique seus dados.",
+    "rateLimit": "Muitas solicitações. Por favor, tente novamente mais tarde."
+  },
+  "messageVisualizer": {
+    "specialLabel": "MENSAGEM ESPECIAL",
+    "posthumousLabel": "MENSAGEM PÓSTUMA",
+    "receivedLabel": "MENSAGEM RECEBIDA",
+    "fromLabel": "De",
+    "voiceLabel": "Mensagem de voz",
+    "videoOverlay": "Toque para ver a mensagem",
+    "metaSent": "Enviado em",
+    "metaSaved": "Salvo para este momento",
+    "cta": {
+      "heading": "Porque suas palavras importam",
+      "text": "Leve suas mensagens além do tempo. Guarde o que você sente hoje para que chegue amanhã.",
+      "button": "Quero enviar minhas palavras",
+      "subtext": "Carry my Words — Mensagens que viajam no tempo"
+    },
+    "error": {
+      "title": "Mensagem não encontrada",
+      "text": "O link é inválido ou expirou.",
+      "button": "Voltar ao início"
+    }
+  },
+  "verifyStatus": {
+    "loading": "Verificando link...",
+    "title": "Você sabe como está {senderName}?",
+    "subtitle": "Sua resposta nos ajuda a agir com cautela antes de tomar qualquer decisão.",
+    "options": {
+      "alive": {
+        "label": "Está bem",
+        "description": "Tive contato recente e ele está bem."
+      },
+      "critical": {
+        "label": "Está em uma situação grave",
+        "description": "Sei que ele não pode responder neste momento.",
+        "hint": "internação · falta de conexão · outra situação semelhante"
+      },
+      "deceased": {
+        "label": "Faleceu",
+        "description": "Sei que {senderName} faleceu.",
+        "secondary": "Pediremos uma confirmação adicional antes de avançar."
+      },
+      "unknown": {
+        "label": "Não tenho informações",
+        "description": "Não tenho informações recentes sobre sua situação."
+      }
+    },
+    "commentLabel": "Você quer adicionar algo?",
+    "commentPlaceholder": "Opcional. Qualquer detalhe que você queira compartilhar.",
+    "submit": "Enviar resposta",
+    "submitting": "Enviando...",
+    "deceasedConfirm": {
+      "title": "Confirmar esta resposta?",
+      "body": "Esta resposta pode iniciar o processo de entrega de mensagens salvas.\nDeseja confirmar que {senderName} faleceu?",
+      "confirm": "Confirmar",
+      "back": "Voltar"
+    },
+    "success": {
+      "title": "Tudo está bem",
+      "body": "Obrigado por confirmar.\nNão é necessário fazer mais nada.\n\nNão vamos entrar em contato com ninguém.\nTudo continua como você configurou.",
+      "close": "Você pode fechar esta página quando quiser."
+    },
+    "errors": {
+      "invalidToken": "Este link não é válido. Verifique se você o copiou corretamente.",
+      "expiredToken": "Este link já expirou. Os links de verificação têm validade limitada.",
+      "alreadyUsed": "Este link já foi utilizado. A resposta foi registrada anteriormente.",
+      "noOption": "Por favor, escolha uma das opções antes de continuar.",
+      "generic": "Houve um problema ao enviar sua resposta. Por favor, tente novamente."
+    },
+    "senderFallback": "o remetente",
+    "footerNote": "Link de verificação seguro"
+  }
+}

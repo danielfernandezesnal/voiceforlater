@@ -294,6 +294,8 @@
   "auth": {
     "login": "Log in",
     "logout": "Log out",
+    "continueWithGoogle": "Continue with Google",
+    "orContinueWithEmail": "Or continue with email",
     "emailLabel": "Email address",
     "passwordLabel": "Password",
     "emailPlaceholder": "you@example.com",

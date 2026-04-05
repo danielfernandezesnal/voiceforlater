@@ -290,6 +290,8 @@
   "auth": {
     "login": "Iniciar Sesión",
     "logout": "Cerrar Sesión",
+    "continueWithGoogle": "Continuar con Google",
+    "orContinueWithEmail": "O continuar con email",
     "emailLabel": "Correo electrónico",
     "passwordLabel": "Contraseña",
     "emailPlaceholder": "tu@ejemplo.com",
