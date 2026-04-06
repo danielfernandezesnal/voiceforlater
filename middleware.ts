@@ -64,7 +64,8 @@ export async function middleware(request: NextRequest) {
     }
 
     // API routes: only needed session refresh (done above), skip locale logic
-    if (pathname.startsWith('/api/') || pathname.startsWith('/_next/') || pathname.includes('.')) {
+    // Also skip OAuth callback so Supabase can complete the auth flow without locale redirect
+    if (pathname.startsWith('/api/') || pathname.startsWith('/_next/') || pathname.startsWith('/auth/callback') || pathname.includes('.')) {
         return response;
     }
 
