@@ -76,10 +76,13 @@ export function Step5Review({
     }
 
     const getDeliveryText = () => {
-        if (data.deliveryMode === 'date') {
+        if (data.deliveryMode === 'date' && data.deliverAt) {
             return dictionary.deliveryDate.replace('{date}', formatDate(data.deliverAt))
         }
-        return dictionary.deliveryCheckin
+        if (data.deliveryMode === 'checkin') {
+            return dictionary.deliveryCheckin
+        }
+        return '—'
     }
 
     const reviewItems = [

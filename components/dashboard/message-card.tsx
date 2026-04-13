@@ -53,12 +53,8 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
     const deliverAt = deliveryRule?.deliver_at;
     const deliveryMode = deliveryRule?.mode;
 
-    const now = new Date();
-    const isPastDelivery = deliverAt ? new Date(deliverAt) < now : false;
-    const isSent = status === 'scheduled' && deliverAt && isPastDelivery;
-    const finalStatus = isSent ? 'delivered' : status;
-
-    const isDelivered = finalStatus === 'delivered';
+    const isDelivered = status === 'delivered';
+    const isSent = isDelivered;
     const isLoading = isDeleting || isPending;
 
     // Formatting Helpers
@@ -106,7 +102,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                     {dict.dashboard.messageCard.status.delivered}
                 </span>
             ) : (
-                <span className={`inline-flex items-center px-2 py-1 text-xs rounded-full ${status === 'scheduled' ? 'bg-primary/10 text-primary' : status === 'delivered' ? 'bg-[#34D399] text-white' : 'bg-secondary text-muted-foreground'}`}>
+                <span className={`inline-flex items-center px-2 py-1 text-xs rounded-full ${status === 'scheduled' ? 'bg-primary/10 text-primary' : 'bg-secondary text-muted-foreground'}`}>
                     {dict.dashboard.messageCard.status[status as 'draft' | 'scheduled' | 'delivered']}
                 </span>
             )}
@@ -194,7 +190,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                                 {dict.dashboard.messageCard.status.delivered}
                             </span>
                         ) : (
-                            <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '100px', background: status === 'scheduled' ? 'rgba(196,98,58,0.1)' : status === 'delivered' ? 'rgba(52,211,153,0.12)' : '#f0ece4', color: status === 'scheduled' ? '#c4622a' : status === 'delivered' ? '#059669' : '#9a8070' }}>
+                            <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '100px', background: status === 'scheduled' ? 'rgba(196,98,58,0.1)' : '#f0ece4', color: status === 'scheduled' ? '#c4622a' : '#9a8070' }}>
                                 {dict.dashboard.messageCard.status[status as 'draft' | 'scheduled' | 'delivered']}
                             </span>
                         )}
