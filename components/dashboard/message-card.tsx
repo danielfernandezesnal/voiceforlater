@@ -53,12 +53,8 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
     const deliverAt = deliveryRule?.deliver_at;
     const deliveryMode = deliveryRule?.mode;
 
-    const now = new Date();
-    const isPastDelivery = deliverAt ? new Date(deliverAt) < now : false;
-    const isSent = status === 'scheduled' && deliverAt && isPastDelivery;
-    const finalStatus = isSent ? 'delivered' : status;
-
-    const isDelivered = finalStatus === 'delivered';
+    const isDelivered = status === 'delivered';
+    const isSent = isDelivered;
     const isLoading = isDeleting || isPending;
 
     // Formatting Helpers
