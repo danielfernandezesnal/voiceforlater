@@ -23,9 +23,10 @@ interface WizardClientProps {
     initialData?: Partial<WizardData>
     messageId?: string
     userEmail: string
+    isLimitReached?: boolean
 }
 
-function WizardContent({ locale, dictionary, userPlan, initialData, messageId, userEmail }: WizardClientProps) {
+function WizardContent({ locale, dictionary, userPlan, initialData, messageId, userEmail, isLimitReached }: WizardClientProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
     const isReadOnly = searchParams.get('readonly') === 'true'
@@ -34,6 +35,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [tosAccepted, setTosAccepted] = useState(false)
+    const [showLimitModal, setShowLimitModal] = useState(!!isLimitReached)
 
     // Handle ?new=true to reset wizard
     useEffect(() => {
@@ -185,6 +187,38 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
 
     return (
         <div className="min-h-[calc(100vh-4rem)] py-8">
+            {/* Limit Reached Modal */}
+            {showLimitModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="w-full max-w-sm p-6 rounded-2xl shadow-2xl border border-border animate-in zoom-in-95 duration-200" style={{ background: '#F5F0E8' }}>
+                        <div className="flex flex-col items-center text-center space-y-4">
+                            <span className="text-3xl">🔒</span>
+                            <h3 className="font-serif text-xl font-semibold text-foreground">
+                                {dictionary.dashboard.limitReached.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                                {dictionary.dashboard.limitReached.description}
+                            </p>
+                            <div className="flex flex-col gap-3 w-full pt-2">
+                                <Link
+                                    href={`/${locale}/dashboard/plan`}
+                                    className="w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-center text-white transition-all hover:opacity-90"
+                                    style={{ background: '#C4623A' }}
+                                >
+                                    {dictionary.dashboard.limitReached.upgrade}
+                                </Link>
+                                <Link
+                                    href={`/${locale}/dashboard`}
+                                    className="w-full py-2 text-sm text-muted-foreground hover:text-foreground transition-colors text-center"
+                                >
+                                    {dictionary.dashboard.limitReached.cancel}
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
                 <Link

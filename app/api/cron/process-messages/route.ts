@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthorized } from "@/lib/cron-auth";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
-import { isValidLocale, Locale } from '@/lib/i18n';
+import { isValidLocale, Locale, defaultLocale } from '@/lib/i18n';
 import { sendMessageDeliveryEmail } from '@/components/emails/message-delivery-email';
 import { logDeliveryEvent } from "@/lib/delivery-telemetry";
 
@@ -156,8 +156,8 @@ export async function GET(request: NextRequest) {
             }
 
             try {
-                const localeRaw = profile?.locale || 'en';
-                const locale = (isValidLocale(localeRaw) ? localeRaw : 'en') as Locale;
+                const localeRaw = profile?.locale || defaultLocale;
+                const locale = (isValidLocale(localeRaw) ? localeRaw : defaultLocale) as Locale;
 
                 // 3. GENERATE LINK AND SEND
                 const appUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '');

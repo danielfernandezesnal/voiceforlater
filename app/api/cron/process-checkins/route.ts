@@ -5,7 +5,7 @@ import { Resend } from "resend";
 import { DEFAULT_SENDER } from "@/lib/resend";
 import { type Plan, getMaxReminders } from "@/lib/plans";
 import crypto from 'crypto';
-import { getDictionary, isValidLocale, Locale } from '@/lib/i18n';
+import { getDictionary, isValidLocale, Locale, defaultLocale } from '@/lib/i18n';
 import { sendCheckinReminder1Email } from '@/components/emails/checkin-reminder-1-email';
 import { sendCheckinReminder2Email } from '@/components/emails/checkin-reminder-2-email';
 import { sendCheckinReminder3Email } from '@/components/emails/checkin-reminder-3-email';
@@ -96,8 +96,8 @@ export async function GET(request: NextRequest) {
                     .single();
 
                 const plan = (profile?.plan as Plan) || "free";
-                const localeRaw = profile?.locale || 'en';
-                const locale = (isValidLocale(localeRaw) ? localeRaw : 'en') as Locale;
+                const localeRaw = profile?.locale || defaultLocale;
+                const locale = (isValidLocale(localeRaw) ? localeRaw : defaultLocale) as Locale;
                 const dict = await getDictionary(locale);
                 const maxReminders = getMaxReminders(plan);
 
@@ -204,7 +204,7 @@ export async function GET(request: NextRequest) {
                                 .eq("action", "user-checkin-reminder-1");
 
                             if (!existingTokens || existingTokens.length === 0) {
-                                const { tokenHash } = generateToken();
+                                const { rawToken, tokenHash } = generateToken();
                                 const expiresAt = new Date(now);
                                 expiresAt.setHours(expiresAt.getHours() + TOKEN_EXPIRY_HOURS);
 
@@ -219,7 +219,10 @@ export async function GET(request: NextRequest) {
                                     });
 
                                 if (!tokenError) {
-                                    const confirmUrl = `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/confirmar-actividad`;
+                                    // Include the raw token in the URL so the user can confirm
+                                    // with a single click without needing to log in
+                                    const appUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '');
+                                    const confirmUrl = `${appUrl}/${locale}/confirmar-actividad?token=${rawToken}`;
                                     const { error: sendError } = await sendCheckinReminder1Email(userEmail, confirmUrl, locale);
 
                                     if (sendError) {
