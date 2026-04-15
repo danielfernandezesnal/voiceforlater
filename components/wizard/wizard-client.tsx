@@ -117,19 +117,28 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                 // and NO new recording blob, pass the URL/path to the server
                 formData.append('existingAudioUrl', data.existingAudioUrl)
             } else if (data.audioBlob) {
+                // Ensure the blob is a valid Blob instance (IndexedDB can return plain objects in some browsers/Safari iOS)
+                let blobToUpload: Blob = data.audioBlob
+                if (!(blobToUpload instanceof Blob)) {
+                    blobToUpload = new Blob([blobToUpload as BlobPart], { type: 'video/webm' })
+                }
                 if (data.messageType === 'video') {
                     const filename = data.audioBlob instanceof File ? data.audioBlob.name : 'recording.webm'
-                    formData.append('video', data.audioBlob, filename)
+                    formData.append('video', blobToUpload, filename)
                 } else {
                     const filename = data.audioBlob instanceof File ? data.audioBlob.name : 'recording.webm'
-                    formData.append('audio', data.audioBlob, filename)
+                    formData.append('audio', blobToUpload, filename)
                 }
             }
 
             // Upload photos
             if (data.photos && data.photos.length > 0) {
                 data.photos.forEach((photo, i) => {
-                    formData.append(`photos[${i}]`, photo.file, photo.file.name)
+                    // Ensure file is a valid Blob instance before appending
+                    const fileBlob: Blob = photo.file instanceof Blob
+                        ? photo.file
+                        : new Blob([photo.file as BlobPart], { type: 'image/jpeg' })
+                    formData.append(`photos[${i}]`, fileBlob, photo.file?.name || `photo-${i}.jpg`)
                     formData.append(`photosCaptions[${i}]`, photo.caption || '')
                 })
             }
