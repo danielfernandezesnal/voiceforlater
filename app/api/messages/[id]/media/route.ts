@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { getAdminClient } from "@/lib/supabase/admin";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -30,14 +31,19 @@ export async function GET(
 
     const result: { audio: string | null, photos: string[] } = { audio: null, photos: [] };
 
+    // Use admin client for signed URL generation so storage RLS (which only allows
+    // file owners) does not block recipients from accessing the sender's files.
+    // Recipient access is already validated above via the .eq("recipients.email") check.
+    const adminSupabase = getAdminClient();
+
     if (message.audio_path) {
-        const { data } = await supabase.storage.from("audio").createSignedUrl(message.audio_path, 3600);
+        const { data } = await adminSupabase.storage.from("audio").createSignedUrl(message.audio_path, 3600);
         result.audio = data?.signedUrl || null;
     }
 
     if (message.photo_paths && Array.isArray(message.photo_paths)) {
         for (const path of message.photo_paths) {
-            const { data } = await supabase.storage.from("audio").createSignedUrl(path, 3600);
+            const { data } = await adminSupabase.storage.from("audio").createSignedUrl(path, 3600);
             if (data?.signedUrl) result.photos.push(data.signedUrl);
         }
     }

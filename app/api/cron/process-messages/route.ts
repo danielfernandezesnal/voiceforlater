@@ -160,19 +160,25 @@ export async function GET(request: NextRequest) {
                 const locale = (isValidLocale(localeRaw) ? localeRaw : 'en') as Locale;
 
                 // 3. GENERATE LINK AND SEND
+                const appUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '');
                 const { data: linkData } = await supabase.auth.admin.generateLink({
                     type: 'magiclink',
                     email: recipient.email,
                     options: {
-                        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/dashboard/received`
+                        // redirectTo is required by Supabase but we build our own link below
+                        redirectTo: `${appUrl}/${locale}/auth/callback`
                     }
                 });
 
-                if (!linkData?.properties?.action_link) {
+                if (!linkData?.properties?.hashed_token) {
                     throw new Error("Magic link generation failed");
                 }
 
-                const magicLink = linkData.properties.action_link;
+                const tokenHash = linkData.properties.hashed_token;
+                const actionType = linkData.properties.verification_type || 'magiclink';
+                // Build a direct callback URL with a `next` param so the recipient lands on
+                // the received messages page instead of the dashboard after logging in.
+                const magicLink = `${appUrl}/${locale}/auth/callback?token_hash=${tokenHash}&type=${actionType}&next=${encodeURIComponent(`/${locale}/dashboard/received`)}`;
 
                 // Use React email component
                 const { error: sendError } = await sendMessageDeliveryEmail(
