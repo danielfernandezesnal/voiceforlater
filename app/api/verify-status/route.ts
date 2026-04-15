@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import crypto from "crypto";
+import { releaseCheckinMessages } from "@/lib/release-logic";
 
 export const runtime = "nodejs";
 
@@ -185,7 +186,19 @@ export async function POST(request: NextRequest) {
             user_agent: ua,
         });
 
-        // 4. Return success — intentionally no release logic here
+        // 4. If deceased, trigger message release
+        if (contactStatus === "deceased") {
+            try {
+                await releaseCheckinMessages(verification.user_id);
+                console.log(`[verify-status] Released messages for deceased user ${verification.user_id}`);
+            } catch (releaseError) {
+                // Log error but don't fail the response to the contact
+                console.error(`[verify-status] Failed to release messages for user ${verification.user_id}:`, releaseError);
+                // Consider: crear evento de auditoría para retry manual si es crítico
+            }
+        }
+
+        // 5. Return success
         return NextResponse.json({
             success: true,
             status: contactStatus,

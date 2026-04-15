@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { WizardClient } from "@/components/wizard/wizard-client";
+import { getEffectivePlan } from "@/lib/plan-resolver";
+import { canCreateMessage } from "@/lib/plans";
 
 export const dynamic = 'force-dynamic'
 
@@ -38,12 +40,27 @@ export default async function CreateMessagePage({
         redirect(`/${locale}/dashboard/profile?onboarding=1`);
     }
 
-    const userPlan = (profile?.plan as 'free' | 'pro') || 'free';
+    const userPlan = (await getEffectivePlan(supabase, user.id)) as 'free' | 'pro';
     const dict = await getDictionary(locale);
+
+    // Check message limit so we can show the upgrade modal if reached
+    const { count: messageCount } = await supabase
+        .from('messages')
+        .select('*', { count: 'exact', head: true })
+        .eq('owner_id', user.id)
+        .neq('status', 'delivered');
+
+    const isLimitReached = !canCreateMessage(userPlan, messageCount || 0);
 
     return (
         <div className="container max-w-3xl mx-auto px-4">
-            <WizardClient locale={locale} dictionary={dict} userPlan={userPlan} userEmail={user.email ?? ''} />
+            <WizardClient
+                locale={locale}
+                dictionary={dict}
+                userPlan={userPlan}
+                userEmail={user.email ?? ''}
+                isLimitReached={isLimitReached}
+            />
         </div>
     );
 }
