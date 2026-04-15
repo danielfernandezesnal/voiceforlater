@@ -6,7 +6,7 @@
         },
         {
             "path": "/api/cron/process-messages?secret=rgV7iTxWIf3RGb3igMP2DfVVOOc1qa-Iyv7I0EFFXuYKolJ8c7ZXMg",
-            "schedule": "0 * * * *"
+            "schedule": "0 10 * * *"
         },
         {
             "path": "/api/cron/process-expired-tokens",
