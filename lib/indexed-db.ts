@@ -42,7 +42,20 @@ export async function getAudioDraft(): Promise<Blob | null> {
         const store = transaction.objectStore(STORE_NAME)
         const request = store.get('current-draft')
 
-        request.onsuccess = () => resolve(request.result || null)
+        request.onsuccess = () => {
+            const result = request.result
+            if (!result) {
+                resolve(null)
+                return
+            }
+            // Some browsers (Safari iOS) may return a plain object instead of a proper Blob instance
+            if (result instanceof Blob) {
+                resolve(result)
+            } else {
+                // Reconstruct a proper Blob from the raw data
+                resolve(new Blob([result as BlobPart], { type: 'audio/webm' }))
+            }
+        }
         request.onerror = () => reject(request.error)
     })
 }
