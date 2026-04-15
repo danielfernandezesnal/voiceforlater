@@ -62,7 +62,7 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
         setMounted(true);
     }, []);
 
-    const date = new Date(message.created_at).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', {
+    const date = new Date(message.delivered_at || message.created_at).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', {
         day: 'numeric',
         month: 'short',
         year: 'numeric'
