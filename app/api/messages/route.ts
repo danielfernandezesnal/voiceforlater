@@ -628,7 +628,10 @@ export async function PUT(request: NextRequest) {
         }
 
         // Upload photos (text and audio messages only)
-        const photoUrls: string[] = []
+        // keepPhotoPaths = existing photo paths the user wants to keep
+        const keepPhotoPaths = formData.getAll('keepPhotoPaths') as string[]
+        const photoUrls: string[] = [...keepPhotoPaths]
+
         if (type === 'text' || type === 'audio') {
             const photoFiles: File[] = []
             for (let i = 0; i < 2; i++) {
@@ -643,6 +646,15 @@ export async function PUT(request: NextRequest) {
                     .from('audio')
                     .upload(fileName, photo, { contentType: photo.type })
                 if (!photoError) photoUrls.push(fileName)
+            }
+
+            // Delete photos that were removed (exist in DB but not in keepPhotoPaths)
+            const existingPhotoPaths: string[] = Array.isArray(existingMessage.photo_paths)
+                ? existingMessage.photo_paths
+                : []
+            const removedPaths = existingPhotoPaths.filter(p => !keepPhotoPaths.includes(p))
+            if (removedPaths.length > 0) {
+                await supabase.storage.from('audio').remove(removedPaths)
             }
         }
         updates.photo_paths = photoUrls.length > 0 ? photoUrls : null

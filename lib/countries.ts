@@ -205,3 +205,66 @@ export function getPhonePlaceholder(dialCode: string): string {
     }
     return placeholders[dialCode] ?? '123 456 789'
 }
+
+/**
+ * Returns the valid digit range for a local phone number given a dial code.
+ * min/max refer to the count of digits only (spaces excluded).
+ */
+export function getPhoneDigitRange(dialCode: string): { min: number; max: number } {
+    const ranges: Record<string, { min: number; max: number }> = {
+        '+598': { min: 8, max: 9 },   // Uruguay: 8 (fijo) o 9 (móvil)
+        '+54': { min: 10, max: 11 },  // Argentina
+        '+55': { min: 10, max: 11 },  // Brasil
+        '+56': { min: 9, max: 9 },    // Chile
+        '+595': { min: 9, max: 9 },   // Paraguay
+        '+591': { min: 8, max: 8 },   // Bolivia
+        '+51': { min: 9, max: 9 },    // Perú
+        '+593': { min: 9, max: 9 },   // Ecuador
+        '+57': { min: 10, max: 10 },  // Colombia
+        '+58': { min: 10, max: 10 },  // Venezuela
+        '+52': { min: 10, max: 10 },  // México
+        '+502': { min: 8, max: 8 },   // Guatemala
+        '+501': { min: 7, max: 7 },   // Belice
+        '+503': { min: 8, max: 8 },   // El Salvador
+        '+504': { min: 8, max: 8 },   // Honduras
+        '+505': { min: 8, max: 8 },   // Nicaragua
+        '+506': { min: 8, max: 8 },   // Costa Rica
+        '+507': { min: 8, max: 8 },   // Panamá
+        '+53': { min: 8, max: 8 },    // Cuba
+        '+509': { min: 8, max: 8 },   // Haití
+        '+592': { min: 7, max: 7 },   // Guyana
+        '+597': { min: 7, max: 7 },   // Surinam
+        '+1': { min: 10, max: 10 },   // EEUU / Canadá / Caribbean
+        '+34': { min: 9, max: 9 },    // España
+        '+351': { min: 9, max: 9 },   // Portugal
+        '+33': { min: 9, max: 9 },    // Francia
+        '+39': { min: 9, max: 11 },   // Italia (variable)
+        '+49': { min: 10, max: 11 },  // Alemania
+        '+44': { min: 10, max: 10 },  // Reino Unido
+        '+353': { min: 9, max: 9 },   // Irlanda
+        '+31': { min: 9, max: 9 },    // Países Bajos
+        '+32': { min: 9, max: 9 },    // Bélgica
+        '+41': { min: 9, max: 9 },    // Suiza
+        '+43': { min: 10, max: 11 },  // Austria
+        '+46': { min: 9, max: 9 },    // Suecia
+        '+47': { min: 8, max: 8 },    // Noruega
+        '+45': { min: 8, max: 8 },    // Dinamarca
+        '+358': { min: 9, max: 10 },  // Finlandia
+        '+48': { min: 9, max: 9 },    // Polonia
+        '+7': { min: 10, max: 10 },   // Rusia / Kazajistán
+        '+380': { min: 9, max: 9 },   // Ucrania
+        '+90': { min: 10, max: 10 },  // Turquía
+        '+972': { min: 9, max: 9 },   // Israel
+        '+966': { min: 9, max: 9 },   // Arabia Saudita
+        '+971': { min: 9, max: 9 },   // EAU
+        '+81': { min: 10, max: 11 },  // Japón
+        '+86': { min: 11, max: 11 },  // China
+        '+82': { min: 9, max: 11 },   // Corea del Sur
+        '+91': { min: 10, max: 10 },  // India
+        '+61': { min: 9, max: 9 },    // Australia
+        '+64': { min: 8, max: 9 },    // Nueva Zelanda
+        '+27': { min: 9, max: 9 },    // Sudáfrica
+        '+55': { min: 10, max: 11 },  // Brasil
+    }
+    return ranges[dialCode] ?? { min: 6, max: 15 }
+}

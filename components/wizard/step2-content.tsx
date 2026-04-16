@@ -87,6 +87,8 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                     <PhotoUploader
                         photos={data.photos}
                         onChange={(photos) => updateData({ photos })}
+                        existingPhotoUrls={data.existingPhotoUrls || []}
+                        onExistingChange={(existingPhotoUrls) => updateData({ existingPhotoUrls })}
                         locale={locale}
                     />
                 </div>
@@ -167,6 +169,8 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                     <PhotoUploader
                         photos={data.photos}
                         onChange={(photos) => updateData({ photos })}
+                        existingPhotoUrls={data.existingPhotoUrls || []}
+                        onExistingChange={(existingPhotoUrls) => updateData({ existingPhotoUrls })}
                         locale={locale}
                     />
                 )}

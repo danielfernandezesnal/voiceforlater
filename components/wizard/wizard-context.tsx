@@ -17,6 +17,8 @@ export interface WizardData {
     existingAudioUrl?: string | null
     audioDuration: number
     photos: Array<{ file: File; caption: string; previewUrl: string }>
+    // Fotos ya guardadas en la BD (cuando se edita un mensaje existente)
+    existingPhotoUrls?: Array<{ url: string; path: string; caption: string }>
 
     // Step 3: Recipient
     recipients: Array<{ name: string; email: string }>
@@ -48,6 +50,7 @@ const initialData: WizardData = {
     existingAudioUrl: null,
     audioDuration: 0,
     photos: [],
+    existingPhotoUrls: [],
     recipients: [{ name: '', email: '' }],
     deliveryMode: null,
     deliverAt: '',

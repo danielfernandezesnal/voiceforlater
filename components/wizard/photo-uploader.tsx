@@ -7,9 +7,17 @@ interface Photo {
   previewUrl: string
 }
 
+interface ExistingPhoto {
+  url: string
+  path: string
+  caption: string
+}
+
 interface PhotoUploaderProps {
   photos: Photo[]
   onChange: (photos: Photo[]) => void
+  existingPhotoUrls?: ExistingPhoto[]
+  onExistingChange?: (existing: ExistingPhoto[]) => void
   locale?: string
 }
 
@@ -44,13 +52,16 @@ async function compressImage(file: File): Promise<File> {
   })
 }
 
-export function PhotoUploader({ photos, onChange, locale }: PhotoUploaderProps) {
+export function PhotoUploader({ photos, onChange, existingPhotoUrls = [], onExistingChange, locale }: PhotoUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const es = locale === 'es'
 
+  const totalCount = existingPhotoUrls.length + photos.length
+
   const handleFiles = async (files: FileList | null) => {
     if (!files) return
-    const remaining = MAX_PHOTOS - photos.length
+    const remaining = MAX_PHOTOS - totalCount
+    if (remaining <= 0) return
     const toProcess = Array.from(files).slice(0, remaining)
     const newPhotos: Photo[] = []
     for (const file of toProcess) {
@@ -68,8 +79,16 @@ export function PhotoUploader({ photos, onChange, locale }: PhotoUploaderProps) 
     onChange(photos.filter((_, i) => i !== index))
   }
 
+  const removeExistingPhoto = (index: number) => {
+    onExistingChange?.(existingPhotoUrls.filter((_, i) => i !== index))
+  }
+
   const updateCaption = (index: number, caption: string) => {
     onChange(photos.map((p, i) => i === index ? { ...p, caption } : p))
+  }
+
+  const updateExistingCaption = (index: number, caption: string) => {
+    onExistingChange?.(existingPhotoUrls.map((p, i) => i === index ? { ...p, caption } : p))
   }
 
   return (
@@ -77,14 +96,41 @@ export function PhotoUploader({ photos, onChange, locale }: PhotoUploaderProps) 
       <div className="flex items-center justify-between">
         <label className="text-sm font-medium text-foreground">
           {es ? 'Fotos adjuntas' : 'Attached photos'}
-          <span className="text-xs text-muted-foreground ml-2">({photos.length}/{MAX_PHOTOS})</span>
+          <span className="text-xs text-muted-foreground ml-2">({totalCount}/{MAX_PHOTOS})</span>
         </label>
       </div>
 
-      {photos.length > 0 && (
+      {(existingPhotoUrls.length > 0 || photos.length > 0) && (
         <div className="grid grid-cols-2 gap-3">
+          {/* Fotos existentes (guardadas en la BD) */}
+          {existingPhotoUrls.map((photo, i) => (
+            <div key={`existing-${i}`} className="space-y-2">
+              <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-muted">
+                <img src={photo.url} alt="" className="w-full h-full object-cover" />
+                {onExistingChange && (
+                  <button
+                    type="button"
+                    onClick={() => removeExistingPhoto(i)}
+                    className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition-colors"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                )}
+              </div>
+              <input
+                type="text"
+                value={photo.caption}
+                onChange={(e) => updateExistingCaption(i, e.target.value)}
+                placeholder={es ? 'Descripción (opcional)' : 'Caption (optional)'}
+                maxLength={100}
+                className="w-full px-3 py-1.5 text-xs bg-input border border-border rounded-lg placeholder:text-muted-foreground focus:ring-1 focus:ring-ring focus:border-transparent"
+              />
+            </div>
+          ))}
+
+          {/* Fotos nuevas (File objects) */}
           {photos.map((photo, i) => (
-            <div key={i} className="space-y-2">
+            <div key={`new-${i}`} className="space-y-2">
               <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-muted">
                 <img src={photo.previewUrl} alt="" className="w-full h-full object-cover" />
                 <button
@@ -108,7 +154,7 @@ export function PhotoUploader({ photos, onChange, locale }: PhotoUploaderProps) 
         </div>
       )}
 
-      {photos.length < MAX_PHOTOS && (
+      {totalCount < MAX_PHOTOS && (
         <label
           htmlFor="photo-upload"
           className="flex items-center gap-3 p-3 border border-dashed border-border rounded-xl cursor-pointer hover:border-primary/50 hover:bg-accent/5 transition-all"

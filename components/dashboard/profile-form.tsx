@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { COUNTRIES, getCountryByCode, getPhonePlaceholder, type Country } from '@/lib/countries'
+import { COUNTRIES, getCountryByCode, getPhonePlaceholder, getPhoneDigitRange, type Country } from '@/lib/countries'
 import { CALLING_CODES, parsePhone } from '@/lib/callingCodes'
 import { CountrySelect } from '@/components/country-select'
 import type { Dictionary } from '@/lib/i18n'
@@ -111,6 +111,20 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
         // Build phone string for storage
         const trimmedNumber = localNumber.replace(/\s+/g, ' ').trim()
         const phoneToSave = trimmedNumber ? `${dialCode} ${trimmedNumber}` : ''
+
+        // Validate phone digit count if a number was entered
+        if (trimmedNumber) {
+            const digitCount = trimmedNumber.replace(/\D/g, '').length
+            const { min, max } = getPhoneDigitRange(dialCode)
+            if (digitCount < min || digitCount > max) {
+                const rangeText = min === max ? `${min}` : `${min}–${max}`
+                setMessage({
+                    type: 'error',
+                    text: `El número de teléfono debe tener ${rangeText} dígitos para este país.`
+                })
+                return
+            }
+        }
 
         setIsSaving(true)
 
@@ -293,6 +307,20 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
                             className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
                         />
                     </div>
+                    {localNumber.trim() && (() => {
+                        const digitCount = localNumber.replace(/\D/g, '').length
+                        const { min, max } = getPhoneDigitRange(dialCode)
+                        const isValid = digitCount >= min && digitCount <= max
+                        const rangeText = min === max ? `${min}` : `${min}–${max}`
+                        return (
+                            <p className={`text-xs mt-1 ${isValid ? 'text-emerald-600' : 'text-amber-600'}`}>
+                                {isValid
+                                    ? `✓ ${digitCount} dígitos`
+                                    : `${digitCount} dígito${digitCount !== 1 ? 's' : ''} · se esperan ${rangeText}`
+                                }
+                            </p>
+                        )
+                    })()}
                 </div>
             </div>
 

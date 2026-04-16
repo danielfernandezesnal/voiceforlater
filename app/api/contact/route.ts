@@ -97,42 +97,40 @@ export async function POST(request: NextRequest) {
 
         // Attempt to send admin notification
         try {
-            const adminEmail = process.env.ADMIN_EMAIL || process.env.RESEND_FROM_EMAIL;
+            const { getResend, DEFAULT_SENDER } = await import('@/lib/resend');
+            const resend = getResend();
 
-            if (adminEmail) {
-                const { getResend, DEFAULT_SENDER } = await import('@/lib/resend');
-                const resend = getResend();
-
-                let ipAddress = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
-                if (ipAddress.includes(',')) {
-                    ipAddress = ipAddress.split(',')[0].trim();
-                }
-
-                await resend.emails.send({
-                    from: DEFAULT_SENDER,
-                    to: adminEmail,
-                    replyTo: email,
-                    subject: `New Contact Request: ${subject || "No Subject"}`,
-                    html: `
-                        <h2>New Contact Request</h2>
-                        <p><strong>From:</strong> ${email}</p>
-                        <p><strong>Ticket ID:</strong> ${ticketId}</p>
-                        <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
-                        
-                        <h3>Message:</h3>
-                        <p style="white-space: pre-wrap; background: #f4f4f5; padding: 16px; border-radius: 8px;">${message}</p>
-                        
-                        <hr style="margin-top: 24px;" />
-                        <p style="font-size: 12px; color: #666;">
-                            <strong>Metadata:</strong><br />
-                            IP: ${ipAddress}<br />
-                            User-Agent: ${request.headers.get("user-agent") || "unknown"}
-                        </p>
-                    `
-                });
-            } else {
-                console.warn("No ADMIN_EMAIL or RESEND_FROM_EMAIL configured. Skipping admin notification for contact ticket.");
+            let ipAddress = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
+            if (ipAddress.includes(',')) {
+                ipAddress = ipAddress.split(',')[0].trim();
             }
+
+            const contactInbox = 'contacto@carrymywords.com';
+            const ccEmail = 'danielfernandezesnal@gmail.com';
+
+            await resend.emails.send({
+                from: DEFAULT_SENDER,
+                to: contactInbox,
+                cc: ccEmail,
+                replyTo: email,
+                subject: `Nuevo mensaje de contacto: ${subject || "Sin asunto"}`,
+                html: `
+                    <h2>Nuevo mensaje de contacto</h2>
+                    <p><strong>De:</strong> ${email}</p>
+                    <p><strong>Ticket ID:</strong> ${ticketId}</p>
+                    <p><strong>Fecha:</strong> ${new Date().toISOString()}</p>
+
+                    <h3>Mensaje:</h3>
+                    <p style="white-space: pre-wrap; background: #f4f4f5; padding: 16px; border-radius: 8px;">${message}</p>
+
+                    <hr style="margin-top: 24px;" />
+                    <p style="font-size: 12px; color: #666;">
+                        <strong>Metadata:</strong><br />
+                        IP: ${ipAddress}<br />
+                        User-Agent: ${request.headers.get("user-agent") || "unknown"}
+                    </p>
+                `
+            });
         } catch (emailError) {
             // We just log the error but still return success to user since ticket is saved
             console.error("Failed to send admin notification email:", emailError);

@@ -387,6 +387,7 @@
         "to": "To",
         "created": "Created",
         "scheduledFor": "Scheduled for",
+        "sentAt": "Sent on",
         "delivery": "Delivery",
         "contact": "Trusted contact",
         "hour": "Time"
