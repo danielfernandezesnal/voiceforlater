@@ -133,7 +133,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                 }
             }
 
-            // Upload photos
+            // Upload photos (new files)
             if (data.photos && data.photos.length > 0) {
                 data.photos.forEach((photo, i) => {
                     // Ensure file is a valid Blob instance before appending
@@ -142,6 +142,13 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                         : new Blob([photo.file as BlobPart], { type: 'image/jpeg' })
                     formData.append(`photos[${i}]`, fileBlob, photo.file?.name || `photo-${i}.jpg`)
                     formData.append(`photosCaptions[${i}]`, photo.caption || '')
+                })
+            }
+
+            // Existing photos to keep (paths already in storage)
+            if (data.existingPhotoUrls && data.existingPhotoUrls.length > 0) {
+                data.existingPhotoUrls.forEach((p) => {
+                    formData.append('keepPhotoPaths', p.path)
                 })
             }
 

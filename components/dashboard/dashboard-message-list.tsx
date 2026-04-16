@@ -15,6 +15,7 @@ export interface MessageWithRecipient {
     audio_path: string | null;
     photo_paths: string[] | null;
     created_at: string;
+    delivery_claimed_at: string | null;
     recipients: { name: string; email: string }[];
     delivery_rules: { mode: 'date' | 'checkin'; deliver_at: string | null } | { mode: 'date' | 'checkin'; deliver_at: string | null }[] | null;
     message_trusted_contacts: {

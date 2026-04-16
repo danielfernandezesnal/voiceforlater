@@ -366,6 +366,7 @@
         "to": "Pour",
         "created": "Créé",
         "scheduledFor": "Programmé pour",
+        "sentAt": "Envoyé le",
         "delivery": "Livraison",
         "contact": "Contact de confiance",
         "hour": "Heure"

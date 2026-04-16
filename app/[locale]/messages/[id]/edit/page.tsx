@@ -72,6 +72,21 @@ export default async function EditMessagePage({
         existingAudioUrl = signedUrlData?.signedUrl || null;
     }
 
+    // Generate signed URLs for existing photos
+    const existingPhotoUrls: Array<{ url: string; path: string; caption: string }> = [];
+    const photoPaths: string[] = Array.isArray(message.photo_paths) ? message.photo_paths : [];
+    if (photoPaths.length > 0) {
+        for (const path of photoPaths) {
+            const { data: signedPhotoData } = await supabase
+                .storage
+                .from('audio')
+                .createSignedUrl(path, 3600);
+            if (signedPhotoData?.signedUrl) {
+                existingPhotoUrls.push({ url: signedPhotoData.signedUrl, path, caption: '' });
+            }
+        }
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const initialData: any = {
         messageType: message.type,
@@ -80,6 +95,8 @@ export default async function EditMessagePage({
         audioBlob: null,
         existingAudioUrl,
         audioDuration: 0,
+        photos: [],
+        existingPhotoUrls,
         recipients,
         deliveryMode: deliveryRule?.mode || null,
         deliverAt: deliveryRule?.deliver_at || '',

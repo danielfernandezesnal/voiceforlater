@@ -44,7 +44,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
         );
     }
 
-    const { type, status, text_content, created_at, recipients, delivery_rules, message_trusted_contacts } = message;
+    const { type, status, text_content, created_at, delivery_claimed_at, recipients, delivery_rules, message_trusted_contacts } = message;
     const mtc = message_trusted_contacts || [];
     const trustedList = mtc.map((item: any) => item?.trusted_contacts).filter(Boolean);
     const hasTrusted = trustedList.length > 0;
@@ -78,7 +78,15 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
     let scheduledDateOnly = '';
     let scheduledTime = '';
 
-    if (deliveryMode === 'checkin') {
+    if (isDelivered) {
+        // Para mensajes enviados, mostrar la fecha real de envío
+        const sentDate = delivery_claimed_at || created_at;
+        scheduledLabel = labels?.sentAt;
+        const d = new Date(sentDate);
+        scheduledDateOnly = d.toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+        scheduledTime = d.toLocaleTimeString(locale === 'es' ? 'es-ES' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+        scheduledDate = `${scheduledDateOnly} · ${scheduledTime}`;
+    } else if (deliveryMode === 'checkin') {
         scheduledDate = (dict.dashboard.messageCard as any).deliveryType?.checkin;
         scheduledLabel = labels?.delivery;
     } else if (deliverAt) {
