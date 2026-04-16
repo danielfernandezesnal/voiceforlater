@@ -9,11 +9,12 @@ interface LoginFormProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any // Using any for flexibilty with deeply nested structure, or define strict type
     locale: string
+    next?: string | null
 }
 
 type Mode = 'login' | 'magic' | 'reset'
 
-export function LoginForm({ dictionary, locale }: LoginFormProps) {
+export function LoginForm({ dictionary, locale, next }: LoginFormProps) {
     const [mode, setMode] = useState<Mode>('login')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -43,10 +44,12 @@ export function LoginForm({ dictionary, locale }: LoginFormProps) {
                     setError(signInError.message)
                 }
             } else {
-                // Success - Redirect based on role
+                // Success - Redirect based on role, or post-delivery-token next
                 router.refresh()
                 if (email.toLowerCase() === ADMIN_EMAIL) {
                     router.push(`/${locale}/admin`)
+                } else if (next) {
+                    router.push(next)
                 } else {
                     router.push(`/${locale}/dashboard`)
                 }
@@ -68,7 +71,7 @@ export function LoginForm({ dictionary, locale }: LoginFormProps) {
             const response = await fetch('/api/auth/magic-link', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, locale }),
+                body: JSON.stringify({ email, locale, next }),
             })
 
             const data = await response.json()
@@ -169,7 +172,7 @@ export function LoginForm({ dictionary, locale }: LoginFormProps) {
                                 const { error } = await supabase.auth.signInWithOAuth({
                                     provider: 'google',
                                     options: {
-                                        redirectTo: `${window.location.origin}/auth/callback?redirect_to=/${locale}/dashboard`,
+                                        redirectTo: `${window.location.origin}/auth/callback?redirect_to=/${locale}/${next ? encodeURIComponent(next) : 'dashboard'}`,
                                         queryParams: {
                                             access_type: 'offline',
                                             prompt: 'consent',

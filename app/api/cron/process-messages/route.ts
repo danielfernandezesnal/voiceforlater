@@ -159,26 +159,28 @@ export async function GET(request: NextRequest) {
                 const localeRaw = profile?.locale || defaultLocale;
                 const locale = (isValidLocale(localeRaw) ? localeRaw : defaultLocale) as Locale;
 
-                // 3. GENERATE LINK AND SEND
+                // 3. GENERATE DELIVERY TOKEN AND SEND
                 const appUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '');
-                const { data: linkData } = await supabase.auth.admin.generateLink({
-                    type: 'magiclink',
-                    email: recipient.email,
-                    options: {
-                        // redirectTo is required by Supabase but we build our own link below
-                        redirectTo: `${appUrl}/${locale}/auth/callback`
-                    }
-                });
 
-                if (!linkData?.properties?.hashed_token) {
-                    throw new Error("Magic link generation failed");
+                // Create a 15-day, multi-use delivery token (replaces Supabase magic link
+                // which expires in 1 hour and is single-use).
+                const { data: deliveryToken, error: tokenError } = await supabase
+                    .from('delivery_tokens')
+                    .insert({
+                        message_id: message.id,
+                        recipient_email: recipient.email,
+                        expires_at: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString()
+                    })
+                    .select('token')
+                    .single();
+
+                if (tokenError || !deliveryToken) {
+                    throw new Error(`Delivery token generation failed: ${tokenError?.message ?? 'no token returned'}`);
                 }
 
-                const tokenHash = linkData.properties.hashed_token;
-                const actionType = linkData.properties.verification_type || 'magiclink';
-                // Build a direct callback URL with a `next` param so the recipient lands on
-                // the received messages page instead of the dashboard after logging in.
-                const magicLink = `${appUrl}/${locale}/auth/callback?token_hash=${tokenHash}&type=${actionType}&next=${encodeURIComponent(`/${locale}/dashboard/received`)}`;
+                // Link points to welcome page; after login/register the recipient is
+                // redirected straight to the message.
+                const magicLink = `${appUrl}/${locale}/recibir/${deliveryToken.token}`;
 
                 // Use React email component
                 const { error: sendError } = await sendMessageDeliveryEmail(

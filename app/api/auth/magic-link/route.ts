@@ -11,7 +11,7 @@ const ADMIN_OWNER_EMAIL = 'danielfernandezesnal@gmail.com';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, locale } = await request.json();
+    const { email, locale, next } = await request.json();
 
     if (!email) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
@@ -41,8 +41,9 @@ export async function POST(request: NextRequest) {
     const tokenHash = properties.hashed_token;
     const actionType = properties.verification_type || 'magiclink';
 
-    // Construct our own direct callback link to avoid Supabase's implicit flow redirect
-    const magicLink = `${origin.replace(/\/$/, '')}/${locale || 'en'}/auth/callback?token_hash=${tokenHash}&type=${actionType}`;
+    // Construct our own direct callback link with optional next redirect
+    const nextParam = next ? `&next=${encodeURIComponent(next)}` : '';
+    const magicLink = `${origin.replace(/\/$/, '')}/${locale || 'en'}/auth/callback?token_hash=${tokenHash}&type=${actionType}${nextParam}`;
 
     // Determine recipient email (admin redirect)
     const isAdminLogin = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
