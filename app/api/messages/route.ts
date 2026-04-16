@@ -521,7 +521,7 @@ export async function PUT(request: NextRequest) {
         // Verify ownership
         const { data: existingMessage, error: fetchError } = await supabase
             .from("messages")
-            .select("owner_id, audio_path")
+            .select("owner_id, audio_path, photo_paths")
             .eq("id", messageId)
             .single();
 
