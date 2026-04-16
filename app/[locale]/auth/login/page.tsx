@@ -9,12 +9,16 @@ export const dynamic = 'force-dynamic'
 
 export default async function LoginPage({
     params,
+    searchParams,
 }: {
     params: Promise<{ locale: string }>;
+    searchParams?: Promise<{ next?: string }>;
 }) {
     const { locale: localeParam } = await params;
     const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
     const dict = await getDictionary(locale);
+    const resolvedSearch = await searchParams;
+    const next = resolvedSearch?.next ?? null;
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-8">
@@ -32,7 +36,7 @@ export default async function LoginPage({
 
                 {/* Login Card */}
                 <div className="bg-card border border-border rounded-2xl p-8 shadow-xl">
-                    <LoginForm dictionary={dict.auth} locale={locale} />
+                    <LoginForm dictionary={dict.auth} locale={locale} next={next} />
                 </div>
 
                 <div className="mt-8 flex items-center justify-center">
