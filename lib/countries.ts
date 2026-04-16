@@ -264,7 +264,6 @@ export function getPhoneDigitRange(dialCode: string): { min: number; max: number
         '+61': { min: 9, max: 9 },    // Australia
         '+64': { min: 8, max: 9 },    // Nueva Zelanda
         '+27': { min: 9, max: 9 },    // Sudáfrica
-        '+55': { min: 10, max: 11 },  // Brasil
     }
     return ranges[dialCode] ?? { min: 6, max: 15 }
 }
