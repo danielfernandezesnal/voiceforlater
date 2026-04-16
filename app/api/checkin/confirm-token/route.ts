@@ -99,12 +99,19 @@ export async function POST(request: NextRequest) {
         await supabase.from("events").insert({
             type: "checkin_confirmed",
             user_id: userId,
-            metadata: { method: "email_token" },
+            metadata: {
+                confirmed_at: now.toISOString(),
+                next_due_at: nextDue.toISOString(),
+                method: "email_token",
+            },
         });
 
-        return NextResponse.json({ ok: true });
+        return NextResponse.json({
+            success: true,
+            next_due_at: nextDue.toISOString(),
+        });
     } catch (error) {
-        console.error("confirm-token error:", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        console.error("Token checkin confirm error:", error);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }
