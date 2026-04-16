@@ -1,25 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireOwner } from "@/lib/server/requireAdmin";
 
 export async function POST(request: NextRequest) {
     try {
-        const supabase = await createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
-
-        // 1. Verify that the requester is an OWNER
-        const { data: requesterRole, error: roleError } = await supabase
-            .from("user_roles")
-            .select("role")
-            .eq("user_id", user.id)
-            .single();
-
-        if (roleError || !requesterRole || requesterRole.role !== 'owner') {
-            return NextResponse.json({ error: "Forbidden: Only owners can update roles" }, { status: 403 });
-        }
+        const { supabase, user } = await requireOwner();
 
         // 2. Parse body
         const body = await request.json();
