@@ -1,6 +1,6 @@
 
 import { createClient } from "@supabase/supabase-js";
-import { isValidLocale, Locale } from '@/lib/i18n';
+import { isValidLocale, Locale, defaultLocale } from '@/lib/i18n';
 import { sendMessageDeliveryEmail } from '@/components/emails/message-delivery-email';
 import { logDeliveryEvent } from "@/lib/delivery-telemetry";
 
@@ -28,7 +28,7 @@ export async function releaseCheckinMessages(userId: string) {
         .eq("id", userId)
         .single();
 
-    const locale = profile?.locale || 'en';
+    const locale = profile?.locale || defaultLocale;
 
     const results = {
         processed: 0,
@@ -72,15 +72,34 @@ export async function releaseCheckinMessages(userId: string) {
 
         // 3. Process each message 
         for (const message of messages) {
-            // Atomic Claim (Atomic reclaim of stale claims allowed)
+            // Atomic Claim — 2-step pattern (matches process-messages)
+            // PostgREST's .or() with is.null is unreliable on PATCH requests,
+            // so we split into: (1) fresh claim, (2) stale reclaim.
             const claimStamp = new Date().toISOString();
-            const { data: claimed, error: claimError } = await supabase
+
+            // Step 1: claim a fresh (never-claimed) message
+            const { data: claimedFresh, error: claimFreshError } = await supabase
                 .from("messages")
                 .update({ delivery_claimed_at: claimStamp })
                 .eq("id", message.id)
                 .eq("status", "scheduled")
-                .or(`delivery_claimed_at.is.null,delivery_claimed_at.lt.${staleThreshold}`)
+                .is("delivery_claimed_at", null)
                 .select("id");
+
+            // Step 2: reclaim a stale claim (orphaned by a prior crashed instance)
+            let claimed = claimedFresh;
+            let claimError = claimFreshError;
+            if (!claimFreshError && (!claimedFresh || claimedFresh.length === 0)) {
+                const { data: claimedStale, error: claimStaleError } = await supabase
+                    .from("messages")
+                    .update({ delivery_claimed_at: claimStamp })
+                    .eq("id", message.id)
+                    .eq("status", "scheduled")
+                    .lt("delivery_claimed_at", staleThreshold)
+                    .select("id");
+                claimed = claimedStale;
+                claimError = claimStaleError;
+            }
 
             if (claimError || !claimed || claimed.length === 0) {
                 // Skip if another process already claimed it
@@ -125,8 +144,8 @@ export async function releaseCheckinMessages(userId: string) {
             }
 
             try {
-                const localeRaw = locale || 'en';
-                const validLocale = (isValidLocale(localeRaw) ? localeRaw : 'en') as Locale;
+                const localeRaw = locale || defaultLocale;
+                const validLocale = (isValidLocale(localeRaw) ? localeRaw : defaultLocale) as Locale;
 
                 // Generate magic link for recipient
                 const { data: linkData } = await supabase.auth.admin.generateLink({
