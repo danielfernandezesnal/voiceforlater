@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { v4 as uuidv4 } from "uuid";
-import { type Plan, getPlanLimits, canCreateMessage, isCheckinIntervalAllowed } from "@/lib/plans";
+import { getPlanLimits, canCreateMessage } from "@/lib/plans";
 import { getEffectivePlan } from "@/lib/plan-resolver";
 import { trackServerEvent } from "@/lib/analytics/trackEvent";
 import { REQUIRED_TOS_VERSION } from "@/lib/constants";
+import { parseMessagePayload } from "@/lib/messages/parse-payload";
+import {
+    validateRequiredFields,
+    validateDeliveryDate,
+    validateContentForType,
+    validateSelfRecipient,
+    validateCheckinInterval,
+} from "@/lib/messages/validate-payload";
+import { uploadMediaFile, uploadPhotos, cleanupRemovedPhotos } from "@/lib/messages/upload-media";
 
 
 export const runtime = "nodejs";
@@ -160,122 +168,30 @@ export async function POST(request: NextRequest) {
 
         // Parse form data
         const formData = await request.formData();
-        const type = formData.get("type") as "text" | "audio" | "video";
-        const title = formData.get("title") as string | null;
-        const deliveryMode = formData.get("deliveryMode") as "date" | "checkin";
-        const textContent = formData.get("textContent") as string | null;
-        const existingAudioUrl = formData.get("existingAudioUrl") as string | null;
-        const audioFile = formData.get("audio") as File | null;
-        const videoFile = formData.get("video") as File | null;
-        const deliverAt = formData.get("deliverAt") as string | null;
-        const checkinIntervalDays = formData.get("checkinIntervalDays") as string | null;
-        const trustedContactIds = formData.getAll("trustedContactIds") as string[];
+        const payload = parseMessagePayload(formData);
+        const { type, title, deliveryMode, textContent, existingAudioUrl, audioFile, videoFile, deliverAt, checkinIntervalDays, trustedContactIds, recipientsData } = payload;
 
-        // Parse recipients (up to 10)
-        const recipientsData: Array<{ name: string; email: string }> = []
-        for (let i = 0; i < 10; i++) {
-            const name = formData.get(`recipients[${i}][name]`) as string | null
-            const email = formData.get(`recipients[${i}][email]`) as string | null
-            if (name && email) recipientsData.push({ name, email })
-        }
         if (recipientsData.length === 0) {
             return NextResponse.json({ error: "At least one recipient is required" }, { status: 400 });
         }
 
-        // Disallow self as recipient for check-in (posthumous) messages
-        if (deliveryMode === "checkin" && user.email) {
-            const selfEmail = user.email.toLowerCase().trim();
-            const hasSelfRecipient = recipientsData.some(
-                (r) => r.email.toLowerCase().trim() === selfEmail
-            );
-            if (hasSelfRecipient) {
-                return NextResponse.json(
-                    { error: "You cannot send this message to yourself.", code: "SELF_RECIPIENT_NOT_ALLOWED" },
-                    { status: 400 }
-                );
-            }
-        }
+        // --- Validations ---
+        const selfCheck = validateSelfRecipient(recipientsData, user.email, deliveryMode);
+        if (!selfCheck.valid) return selfCheck.response;
 
-        // Validate required fields
-        if (!type || recipientsData.length === 0 || !deliveryMode || !title || title.trim().length === 0) {
-            return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-        }
+        const requiredCheck = validateRequiredFields(payload);
+        if (!requiredCheck.valid) return requiredCheck.response;
 
-        if (title.length > 80) {
-            return NextResponse.json({ error: "Title exceeds 80 characters" }, { status: 400 });
-        }
+        const dateCheck = validateDeliveryDate(deliverAt, deliveryMode);
+        if (!dateCheck.valid) return dateCheck.response;
 
-        // Validate delivery date
-        if (deliveryMode === "date") {
-            if (!deliverAt) {
-                return NextResponse.json({ error: "Delivery date is required for date mode" }, { status: 400 });
-            }
+        const contentCheck = validateContentForType(payload, limits, plan);
+        if (!contentCheck.valid) return contentCheck.response;
 
-            const scheduleDate = new Date(deliverAt);
-            if (isNaN(scheduleDate.getTime())) {
-                return NextResponse.json({ error: "Invalid date format" }, { status: 400 });
-            }
+        const checkinCheck = validateCheckinInterval(plan, checkinIntervalDays, deliveryMode, limits);
+        if (!checkinCheck.valid) return checkinCheck.response;
 
-            // Skip future-date enforcement outside production (admin/dev testing)
-            if (process.env.NODE_ENV === 'production') {
-                const now = new Date();
-                const minDate = new Date(now.getTime() + 5 * 60 * 1000); // Now + 5m
-
-                if (scheduleDate < minDate) {
-                    return NextResponse.json({
-                        error: "Delivery date must be at least 5 minutes in the future.",
-                        code: "INVALID_SCHEDULE"
-                    }, { status: 400 });
-                }
-            }
-        }
-
-        // Validate content type against plan
-        if (!limits.allowedTypes.includes(type)) {
-            return NextResponse.json(
-                {
-                    error: "PLAN_LIMIT",
-                    reason: "VIDEO_NOT_ALLOWED",
-                    details: `${type} messages are not allowed on the ${plan} plan.`
-                },
-                { status: 403 }
-            );
-        }
-
-        // Validate content based on type
-        if (type === "text" && (!textContent || textContent.trim().length === 0)) {
-            return NextResponse.json({ error: "Text content is required" }, { status: 400 });
-        }
-        if (type === "audio" && !audioFile && !existingAudioUrl) {
-            return NextResponse.json({ error: "Audio file is required" }, { status: 400 });
-        }
-        if (type === "video" && !videoFile && !existingAudioUrl) {
-            return NextResponse.json({ error: "Video file is required" }, { status: 400 });
-        }
-
-        // Validate text length
-        if (type === "text" && textContent && textContent.length > limits.maxTextChars) {
-            return NextResponse.json(
-                { error: `Text exceeds ${limits.maxTextChars} character limit` },
-                { status: 400 }
-            );
-        }
-
-        // Validate check-in interval for plan
-        if (deliveryMode === "checkin" && checkinIntervalDays) {
-            const interval = parseInt(checkinIntervalDays, 10);
-            if (!isCheckinIntervalAllowed(plan, interval)) {
-                return NextResponse.json(
-                    {
-                        error: `${interval}-day check-in is not available on your plan`,
-                        upgradeRequired: true,
-                        allowedIntervals: limits.allowedCheckinIntervals
-                    },
-                    { status: 403 }
-                );
-            }
-        }
-
+        // --- Media upload ---
         let audioPath: string | null = null;
         let fileSizeBytes: number | null = null;
 
@@ -286,69 +202,36 @@ export async function POST(request: NextRequest) {
 
         // Upload audio file
         if (type === "audio" && audioFile) {
-            const fileExt = audioFile.name.split(".").pop() || "webm";
-            const fileName = `${user.id}/${uuidv4()}.${fileExt}`;
-            fileSizeBytes = audioFile.size;
-
-            const { error: uploadError } = await supabase.storage
-                .from("audio")
-                .upload(fileName, audioFile, {
-                    contentType: audioFile.type,
-                });
-
-            if (uploadError) {
-                console.error("Audio upload error:", JSON.stringify(uploadError, null, 2));
+            const result = await uploadMediaFile(supabase, user.id, audioFile, "audio");
+            if (!result.ok) {
                 return NextResponse.json({
-                    error: "Failed to upload audio",
-                    details: uploadError.message,
-                    code: uploadError.name
+                    error: result.error,
+                    details: result.details,
+                    code: result.code
                 }, { status: 500 });
             }
-
-            audioPath = fileName;
+            audioPath = result.path;
+            fileSizeBytes = result.sizeBytes;
         }
 
         // Upload video file
         if (type === "video" && videoFile) {
-            const fileExt = videoFile.name.split(".").pop() || "webm";
-            const fileName = `${user.id}/${uuidv4()}.${fileExt}`;
-            fileSizeBytes = videoFile.size;
-
-            const { error: uploadError } = await supabase.storage
-                .from("audio")
-                .upload(fileName, videoFile, {
-                    contentType: videoFile.type,
-                });
-
-            if (uploadError) {
-                console.error("Video upload error:", JSON.stringify(uploadError, null, 2));
+            const result = await uploadMediaFile(supabase, user.id, videoFile, "video");
+            if (!result.ok) {
                 return NextResponse.json({
-                    error: "Failed to upload video",
-                    details: uploadError.message,
-                    code: uploadError.name
+                    error: result.error,
+                    details: result.details,
+                    code: result.code
                 }, { status: 500 });
             }
-
-            audioPath = fileName;
+            audioPath = result.path;
+            fileSizeBytes = result.sizeBytes;
         }
 
         // Upload photos (text and audio messages only)
-        const photoUrls: string[] = []
+        let photoUrls: string[] = [];
         if (type === 'text' || type === 'audio') {
-            const photoFiles: File[] = []
-            for (let i = 0; i < 2; i++) {
-                const photo = formData.get(`photos[${i}]`) as File | null
-                if (photo && photo.size > 0) photoFiles.push(photo)
-            }
-            for (let i = 0; i < photoFiles.length; i++) {
-                const photo = photoFiles[i]
-                const ext = photo.name.split('.').pop() || 'jpg'
-                const fileName = `${user.id}/photos/${uuidv4()}.${ext}`
-                const { error: photoError } = await supabase.storage
-                    .from('audio')
-                    .upload(fileName, photo, { contentType: photo.type })
-                if (!photoError) photoUrls.push(fileName)
-            }
+            photoUrls = await uploadPhotos(supabase, user.id, formData);
         }
 
         // Create message
@@ -357,7 +240,7 @@ export async function POST(request: NextRequest) {
             .insert({
                 owner_id: user.id,
                 type,
-                title: title.trim(),
+                title: title!.trim(),
                 status: "scheduled",
                 text_content: textContent || null,
                 audio_path: audioPath,
@@ -369,7 +252,6 @@ export async function POST(request: NextRequest) {
 
         if (messageError) {
             console.error("Message insert error:", JSON.stringify(messageError, null, 2));
-            // ... (error handling remains same)
             // Extract constraint name if it's a constraint violation
             const errorDetails = messageError.message || messageError.code || "Unknown database error";
             const constraintMatch = messageError.message?.match(/constraint "([^"]+)"/);
@@ -536,90 +418,49 @@ export async function PUT(request: NextRequest) {
         const plan = await getEffectivePlan(supabase, user.id);
         const limits = getPlanLimits(plan);
 
-        // Extract update data
-        const type = formData.get("type") as "text" | "audio" | "video";
-        const title = formData.get("title") as string | null;
-        const deliveryMode = formData.get("deliveryMode") as "date" | "checkin";
-        const textContent = formData.get("textContent") as string | null;
-        const existingAudioUrl = formData.get("existingAudioUrl") as string | null;
-        const audioFile = formData.get("audio") as File | null;
-        const deliverAt = formData.get("deliverAt") as string | null;
-        const checkinIntervalDays = formData.get("checkinIntervalDays") as string | null;
-        const trustedContactIds = formData.getAll("trustedContactIds") as string[];
+        // Parse payload (now reads videoFile consistently with POST)
+        const payload = parseMessagePayload(formData);
+        const { type, title, deliveryMode, textContent, existingAudioUrl, audioFile, videoFile, deliverAt, checkinIntervalDays, trustedContactIds, recipientsData } = payload;
 
-        // Parse recipients (up to 10)
-        const recipientsData: Array<{ name: string; email: string }> = []
-        for (let i = 0; i < 10; i++) {
-            const name = formData.get(`recipients[${i}][name]`) as string | null
-            const email = formData.get(`recipients[${i}][email]`) as string | null
-            if (name && email) recipientsData.push({ name, email })
-        }
+        // --- Validations ---
+        const contentCheck = validateContentForType(payload, limits, plan);
+        if (!contentCheck.valid) return contentCheck.response;
 
-        // Validate type change for plan
-        if (type && !limits.allowedTypes.includes(type)) {
-            return NextResponse.json(
-                {
-                    error: "PLAN_LIMIT",
-                    reason: "VIDEO_NOT_ALLOWED",
-                    details: `${type} messages are not allowed on the ${plan} plan.`
-                },
-                { status: 403 }
-            );
-        }
+        const selfCheck = validateSelfRecipient(recipientsData, user.email, deliveryMode);
+        if (!selfCheck.valid) return selfCheck.response;
 
-        // Disallow self as recipient for check-in (posthumous) messages
-        if (deliveryMode === "checkin" && user.email) {
-            const selfEmail = user.email.toLowerCase().trim();
-            const hasSelfRecipient = recipientsData.some(
-                (r) => r.email.toLowerCase().trim() === selfEmail
-            );
-            if (hasSelfRecipient) {
-                return NextResponse.json(
-                    { error: "You cannot send this message to yourself.", code: "SELF_RECIPIENT_NOT_ALLOWED" },
-                    { status: 400 }
-                );
-            }
-        }
-
-        // Validation
-        if (!type || recipientsData.length === 0 || !deliveryMode || !title || title.trim().length === 0) {
-            return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-        }
-
-        if (title.length > 80) {
-            return NextResponse.json({ error: "Title exceeds 80 characters" }, { status: 400 });
-        }
+        const requiredCheck = validateRequiredFields(payload);
+        if (!requiredCheck.valid) return requiredCheck.response;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const updates: any = {
             type,
-            title: title.trim(),
+            title: title!.trim(),
             text_content: type === 'text' ? textContent : null,
             status: 'scheduled' // Reset status if it was delivered? Or keep? Usually editing implies re-scheduling.
         };
 
         // If direct upload from client happened, use the path provided
-        if (existingAudioUrl && !audioFile && (type === 'audio' || type === 'video')) {
+        if (existingAudioUrl && !audioFile && !videoFile && (type === 'audio' || type === 'video')) {
             updates.audio_path = existingAudioUrl;
         }
 
         // Handle Audio/Video Update
-        if ((type === 'audio' || type === 'video') && audioFile) {
+        // FIX: Now reads videoFile from FormData (consistent with POST).
+        // Previously PUT only read audioFile, requiring the client to send video under the "audio" field.
+        const mediaFile = type === 'video' ? videoFile : type === 'audio' ? audioFile : null;
+
+        if ((type === 'audio' || type === 'video') && mediaFile) {
             // Delete old audio if exists
             if (existingMessage.audio_path) {
                 await supabase.storage.from("audio").remove([existingMessage.audio_path]);
             }
 
             // Upload new
-            const fileExt = audioFile.name.split(".").pop() || "webm";
-            const fileName = `${user.id}/${uuidv4()}.${fileExt}`;
-            const { error: uploadError } = await supabase.storage
-                .from("audio")
-                .upload(fileName, audioFile, { contentType: audioFile.type });
-
-            if (uploadError) throw new Error("Audio upload failed");
-            updates.audio_path = fileName;
-            updates.file_size_bytes = audioFile.size;
+            const result = await uploadMediaFile(supabase, user.id, mediaFile, type);
+            if (!result.ok) throw new Error(result.error);
+            updates.audio_path = result.path;
+            updates.file_size_bytes = result.sizeBytes;
         } else if (type === 'text' && existingMessage.audio_path) {
             // Clean up audio if switching to text
             await supabase.storage.from("audio").remove([existingMessage.audio_path]);
@@ -628,34 +469,18 @@ export async function PUT(request: NextRequest) {
         }
 
         // Upload photos (text and audio messages only)
-        // keepPhotoPaths = existing photo paths the user wants to keep
         const keepPhotoPaths = formData.getAll('keepPhotoPaths') as string[]
         const photoUrls: string[] = [...keepPhotoPaths]
 
         if (type === 'text' || type === 'audio') {
-            const photoFiles: File[] = []
-            for (let i = 0; i < 2; i++) {
-                const photo = formData.get(`photos[${i}]`) as File | null
-                if (photo && photo.size > 0) photoFiles.push(photo)
-            }
-            for (let i = 0; i < photoFiles.length; i++) {
-                const photo = photoFiles[i]
-                const ext = photo.name.split('.').pop() || 'jpg'
-                const fileName = `${user.id}/photos/${uuidv4()}.${ext}`
-                const { error: photoError } = await supabase.storage
-                    .from('audio')
-                    .upload(fileName, photo, { contentType: photo.type })
-                if (!photoError) photoUrls.push(fileName)
-            }
+            const newPhotoPaths = await uploadPhotos(supabase, user.id, formData);
+            photoUrls.push(...newPhotoPaths);
 
             // Delete photos that were removed (exist in DB but not in keepPhotoPaths)
             const existingPhotoPaths: string[] = Array.isArray(existingMessage.photo_paths)
                 ? existingMessage.photo_paths
-                : []
-            const removedPaths = existingPhotoPaths.filter(p => !keepPhotoPaths.includes(p))
-            if (removedPaths.length > 0) {
-                await supabase.storage.from('audio').remove(removedPaths)
-            }
+                : [];
+            await cleanupRemovedPhotos(supabase, existingPhotoPaths, keepPhotoPaths);
         }
         updates.photo_paths = photoUrls.length > 0 ? photoUrls : null
 

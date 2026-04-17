@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAdmin } from '@/lib/admin';
-import { createAdminClient } from '@/lib/supabase/admin';
+import { requireAdmin } from '@/lib/server/requireAdmin';
 
 export const dynamic = 'force-dynamic';
 
 export async function PATCH(request: NextRequest) {
     try {
         // Verify admin access
-        await requireAdmin();
+        const { adminClient: supabase } = await requireAdmin();
 
         const { userId, newEmail } = await request.json();
 
@@ -25,7 +24,7 @@ export async function PATCH(request: NextRequest) {
             }, { status: 400 });
         }
 
-        const supabase = createAdminClient();
+
 
         // Update user email in auth.users
         const { error: updateError } = await supabase.auth.admin.updateUserById(
