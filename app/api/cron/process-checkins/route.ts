@@ -154,6 +154,7 @@ export async function GET(request: NextRequest) {
                             } else {
                                 // Token exists from a prior run — email was previously sent.
                                 // State advance must have failed then; advance now to unblock.
+                                console.log(`[cron] Dedup: reminder-2 token exists for user ${userId}, advancing state`);
                                 emailSent = true;
                             }
                         } else if (attempts === 2) { // Reminder 3 (Day 8)
@@ -193,6 +194,7 @@ export async function GET(request: NextRequest) {
                                     results.errors.push(`Token error for ${userEmail}: ${tokenError.message}`);
                                 }
                             } else {
+                                console.log(`[cron] Dedup: reminder-3 token exists for user ${userId}, advancing state`);
                                 emailSent = true;
                             }
                         } else { // Reminder 1 (Day 0)
@@ -237,6 +239,7 @@ export async function GET(request: NextRequest) {
                             } else {
                                 // Token exists from a prior run — email was previously sent.
                                 // State advance must have failed then; advance now to unblock.
+                                console.log(`[cron] Dedup: reminder-1 token exists for user ${userId}, advancing state`);
                                 emailSent = true;
                             }
                         }
