@@ -4,6 +4,7 @@ import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { isValidLocale, Locale, defaultLocale } from '@/lib/i18n';
 import { sendMessageDeliveryEmail } from '@/components/emails/message-delivery-email';
 import { logDeliveryEvent } from "@/lib/delivery-telemetry";
+import crypto from 'crypto';
 
 // Use service role for admin operations (bypass RLS)
 function getAdminClient() {
@@ -161,14 +162,16 @@ export async function GET(request: NextRequest) {
 
                 // 3. GENERATE DELIVERY TOKEN AND SEND
                 const appUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '');
-
+                
+                const tokenString = crypto.randomBytes(32).toString('hex');
                 // Create a 15-day, multi-use delivery token (replaces Supabase magic link
                 // which expires in 1 hour and is single-use).
                 const { data: deliveryToken, error: tokenError } = await supabase
                     .from('delivery_tokens')
                     .insert({
                         message_id: message.id,
-                        recipient_email: recipient.email,
+                        recipient_id: recipient.id,
+                        token: tokenString,
                         expires_at: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString()
                     })
                     .select('token')
