@@ -147,20 +147,23 @@ export async function releaseCheckinMessages(userId: string) {
                 const localeRaw = locale || defaultLocale;
                 const validLocale = (isValidLocale(localeRaw) ? localeRaw : defaultLocale) as Locale;
 
-                // Generate magic link for recipient
-                const { data: linkData } = await supabase.auth.admin.generateLink({
-                    type: 'magiclink',
-                    email: recipient.email,
-                    options: {
-                        redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/${validLocale}/dashboard/received`
-                    }
-                });
-                
-                if (!linkData?.properties?.action_link) {
-                    throw new Error("Magic link generation failed");
+                // Generate 15-day, multi-use delivery token (aligned with date delivery)
+                const appUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '');
+                const { data: deliveryToken, error: tokenError } = await supabase
+                    .from('delivery_tokens')
+                    .insert({
+                        message_id: message.id,
+                        recipient_email: recipient.email,
+                        expires_at: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString()
+                    })
+                    .select('token')
+                    .single();
+
+                if (tokenError || !deliveryToken) {
+                    throw new Error(`Delivery token generation failed: ${tokenError?.message ?? 'no token returned'}`);
                 }
 
-                const magicLink = linkData.properties.action_link;
+                const magicLink = `${appUrl}/${validLocale}/recibir/${deliveryToken.token}`;
 
                 // Use React email component
                 const { error: sendError } = await sendMessageDeliveryEmail(
