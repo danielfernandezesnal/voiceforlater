@@ -59,3 +59,4 @@ full_build_log.txt
 lint_errors.txt
 full_lint_report.txt
 temp_env.txt
+/supabase/.temp/
