@@ -36,6 +36,8 @@ BEGIN
 END $$;
 
 -- 2. Update admin_list_users to include override info
+DROP FUNCTION IF EXISTS public.admin_list_users(TIMESTAMPTZ, TIMESTAMPTZ, INT, INT, TEXT, TEXT, TEXT);
+
 CREATE OR REPLACE FUNCTION public.admin_list_users(
     p_date_from TIMESTAMPTZ DEFAULT NULL,
     p_date_to TIMESTAMPTZ DEFAULT NULL,
