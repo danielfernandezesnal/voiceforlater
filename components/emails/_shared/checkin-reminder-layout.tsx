@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Locale } from '@/lib/i18n';
 
 export const checkinReminderStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@1,400&family=Source+Sans+3:wght@300;400;600&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background-color: #f5f0e8; font-family: 'Source Sans 3', sans-serif; padding: 40px 20px; color: #2c2318; }
   .email-wrapper { max-width: 580px; margin: 0 auto; }
   .top-header { text-align: center; margin-bottom: 32px; }
-  .logo-title { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 24px; color: #c4622a; margin-bottom: 5px; }
-  .logo-subtitle { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: #c4724a; font-weight: 400; }
+  .logo-title { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 24px; font-weight: 400; color: #C4623A; margin-bottom: 5px; }
+  .logo-subtitle { font-family: 'Inter', sans-serif; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: #C4623A; font-weight: 500; }
   .card { background: #fffdf9; border-radius: 4px; border: 1px solid #e8e0d0; box-shadow: none; overflow: hidden; }
   .eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #c4622a; font-weight: 500; margin-bottom: 16px; }
   .hero { background: #fffdf9; padding: 48px 48px 0; }
