@@ -85,12 +85,14 @@ export function CheckinReminderLayout({
       <body>
         <div className="email-wrapper">
           <div className="top-header">
-            <div className="logo-title">
-              <a href="https://carrymywords.com" style={{ color: 'inherit', textDecoration: 'none' }}>
-                {common.footerSignature}
-              </a>
-            </div>
-            <div className="logo-subtitle">{common.tagline}</div>
+            <a href="https://carrymywords.com" style={{ display: 'inline-block', textDecoration: 'none' }}>
+              <img
+                src="https://carrymywords.com/assets/logo-email.png"
+                alt="Carry my Words"
+                width="200"
+                style={{ display: 'block', margin: '0 auto' }}
+              />
+            </a>
           </div>
           <div className="card">
             <div className="hero">
@@ -120,10 +122,4 @@ export function CheckinReminderLayout({
           </div>
           <div className="footer">
             <a href={dashboardUrl}>{common.dashboardLink}</a>
-            <a href={supportUrl}>{common.supportLink}</a>
-          </div>
-        </div>
-      </body>
-    </html>
-  );
-}
+            <a href={s

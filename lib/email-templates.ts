@@ -163,9 +163,8 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { c
 
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:32px;">
-      <a href="https://carrymywords.com" style="text-decoration:none;">
-        <div style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:24px;font-weight:400;color:#C4623A;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
-        <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C4623A;font-weight:500;">${dict.emails.common.tagline}</div>
+      <a href="https://carrymywords.com" style="text-decoration:none;display:inline-block;">
+        <img src="https://carrymywords.com/assets/logo-email.png" alt="Carry my Words" width="200" style="display:block;" />
       </a>
     </td></tr>
 
@@ -270,9 +269,8 @@ export const getTrustedContactInvitationTemplate = (
 
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:32px;">
-      <a href="https://carrymywords.com" style="text-decoration:none;">
-        <div style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:24px;font-weight:400;color:#C4623A;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
-        <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C4623A;font-weight:500;">${dict.emails.common.tagline}</div>
+      <a href="https://carrymywords.com" style="text-decoration:none;display:inline-block;">
+        <img src="https://carrymywords.com/assets/logo-email.png" alt="Carry my Words" width="200" style="display:block;" />
       </a>
     </td></tr>
 
@@ -384,14 +382,9 @@ export const getMessageSpecialTemplate = (
         <!-- LOGO -->
         <tr>
           <td align="center" style="padding-bottom:32px;">
-            <a href="https://carrymywords.com" style="text-decoration:none;">
-              <div style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:24px;font-weight:400;color:#C4623A;margin-bottom:5px;">
-                ${dict.emails.common.footerSignature}
-              </div>
+            <a href="https://carrymywords.com" style="text-decoration:none;display:inline-block;">
+              <img src="https://carrymywords.com/assets/logo-email.png" alt="Carry my Words" width="200" style="display:block;" />
             </a>
-            <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C4623A;font-weight:500;">
-              ${dict.emails.common.tagline}
-            </div>
           </td>
         </tr>
 
@@ -533,9 +526,8 @@ export const getMessagePosthumousTemplate = (
 
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:36px;">
-      <a href="https://carrymywords.com" style="text-decoration:none;">
-        <div style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:24px;font-weight:400;color:#C4623A;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
-        <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C4623A;font-weight:500;">${dict.emails.common.tagline}</div>
+      <a href="https://carrymywords.com" style="text-decoration:none;display:inline-block;">
+        <img src="https://carrymywords.com/assets/logo-email.png" alt="Carry my Words" width="200" style="display:block;" />
       </a>
     </td></tr>
 
@@ -637,9 +629,8 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { dashboar
 
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:32px;">
-      <a href="https://carrymywords.com" style="text-decoration:none;">
-        <div style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:24px;font-weight:400;color:#C4623A;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
-        <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C4623A;font-weight:500;">${dict.emails.common.tagline}</div>
+      <a href="https://carrymywords.com" style="text-decoration:none;display:inline-block;">
+        <img src="https://carrymywords.com/assets/logo-email.png" alt="Carry my Words" width="200" style="display:block;" />
       </a>
     </td></tr>
 
@@ -673,24 +664,4 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { dashboar
           <p style="font-size:14px;line-height:1.78;color:#4a3728;font-weight:300;margin:0 0 28px;">${t.intro}</p>
           <table cellpadding="0" cellspacing="0">
             <tr><td>
-              <a href="${data.dashboardUrl}" style="display:inline-block;background:#c4622a;color:#fff9f4;text-decoration:none;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:16px 44px;border-radius:2px;">${t.action}</a>
-            </td></tr>
-          </table>
-        </td></tr>
-      </table>
-
-    </td></tr>
-
-    <!-- FOOTER -->
-    <tr><td class="footer-pad" style="padding:20px 48px;background:#f5efe3;border-top:1px solid #ecdfd0;">
-      <p style="font-size:11px;color:#9a8070;font-weight:300;margin:0;line-height:1.65;">${t.footer}</p>
-    </td></tr>
-
-  </table>
-  </td></tr>
-</table>
-</body>
-</html>`;
-
-  return { subject: t.subject, html };
-};
+              <a href="${data.dashboardUrl}" style="display:inline-block;background:#c4622a;color:#fff9f4;text-decoration:none;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercas
