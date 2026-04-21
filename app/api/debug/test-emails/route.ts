@@ -17,6 +17,8 @@ import { sendCheckinReminder1Email } from '@/components/emails/checkin-reminder-
 import { sendCheckinReminder2Email } from '@/components/emails/checkin-reminder-2-email';
 import { sendCheckinReminder3Email } from '@/components/emails/checkin-reminder-3-email';
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
@@ -37,6 +39,7 @@ export async function GET(request: NextRequest) {
     } catch (e: any) {
         results.push({ name: 'Magic Link', success: false, error: e.message });
     }
+    await sleep(300);
 
     try {
         const { data, error } = await sendResetPasswordEmail(targetEmail, dummyLink, 'es');
@@ -44,6 +47,7 @@ export async function GET(request: NextRequest) {
     } catch (e: any) {
         results.push({ name: 'Reset Password', success: false, error: e.message });
     }
+    await sleep(300);
 
     try {
         const { data, error } = await sendTrustedContactNotificationEmail(targetEmail, "Juan", dummyLink, 'es');
@@ -51,6 +55,7 @@ export async function GET(request: NextRequest) {
     } catch (e: any) {
         results.push({ name: 'Trusted Contact Notification', success: false, error: e.message });
     }
+    await sleep(300);
 
     try {
         const { data, error } = await sendMessageDeliveryEmail(targetEmail, dummyLink, "Juan Pérez", "Juan", 'es');
@@ -58,6 +63,7 @@ export async function GET(request: NextRequest) {
     } catch (e: any) {
         results.push({ name: 'Message Delivery', success: false, error: e.message });
     }
+    await sleep(300);
 
     try {
         const { data, error } = await sendCheckinReminder1Email(targetEmail, dummyLink, 'es');
@@ -65,6 +71,7 @@ export async function GET(request: NextRequest) {
     } catch (e: any) {
         results.push({ name: 'Checkin Reminder 1', success: false, error: e.message });
     }
+    await sleep(300);
 
     try {
         const { data, error } = await sendCheckinReminder2Email(targetEmail, dummyLink, 'es');
@@ -72,6 +79,7 @@ export async function GET(request: NextRequest) {
     } catch (e: any) {
         results.push({ name: 'Checkin Reminder 2', success: false, error: e.message });
     }
+    await sleep(300);
 
     try {
         const { data, error } = await sendCheckinReminder3Email(targetEmail, dummyLink, 'es');
@@ -79,6 +87,7 @@ export async function GET(request: NextRequest) {
     } catch (e: any) {
         results.push({ name: 'Checkin Reminder 3', success: false, error: e.message });
     }
+    await sleep(300);
 
     const templates = [
         {
@@ -127,6 +136,7 @@ export async function GET(request: NextRequest) {
         } catch (e: any) {
             results.push({ name: t.name, success: false, error: e.message });
         }
+        await sleep(300);
     }
 
     return NextResponse.json({ success: true, results });
