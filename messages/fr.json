@@ -382,10 +382,17 @@
       "addContactLong": "+ Ajouter un contact"
     },
     "limitReached": {
-      "title": "Limite atteinte",
-      "description": "Avec le plan Gratuit, vous pouvez créer 1 message. Passez au Pro pour créer des messages illimités.",
+      "title": "Limite de messages atteinte",
+      "description": "Pour accéder à plus de fonctionnalités, passez au PRO.",
+      "subtitle": "Pour seulement 10 USD par an, vous pourrez :",
+      "features": [
+        "Envoyer des messages illimités",
+        "Envoyer des messages texte, audio et aussi Vidéo !",
+        "Désigner jusqu'à 3 personnes de confiance pour vos messages",
+        "Envoyer le même message à plusieurs destinataires"
+      ],
       "upgrade": "Voir le plan Pro",
-      "cancel": "Retour"
+      "cancel": "Annuler"
     },
     "upgradeSuccess": {
       "title": "Bienvenue chez PRO !",
