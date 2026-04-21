@@ -225,7 +225,10 @@ export default async function MessagePage({ params }: PageProps) {
                 </div>
 
                 {/* Message Card container */}
-                <div className="animate-slide-up" style={{ animationDelay: '0.4s' }}>
+                <div
+                    className={`animate-slide-up ${messageType === 'video' ? '-mx-6' : ''}`}
+                    style={{ animationDelay: '0.4s' }}
+                >
                     {messageType === 'text' && (
                         <TextCard
                             content={message.text_content}
@@ -401,7 +404,7 @@ function AudioCard({ audioUrl, senderName, date, isPosthumous, t, photoUrls = []
 
 function VideoCard({ videoUrl, senderName, date, t }: { videoUrl: string, senderName: string, date: string, t: any }) {
     return (
-        <div className="bg-white rounded-[2rem] overflow-hidden shadow-[0_12px_44px_rgba(0,0,0,0.04)] border border-black/[0.04]">
+        <div className="bg-white rounded-none sm:rounded-[2rem] overflow-hidden shadow-[0_12px_44px_rgba(0,0,0,0.04)] border border-black/[0.04]">
             <VideoPlayer src={videoUrl} overlayText={t.videoOverlay} />
             <div className="p-10 sm:p-14 space-y-10">
                 <div className="flex items-center gap-6">

@@ -117,13 +117,14 @@ export function VideoPlayer({ src, overlayText }: { src: string, overlayText: st
 
     return (
         <div
-            className="aspect-video relative bg-black group cursor-pointer overflow-hidden rounded-t-3xl"
+            className="relative bg-black group cursor-pointer overflow-hidden rounded-t-3xl w-full"
+            style={{ aspectRatio: '9/16', maxHeight: '80vh' }}
             onClick={togglePlay}
         >
             <video
                 ref={videoRef}
                 src={src}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 playsInline
                 onEnded={() => setIsPlaying(false)}
                 onClick={(e) => {
