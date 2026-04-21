@@ -391,6 +391,7 @@
         "Designar hasta 3 personas de confianza para tus mensajes",
         "Enviar un mismo mensaje a múltiples destinatarios"
       ],
+      "upgrade": "Ver plan Pro",
       "cancel": "Cancelar"
     },
     "upgradeSuccess": {

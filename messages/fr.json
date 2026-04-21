@@ -391,6 +391,7 @@
         "Désigner jusqu'à 3 personnes de confiance pour vos messages",
         "Envoyer le même message à plusieurs destinataires"
       ],
+      "upgrade": "Voir le plan Pro",
       "cancel": "Annuler"
     },
     "upgradeSuccess": {

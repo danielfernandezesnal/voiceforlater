@@ -361,6 +361,7 @@
         "Designate up to 3 trusted contacts for your messages",
         "Send the same message to multiple recipients"
       ],
+      "upgrade": "See Pro plan",
       "cancel": "Cancel"
     },
     "upgradeSuccess": {
