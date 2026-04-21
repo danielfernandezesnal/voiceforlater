@@ -144,7 +144,7 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { c
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Source+Sans+3:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Playfair+Display:ital,wght@1,400&family=Source+Sans+3:wght@300;400;500&display=swap');
     body { margin:0; padding:0; background:#f5f0e8; font-family:'Source Sans 3',Georgia,sans-serif; }
     @media only screen and (max-width:600px) {
       .wrapper { padding: 24px 16px !important; }
@@ -164,8 +164,8 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { c
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:32px;">
       <a href="https://carrymywords.com" style="text-decoration:none;">
-        <div style="font-family:'Lora',Georgia,serif;font-style:italic;font-size:24px;color:#c4622a;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
-        <div style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:#c4724a;">${dict.emails.common.tagline}</div>
+        <div style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:24px;font-weight:400;color:#C4623A;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C4623A;font-weight:500;">${dict.emails.common.tagline}</div>
       </a>
     </td></tr>
 
@@ -252,7 +252,7 @@ export const getTrustedContactInvitationTemplate = (
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Source+Sans+3:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Playfair+Display:ital,wght@1,400&family=Source+Sans+3:wght@300;400;500&display=swap');
     body { margin:0; padding:0; background:#f5f0e8; font-family:'Source Sans 3',Georgia,sans-serif; }
     @media only screen and (max-width:600px) {
       .wrapper { padding: 24px 16px !important; }
@@ -271,8 +271,8 @@ export const getTrustedContactInvitationTemplate = (
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:32px;">
       <a href="https://carrymywords.com" style="text-decoration:none;">
-        <div style="font-family:'Lora',Georgia,serif;font-style:italic;font-size:24px;color:#c4622a;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
-        <div style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:#c4724a;">${dict.emails.common.tagline}</div>
+        <div style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:24px;font-weight:400;color:#C4623A;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C4623A;font-weight:500;">${dict.emails.common.tagline}</div>
       </a>
     </td></tr>
 
@@ -385,11 +385,11 @@ export const getMessageSpecialTemplate = (
         <tr>
           <td align="center" style="padding-bottom:32px;">
             <a href="https://carrymywords.com" style="text-decoration:none;">
-              <div style="font-family:'Lora',Georgia,serif;font-style:italic;font-size:24px;color:#c4622a;margin-bottom:5px;">
+              <div style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:24px;font-weight:400;color:#C4623A;margin-bottom:5px;">
                 ${dict.emails.common.footerSignature}
               </div>
             </a>
-            <div style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:#c4724a;font-weight:400;">
+            <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C4623A;font-weight:500;">
               ${dict.emails.common.tagline}
             </div>
           </td>
@@ -512,7 +512,7 @@ export const getMessagePosthumousTemplate = (
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Source+Sans+3:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Playfair+Display:ital,wght@1,400&family=Source+Sans+3:wght@300;400;500&display=swap');
     body { margin:0; padding:0; background:#f0ebe3; font-family:'Source Sans 3',Georgia,sans-serif; }
     @media only screen and (max-width:600px) {
       .wrapper { padding: 24px 16px !important; }
@@ -534,8 +534,8 @@ export const getMessagePosthumousTemplate = (
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:36px;">
       <a href="https://carrymywords.com" style="text-decoration:none;">
-        <div style="font-family:'Lora',Georgia,serif;font-style:italic;font-size:24px;color:#c4622a;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
-        <div style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:#c4724a;opacity:0.7;">${dict.emails.common.tagline}</div>
+        <div style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:24px;font-weight:400;color:#C4623A;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C4623A;font-weight:500;">${dict.emails.common.tagline}</div>
       </a>
     </td></tr>
 
@@ -618,7 +618,7 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { dashboar
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Source+Sans+3:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;1,400&family=Playfair+Display:ital,wght@1,400&family=Source+Sans+3:wght@300;400;500&display=swap');
     body { margin:0; padding:0; background:#f5f0e8; font-family:'Source Sans 3',Georgia,sans-serif; }
     @media only screen and (max-width:600px) {
       .wrapper { padding: 24px 16px !important; }
@@ -638,8 +638,8 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { dashboar
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:32px;">
       <a href="https://carrymywords.com" style="text-decoration:none;">
-        <div style="font-family:'Lora',Georgia,serif;font-style:italic;font-size:24px;color:#c4622a;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
-        <div style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:#c4724a;">${dict.emails.common.tagline}</div>
+        <div style="font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:24px;font-weight:400;color:#C4623A;margin-bottom:5px;">${dict.emails.common.footerSignature}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#C4623A;font-weight:500;">${dict.emails.common.tagline}</div>
       </a>
     </td></tr>
 
