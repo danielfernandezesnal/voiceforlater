@@ -382,10 +382,16 @@
       "addContactLong": "+ Adicionar contato"
     },
     "limitReached": {
-      "title": "Limite atingido",
-      "description": "Com o plano Free você pode criar 1 mensagem. Atualize para o Pro para criar mensagens ilimitadas.",
-      "upgrade": "Ver plano Pro",
-      "cancel": "Voltar"
+      "title": "Limite de mensagens atingido",
+      "description": "Para acessar mais recursos, atualize para o PRO.",
+      "subtitle": "Por apenas USD 10 por ano você poderá:",
+      "features": [
+        "Enviar mensagens ilimitadas",
+        "Enviar mensagens de texto, áudio e também Vídeo!",
+        "Designar até 3 pessoas de confiança para suas mensagens",
+        "Enviar a mesma mensagem para múltiplos destinatários"
+      ],
+      "cancel": "Cancelar"
     },
     "upgradeSuccess": {
       "title": "Bem-vindo ao PRO!",
