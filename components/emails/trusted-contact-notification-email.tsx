@@ -130,4 +130,7 @@ export async function sendTrustedContactNotificationEmail(
     }
     return { data };
   } catch (error) {
-    console.error("Error sending Trusted Co
+    console.error("Error sending Trusted Contact Notification email:", error);
+    return { error };
+  }
+}

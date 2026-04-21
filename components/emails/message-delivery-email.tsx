@@ -161,4 +161,7 @@ export async function sendMessageDeliveryEmail(
     }
     return { data };
   } catch (error) {
-    console.error("Error sendin
+    console.error("Error sending Message Delivery email:", error);
+    return { error };
+  }
+}

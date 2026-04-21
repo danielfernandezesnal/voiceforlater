@@ -132,4 +132,7 @@ export async function sendResetPasswordEmail(toEmail: string, resetLink: string,
     }
     return { data };
   } catch (error) {
-    console.error("Error send
+    console.error("Error sending Reset Password email:", error);
+    return { error };
+  }
+}

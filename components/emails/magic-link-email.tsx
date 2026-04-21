@@ -160,4 +160,7 @@ export async function sendMagicLinkEmail(
     }
     return { data };
   } catch (error) {
-    console.error("Error 
+    console.error("Error sending Magic Link email:", error);
+    return { error };
+  }
+}

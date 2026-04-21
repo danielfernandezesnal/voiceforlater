@@ -122,4 +122,10 @@ export function CheckinReminderLayout({
           </div>
           <div className="footer">
             <a href={dashboardUrl}>{common.dashboardLink}</a>
-            <a href={s
+            <a href={supportUrl}>{common.supportLink}</a>
+          </div>
+        </div>
+      </body>
+    </html>
+  );
+}
