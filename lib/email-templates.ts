@@ -664,4 +664,25 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { dashboar
           <p style="font-size:14px;line-height:1.78;color:#4a3728;font-weight:300;margin:0 0 28px;">${t.intro}</p>
           <table cellpadding="0" cellspacing="0">
             <tr><td>
-              <a href="${data.dashboardUrl}" style="display:inline-block;background:#c4622a;color:#fff9f4;text-decoration:none;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercas
+              <a href="${data.dashboardUrl}" style="display:inline-block;background:#c4622a;color:#fff9f4;text-decoration:none;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:16px 44px;border-radius:2px;">${t.action}</a>
+            </td></tr>
+          </table>
+          <p style="font-size:11px;color:#a08878;margin:12px 0 0;font-weight:300;">${t.footer}</p>
+        </td></tr>
+      </table>
+
+    </td></tr>
+
+    <!-- FOOTER -->
+    <tr><td class="footer-pad" style="padding:20px 48px;background:#f5efe3;border-top:1px solid #ecdfd0;">
+      <p style="font-size:11px;color:#b8a898;font-weight:300;margin:0;line-height:1.65;">${t.tagline}</p>
+    </td></tr>
+
+  </table>
+  </td></tr>
+</table>
+</body>
+</html>`;
+
+  return { subject: t.subject, html };
+};
