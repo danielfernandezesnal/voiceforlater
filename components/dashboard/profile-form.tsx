@@ -84,7 +84,7 @@ export function ProfileForm({ initialData, dictionary, onboarding = false, local
             const res = await fetch('/api/auth/request-password-reset', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: form.email }),
+                body: JSON.stringify({ email: form.email, locale }),
             })
             const data = await res.json()
             if (!res.ok) throw new Error(data.error)
