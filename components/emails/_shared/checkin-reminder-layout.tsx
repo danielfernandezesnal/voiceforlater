@@ -89,7 +89,7 @@ export function CheckinReminderLayout({
               <img
                 src="https://voiceforlater.vercel.app/assets/logo-email.png"
                 alt="Carry my Words"
-                width="200"
+                width="420"
                 style={{ display: 'block', margin: '0 auto' }}
               />
             </a>
