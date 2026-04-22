@@ -163,7 +163,7 @@ export const getTrustedContactVerifyTemplate = (dict: EmailDictionary, data: { c
 
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:32px;">
-      <a href="https://carrymywords.com" style="text-decoration:none;display:inline-block;">
+      <a href="https://voiceforlater.vercel.app" style="text-decoration:none;display:inline-block;">
         <img src="https://voiceforlater.vercel.app/assets/logo-email.png" alt="Carry my Words" width="200" style="display:block;" />
       </a>
     </td></tr>
@@ -269,7 +269,7 @@ export const getTrustedContactInvitationTemplate = (
 
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:32px;">
-      <a href="https://carrymywords.com" style="text-decoration:none;display:inline-block;">
+      <a href="https://voiceforlater.vercel.app" style="text-decoration:none;display:inline-block;">
         <img src="https://voiceforlater.vercel.app/assets/logo-email.png" alt="Carry my Words" width="200" style="display:block;" />
       </a>
     </td></tr>
@@ -382,7 +382,7 @@ export const getMessageSpecialTemplate = (
         <!-- LOGO -->
         <tr>
           <td align="center" style="padding-bottom:32px;">
-            <a href="https://carrymywords.com" style="text-decoration:none;display:inline-block;">
+            <a href="https://voiceforlater.vercel.app" style="text-decoration:none;display:inline-block;">
               <img src="https://voiceforlater.vercel.app/assets/logo-email.png" alt="Carry my Words" width="200" style="display:block;" />
             </a>
           </td>
@@ -526,7 +526,7 @@ export const getMessagePosthumousTemplate = (
 
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:36px;">
-      <a href="https://carrymywords.com" style="text-decoration:none;display:inline-block;">
+      <a href="https://voiceforlater.vercel.app" style="text-decoration:none;display:inline-block;">
         <img src="https://voiceforlater.vercel.app/assets/logo-email.png" alt="Carry my Words" width="200" style="display:block;" />
       </a>
     </td></tr>
@@ -629,7 +629,7 @@ export const getPaymentFailedTemplate = (dict: EmailDictionary, data: { dashboar
 
     <!-- LOGO -->
     <tr><td align="center" style="padding-bottom:32px;">
-      <a href="https://carrymywords.com" style="text-decoration:none;display:inline-block;">
+      <a href="https://voiceforlater.vercel.app" style="text-decoration:none;display:inline-block;">
         <img src="https://voiceforlater.vercel.app/assets/logo-email.png" alt="Carry my Words" width="200" style="display:block;" />
       </a>
     </td></tr>

@@ -63,7 +63,7 @@ export async function TrustedContactNotificationEmail({
       <body>
         <div className="email-wrapper">
           <div className="top-header">
-            <a href="https://carrymywords.com" style={{ display: 'inline-block', textDecoration: 'none' }}>
+            <a href="https://voiceforlater.vercel.app" style={{ display: 'inline-block', textDecoration: 'none' }}>
               <img
                 src="https://voiceforlater.vercel.app/assets/logo-email.png"
                 alt="Carry my Words"
