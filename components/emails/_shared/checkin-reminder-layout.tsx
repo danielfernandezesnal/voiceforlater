@@ -87,7 +87,7 @@ export function CheckinReminderLayout({
           <div className="top-header">
             <a href="https://carrymywords.com" style={{ display: 'inline-block', textDecoration: 'none' }}>
               <img
-                src="https://carrymywords.com/assets/logo-email.png"
+                src="https://voiceforlater.vercel.app/assets/logo-email.png"
                 alt="Carry my Words"
                 width="200"
                 style={{ display: 'block', margin: '0 auto' }}
