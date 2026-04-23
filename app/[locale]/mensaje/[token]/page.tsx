@@ -298,7 +298,7 @@ export default async function MessagePage({ params }: PageProps) {
                         {t.cta.subtext}
                     </p>
                     <Link href={`/${locale}`} className="text-xs text-primary/60 hover:text-primary transition-colors underline underline-offset-4 decoration-primary/10 hover:decoration-primary/30 font-medium">
-                        carrymywords.com
+                        Carry my Words
                     </Link>
                 </div>
             </footer>
