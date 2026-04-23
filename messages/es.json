@@ -844,7 +844,7 @@
       "ctaButton": "Ver mi mensaje",
       "contentHidden": "Este mensaje viajó en el tiempo para llegar hasta ti.",
       "linkValid": "Enlace válido por 15 días.",
-      "footer": "Este mensaje fue enviado a través de Carry my Words. Si tienes alguna duda, visita carrymywords.com"
+      "footer": "Este mensaje fue enviado a través de Carry my Words."
     },
     "checkinReminder1": {
       "subject": "¿Estás bien?",
@@ -1180,5 +1180,18 @@
     },
     "senderFallback": "el remitente",
     "footerNote": "Enlace de verificación seguro"
+  },
+  "confirmarActividad": {
+    "loading": "Confirmando tu actividad...",
+    "fallback": "Cargando...",
+    "success": {
+      "title": "¡Identidad confirmada!",
+      "body": "Tus mensajes siguen protegidos.",
+      "close": "Podés cerrar esta pestaña."
+    },
+    "error": {
+      "title": "Hubo un problema al confirmar.",
+      "body": "El enlace puede haber expirado. Podés confirmar tu actividad iniciando sesión en tu panel."
+    }
   }
 }
