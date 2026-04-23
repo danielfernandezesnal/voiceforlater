@@ -51,13 +51,13 @@ export async function GET(request: Request) {
   }
   // Flow C: Neither (Invalid link)
   else {
-    return NextResponse.redirect(new URL(`/${locale}/login`, requestUrl.origin));
+    return NextResponse.redirect(new URL(`/${locale}/auth/login`, requestUrl.origin));
   }
 
   // Handle Errors
   if (sessionError) {
     return NextResponse.redirect(
-      new URL(`/${locale}/login?error=auth_callback_failed&details=${encodeURIComponent(sessionError.message)}`, requestUrl.origin)
+      new URL(`/${locale}/auth/login?error=auth_callback_failed&details=${encodeURIComponent(sessionError.message)}`, requestUrl.origin)
     );
   }
 

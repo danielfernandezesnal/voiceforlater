@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
             type: 'recovery',
             email,
             options: {
-                redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/auth/set-password`,
+                redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/${locale}/auth/set-password`,
             },
         });
 

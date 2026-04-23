@@ -19,12 +19,12 @@ export default async function RecibirPage({ params }: Props) {
     .single();
 
   if (!deliveryToken) {
-    redirect(`/${locale}/login?error=invalid_token`);
+    redirect(`/${locale}/auth/login?error=invalid_token`);
   }
 
   // 2. Check expiry (belt-and-suspenders — column default enforces 15 days)
   if (new Date(deliveryToken.expires_at) < new Date()) {
-    redirect(`/${locale}/login?error=expired_token`);
+    redirect(`/${locale}/auth/login?error=expired_token`);
   }
 
   // 3. If the user is already logged in with the correct email, send them straight to the message
@@ -51,14 +51,14 @@ export default async function RecibirPage({ params }: Props) {
         </p>
 
         <Link
-          href={`/${locale}/register?next=/recibir/${token}`}
+          href={`/${locale}/auth/login?next=/recibir/${token}`}
           className="block w-full bg-[#c4622a] hover:bg-[#a8521f] text-white font-medium py-3 px-6 rounded-xl mb-3 transition-colors"
         >
           Crear cuenta para ver el mensaje
         </Link>
 
         <Link
-          href={`/${locale}/login?next=/recibir/${token}`}
+          href={`/${locale}/auth/login?next=/recibir/${token}`}
           className="block w-full border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-xl transition-colors"
         >
           Ya tengo cuenta — Iniciar sesión
