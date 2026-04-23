@@ -1180,5 +1180,18 @@
     },
     "senderFallback": "l'expéditeur",
     "footerNote": "Lien de vérification sécurisé"
+  },
+  "confirmarActividad": {
+    "loading": "Confirmation de votre activité...",
+    "fallback": "Chargement...",
+    "success": {
+      "title": "Identité confirmée !",
+      "body": "Vos messages sont toujours protégés.",
+      "close": "Vous pouvez fermer cet onglet."
+    },
+    "error": {
+      "title": "Un problème est survenu lors de la confirmation.",
+      "body": "Le lien a peut-être expiré. Vous pouvez confirmer votre activité en vous connectant à votre tableau de bord."
+    }
   }
 }

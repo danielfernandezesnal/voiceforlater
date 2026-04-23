@@ -1180,5 +1180,18 @@
     },
     "senderFallback": "the sender",
     "footerNote": "Secure verification link"
+  },
+  "confirmarActividad": {
+    "loading": "Confirming your activity...",
+    "fallback": "Loading...",
+    "success": {
+      "title": "Identity confirmed!",
+      "body": "Your messages are still protected.",
+      "close": "You can close this tab."
+    },
+    "error": {
+      "title": "There was a problem confirming.",
+      "body": "The link may have expired. You can confirm your activity by logging in to your dashboard."
+    }
   }
 }

@@ -1180,5 +1180,18 @@
     },
     "senderFallback": "el remitente",
     "footerNote": "Enlace de verificación seguro"
+  },
+  "confirmarActividad": {
+    "loading": "Confirmando tu actividad...",
+    "fallback": "Cargando...",
+    "success": {
+      "title": "¡Identidad confirmada!",
+      "body": "Tus mensajes siguen protegidos.",
+      "close": "Podés cerrar esta pestaña."
+    },
+    "error": {
+      "title": "Hubo un problema al confirmar.",
+      "body": "El enlace puede haber expirado. Podés confirmar tu actividad iniciando sesión en tu panel."
+    }
   }
 }
