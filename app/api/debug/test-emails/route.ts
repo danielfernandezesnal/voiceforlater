@@ -22,6 +22,16 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
+    if (process.env.NODE_ENV === 'production') {
+        return NextResponse.json({ error: 'Not Found' }, { status: 404 });
+    }
+
+    const cronSecret = process.env.CRON_SECRET;
+    const authHeader = request.headers.get('Authorization');
+    if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
     console.log('Final API Key check (masked):', apiKey ? `${apiKey.substring(0, 5)}...${apiKey.substring(apiKey.length - 4)}` : 'UNDEFINED');
     
