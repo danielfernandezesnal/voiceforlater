@@ -61,6 +61,14 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
         }
     }, [searchParams, userPlan, updateData, setStep])
 
+    // Clear stale errors when user navigates steps or specifically updates the delivery date
+    useEffect(() => {
+        if (error) {
+            setError(null)
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [step, data.deliverAt])
+
     const steps = [
         dictionary.wizard.steps.delivery,
         dictionary.wizard.steps.recipient,
