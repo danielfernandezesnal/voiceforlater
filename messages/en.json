@@ -456,10 +456,10 @@
   "wizard": {
     "title": "Create Message",
     "steps": {
-      "type": "Type",
+      "type": "Format",
       "content": "Content",
-      "recipient": "Recipient",
-      "delivery": "Delivery",
+      "recipient": "Who",
+      "delivery": "When",
       "review": "Review"
     },
     "step1": {

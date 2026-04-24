@@ -63,8 +63,8 @@ const STORAGE_KEY = 'voiceforlater_wizard_draft'
 const WizardContext = createContext<WizardContextType | null>(null)
 
 export function WizardProvider({ children, initialData: propInitialData }: { children: ReactNode; initialData?: Partial<WizardData> }) {
-    // If editing, start at Step 2 (Content) or Step 5 (Review), skipping Step 1 (Type)
-    const [step, setStep] = useState(propInitialData?.messageType ? 2 : 1)
+    // If editing an existing message, start at Step 5 (Review) with all steps unlocked.
+    const [step, setStep] = useState(propInitialData?.messageType ? 5 : 1)
     const [maxStep, setMaxStep] = useState(step)
     const [data, setData] = useState<WizardData>({ ...initialData, ...propInitialData })
     // If editing, we consider it loaded immediately (server data), otherwise wait for client hydration
@@ -91,12 +91,12 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                 // 1. Load text/meta from LocalStorage
                 const savedMeta = localStorage.getItem(STORAGE_KEY)
                 let loadedData = initialData
-                let loadedStep = 1
 
                 if (savedMeta) {
                     const parsed = JSON.parse(savedMeta)
                     loadedData = { ...initialData, ...parsed.data }
-                    loadedStep = parsed.step || 1
+                    // Step is intentionally not restored — always restart from step 1
+                    // to prevent stale step numbers after wizard reorders.
                 }
 
                 // 2. Load audio from IndexedDB
@@ -110,10 +110,8 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                 }
 
                 setData(loadedData)
-                // Safety: if we are loading a step > 1 but there's no type selected, go back to 1
-                const finalStep = (loadedStep > 1 && !loadedData.messageType) ? 1 : loadedStep
-                setStep(finalStep)
-                setMaxStep(finalStep)
+                setStep(1)
+                setMaxStep(1)
             } catch (err) {
                 if (process.env.NODE_ENV !== 'production') console.error('Failed to load drafts:', err)
             } finally {
@@ -180,20 +178,7 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
     // Validate current step
     const canProceed = (() => {
         switch (step) {
-            case 1:
-                return data.messageType !== null
-            case 2:
-                const validTitle = data.title.trim().length > 0 && data.title.length <= 80
-                if (!validTitle) return false
-
-                if (data.messageType === 'text') {
-                    return data.textContent.trim().length > 0
-                }
-                return data.audioBlob !== null || !!data.existingAudioUrl
-            case 3:
-                return data.recipients.length > 0 &&
-                    data.recipients.every(r => r.name.trim().length > 0 && r.email.includes('@'))
-            case 4:
+            case 1: // Cuando (Delivery)
                 if (data.deliveryMode === 'date') {
                     return data.deliverAt !== ''
                 }
@@ -202,6 +187,19 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                     return !!data.trustedContactIds && data.trustedContactIds.some(id => id && id.trim() !== '')
                 }
                 return false
+            case 2: // A quién (Recipient)
+                return data.recipients.length > 0 &&
+                    data.recipients.every(r => r.name.trim().length > 0 && r.email.includes('@'))
+            case 3: // Formato (Type) — auto-advances on click, canProceed not used for Next
+                return data.messageType !== null
+            case 4: // Contenido (Content)
+                const validTitle = data.title.trim().length > 0 && data.title.length <= 80
+                if (!validTitle) return false
+
+                if (data.messageType === 'text') {
+                    return data.textContent.trim().length > 0
+                }
+                return data.audioBlob !== null || !!data.existingAudioUrl
             case 5:
                 return true // Review step
             default:

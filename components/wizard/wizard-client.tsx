@@ -57,15 +57,15 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
         const typeParam = searchParams.get('type')
         if (typeParam === 'video' && userPlan === 'pro') {
             updateData({ messageType: 'video' })
-            setStep(2)
+            setStep(4)
         }
     }, [searchParams, userPlan, updateData, setStep])
 
     const steps = [
+        dictionary.wizard.steps.delivery,
+        dictionary.wizard.steps.recipient,
         dictionary.wizard.steps.type,
         dictionary.wizard.steps.content,
-        dictionary.wizard.steps.recipient,
-        dictionary.wizard.steps.delivery,
         dictionary.wizard.steps.review,
     ]
 
@@ -265,8 +265,10 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
             )}
 
             <div className="mb-8 animate-in slide-in-from-right-4 fade-in duration-500 ease-out" key={step}>
-                {!isReadOnly && step === 1 && <Step1TypeSelect dictionary={dictionary.wizard.step1} userPlan={userPlan} />}
-                {!isReadOnly && step === 2 && (
+                {!isReadOnly && step === 1 && <Step4Delivery dictionary={dictionary} userPlan={userPlan} locale={locale} userEmail={userEmail} />}
+                {!isReadOnly && step === 2 && <Step3Recipient dictionary={dictionary.wizard.step3} userEmail={userEmail} />}
+                {!isReadOnly && step === 3 && <Step1TypeSelect dictionary={dictionary.wizard.step1} userPlan={userPlan} />}
+                {!isReadOnly && step === 4 && (
                     <Step2Content
                         dictionary={dictionary.wizard.step2}
                         maxTextChars={maxTextChars}
@@ -274,8 +276,6 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                         locale={locale}
                     />
                 )}
-                {!isReadOnly && step === 3 && <Step3Recipient dictionary={dictionary.wizard.step3} userEmail={userEmail} />}
-                {!isReadOnly && step === 4 && <Step4Delivery dictionary={dictionary} userPlan={userPlan} locale={locale} userEmail={userEmail} />}
                 {(step === 5 || isReadOnly) && (
                     <Step5Review
                         dictionary={dictionary.wizard.step5}
@@ -298,7 +298,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                             {dictionary.common.back}
                         </button>
                     )}
-                    {step < 5 && step !== 1 && (
+                    {step < 5 && step !== 3 && (
                         <button onClick={handleNext} disabled={!canProceed} className="btn-primary">
                             {dictionary.common.next}
                         </button>
