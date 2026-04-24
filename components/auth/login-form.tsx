@@ -169,10 +169,11 @@ export function LoginForm({ dictionary, locale, next }: LoginFormProps) {
                     <button
                         onClick={async () => {
                             try {
+                                const redirectTarget = next ? next : `/${locale}/dashboard`;
                                 const { error } = await supabase.auth.signInWithOAuth({
                                     provider: 'google',
                                     options: {
-                                        redirectTo: `${window.location.origin}/auth/callback?redirect_to=/${locale}/${next ? encodeURIComponent(next) : 'dashboard'}`,
+                                        redirectTo: `${window.location.origin}/auth/callback?redirect_to=${encodeURIComponent(redirectTarget)}`,
                                         queryParams: {
                                             access_type: 'offline',
                                             prompt: 'consent',

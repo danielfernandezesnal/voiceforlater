@@ -50,9 +50,10 @@ interface ReceivedMessageCardProps {
     message: any;
     locale: string;
     dict: any;
+    autoOpen?: boolean;
 }
 
-export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCardProps) {
+export function ReceivedMessageCard({ message, locale, dict, autoOpen }: ReceivedMessageCardProps) {
     const [mounted, setMounted] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [mediaUrls, setMediaUrls] = useState<{ audio: string | null; photos: string[] } | null>(null);
@@ -115,6 +116,13 @@ export function ReceivedMessageCard({ message, locale, dict }: ReceivedMessageCa
             }
         }
     };
+
+    useEffect(() => {
+        if (mounted && autoOpen && status !== 'expired' && !isOpen) {
+            handleOpen();
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mounted, autoOpen, status]);
 
     const t = dict.messageVisualizer;
 

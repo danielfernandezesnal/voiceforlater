@@ -39,9 +39,10 @@ interface Props {
     messages: ReceivedMessage[];
     locale: Locale;
     dict: Dictionary;
+    openToken?: string;
 }
 
-export function ReceivedMessageList({ messages, locale, dict }: Props) {
+export function ReceivedMessageList({ messages, locale, dict, openToken }: Props) {
     const [sortKey, setSortKey] = useState<SortKey>('created_at');
 
     const sortLabels: Record<SortKey, string> = {
@@ -74,6 +75,7 @@ export function ReceivedMessageList({ messages, locale, dict }: Props) {
                         message={msg as any}
                         locale={locale}
                         dict={dict}
+                        autoOpen={openToken === msg.token}
                     />
                 ))}
             </div>
