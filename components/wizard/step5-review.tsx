@@ -90,34 +90,34 @@ export function Step5Review({
 
     const reviewItems = [
         {
+            label: dictionary.deliveryRule,
+            value: getDeliveryText(),
+            step: 1  // Cuando
+        },
+        {
+            label: dictionary.recipient,
+            value: data.recipients.map(r => `${r.name} (${r.email})`).join('\n'),
+            step: 2  // A quién
+        },
+        {
             label: dictionary.messageType,
             value: data.messageType === 'text'
                 ? dictionary.formatText
                 : data.messageType === 'audio'
                     ? `🎤 ${dictionary.formatAudio}${data.audioDuration > 0 ? ` (${Math.round(data.audioDuration)}s)` : ''}`
                     : `📹 ${dictionary.formatVideo}${data.audioDuration > 0 ? ` (${Math.round(data.audioDuration)}s)` : ''}`,
-            step: 1
+            step: 3  // Formato
         },
         {
             label: dictionary.titleLabel,
             value: data.title,
-            step: 2
+            step: 4  // Contenido
         },
         ...(data.messageType === 'text' && !isReadOnly ? [{
             label: dictionary.content,
             value: data.textContent.substring(0, 100) + (data.textContent.length > 100 ? '...' : ''),
-            step: 2
+            step: 4  // Contenido
         }] : []),
-        {
-            label: dictionary.recipient,
-            value: data.recipients.map(r => `${r.name} (${r.email})`).join('\n'),
-            step: 3
-        },
-        {
-            label: dictionary.deliveryRule,
-            value: getDeliveryText(),
-            step: 4
-        },
     ]
 
     // ── Vista de mensaje ya enviado (readonly) ──────────────────────────────
@@ -365,7 +365,7 @@ export function Step5Review({
 
             <div className="flex flex-col sm:flex-row justify-center gap-3">
                 <button
-                    onClick={() => setStep(2)} // Go to Content step
+                    onClick={() => setStep(4)} // Go to Content step
                     disabled={isSubmitting}
                     className="px-8 py-3 bg-card border border-border text-foreground rounded-lg font-medium hover:bg-secondary/50 disabled:opacity-50 transition-all font-sans"
                 >

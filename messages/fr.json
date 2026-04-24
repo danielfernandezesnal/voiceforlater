@@ -452,10 +452,10 @@
   "wizard": {
     "title": "Créer un message",
     "steps": {
-      "type": "Type",
+      "type": "Format",
       "content": "Contenu",
-      "recipient": "Destinataire",
-      "delivery": "Livraison",
+      "recipient": "À qui",
+      "delivery": "Quand",
       "review": "Réviser"
     },
     "step1": {
