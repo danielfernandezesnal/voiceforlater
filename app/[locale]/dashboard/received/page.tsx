@@ -7,10 +7,13 @@ import { ReceivedMessageList } from "@/components/dashboard/received-message-lis
 
 interface PageProps {
     params: Promise<{ locale: string }>;
+    searchParams: Promise<{ open?: string }>;
 }
 
-export default function ReceivedMessagesPage({ params }: PageProps) {
+export default function ReceivedMessagesPage({ params, searchParams }: PageProps) {
     const { locale: localeParam } = use(params);
+    const search = use(searchParams);
+    const openToken = search?.open;
     const locale: Locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
     
     const [mounted, setMounted] = useState(false);
@@ -128,6 +131,7 @@ export default function ReceivedMessagesPage({ params }: PageProps) {
                     messages={receivedMessages}
                     locale={locale}
                     dict={dict}
+                    openToken={openToken}
                 />
             )}
             

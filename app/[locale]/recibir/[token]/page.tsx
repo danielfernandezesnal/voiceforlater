@@ -34,7 +34,7 @@ export default async function RecibirPage({ params }: Props) {
   } = await userClient.auth.getUser();
 
   if (user && user.email === deliveryToken.recipient_email) {
-    redirect(`/${locale}/dashboard/received`);
+    redirect(`/${locale}/dashboard/received?open=${token}`);
   }
 
   // 4. Show the welcome / gate page
@@ -51,14 +51,14 @@ export default async function RecibirPage({ params }: Props) {
         </p>
 
         <Link
-          href={`/${locale}/auth/login?next=/recibir/${token}`}
+          href={`/${locale}/auth/login?next=/${locale}/recibir/${token}`}
           className="block w-full bg-[#c4622a] hover:bg-[#a8521f] text-white font-medium py-3 px-6 rounded-xl mb-3 transition-colors"
         >
           Crear cuenta para ver el mensaje
         </Link>
 
         <Link
-          href={`/${locale}/auth/login?next=/recibir/${token}`}
+          href={`/${locale}/auth/login?next=/${locale}/recibir/${token}`}
           className="block w-full border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-xl transition-colors"
         >
           Ya tengo cuenta — Iniciar sesión
