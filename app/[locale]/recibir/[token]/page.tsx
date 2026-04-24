@@ -4,11 +4,11 @@ import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 
 interface Props {
-  params: { locale: string; token: string };
+  params: Promise<{ locale: string; token: string }>;
 }
 
 export default async function RecibirPage({ params }: Props) {
-  const { locale, token } = params;
+  const { locale, token } = await params;
   const supabase = getAdminClient();
 
   // 1. Validate token existence
