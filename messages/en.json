@@ -569,7 +569,8 @@
       "noContactWarning": "This message will not be sent automatically until you assign a trusted contact.",
       "posthumousSaveWarning": "For 'When no longer present' messages, you must assign a trusted contact before saving.",
       "agreeTerms": "I agree to the ",
-      "termsLink": "terms and conditions"
+      "termsLink": "terms and conditions",
+      "invalidScheduleDate": "The delivery date must be at least 5 minutes in the future."
     },
     "tosModal": {
       "title": "A Brief Formality",
