@@ -25,6 +25,7 @@ interface Step5Props {
         posthumousSaveWarning?: string
         agreeTerms: string
         termsLink: string
+        invalidScheduleDate?: string
     }
     typeDictionary: {
         text: { title: string }
@@ -37,6 +38,7 @@ interface Step5Props {
     onTosChange: (accepted: boolean) => void
     locale: string
     isReadOnly?: boolean
+    error?: string | null
 }
 
 export function Step5Review({
@@ -47,7 +49,8 @@ export function Step5Review({
     tosAccepted,
     onTosChange,
     locale,
-    isReadOnly = false
+    isReadOnly = false,
+    error
 }: Step5Props) {
     const { data, setStep } = useWizard()
 
@@ -353,6 +356,12 @@ export function Step5Review({
                     </span>
                 </label>
             </div>
+
+            {error && (
+                <div className="max-w-md mx-auto mb-4 p-4 bg-error/10 border border-error/20 rounded-lg text-error text-center text-sm">
+                    {error}
+                </div>
+            )}
 
             <div className="flex flex-col sm:flex-row justify-center gap-3">
                 <button

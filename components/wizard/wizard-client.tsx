@@ -172,9 +172,13 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                 let errorMessage = 'Failed to create message'
                 try {
                     const result = await response.json()
-                    errorMessage = result.error || errorMessage
-                    if (result.details) {
-                        errorMessage += `: ${result.details}`
+                    if (result.code === 'INVALID_SCHEDULE') {
+                        errorMessage = dictionary.wizard.step5.invalidScheduleDate || result.error || errorMessage
+                    } else {
+                        errorMessage = result.error || errorMessage
+                        if (result.details) {
+                            errorMessage += `: ${result.details}`
+                        }
                     }
                 } catch (e) {
                     console.error('Failed to parse error response:', e)
@@ -254,7 +258,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                 />
             )}
 
-            {error && (
+            {error && step < 5 && (
                 <div className="max-w-md mx-auto mb-6 p-4 bg-error/10 border border-error/20 rounded-lg text-error text-center">
                     {error}
                 </div>
@@ -282,6 +286,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                         onTosChange={setTosAccepted}
                         locale={locale}
                         isReadOnly={isReadOnly}
+                        error={error}
                     />
                 )}
             </div>

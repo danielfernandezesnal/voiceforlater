@@ -565,7 +565,8 @@
       "noContactWarning": "Esta mensagem não será enviada automaticamente até que você atribua um contato de confiança.",
       "posthumousSaveWarning": "Para mensagens do tipo 'Quando eu não estiver mais presente', é obrigatório atribuir um contato de confiança antes de salvar.",
       "agreeTerms": "Aceito os ",
-      "termsLink": "termos e condições"
+      "termsLink": "termos e condições",
+      "invalidScheduleDate": "A data de envio deve ser pelo menos 5 minutos no futuro."
     },
     "tosModal": {
       "title": "Uma Breve Formalidade",
