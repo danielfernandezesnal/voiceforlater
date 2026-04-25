@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { ADMIN_EMAIL } from "@/lib/constants";
@@ -24,6 +24,13 @@ export function LoginForm({ dictionary, locale, next }: LoginFormProps) {
     const [successMessage, setSuccessMessage] = useState<string | null>(null)
     const router = useRouter()
     const supabase = createClient()
+
+    useEffect(() => {
+        if (next) {
+            // Guardar intención temporal para sobrevivir flujos forzados (ej. set-password). Expira en 1 hora.
+            document.cookie = `pending_intent=${encodeURIComponent(next)}; path=/; max-age=3600`;
+        }
+    }, [next])
 
     // Handlers
     async function handleLogin(e: React.FormEvent) {
