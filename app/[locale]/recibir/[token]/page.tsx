@@ -18,24 +18,41 @@ export default async function RecibirPage({ params }: Props) {
     .eq('token', token)
     .single();
 
-  if (!deliveryToken) {
-    redirect(`/${locale}/auth/login?error=invalid_token`);
-  }
-
-  // 2. Check expiry (belt-and-suspenders — column default enforces 15 days)
-  if (new Date(deliveryToken.expires_at) < new Date()) {
-    redirect(`/${locale}/auth/login?error=expired_token`);
-  }
-
   // 3. If the user is already logged in with the correct email, send them straight to the message
   const userClient = await createClient();
   const {
     data: { user },
   } = await userClient.auth.getUser();
 
+  // --- TEMPORARY INSTRUMENTATION LOGS ---
+  const maskEmail = (e: string | undefined | null) => e ? `${e.split('@')[0]?.substring(0, 2)}***@${e.split('@')[1]}` : 'none';
+  const truncateToken = (t: string | undefined | null) => t ? t.substring(0, 8) + '...' : 'none';
+  
+  console.log(`[received-flow:recibir] START | locale: ${locale} | token: ${truncateToken(token)}`);
+  console.log(`[received-flow:recibir] deliveryToken exists: ${!!deliveryToken} | user logged in: ${!!user}`);
+  
+  if (deliveryToken && user) {
+    const match = user.email === deliveryToken.recipient_email;
+    console.log(`[received-flow:recibir] email match: ${match} | user: ${maskEmail(user.email)} | recipient: ${maskEmail(deliveryToken.recipient_email)}`);
+  }
+
+  if (!deliveryToken) {
+    console.log(`[received-flow:recibir] END | Redirecting to login invalid_token`);
+    redirect(`/${locale}/auth/login?error=invalid_token`);
+  }
+
+  // 2. Check expiry (belt-and-suspenders — column default enforces 15 days)
+  if (new Date(deliveryToken.expires_at) < new Date()) {
+    console.log(`[received-flow:recibir] END | Redirecting to login expired_token`);
+    redirect(`/${locale}/auth/login?error=expired_token`);
+  }
+
   if (user && user.email === deliveryToken.recipient_email) {
+    console.log(`[received-flow:recibir] END | Redirecting to dashboard received`);
     redirect(`/${locale}/dashboard/received?open=${token}`);
   }
+
+  console.log(`[received-flow:recibir] END | Showing Gate Page`);
 
   // 4. Show the welcome / gate page
   return (
