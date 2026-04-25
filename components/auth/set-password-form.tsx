@@ -8,9 +8,10 @@ interface SetPasswordFormProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dictionary: any
     locale: string
+    next?: string | null
 }
 
-export function SetPasswordForm({ dictionary, locale }: SetPasswordFormProps) {
+export function SetPasswordForm({ dictionary, locale, next }: SetPasswordFormProps) {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
@@ -75,13 +76,25 @@ export function SetPasswordForm({ dictionary, locale }: SetPasswordFormProps) {
             // 3. Redirect
             router.refresh()
             
-            // Recuperar intención si existe y limpiar la cookie
+            // Validate next parameter to prevent open redirects
+            const isSafeLocalPath = (path: string | null | undefined) => {
+                if (!path) return false;
+                return path.startsWith('/') && !path.startsWith('//');
+            };
+
+            // Recuperar intención de prop (nueva forma segura) o cookie (fallback legacy)
             const cookies = document.cookie.split('; ');
             const intentCookie = cookies.find(row => row.startsWith('pending_intent='));
+            let cookieIntent = null;
             if (intentCookie) {
-                const intentVal = decodeURIComponent(intentCookie.split('=')[1]);
-                document.cookie = 'pending_intent=; path=/; max-age=0';
-                router.push(intentVal);
+                cookieIntent = decodeURIComponent(intentCookie.split('=')[1]);
+                document.cookie = 'pending_intent=; path=/; max-age=0'; // clear it
+            }
+
+            if (isSafeLocalPath(next)) {
+                router.push(next!);
+            } else if (isSafeLocalPath(cookieIntent)) {
+                router.push(cookieIntent!);
             } else {
                 router.push(`/${locale}/dashboard`);
             }
