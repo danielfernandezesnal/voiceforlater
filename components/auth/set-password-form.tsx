@@ -74,7 +74,17 @@ export function SetPasswordForm({ dictionary, locale }: SetPasswordFormProps) {
 
             // 3. Redirect
             router.refresh()
-            router.push(`/${locale}/dashboard`)
+            
+            // Recuperar intención si existe y limpiar la cookie
+            const cookies = document.cookie.split('; ');
+            const intentCookie = cookies.find(row => row.startsWith('pending_intent='));
+            if (intentCookie) {
+                const intentVal = decodeURIComponent(intentCookie.split('=')[1]);
+                document.cookie = 'pending_intent=; path=/; max-age=0';
+                router.push(intentVal);
+            } else {
+                router.push(`/${locale}/dashboard`);
+            }
 
         } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
             setError(err.message || 'Error al actualizar contraseña')
