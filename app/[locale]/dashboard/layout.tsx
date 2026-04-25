@@ -54,7 +54,14 @@ export default async function DashboardLayout({
 
     // Only redirect to set password if user is NOT OAuth and hasn't set a password
     if (profile && profile.auth_password_set === false && !isOAuthUser) {
-        redirect(`/${locale}/auth/set-password`);
+        // We use the headers injected by middleware to know our current requested URL
+        const { headers } = await import('next/headers');
+        const headersList = await headers();
+        const currentPath = headersList.get('x-pathname') || `/${locale}/dashboard`;
+        const currentSearch = headersList.get('x-search') || '';
+        const originalUrl = `${currentPath}${currentSearch}`;
+        
+        redirect(`/${locale}/auth/set-password?next=${encodeURIComponent(originalUrl)}`);
     }
 
     // --- Locale Syncing ---

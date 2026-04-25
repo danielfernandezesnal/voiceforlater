@@ -10,6 +10,10 @@ export async function middleware(request: NextRequest) {
         console.warn('Frontend must call /api/messages or /api/profile directly.');
     }
 
+    // Preserve URL for Server Component Layouts (like dashboard layout redirecting to set-password)
+    request.headers.set('x-pathname', request.nextUrl.pathname);
+    request.headers.set('x-search', request.nextUrl.search);
+
     let response = NextResponse.next({
         request: {
             headers: request.headers,
