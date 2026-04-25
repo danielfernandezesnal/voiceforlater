@@ -61,7 +61,18 @@ export default async function DashboardLayout({
         const currentSearch = headersList.get('x-search') || '';
         const originalUrl = `${currentPath}${currentSearch}`;
         
-        redirect(`/${locale}/auth/set-password?next=${encodeURIComponent(originalUrl)}`);
+        // --- TEMPORARY INSTRUMENTATION LOGS ---
+        console.log(`[received-flow:dashboard-layout] START`);
+        console.log(`[received-flow:dashboard-layout] user logged in: ${!!user}`);
+        console.log(`[received-flow:dashboard-layout] profile.auth_password_set: ${profile.auth_password_set}`);
+        console.log(`[received-flow:dashboard-layout] isOAuthUser: ${isOAuthUser}`);
+        console.log(`[received-flow:dashboard-layout] currentPath: ${currentPath} | currentSearch: ${currentSearch}`);
+        console.log(`[received-flow:dashboard-layout] originalUrl: ${originalUrl}`);
+        
+        const nextUrlSafe = encodeURIComponent(originalUrl);
+        console.log(`[received-flow:dashboard-layout] END | Redirecting to set-password with next: ${nextUrlSafe.substring(0, 30)}...`);
+        
+        redirect(`/${locale}/auth/set-password?next=${nextUrlSafe}`);
     }
 
     // --- Locale Syncing ---
