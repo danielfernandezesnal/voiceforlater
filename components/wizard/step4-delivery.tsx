@@ -255,18 +255,15 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
 
     const fetchContacts = useCallback(() => {
         setLoadingContacts(true)
-        console.log('Fetching trusted contacts...')
         fetch('/api/trusted-contacts')
             .then(res => {
                 if (res.ok) return res.json()
-                console.error('Failed to fetch contacts:', res.status, res.statusText)
                 return []
             })
             .then(data => {
-                console.log('Fetched contacts:', data)
                 if (Array.isArray(data)) setContacts(data)
             })
-            .catch(err => console.error('Error fetching contacts:', err))
+            .catch(err => { if (process.env.NODE_ENV !== 'production') console.error('Error fetching contacts:', err) })
             .finally(() => setLoadingContacts(false))
     }, [])
 
