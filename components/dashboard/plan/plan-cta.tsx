@@ -5,9 +5,11 @@ import { useState } from 'react'
 interface PlanCTAProps {
     planName: string
     locale: string
+    proPrice?: string
+    manageSub?: string
 }
 
-export function PlanCTA({ planName, locale }: PlanCTAProps) {
+export function PlanCTA({ planName, locale, proPrice, manageSub }: PlanCTAProps) {
     const isFree = planName.toLowerCase() !== 'pro'
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -57,29 +59,53 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
 
     if (isFree) {
         return (
-            <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm text-center space-y-4">
-                <div>
-                    <h3 className="text-lg font-semibold mb-1">
-                        Lleva tu legado al siguiente nivel
-                    </h3>
-                    <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                        Con Pro tienes video, más contactos de confianza y mensajes sellados.
-                    </p>
+            <div
+                style={{
+                    background: '#fffdf9',
+                    border: '1px solid #e8e0d0',
+                    borderLeft: '3px solid #C4623A',
+                    borderRadius: '4px',
+                }}
+                className="p-6 space-y-4"
+            >
+                <div className="flex items-start justify-between gap-4 flex-wrap">
+                    <div>
+                        <div className="flex items-center gap-2 mb-2">
+                            <span style={{ fontSize: '10px', letterSpacing: '0.12em', color: '#C4623A', fontWeight: 600, textTransform: 'uppercase' }}>
+                                Plan Pro
+                            </span>
+                            {proPrice && (
+                                <span style={{ fontSize: '12px', color: '#7a5c3a', background: 'rgba(196,98,58,0.08)', padding: '2px 9px', borderRadius: '99px', border: '1px solid rgba(196,98,58,0.18)' }}>
+                                    {proPrice}
+                                </span>
+                            )}
+                        </div>
+                        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', color: '#2A2018', fontWeight: 400, lineHeight: 1.3 }}>
+                            Lleva tu legado al siguiente nivel
+                        </h3>
+                    </div>
                 </div>
+
+                <p style={{ fontSize: '13px', color: '#6B5040', lineHeight: 1.55 }}>
+                    Con Pro tenés video, más contactos de confianza y mensajes sellados.
+                </p>
 
                 {error && (
                     <p className="text-sm text-red-600">{error}</p>
                 )}
 
-                <button
-                    onClick={handleUpgrade}
-                    disabled={isLoading}
-                    className="inline-flex items-center justify-center px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors shadow-sm text-sm disabled:opacity-50 disabled:cursor-wait"
-                >
-                    {isLoading ? 'Abriendo pago...' : 'Pasar a Pro'}
-                </button>
+                <div>
+                    <button
+                        onClick={handleUpgrade}
+                        disabled={isLoading}
+                        className="inline-flex items-center justify-center px-7 py-2.5 font-semibold text-sm transition-colors disabled:opacity-50 disabled:cursor-wait"
+                        style={{ background: '#C4623A', color: '#fff', borderRadius: '4px' }}
+                    >
+                        {isLoading ? 'Abriendo pago...' : 'Pasar a Pro'}
+                    </button>
+                </div>
 
-                <p className="text-xs text-muted-foreground">
+                <p style={{ fontSize: '11px', color: '#9a8070' }}>
                     Cancelás cuando quieras. Sin permanencia.
                 </p>
             </div>
@@ -88,12 +114,23 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
 
     return (
         <>
-            <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm text-center space-y-4">
+            <div
+                style={{
+                    background: '#fffdf9',
+                    border: '1px solid #e8e0d0',
+                    borderLeft: '3px solid #4a8c6a',
+                    borderRadius: '4px',
+                }}
+                className="p-6 space-y-4"
+            >
                 <div>
-                    <h3 className="font-serif font-light text-2xl mb-1">
+                    <span style={{ fontSize: '10px', letterSpacing: '0.12em', color: '#4a8c6a', fontWeight: 600, textTransform: 'uppercase' }}>
+                        Plan activo
+                    </span>
+                    <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', color: '#2A2018', fontWeight: 400, lineHeight: 1.3, marginTop: '5px' }}>
                         Estás en el plan Pro
                     </h3>
-                    <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                    <p style={{ fontSize: '13px', color: '#6B5040', lineHeight: 1.55, marginTop: '4px' }}>
                         Tenés acceso completo a todas las funcionalidades.
                     </p>
                 </div>
@@ -102,13 +139,25 @@ export function PlanCTA({ planName, locale }: PlanCTAProps) {
                     <p className="text-sm text-red-600">{error}</p>
                 )}
 
-                <button
-                    onClick={() => setShowCancelModal(true)}
-                    disabled={isLoading}
-                    className="inline-flex items-center justify-center px-6 py-2.5 border border-border text-muted-foreground font-medium rounded-lg hover:bg-muted/50 transition-colors text-sm disabled:opacity-50 disabled:cursor-wait"
-                >
-                    Cancelar suscripción
-                </button>
+                <div className="flex flex-col items-start gap-2">
+                    <button
+                        onClick={handleManage}
+                        disabled={isLoading}
+                        className="inline-flex items-center justify-center px-6 py-2.5 font-medium text-sm transition-colors disabled:opacity-50 disabled:cursor-wait"
+                        style={{ background: 'rgba(74,140,106,0.1)', color: '#2e6b4a', border: '1px solid rgba(74,140,106,0.25)', borderRadius: '4px' }}
+                    >
+                        {isLoading ? 'Abriendo portal...' : (manageSub || 'Gestionar suscripción')}
+                    </button>
+
+                    <button
+                        onClick={() => setShowCancelModal(true)}
+                        disabled={isLoading}
+                        className="text-xs hover:underline disabled:opacity-50"
+                        style={{ color: '#9a8070' }}
+                    >
+                        Cancelar suscripción
+                    </button>
+                </div>
             </div>
 
             {showCancelModal && (

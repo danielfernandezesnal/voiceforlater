@@ -425,7 +425,8 @@
           "trustedContacts": "Trusted people",
           "trustedContactsFree": "Up to 1",
           "trustedContactsPro": "Up to 3",
-          "multipleRecipients": "Messages to multiple recipients"
+          "multipleRecipients": "Messages to multiple recipients",
+            "uploadVideos": "Upload external videos"
         }
       }
     },

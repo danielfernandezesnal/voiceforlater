@@ -59,7 +59,7 @@ export default async function PlanPage({
             <PlanCurrentCard planName={planName} status={status} />
 
             {/* D) CTA */}
-            <PlanCTA planName={planName} locale={locale} />
+            <PlanCTA planName={planName} locale={locale} proPrice={dict.stripe?.proPrice} manageSub={dict.stripe?.manageSub} />
 
             {/* E) Feature Comparison */}
             <PlanCompare
