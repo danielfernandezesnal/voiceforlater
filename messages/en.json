@@ -443,7 +443,10 @@
       "downloadButton": "Download message",
       "someoneSpecial": "Someone special",
       "messageCount_one": "message received",
-      "messageCount_other": "messages received"
+      "messageCount_other": "messages received",
+      "badgeAvailable": "Available",
+      "badgeDownloadOnly": "Download only",
+      "badgeExpired": "Expired"
     }
   },
   "nav": {
