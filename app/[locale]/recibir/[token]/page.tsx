@@ -14,7 +14,7 @@ export default async function RecibirPage({ params }: Props) {
   // 1. Validate token existence
   const { data: deliveryToken } = await supabase
     .from('delivery_tokens')
-    .select('message_id, recipient_email, expires_at')
+    .select('message_id, expires_at, recipients(email)')
     .eq('token', token)
     .single();
 
@@ -28,12 +28,21 @@ export default async function RecibirPage({ params }: Props) {
   const maskEmail = (e: string | undefined | null) => e ? `${e.split('@')[0]?.substring(0, 2)}***@${e.split('@')[1]}` : 'none';
   const truncateToken = (t: string | undefined | null) => t ? t.substring(0, 8) + '...' : 'none';
   
+  // Resolve recipient email from joined recipients table. Supabase nested select with single() might return an object or array.
+  // We'll handle both just in case, but usually for a to-one join it's an object, or an array if the FK is not unique. 
+  // delivery_tokens has `recipient_id UUID NOT NULL REFERENCES public.recipients(id)` which is a many-to-one, so it should be an object.
+  const recipientEmailRaw = Array.isArray(deliveryToken?.recipients) 
+    ? deliveryToken?.recipients[0]?.email 
+    : (deliveryToken?.recipients as any)?.email;
+    
+  const recipientEmail = typeof recipientEmailRaw === 'string' ? recipientEmailRaw : null;
+  
   console.log(`[received-flow:recibir] START | locale: ${locale} | token: ${truncateToken(token)}`);
   console.log(`[received-flow:recibir] deliveryToken exists: ${!!deliveryToken} | user logged in: ${!!user}`);
   
-  if (deliveryToken && user) {
-    const match = user.email === deliveryToken.recipient_email;
-    console.log(`[received-flow:recibir] email match: ${match} | user: ${maskEmail(user.email)} | recipient: ${maskEmail(deliveryToken.recipient_email)}`);
+  if (deliveryToken && user && user.email && recipientEmail) {
+    const match = user.email.trim().toLowerCase() === recipientEmail.trim().toLowerCase();
+    console.log(`[received-flow:recibir] email match: ${match} | user: ${maskEmail(user.email)} | recipient: ${maskEmail(recipientEmail)}`);
   }
 
   if (!deliveryToken) {
@@ -47,7 +56,7 @@ export default async function RecibirPage({ params }: Props) {
     redirect(`/${locale}/auth/login?error=expired_token`);
   }
 
-  if (user && user.email === deliveryToken.recipient_email) {
+  if (user && user.email && recipientEmail && user.email.trim().toLowerCase() === recipientEmail.trim().toLowerCase()) {
     console.log(`[received-flow:recibir] END | Redirecting to dashboard received`);
     redirect(`/${locale}/dashboard/received?open=${token}`);
   }
