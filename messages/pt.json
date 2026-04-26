@@ -506,7 +506,8 @@
       "addRecipient": "Adicionar destinatário",
       "recipientN": "Destinatário {n}",
       "posthumousContactWarning": "⚠️ Este tipo de mensagem requer um contato de confiança. Você poderá atribuí-lo no próximo passo.",
-      "selfRecipientError": "Você não pode enviar esta mensagem para si mesmo. Escolha outra pessoa como destinatário."
+      "selfRecipientError": "Você não pode enviar esta mensagem para si mesmo. Escolha outra pessoa como destinatário.",
+      "trustedContactConflictError": "O destinatário não pode ser o mesmo que o seu contacto de confiança para esta mensagem."
     },
     "step4": {
       "title": "Quando você quer que seja entregue?",

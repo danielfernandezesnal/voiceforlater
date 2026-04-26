@@ -365,7 +365,7 @@ export function Step5Review({
 
             <div className="flex flex-col sm:flex-row justify-center gap-3">
                 <button
-                    onClick={() => setStep(4)} // Go to Content step
+                    onClick={() => setStep(error === dictionary.invalidScheduleDate ? 1 : 4)} // Go to When step if date error, else Content
                     disabled={isSubmitting}
                     className="px-8 py-3 bg-card border border-border text-foreground rounded-lg font-medium hover:bg-secondary/50 disabled:opacity-50 transition-all font-sans"
                 >
