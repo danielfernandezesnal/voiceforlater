@@ -44,6 +44,10 @@ export async function MessageDeliveryEmail({
     .sealed-text { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 16px; color: #6b5040; line-height: 1.65; }
     .btn-primary { background: #c4622a; color: #fff9f4 !important; border-radius: 2px; padding: 16px 44px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; display: inline-block; }
     .cta-hint { font-size: 11px; color: #a08878; margin-top: 12px; font-weight: 300; }
+    .link-fallback { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e8e0d0; }
+    .link-fallback-label { font-size: 11px; color: #a08878; font-weight: 300; margin-bottom: 8px; }
+    .link-fallback-url { font-size: 11px; color: #a08878; word-break: break-all; margin: 0; }
+    .link-fallback-url a { color: #a08878; text-decoration: underline; }
     .footer { background: #f5efe3; border-top: 1px solid #ecdfd0; padding: 24px 48px; text-align: left; }
     .footer-note { font-size: 11px; color: #b8a898; font-weight: 300; margin: 0; }
     @media only screen and (max-width: 600px) {
@@ -108,6 +112,12 @@ export async function MessageDeliveryEmail({
                 {t.ctaButton}
               </a>
               <p className="cta-hint">{t.linkValid}</p>
+              <div className="link-fallback">
+                <p className="link-fallback-label">{t.linkFallback}</p>
+                <p className="link-fallback-url">
+                  <a href={magicLink}>{magicLink}</a>
+                </p>
+              </div>
             </div>
 
           </div>
