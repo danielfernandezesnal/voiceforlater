@@ -421,7 +421,8 @@
           "trustedContacts": "Pessoas de confiança",
           "trustedContactsFree": "Até 1",
           "trustedContactsPro": "Até 3",
-          "multipleRecipients": "Mensagens para múltiplos destinatários"
+          "multipleRecipients": "Mensagens para múltiplos destinatários",
+            "uploadVideos": "Enviar vídeos externos"
         }
       }
     },

@@ -18,11 +18,12 @@ interface PlanCompareProps {
             trustedContactsFree: string
             trustedContactsPro: string
             multipleRecipients: string
+            uploadVideos: string
         }
     }
 }
 
-export function PlanCompare({ currentPlan, comparisonData, locale }: PlanCompareProps) {
+export function PlanCompare({ currentPlan, comparisonData, locale: _locale }: PlanCompareProps) {
     const isFree = currentPlan.toLowerCase() !== 'pro'
     const t = comparisonData?.features
 
@@ -72,7 +73,7 @@ export function PlanCompare({ currentPlan, comparisonData, locale }: PlanCompare
             proNote: null,
         },
         {
-            name: locale === 'es' ? 'Subir videos externos' : 'Upload external videos',
+            name: t.uploadVideos,
             free: false,
             pro: true,
             freeNote: null,
