@@ -278,6 +278,21 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    // Sync trustedContactEmails whenever contacts or trustedContactIds change
+    useEffect(() => {
+        if (data.deliveryMode === 'checkin') {
+            const currentIds = data.trustedContactIds || [];
+            const emails = currentIds
+                .map(id => contacts.find(c => c.id === id)?.email)
+                .filter(Boolean) as string[];
+                
+            const currentEmails = data.trustedContactEmails || [];
+            if (JSON.stringify(emails) !== JSON.stringify(currentEmails)) {
+                updateData({ trustedContactEmails: emails });
+            }
+        }
+    }, [contacts, data.trustedContactIds, data.trustedContactEmails, data.deliveryMode, updateData])
+
     // REMOVED: Auto-correct interval useEffect (Free plan interval restriction removed)
 
     const handleSelect = useCallback((mode: DeliveryMode) => {

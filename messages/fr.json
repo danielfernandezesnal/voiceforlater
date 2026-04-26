@@ -506,7 +506,8 @@
       "addRecipient": "Ajouter un destinataire",
       "recipientN": "Destinataire {n}",
       "posthumousContactWarning": "⚠️ Ce type de message nécessite un contact de confiance. Vous pourrez l'assigner à l'étape suivante.",
-      "selfRecipientError": "Vous ne pouvez pas vous envoyer ce message à vous-même. Veuillez choisir quelqu'un d'autre."
+      "selfRecipientError": "Vous ne pouvez pas vous envoyer ce message à vous-même. Veuillez choisir quelqu'un d'autre.",
+      "trustedContactConflictError": "Le destinataire ne peut pas être le même que votre contact de confiance pour ce message."
     },
     "step4": {
       "title": "Quand voulez-vous qu'il soit livré ?",

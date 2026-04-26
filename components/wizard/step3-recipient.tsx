@@ -14,6 +14,7 @@ interface Step3Props {
         recipientN?: string
         posthumousContactWarning?: string
         selfRecipientError?: string
+        trustedContactConflictError?: string
     }
     userEmail?: string
 }
@@ -86,6 +87,12 @@ export function Step3Recipient({ dictionary, userEmail }: Step3Props) {
                                 recipient.email.toLowerCase().trim() === userEmail.toLowerCase().trim() &&
                                 dictionary.selfRecipientError && (
                                 <p className="mt-1.5 text-sm text-destructive">{dictionary.selfRecipientError}</p>
+                            )}
+                            {data.deliveryMode === 'checkin' &&
+                                recipient.email &&
+                                data.trustedContactEmails?.some(tcEmail => tcEmail.trim().toLowerCase() === recipient.email.trim().toLowerCase()) &&
+                                dictionary.trustedContactConflictError && (
+                                <p className="mt-1.5 text-sm text-destructive">{dictionary.trustedContactConflictError}</p>
                             )}
                         </div>
                     </div>

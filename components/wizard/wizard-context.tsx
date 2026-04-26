@@ -28,6 +28,7 @@ export interface WizardData {
     deliverAt: string // ISO date string
     checkinIntervalDays: 30 | 60 | 90
     trustedContactIds: string[]
+    trustedContactEmails: string[]
 }
 
 interface WizardContextType {
@@ -56,6 +57,7 @@ const initialData: WizardData = {
     deliverAt: '',
     checkinIntervalDays: 30, // Default to 30
     trustedContactIds: [],
+    trustedContactEmails: [],
 }
 
 const STORAGE_KEY = 'voiceforlater_wizard_draft'
@@ -188,7 +190,10 @@ export function WizardProvider({ children, initialData: propInitialData }: { chi
                 }
                 return false
             case 2: // A quién (Recipient)
-                return data.recipients.length > 0 &&
+                const isConflict = data.deliveryMode === 'checkin' && data.recipients.some(r => 
+                    r.email && data.trustedContactEmails?.some(tcEmail => tcEmail.trim().toLowerCase() === r.email.trim().toLowerCase())
+                );
+                return !isConflict && data.recipients.length > 0 &&
                     data.recipients.every(r => r.name.trim().length > 0 && r.email.includes('@'))
             case 3: // Formato (Type) — auto-advances on click, canProceed not used for Next
                 return data.messageType !== null
