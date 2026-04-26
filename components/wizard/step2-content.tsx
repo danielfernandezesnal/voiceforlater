@@ -47,6 +47,7 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                     <div className="space-y-2">
                         <label htmlFor="title" className="block text-sm font-medium text-foreground">
                             {dictionary.titleLabel}
+                            <span aria-hidden="true" className="ml-1 text-destructive">*</span>
                         </label>
                         <div className="relative">
                             <input
@@ -110,6 +111,7 @@ export function Step2Content({ dictionary, maxTextChars, maxAudioSeconds, locale
                 <div className="space-y-2 text-left">
                     <label htmlFor="title" className="block text-sm font-medium text-foreground">
                         {dictionary.titleLabel}
+                        <span aria-hidden="true" className="ml-1 text-destructive">*</span>
                     </label>
                     <div className="relative">
                         <input
