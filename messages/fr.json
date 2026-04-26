@@ -439,7 +439,10 @@
       "downloadButton": "Télécharger le message",
       "someoneSpecial": "Quelqu'un de spécial",
       "messageCount_one": "message reçu",
-      "messageCount_other": "messages reçus"
+      "messageCount_other": "messages reçus",
+      "badgeAvailable": "Disponible",
+      "badgeDownloadOnly": "Téléchargement",
+      "badgeExpired": "Expiré"
     }
   },
   "nav": {

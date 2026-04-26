@@ -126,65 +126,87 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
 
     const t = dict.messageVisualizer;
 
+    const borderColor = mounted
+        ? (status === 'available' ? '#34d399' : status === 'download_only' ? '#f59e0b' : '#9ca3af')
+        : '#e8e0d0';
+
     return (
         <>
-            <div className="bg-card border border-border/60 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-border transition-all hover:shadow-sm">
-                <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full border border-border/40 bg-muted/30 flex items-center justify-center text-[#C4623A] text-lg font-serif italic shrink-0">
-                        {senderName.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold">
-                            {(dict.dashboard as any).receivedMessages?.from?.replace('{name}', '') || 'DE: '}
-                            <span className="text-foreground">{senderName}</span>
-                        </p>
-                        <div className="flex flex-wrap items-center gap-2 mt-0.5">
-                            <h3 className="font-serif font-medium text-base text-foreground">
-                                {message.title || typeLabel}
-                            </h3>
-                            <span 
-                                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium whitespace-nowrap"
-                                style={{ background: 'rgba(196,98,58,0.1)', color: '#C4623A' }}
-                            >
-                                {status === 'expired' && mounted ? null : <Icon size={10} />}
+            <div className="w-full flex items-stretch gap-0" style={{ background: '#fffdf9', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
+                {/* Left accent border */}
+                <div style={{ width: '3px', flexShrink: 0, background: borderColor }} />
+
+                {/* Main content */}
+                <div className="flex-1 flex flex-col sm:flex-row sm:items-start justify-between gap-3 p-5 min-w-0">
+
+                    {/* Left: info rows */}
+                    <div className="flex-1 min-w-0 flex flex-col gap-2">
+
+                        {/* Row 1: sender name + type badge + availability badge */}
+                        <div className="flex flex-wrap items-center gap-2">
+                            <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem', fontWeight: 400, color: 'hsl(var(--ink))', lineHeight: 1.2 }}>
+                                {senderName}
+                            </span>
+                            <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '100px', background: '#f0ece4', color: '#9a8070' }}>
                                 {typeLabel}
                             </span>
+                            {mounted && (
+                                status === 'available' ? (
+                                    <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '100px', background: 'rgba(52,211,153,0.12)', color: '#059669', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                                        {(dict.dashboard as any).receivedMessages?.badgeAvailable}
+                                    </span>
+                                ) : status === 'download_only' ? (
+                                    <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '100px', background: 'rgba(245,158,11,0.12)', color: '#b45309', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                        <DownloadIcon size={9} />
+                                        {(dict.dashboard as any).receivedMessages?.badgeDownloadOnly}
+                                    </span>
+                                ) : (
+                                    <span style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: '100px', background: '#f0ece4', color: '#9a8070' }}>
+                                        {(dict.dashboard as any).receivedMessages?.badgeExpired}
+                                    </span>
+                                )
+                            )}
                         </div>
-                        <p className="text-[10px] text-muted-foreground mt-1">
-                            {(dict.dashboard as any).receivedMessages?.delivered || 'Delivered on'} {mounted ? date : '...'}
-                        </p>
+
+                        {/* Row 2: title / type fallback */}
+                        <div style={{ fontSize: '13px', color: message.title ? '#4a3728' : '#9a8070', fontStyle: message.title ? 'normal' : 'italic', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {message.title || typeLabel}
+                        </div>
+
+                        {/* Row 3: delivery date */}
+                        <div style={{ fontSize: '12px', color: '#9a8070', fontWeight: 300 }}>
+                            {(dict.dashboard as any).receivedMessages?.delivered || 'Delivered on'}:{' '}
+                            <strong style={{ color: '#4a3728', fontWeight: 400 }}>
+                                {mounted ? date : '···'}
+                            </strong>
+                        </div>
                     </div>
-                </div>
-                
-                <div className="flex flex-col items-center gap-2 sm:w-auto w-full min-h-[52px] justify-center">
-                    {mounted ? (
-                        status === 'expired' ? (
-                            <div className="text-center px-4 py-2 bg-muted/30 rounded-full border border-border/40">
-                                <p className="text-xs font-medium text-muted-foreground">
-                                    {dict.dashboard.receivedMessages?.expired}
-                                </p>
-                            </div>
+
+                    {/* Right: action */}
+                    <div className="flex flex-col items-stretch sm:items-end gap-1.5 sm:shrink-0">
+                        {mounted ? (
+                            status === 'expired' ? null : (
+                                <>
+                                    <button
+                                        onClick={handleOpen}
+                                        style={{ fontSize: '12px', fontWeight: 500, padding: '6px 14px', borderRadius: '2px', border: '1px solid #c4622a', background: '#c4622a', color: 'white', cursor: 'pointer', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                                    >
+                                        <Icon size={13} />
+                                        {buttonText}
+                                    </button>
+                                    <p style={{ fontSize: '10px', color: status === 'download_only' ? '#b45309' : '#9a8070', textAlign: 'right', fontWeight: 300 }}>
+                                        {status === 'available'
+                                            ? (dict.dashboard as any).receivedMessages?.availableDays?.replace('{days}', daysRemaining.toString())
+                                            : (dict.dashboard as any).receivedMessages?.downloadOnly?.replace('{days}', daysRemaining.toString())
+                                        }
+                                    </p>
+                                </>
+                            )
                         ) : (
-                            <>
-                                <button 
-                                    onClick={handleOpen}
-                                    className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 text-sm font-medium text-white rounded-full whitespace-nowrap transition-all hover:opacity-90 active:scale-95 shadow-sm sm:w-auto w-full"
-                                    style={{ background: '#C4623A' }}
-                                >
-                                    <Icon size={16} />
-                                    {buttonText}
-                                </button>
-                                <p className={`text-[10px] font-medium text-center ${status === 'download_only' ? 'text-orange-600' : 'text-[#C4623A]/70'}`}>
-                                    {status === 'available' 
-                                        ? dict.dashboard.receivedMessages?.availableDays?.replace('{days}', daysRemaining.toString())
-                                        : dict.dashboard.receivedMessages?.downloadOnly?.replace('{days}', daysRemaining.toString())
-                                    }
-                                </p>
-                            </>
-                        )
-                    ) : (
-                        <div className="h-10 w-32 bg-muted/20 animate-pulse rounded-full" />
-                    )}
+                            <div style={{ height: '32px', width: '100px', background: '#f0ece4', borderRadius: '2px' }} />
+                        )}
+                    </div>
                 </div>
             </div>
 
