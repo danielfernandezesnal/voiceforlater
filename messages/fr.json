@@ -846,7 +846,8 @@
       "ctaButton": "Voir mon message",
       "contentHidden": "Ce message a voyagé dans le temps pour arriver jusqu'à vous.",
       "linkValid": "Lien valide pendant 15 jours.",
-      "footer": "Ce message a été envoyé via Carry my Words."
+      "footer": "Ce message a été envoyé via Carry my Words.",
+      "linkFallback": "Si le bouton ne fonctionne pas, copiez-collez ce lien dans votre navigateur :"
     },
     "checkinReminder1": {
       "subject": "Allez-vous bien ?",
