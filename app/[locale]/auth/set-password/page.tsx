@@ -17,12 +17,6 @@ export default async function SetPasswordPage({
     const resolvedSearch = await searchParams;
     const next = resolvedSearch?.next ?? null;
 
-    // --- TEMPORARY INSTRUMENTATION LOGS ---
-    console.log(`[received-flow:set-password-page] START`);
-    console.log(`[received-flow:set-password-page] locale: ${locale}`);
-    console.log(`[received-flow:set-password-page] next received: ${!!next}`);
-    console.log(`[received-flow:set-password-page] next value (truncated): ${next ? next.substring(0, 30) + '...' : 'none'}`);
-    console.log(`[received-flow:set-password-page] END`);
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-background">

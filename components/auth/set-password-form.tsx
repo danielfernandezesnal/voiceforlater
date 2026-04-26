@@ -91,19 +91,11 @@ export function SetPasswordForm({ dictionary, locale, next }: SetPasswordFormPro
                 document.cookie = 'pending_intent=; path=/; max-age=0'; // clear it
             }
 
-            // --- TEMPORARY INSTRUMENTATION LOGS ---
-            console.log(`[received-flow:set-password-form] START`);
-            console.log(`[received-flow:set-password-form] next prop exists: ${!!next}`);
-            console.log(`[received-flow:set-password-form] cookie pending_intent exists: ${!!cookieIntent}`);
-            
             if (isSafeLocalPath(next)) {
-                console.log(`[received-flow:set-password-form] END | Chosen destination: next prop | path: ${next?.substring(0, 30)}...`);
                 router.push(next!);
             } else if (isSafeLocalPath(cookieIntent)) {
-                console.log(`[received-flow:set-password-form] END | Chosen destination: cookie fallback | path: ${cookieIntent?.substring(0, 30)}...`);
                 router.push(cookieIntent!);
             } else {
-                console.log(`[received-flow:set-password-form] END | Chosen destination: default fallback dashboard`);
                 router.push(`/${locale}/dashboard`);
             }
 

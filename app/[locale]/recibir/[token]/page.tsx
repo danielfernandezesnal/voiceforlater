@@ -24,10 +24,6 @@ export default async function RecibirPage({ params }: Props) {
     data: { user },
   } = await userClient.auth.getUser();
 
-  // --- TEMPORARY INSTRUMENTATION LOGS ---
-  const maskEmail = (e: string | undefined | null) => e ? `${e.split('@')[0]?.substring(0, 2)}***@${e.split('@')[1]}` : 'none';
-  const truncateToken = (t: string | undefined | null) => t ? t.substring(0, 8) + '...' : 'none';
-  
   // Resolve recipient email from joined recipients table. Supabase nested select with single() might return an object or array.
   // We'll handle both just in case, but usually for a to-one join it's an object, or an array if the FK is not unique. 
   // delivery_tokens has `recipient_id UUID NOT NULL REFERENCES public.recipients(id)` which is a many-to-one, so it should be an object.
@@ -36,32 +32,19 @@ export default async function RecibirPage({ params }: Props) {
     : (deliveryToken?.recipients as any)?.email;
     
   const recipientEmail = typeof recipientEmailRaw === 'string' ? recipientEmailRaw : null;
-  
-  console.log(`[received-flow:recibir] START | locale: ${locale} | token: ${truncateToken(token)}`);
-  console.log(`[received-flow:recibir] deliveryToken exists: ${!!deliveryToken} | user logged in: ${!!user}`);
-  
-  if (deliveryToken && user && user.email && recipientEmail) {
-    const match = user.email.trim().toLowerCase() === recipientEmail.trim().toLowerCase();
-    console.log(`[received-flow:recibir] email match: ${match} | user: ${maskEmail(user.email)} | recipient: ${maskEmail(recipientEmail)}`);
-  }
 
   if (!deliveryToken) {
-    console.log(`[received-flow:recibir] END | Redirecting to login invalid_token`);
     redirect(`/${locale}/auth/login?error=invalid_token`);
   }
 
   // 2. Check expiry (belt-and-suspenders — column default enforces 15 days)
   if (new Date(deliveryToken.expires_at) < new Date()) {
-    console.log(`[received-flow:recibir] END | Redirecting to login expired_token`);
     redirect(`/${locale}/auth/login?error=expired_token`);
   }
 
   if (user && user.email && recipientEmail && user.email.trim().toLowerCase() === recipientEmail.trim().toLowerCase()) {
-    console.log(`[received-flow:recibir] END | Redirecting to dashboard received`);
     redirect(`/${locale}/dashboard/received?open=${token}`);
   }
-
-  console.log(`[received-flow:recibir] END | Showing Gate Page`);
 
   // 4. Show the welcome / gate page
   return (
