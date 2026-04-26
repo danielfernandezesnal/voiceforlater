@@ -34,6 +34,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [errorCode, setErrorCode] = useState<string | null>(null)
     const [tosAccepted, setTosAccepted] = useState(false)
     const [showLimitModal, setShowLimitModal] = useState(!!isLimitReached)
 
@@ -65,6 +66,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
     useEffect(() => {
         if (error) {
             setError(null)
+            setErrorCode(null)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [step, data.deliverAt])
@@ -98,6 +100,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
 
         setIsSubmitting(true)
         setError(null)
+        setErrorCode(null)
 
         try {
             // Record ToS acceptance before creating the message — the API validates tos_accepted_at
@@ -178,8 +181,12 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
 
             if (!response.ok) {
                 let errorMessage = 'Failed to create message'
+                let apiErrorCode: string | null = null
                 try {
                     const result = await response.json()
+                    if (result.code) {
+                        apiErrorCode = result.code
+                    }
                     if (result.code === 'INVALID_SCHEDULE') {
                         errorMessage = dictionary.wizard.step5.invalidScheduleDate || result.error || errorMessage
                     } else {
@@ -191,6 +198,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                 } catch (e) {
                     console.error('Failed to parse error response:', e)
                 }
+                setErrorCode(apiErrorCode)
                 throw new Error(errorMessage)
             }
 
@@ -295,6 +303,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                         locale={locale}
                         isReadOnly={isReadOnly}
                         error={error}
+                        errorCode={errorCode}
                     />
                 )}
             </div>

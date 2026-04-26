@@ -39,6 +39,7 @@ interface Step5Props {
     locale: string
     isReadOnly?: boolean
     error?: string | null
+    errorCode?: string | null
 }
 
 export function Step5Review({
@@ -50,7 +51,8 @@ export function Step5Review({
     onTosChange,
     locale,
     isReadOnly = false,
-    error
+    error,
+    errorCode
 }: Step5Props) {
     const { data, setStep } = useWizard()
 
@@ -365,7 +367,7 @@ export function Step5Review({
 
             <div className="flex flex-col sm:flex-row justify-center gap-3">
                 <button
-                    onClick={() => setStep(error === dictionary.invalidScheduleDate ? 1 : 4)} // Go to When step if date error, else Content
+                    onClick={() => setStep(errorCode === 'INVALID_SCHEDULE' ? 1 : 4)} // Go to When step if date error, else Content
                     disabled={isSubmitting}
                     className="px-8 py-3 bg-card border border-border text-foreground rounded-lg font-medium hover:bg-secondary/50 disabled:opacity-50 transition-all font-sans"
                 >
