@@ -221,26 +221,39 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                     <div className="relative w-full max-w-2xl bg-[#FAF7F2] rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-5 duration-500 max-h-[90vh] flex flex-col">
                         
                         {/* Header del Modal */}
-                        <div className="flex items-center justify-between px-6 py-4 border-b border-black/[0.05] bg-white/50 backdrop-blur-sm sticky top-0 z-20">
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-serif italic">
+                        <div className="flex items-start justify-between px-6 py-5 border-b border-black/[0.05] sticky top-0 z-20"
+                             style={{ background: 'rgba(250,247,242,0.94)', backdropFilter: 'blur(12px)' }}>
+                            <div className="flex items-start gap-4 min-w-0">
+                                <div className="w-11 h-11 rounded-full flex items-center justify-center font-serif italic text-xl shrink-0"
+                                     style={{ background: 'rgba(196,98,58,0.1)', color: '#C4623A', border: '1px solid rgba(196,98,58,0.2)' }}>
                                     {senderName.charAt(0).toUpperCase()}
                                 </div>
-                                <div>
-                                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold leading-none">
+                                <div className="min-w-0 pt-0.5">
+                                    <p style={{ fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a8070', fontWeight: 500, lineHeight: 1, marginBottom: '5px' }}>
+                                        {t?.fromLabel || 'De'}
+                                    </p>
+                                    <p style={{ fontFamily: 'var(--font-serif)', fontSize: '15px', color: '#2A2018', fontWeight: 500, lineHeight: 1.3 }}>
                                         {senderName}
                                     </p>
-                                    <p className="text-[9px] text-muted-foreground/60 font-medium">
-                                        {date}
-                                    </p>
+                                    {message.title && (
+                                        <p style={{ fontSize: '12px', color: '#6B5040', opacity: 0.7, marginTop: '3px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                            {message.title}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
-                            <button 
-                                onClick={() => setIsOpen(false)}
-                                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors text-muted-foreground"
-                            >
-                                <CloseIcon size={18} />
-                            </button>
+                            <div className="flex flex-col items-end gap-2 shrink-0 ml-4">
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors"
+                                    style={{ color: '#9a8070' }}
+                                >
+                                    <CloseIcon size={18} />
+                                </button>
+                                <p style={{ fontSize: '10px', color: '#9a8070', opacity: 0.55, fontWeight: 400, whiteSpace: 'nowrap' }}>
+                                    {date}
+                                </p>
+                            </div>
                         </div>
 
                         {/* Contenido del Modal */}
@@ -275,11 +288,8 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
 
                                         {/* Text Content */}
                                         {message.type === 'text' && (
-                                            <div className="space-y-8 text-center relative max-w-lg mx-auto">
-                                                <div className="text-primary/10 text-8xl font-serif absolute -top-8 left-1/2 -translate-x-1/2 z-0 leading-none select-none italic">“</div>
-                                                <h3 className="font-serif font-medium text-2xl text-[#1A1510] relative z-10">
-                                                    {message.title}
-                                                </h3>
+                                            <div className="space-y-8 text-center relative max-w-lg mx-auto pt-6">
+                                                <div className="text-primary/10 text-8xl font-serif absolute top-0 left-1/2 -translate-x-1/2 z-0 leading-none select-none italic">“</div>
                                                 <p className="font-lora italic text-lg sm:text-xl text-[#2A2520] leading-[1.8] whitespace-pre-wrap relative z-10 antialiased font-light">
                                                     {message.text_content}
                                                 </p>
@@ -295,14 +305,9 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                         {/* Audio Content */}
                                         {message.type === 'audio' && mediaUrls?.audio && (
                                             <div className="space-y-10 py-4 max-w-md mx-auto">
-                                                <div className="text-center space-y-2">
-                                                    <p className="text-[10px] tracking-[0.2em] text-primary/80 font-bold uppercase">
-                                                        {t?.voiceLabel || 'Mensaje de voz'}
-                                                    </p>
-                                                    <h3 className="font-serif font-medium text-2xl text-[#1A1510]">
-                                                        {message.title}
-                                                    </h3>
-                                                </div>
+                                                <p className="text-center text-[10px] tracking-[0.2em] text-primary/80 font-bold uppercase">
+                                                    {t?.voiceLabel || 'Mensaje de voz'}
+                                                </p>
                                                 <div className="bg-white rounded-[2.5rem] p-8 border border-black/[0.03] shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
                                                     <AudioPlayer src={mediaUrls.audio} />
                                                 </div>
@@ -317,15 +322,10 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
 
                                         {/* Video Meta (only if video) */}
                                         {message.type === 'video' && (
-                                             <div className="space-y-6 pt-4 text-center max-w-md mx-auto">
-                                                <h3 className="font-serif font-medium text-2xl text-[#1A1510]">
-                                                    {message.title}
-                                                </h3>
-                                                <div className="flex flex-col items-center gap-4">
-                                                    <div className="h-px w-8 bg-primary/20"></div>
-                                                    <div className="text-[11px] tracking-[0.2em] text-[#9C9088] uppercase font-bold">
-                                                        {senderName}
-                                                    </div>
+                                            <div className="flex flex-col items-center gap-4 pt-4 text-center">
+                                                <div className="h-px w-8 bg-primary/20"></div>
+                                                <div className="text-[11px] tracking-[0.2em] text-[#9C9088] uppercase font-bold">
+                                                    {senderName}
                                                 </div>
                                             </div>
                                         )}
