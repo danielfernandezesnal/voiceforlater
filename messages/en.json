@@ -366,7 +366,7 @@
     },
     "upgradeSuccess": {
       "title": "Welcome to PRO!",
-      "description": "You now have access to all PRO plan features. Create unlimited messages, use video, and much more.",
+      "description": "Great to have you on the PRO team! You can now forget about limits on your messages and start creating with video and more.",
       "cta": "Got it!"
     },
     "success": {
@@ -426,7 +426,7 @@
           "trustedContactsFree": "Up to 1",
           "trustedContactsPro": "Up to 3",
           "multipleRecipients": "Messages to multiple recipients",
-            "uploadVideos": "Upload external videos"
+          "uploadVideos": "Upload external videos"
         }
       }
     },
@@ -526,7 +526,7 @@
         "label": "Delivery date",
         "timeLabel": "Delivery time",
         "timeError": "Enter a valid time (e.g., 14:30)",
-        "optionalContactNote": "No trusted contact is required for this mode. The message will be sent automatically at the chosen date and time."
+        "optionalContactNote": "The message will be sent automatically at the chosen date and time."
       },
       "checkin": {
         "title": "When you are no longer present",
@@ -538,10 +538,10 @@
         "days60": "Every 60 days",
         "days90": "Every 90 days",
         "intervals": {
-          "1_test": "1 day (for testing)",
           "30": "30 days",
           "60": "60 days",
-          "90": "90 days"
+          "90": "90 days",
+          "1_test": "1 day (for testing)"
         },
         "freeNote": "Free plan: 7-day interval with 1 reminder. Upgrade to Pro for longer intervals and trusted contact.",
         "trustedContacts": "Trusted Contacts",
@@ -550,7 +550,8 @@
         "contactLabelNumbered": "Trusted contact {number}",
         "selectPlaceholder": "Select or create new",
         "addNew": "+ Add new contact...",
-        "posthumousContactRequired": "For this type of message, you must assign at least 1 trusted person. Select one from the list or create a new one."
+        "posthumousContactRequired": "For this type of message, you must assign at least 1 trusted person. Select one from the list or create a new one.",
+        "intervalContactLabel": "We'll contact you every:"
       }
     },
     "step5": {

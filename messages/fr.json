@@ -396,7 +396,7 @@
     },
     "upgradeSuccess": {
       "title": "Bienvenue chez PRO !",
-      "description": "Vous avez désormais accès à toutes les fonctionnalités du plan PRO. Créez des messages illimités, utilisez la vidéo, et bien plus encore.",
+      "description": "Ravi de t'avoir dans l'équipe PRO ! Tu peux désormais oublier les limites sur tes messages et commencer à créer avec la vidéo et plus encore.",
       "cta": "Compris !"
     },
     "success": {
@@ -422,7 +422,7 @@
           "trustedContactsFree": "Jusqu'à 1",
           "trustedContactsPro": "Jusqu'à 3",
           "multipleRecipients": "Messages à plusieurs destinataires",
-            "uploadVideos": "Télécharger des vidéos externes"
+          "uploadVideos": "Télécharger des vidéos externes"
         }
       }
     },
@@ -522,7 +522,7 @@
         "label": "Date de livraison",
         "timeLabel": "Heure de livraison",
         "timeError": "Entrez une heure valide (ex : 14:30)",
-        "optionalContactNote": "Aucun contact de confiance n'est requis pour cette modalité. Le message sera envoyé automatiquement à la date et l'heure choisies."
+        "optionalContactNote": "Le message sera envoyé automatiquement à la date et l'heure choisies."
       },
       "checkin": {
         "title": "Quand je ne serai plus présent",
@@ -534,10 +534,10 @@
         "days60": "Tous les 60 jours",
         "days90": "Tous les 90 jours",
         "intervals": {
-          "1_test": "1 jour (pour test)",
           "30": "30 jours",
           "60": "60 jours",
-          "90": "90 jours"
+          "90": "90 jours",
+          "1_test": "1 jour (pour test)"
         },
         "freeNote": "Plan Gratuit : intervalle de 7 jours avec 1 rappel. Passez au Pro pour des intervalles plus longs et un contact de confiance.",
         "trustedContacts": "Contacts de confiance",
@@ -546,7 +546,8 @@
         "contactLabelNumbered": "Contact de confiance {number}",
         "selectPlaceholder": "Sélectionner ou en créer un nouveau",
         "addNew": "+ Ajouter un nouveau contact...",
-        "posthumousContactRequired": "Pour ce type de message, vous devez assigner au moins 1 contact de confiance. Sélectionnez-le dans la liste ou créez-en un nouveau."
+        "posthumousContactRequired": "Pour ce type de message, vous devez assigner au moins 1 contact de confiance. Sélectionnez-le dans la liste ou créez-en un nouveau.",
+        "intervalContactLabel": "Nous vous contacterons tous les :"
       }
     },
     "step5": {
