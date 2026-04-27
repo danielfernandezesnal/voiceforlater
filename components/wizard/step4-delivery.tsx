@@ -514,6 +514,9 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
                                             <p className="text-[11px] leading-relaxed text-muted-foreground mb-3">
                                                 {step4Dict.checkin.intervalHelp}
                                             </p>
+                                            <p className="text-sm font-medium mt-3 mb-1">
+                                                {step4Dict.checkin.intervalContactLabel}
+                                            </p>
                                             <select
                                                 value={data.checkinIntervalDays}
                                                 onChange={handleIntervalChange}
