@@ -75,9 +75,9 @@ export function SideNav({ locale, labels, user, plan }: SideNavProps) {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`flex items-center gap-3 px-3 py-2.5 text-[13.5px] font-medium rounded-xl transition-all duration-200 group ${isActive
-                                    ? 'text-foreground bg-accent/5'
-                                    : 'text-muted-foreground hover:text-foreground'
+                                className={`flex items-center gap-3 px-3 py-2.5 text-[13.5px] font-medium rounded-none border-l-2 transition-all duration-200 group ${isActive
+                                    ? 'text-foreground bg-[rgba(196,98,58,0.06)] border-l-[#C4623A]'
+                                    : 'text-muted-foreground hover:text-foreground border-l-transparent hover:bg-[rgba(0,0,0,0.025)]'
                                     }`}
                             >
                                 <item.icon

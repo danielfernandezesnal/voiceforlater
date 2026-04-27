@@ -155,7 +155,7 @@ export default async function DashboardLayout({
                 />
 
                 {/* Main Content */}
-                <main className="flex-1 md:pl-64 w-full transition-all duration-300">
+                <main className="flex-1 md:pl-64 w-full transition-all duration-300 bg-[hsl(var(--surface-alt))]">
                     <div className="max-w-5xl mx-auto px-4 sm:px-8 py-8 md:py-10 animate-in fade-in duration-500 slide-in-from-bottom-2">
                         {children}
                     </div>

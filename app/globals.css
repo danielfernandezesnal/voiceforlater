@@ -60,6 +60,7 @@
   /* #F0EBE1 */
   --cream-card: 36 47% 96%;
   /* #FAF7F2 */
+  --surface-alt: 28 20% 92%;
   --ink: 24 13% 15%;
   /* #2A2520 */
   --ink-soft: 24 5% 28%;
@@ -725,4 +726,18 @@ html {
       right: -10px;
     }
   }
+}
+
+.message-card:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 0 rgba(204, 199, 191, 0.75),
+    0 14px 28px rgba(42, 37, 32, 0.06);
+}
+
+.received-message-card:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 0 rgba(204, 199, 191, 0.75),
+    0 14px 28px rgba(42, 37, 32, 0.06);
 }

@@ -40,7 +40,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
 
     if (!hydrated) {
         return (
-            <div className="border border-border/60 rounded-2xl bg-card shadow-sm h-[180px] animate-pulse" />
+            <div className="border border-[#E3DDD6] rounded-[4px] bg-[#FDFAF6] h-[180px] animate-pulse" style={{ boxShadow: '0 4px 0 rgba(204,199,191,0.75)' }} />
         );
     }
 
@@ -165,7 +165,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
     );
 
     return (
-        <div className="w-full flex items-stretch gap-0" style={{ background: '#fffdf9', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
+        <div className="message-card w-full flex items-stretch gap-0" style={{ background: '#FDFAF6', border: '1px solid #E3DDD6', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 4px 0 rgba(204,199,191,0.75)', transition: 'transform 200ms ease-out, box-shadow 200ms ease-out' }}>
             {/* Borde izquierdo de color */}
             <div style={{ width: '3px', flexShrink: 0, background: isDelivered ? '#34d399' : '#c4622a' }} />
 

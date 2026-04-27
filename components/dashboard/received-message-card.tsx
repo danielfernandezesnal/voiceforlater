@@ -132,7 +132,7 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
 
     return (
         <>
-            <div className="w-full flex items-stretch gap-0" style={{ background: '#fffdf9', border: '1px solid #e8e0d0', borderRadius: '4px', overflow: 'hidden' }}>
+            <div className="received-message-card w-full flex items-stretch gap-0" style={{ background: '#FDFAF6', border: '1px solid #E3DDD6', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 4px 0 rgba(204,199,191,0.75)', transition: 'transform 200ms ease-out, box-shadow 200ms ease-out' }}>
                 {/* Left accent border */}
                 <div style={{ width: '3px', flexShrink: 0, background: borderColor }} />
 
