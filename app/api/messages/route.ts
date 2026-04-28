@@ -510,7 +510,7 @@ export async function PUT(request: NextRequest) {
         // null/undefined, but an explicit check here prevents the Supabase constraint from firing.
         if (deliveryMode !== 'date' && deliveryMode !== 'checkin') {
             return NextResponse.json({
-                error: 'Invalid delivery mode',
+                error: 'INVALID_DELIVERY_MODE',
                 code: 'INVALID_DELIVERY_MODE'
             }, { status: 400 });
         }

@@ -123,7 +123,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
             })
             // Guard: deliveryMode must be a known valid value before any DB write.
             if (data.deliveryMode !== 'date' && data.deliveryMode !== 'checkin') {
-                setError(dictionary.wizard.step5.invalidDeliveryMode || 'Invalid delivery mode. Please select a delivery option.')
+                setError(dictionary.wizard.step5.invalidDeliveryMode)
                 setIsSubmitting(false)
                 setStep(1)
                 return
@@ -196,6 +196,8 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                     }
                     if (result.code === 'INVALID_SCHEDULE') {
                         errorMessage = dictionary.wizard.step5.invalidScheduleDate || result.error || errorMessage
+                    } else if (result.code === 'INVALID_DELIVERY_MODE') {
+                        errorMessage = dictionary.wizard.step5.invalidDeliveryMode || result.error || errorMessage
                     } else {
                         errorMessage = result.error || errorMessage
                         if (result.details) {
