@@ -572,7 +572,8 @@
       "posthumousSaveWarning": "Para mensajes de tipo 'Cuando ya no esté', es obligatorio asignar un contacto de confianza antes de guardar.",
       "agreeTerms": "Acepto los ",
       "termsLink": "términos y condiciones",
-      "invalidScheduleDate": "La fecha de envío debe ser al menos 5 minutos en el futuro."
+      "invalidScheduleDate": "La fecha de envío debe ser al menos 5 minutos en el futuro.",
+      "invalidDeliveryMode": "La modalidad de entrega no es válida. Por favor, selecciona una opción de entrega."
     },
     "tosModal": {
       "title": "Una Breve Formalidad",

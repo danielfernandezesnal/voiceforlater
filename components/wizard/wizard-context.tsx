@@ -65,9 +65,10 @@ const STORAGE_KEY = 'voiceforlater_wizard_draft'
 const WizardContext = createContext<WizardContextType | null>(null)
 
 export function WizardProvider({ children, initialData: propInitialData }: { children: ReactNode; initialData?: Partial<WizardData> }) {
-    // If editing an existing message, start at Step 5 (Review) with all steps unlocked.
-    const [step, setStep] = useState(propInitialData?.messageType ? 5 : 1)
-    const [maxStep, setMaxStep] = useState(step)
+    // Always start at Step 1 so the user reviews/confirms delivery settings first.
+    // When editing (propInitialData present), unlock all steps so the step indicator is fully clickable.
+    const [step, setStep] = useState(1)
+    const [maxStep, setMaxStep] = useState(propInitialData?.messageType ? 5 : 1)
     const [data, setData] = useState<WizardData>({ ...initialData, ...propInitialData })
     // If editing, we consider it loaded immediately (server data), otherwise wait for client hydration
     const [isLoaded, setIsLoaded] = useState(!!propInitialData)
