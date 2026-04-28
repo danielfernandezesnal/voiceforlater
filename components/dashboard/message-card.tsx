@@ -131,86 +131,25 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
             {/* Content */}
             <div className="pl-4 pr-5 py-5 md:pr-6 md:py-6 flex flex-col gap-3">
 
-                {/* Row 1: title + desktop actions */}
-                <div className="flex items-start justify-between gap-4">
+                {/* Row 1: title + status badge */}
+                <div className="flex items-start justify-between gap-3">
                     <h3
                         className="font-serif text-xl font-semibold leading-snug flex-1 min-w-0"
                         style={{ color: '#2C2C2C', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } as React.CSSProperties}
                     >
                         {hasTitle ? message.title : contentFallback}
                     </h3>
-
-                    {/* Desktop actions */}
-                    <div className="hidden sm:flex flex-col gap-1.5 shrink-0">
-                        <Link
-                            href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`}
-                            className="inline-flex items-center justify-center border border-[#C4623A]/70 text-[#C4623A] rounded-md px-3 py-1.5 text-sm hover:bg-[#C4623A]/[0.05] transition-colors duration-[250ms] whitespace-nowrap"
-                        >
-                            {isDelivered ? dict.common.view : dict.common.edit}
-                        </Link>
-                        {!isDelivered && (
-                            <button
-                                onClick={handleDelete}
-                                disabled={isLoading}
-                                className="inline-flex items-center justify-center border border-red-200 text-red-400/80 rounded-md px-3 py-1.5 text-sm hover:bg-red-50 transition-colors duration-[250ms] disabled:opacity-50 whitespace-nowrap"
-                            >
-                                {isLoading ? '···' : dict.common.delete}
-                            </button>
-                        )}
-                    </div>
-                </div>
-
-                {/* Row 2: recipients + metadata */}
-                <div className="flex flex-wrap gap-x-4 gap-y-1">
-                    {visibleRecipients.length > 0 && (
-                        <span className="text-sm" style={{ color: '#6B6B6B' }}>
-                            {visibleRecipients.map((r: any) => formatName(r.name)).join(', ')}
-                            {extraCount > 0 && ` +${extraCount}`}
-                        </span>
-                    )}
-                    {scheduledDate && (
-                        <span className="text-sm" style={{ color: '#6B6B6B' }}>
-                            {scheduledLabel}:{' '}
-                            <span style={{ color: '#4A4A4A', fontWeight: 500 }}>
-                                {scheduledDateOnly ? `${scheduledDateOnly} · ${scheduledTime}` : scheduledDate}
-                            </span>
-                        </span>
-                    )}
-                    {deliveryMode === 'checkin' && hasTrusted && (
-                        <span className="text-sm" style={{ color: '#6B6B6B' }}>
-                            {labels?.contact}:{' '}
-                            <span style={{ color: '#4A4A4A', fontWeight: 500 }}>
-                                {trustedList.map((c: any) => formatName(c.name)).join(', ')}
-                            </span>
-                        </span>
-                    )}
-                    <span className="text-sm" style={{ color: '#6B6B6B' }}>
-                        {labels?.created}:{' '}
-                        <span style={{ color: '#4A4A4A', fontWeight: 500 }}>{createdDate}</span>
-                    </span>
-                </div>
-
-                {/* Row 3: type + status badges */}
-                <div className="flex flex-wrap items-center gap-2">
-                    <span
-                        className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium"
-                        style={{ border: '1px solid rgba(196,98,58,0.2)', background: 'rgba(196,98,58,0.08)', color: '#C4623A' }}
-                    >
-                        {type === 'text' && dict.dashboard.messageCard.type.text}
-                        {type === 'audio' && dict.dashboard.messageCard.type.audio}
-                        {type === 'video' && dict.dashboard.messageCard.type.video}
-                    </span>
                     {isSent ? (
                         <span
-                            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium"
+                            className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-sm font-medium shrink-0 mt-0.5"
                             style={{ background: 'rgba(52,211,153,0.12)', color: '#059669' }}
                         >
-                            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
+                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
                             {dict.dashboard.messageCard.status.delivered}
                         </span>
                     ) : (
                         <span
-                            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium"
+                            className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-sm font-medium shrink-0 mt-0.5"
                             style={{
                                 background: status === 'scheduled' ? 'rgba(196,98,58,0.08)' : '#f0ece4',
                                 color: status === 'scheduled' ? '#C4623A' : '#9a8070',
@@ -221,13 +160,58 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                     )}
                 </div>
 
+                {/* Row 2: type badge + delivery info */}
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                    <span
+                        className="inline-flex items-center rounded-lg px-2.5 py-1 text-sm font-medium"
+                        style={{ border: '1px solid rgba(196,98,58,0.2)', background: 'rgba(196,98,58,0.08)', color: '#C4623A' }}
+                    >
+                        {type === 'text' && dict.dashboard.messageCard.type.text}
+                        {type === 'audio' && dict.dashboard.messageCard.type.audio}
+                        {type === 'video' && dict.dashboard.messageCard.type.video}
+                    </span>
+                    {scheduledDate && (
+                        <>
+                            <span aria-hidden="true" style={{ color: '#d0c8be' }}>·</span>
+                            <span className="text-sm" style={{ color: '#6B6B6B' }}>
+                                {scheduledLabel}:{' '}
+                                <span style={{ color: '#4A4A4A', fontWeight: 500 }}>
+                                    {scheduledDateOnly ? `${scheduledDateOnly} · ${scheduledTime}` : scheduledDate}
+                                </span>
+                            </span>
+                        </>
+                    )}
+                </div>
+
+                {/* Row 3: metadata grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
+                    {visibleRecipients.length > 0 && (
+                        <span className="text-sm font-medium" style={{ color: '#4A4A4A' }}>
+                            {visibleRecipients.map((r: any) => formatName(r.name)).join(', ')}
+                            {extraCount > 0 && ` +${extraCount}`}
+                        </span>
+                    )}
+                    {deliveryMode === 'checkin' && hasTrusted && (
+                        <span className="text-sm" style={{ color: '#6B6B6B' }}>
+                            <span style={{ color: '#9a8070' }}>{labels?.contact}:</span>{' '}
+                            <span style={{ color: '#4A4A4A', fontWeight: 500 }}>
+                                {trustedList.map((c: any) => formatName(c.name)).join(', ')}
+                            </span>
+                        </span>
+                    )}
+                    <span className="text-sm" style={{ color: '#6B6B6B' }}>
+                        <span style={{ color: '#9a8070' }}>{labels?.created}:</span>{' '}
+                        <span style={{ color: '#4A4A4A', fontWeight: 500 }}>{createdDate}</span>
+                    </span>
+                </div>
+
                 <ContactAlert />
 
-                {/* Mobile actions */}
-                <div className="flex sm:hidden gap-2 pt-1">
+                {/* Actions */}
+                <div className="flex sm:justify-end gap-2 pt-1">
                     <Link
                         href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`}
-                        className="flex-1 inline-flex items-center justify-center border border-[#C4623A]/70 text-[#C4623A] rounded-md px-3 py-2 text-sm hover:bg-[#C4623A]/[0.05] transition-colors duration-[250ms]"
+                        className="flex-1 sm:flex-none inline-flex items-center justify-center border border-[#C4623A]/70 text-[#C4623A] rounded-md px-4 py-2 text-sm hover:bg-[#C4623A]/[0.05] transition-colors duration-[250ms]"
                     >
                         {isDelivered ? dict.common.view : dict.common.edit}
                     </Link>
@@ -235,7 +219,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                         <button
                             onClick={handleDelete}
                             disabled={isLoading}
-                            className="flex-1 inline-flex items-center justify-center border border-red-200 text-red-400/80 rounded-md px-3 py-2 text-sm hover:bg-red-50 transition-colors duration-[250ms] disabled:opacity-50"
+                            className="flex-1 sm:flex-none inline-flex items-center justify-center border border-red-200 text-red-400/80 rounded-md px-4 py-2 text-sm hover:bg-red-50 transition-colors duration-[250ms] disabled:opacity-50"
                         >
                             {isLoading ? '···' : dict.common.delete}
                         </button>
