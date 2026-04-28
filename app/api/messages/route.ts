@@ -432,6 +432,13 @@ export async function PUT(request: NextRequest) {
         const requiredCheck = validateRequiredFields(payload);
         if (!requiredCheck.valid) return requiredCheck.response;
 
+        // Align PUT with POST: validate delivery date and checkin interval.
+        const dateCheck = validateDeliveryDate(deliverAt, deliveryMode);
+        if (!dateCheck.valid) return dateCheck.response;
+
+        const checkinCheck = validateCheckinInterval(plan, checkinIntervalDays, deliveryMode, limits);
+        if (!checkinCheck.valid) return checkinCheck.response;
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const updates: any = {
             type,
@@ -499,14 +506,23 @@ export async function PUT(request: NextRequest) {
         if (recipientError) throw recipientError;
 
         // Update Delivery Rule
+        // Defensive guard: deliveryMode must be a valid enum value. validateRequiredFields catches
+        // null/undefined, but an explicit check here prevents the Supabase constraint from firing.
+        if (deliveryMode !== 'date' && deliveryMode !== 'checkin') {
+            return NextResponse.json({
+                error: 'INVALID_DELIVERY_MODE',
+                code: 'INVALID_DELIVERY_MODE'
+            }, { status: 400 });
+        }
+
         // Use upsert to handle both insert and update, avoiding unique constraint violations
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const deliveryRuleData: any = {
             message_id: messageId,
             mode: deliveryMode,
             deliver_at: null,
-            // WORKAROUND: Schema constraint checkin_interval_days IN (30, 60, 90) rejects NULL ? 
-            // Setting to 30 (minimum valid value) ensures UPSERT succeeds. 
+            // WORKAROUND: Schema constraint checkin_interval_days IN (30, 60, 90) rejects NULL ?
+            // Setting to 30 (minimum valid value) ensures UPSERT succeeds.
             // Since mode='date', this value is ignored by application logic.
             checkin_interval_days: 30,
         };
