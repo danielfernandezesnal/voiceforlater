@@ -55,7 +55,18 @@ export default async function EditMessagePage({
     const recipients = dbRecipients.length > 0
         ? dbRecipients.map(r => ({ name: r.name, email: r.email }))
         : [{ name: '', email: '' }];
-    const deliveryRule = message.delivery_rules?.[0]; // Assuming 1 rule for now
+    // delivery_rules can come back as an array or a plain object depending on Supabase join config.
+    // Normalise to a single rule object defensively.
+    const rawRules = message.delivery_rules;
+    const deliveryRule: { mode?: string; deliver_at?: string | null; checkin_interval_days?: number | null } | null =
+        Array.isArray(rawRules)
+            ? (rawRules.length > 0 ? rawRules[0] : null)
+            : (rawRules ?? null);
+
+    // A missing or invalid delivery rule is unrecoverable — redirect to dashboard.
+    if (!deliveryRule || (deliveryRule.mode !== 'date' && deliveryRule.mode !== 'checkin')) {
+        redirect(`/${locale}/dashboard`);
+    }
 
     // Extract trusted contacts
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,8 +98,7 @@ export default async function EditMessagePage({
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const initialData: any = {
+    const initialData: Record<string, unknown> = {
         messageType: message.type,
         title: message.title || '',
         textContent: message.text_content || '',
@@ -98,9 +108,9 @@ export default async function EditMessagePage({
         photos: [],
         existingPhotoUrls,
         recipients,
-        deliveryMode: deliveryRule?.mode || null,
-        deliverAt: deliveryRule?.deliver_at || '',
-        checkinIntervalDays: deliveryRule?.checkin_interval_days || 30,
+        deliveryMode: deliveryRule.mode as 'date' | 'checkin',
+        deliverAt: deliveryRule.deliver_at ?? '',
+        checkinIntervalDays: deliveryRule.checkin_interval_days ?? 30,
         trustedContactIds,
     };
 

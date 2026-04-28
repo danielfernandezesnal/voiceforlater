@@ -121,7 +121,14 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
                 formData.append(`recipients[${i}][name]`, r.name)
                 formData.append(`recipients[${i}][email]`, r.email)
             })
-            formData.append('deliveryMode', data.deliveryMode!)
+            // Guard: deliveryMode must be a known valid value before any DB write.
+            if (data.deliveryMode !== 'date' && data.deliveryMode !== 'checkin') {
+                setError('Invalid delivery mode. Please select a delivery option.')
+                setIsSubmitting(false)
+                setStep(1)
+                return
+            }
+            formData.append('deliveryMode', data.deliveryMode)
 
             if (data.messageType === 'text') {
                 formData.append('textContent', data.textContent)
