@@ -572,7 +572,8 @@
       "posthumousSaveWarning": "Pour les messages de type 'Quand je ne serai plus présent', il est obligatoire d'assigner un contact de confiance avant d'enregistrer.",
       "agreeTerms": "J'accepte les ",
       "termsLink": "conditions générales",
-      "invalidScheduleDate": "La date d'envoi doit être au moins 5 minutes dans le futur."
+      "invalidScheduleDate": "La date d'envoi doit être au moins 5 minutes dans le futur.",
+      "invalidDeliveryMode": "Mode de livraison invalide. Veuillez sélectionner une option de livraison."
     },
     "tosModal": {
       "title": "Une brève formalité",

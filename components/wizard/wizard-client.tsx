@@ -123,7 +123,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
             })
             // Guard: deliveryMode must be a known valid value before any DB write.
             if (data.deliveryMode !== 'date' && data.deliveryMode !== 'checkin') {
-                setError('Invalid delivery mode. Please select a delivery option.')
+                setError(dictionary.wizard.step5.invalidDeliveryMode || 'Invalid delivery mode. Please select a delivery option.')
                 setIsSubmitting(false)
                 setStep(1)
                 return
