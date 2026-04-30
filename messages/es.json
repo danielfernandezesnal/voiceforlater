@@ -18,7 +18,16 @@
     "perYear": "año",
     "sentAt": "Enviado el ",
     "backToHome": "Volver al inicio",
-    "backToDashboard": "Volver al panel"
+    "backToDashboard": "Volver al panel",
+    "confirmDialog": {
+      "deleteMessage": {
+        "title": "¿Eliminar este mensaje?",
+        "description": "Esta acción no se puede deshacer. El mensaje y toda su configuración serán eliminados permanentemente.",
+        "confirm": "Eliminar mensaje",
+        "cancel": "Cancelar",
+        "deleting": "Eliminando..."
+      }
+    }
   },
   "landing": {
     "nav": {

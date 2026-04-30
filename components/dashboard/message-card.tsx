@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Dictionary } from "@/lib/i18n";
 import type { MessageWithRecipient } from "@/components/dashboard/dashboard-message-list";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 interface MessageCardProps {
     message: MessageWithRecipient;
@@ -16,18 +17,19 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
     const router = useRouter();
     const [hydrated, setHydrated] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [isPending, startTransition] = useTransition();
 
     useEffect(() => {
         setHydrated(true);
     }, []);
 
-    const handleDelete = async () => {
-        if (!window.confirm(`${dict.common.delete}?`)) return;
+    const handleDeleteConfirm = async () => {
         setIsDeleting(true);
         try {
             const res = await fetch(`/api/messages?id=${message.id}`, { method: 'DELETE' });
             if (!res.ok) throw new Error('Failed to delete');
+            setShowDeleteDialog(false);
             startTransition(() => { router.refresh(); });
         } catch (error) {
             console.error('Delete error:', error);
@@ -56,7 +58,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
 
     const isDelivered = status === 'delivered';
     const isSent = isDelivered;
-    const isLoading = isDeleting || isPending;
+    const isLoading = isPending;
 
     const formatName = (name: string) => name || 'Unknown';
     const formatDate = (dateString: string) =>
@@ -125,6 +127,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
     const accentColor = isSent ? '#34d399' : '#C4623A';
 
     return (
+        <>
         <div
             className="message-card relative w-full rounded-xl overflow-hidden transition-all duration-[250ms] ease-out hover:-translate-y-0.5 shadow-[0_1px_2px_rgba(196,98,58,0.04),0_4px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_2px_4px_rgba(196,98,58,0.08),0_8px_20px_rgba(0,0,0,0.10)]"
             style={{ background: '#FDFCFB', border: '1px solid #E8DDD0' }}
@@ -220,11 +223,11 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                             </Link>
                             {!isDelivered && (
                                 <button
-                                    onClick={handleDelete}
+                                    onClick={() => setShowDeleteDialog(true)}
                                     disabled={isLoading}
                                     className="flex-1 inline-flex items-center justify-center border border-red-200 text-red-400/80 rounded-md px-4 py-2 text-sm hover:bg-red-50 transition-colors duration-[250ms] disabled:opacity-50"
                                 >
-                                    {isLoading ? '···' : dict.common.delete}
+                                    {dict.common.delete}
                                 </button>
                             )}
                         </div>
@@ -251,11 +254,11 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                             </Link>
                             {!isDelivered && (
                                 <button
-                                    onClick={handleDelete}
+                                    onClick={() => setShowDeleteDialog(true)}
                                     disabled={isLoading}
                                     className="inline-flex items-center justify-center border border-red-200 text-red-400/80 rounded-md px-4 py-2 text-sm hover:bg-red-50 transition-colors duration-[250ms] disabled:opacity-50 w-[96px]"
                                 >
-                                    {isLoading ? '···' : dict.common.delete}
+                                    {dict.common.delete}
                                 </button>
                             )}
                         </div>
@@ -264,5 +267,19 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                 </div>
             </div>
         </div>
+
+        <ConfirmDialog
+            open={showDeleteDialog}
+            onClose={() => { if (!isDeleting) setShowDeleteDialog(false); }}
+            onConfirm={handleDeleteConfirm}
+            title={(dict.common as any).confirmDialog.deleteMessage.title}
+            description={(dict.common as any).confirmDialog.deleteMessage.description}
+            confirmText={(dict.common as any).confirmDialog.deleteMessage.confirm}
+            cancelText={(dict.common as any).confirmDialog.deleteMessage.cancel}
+            loadingText={(dict.common as any).confirmDialog.deleteMessage.deleting}
+            isLoading={isDeleting}
+            variant="destructive"
+        />
+        </>
     );
 }
