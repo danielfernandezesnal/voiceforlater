@@ -149,6 +149,9 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                             </span>
                         </p>
 
+                        {/* Divider */}
+                        <div className="w-16 h-px bg-[#C4623A]/30 mt-2 mb-2.5" />
+
                         {/* Type badge — mobile only */}
                         <div className="md:hidden">
                             <span
@@ -244,7 +247,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                         <div className="flex flex-col gap-1.5 items-end">
                             <Link
                                 href={`/${locale}/messages/${message.id}/edit${isDelivered ? '?readonly=true' : ''}`}
-                                className="inline-flex items-center justify-center border border-[#C4623A]/70 text-[#C4623A] rounded-md px-4 py-2 text-sm hover:bg-[#C4623A]/[0.05] transition-colors duration-[250ms] whitespace-nowrap"
+                                className="w-[96px] inline-flex items-center justify-center border border-[#C4623A]/70 text-[#C4623A] rounded-md px-4 py-2 text-sm hover:bg-[#C4623A]/[0.05] transition-colors duration-[250ms]"
                             >
                                 {isDelivered ? dict.common.view : dict.common.edit}
                             </Link>
@@ -252,7 +255,7 @@ export function MessageCard({ message, locale, dict }: MessageCardProps) {
                                 <button
                                     onClick={handleDelete}
                                     disabled={isLoading}
-                                    className="inline-flex items-center justify-center border border-red-200 text-red-400/80 rounded-md px-4 py-2 text-sm hover:bg-red-50 transition-colors duration-[250ms] disabled:opacity-50 whitespace-nowrap"
+                                    className="w-[96px] inline-flex items-center justify-center border border-red-200 text-red-400/80 rounded-md px-4 py-2 text-sm hover:bg-red-50 transition-colors duration-[250ms] disabled:opacity-50"
                                 >
                                     {isLoading ? '···' : dict.common.delete}
                                 </button>
