@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef } from 'react';
 
 interface ConfirmDialogProps {
     open: boolean;
@@ -28,9 +28,10 @@ export function ConfirmDialog({
     variant = 'destructive',
 }: ConfirmDialogProps) {
     const cancelRef = useRef<HTMLButtonElement>(null);
-    const [confirming, setConfirming] = useState(false);
+    const titleId = useId();
+    const descriptionId = useId();
 
-    const isDisabled = isLoading || confirming;
+    const isDisabled = isLoading;
 
     useEffect(() => {
         if (!open) return;
@@ -47,12 +48,7 @@ export function ConfirmDialog({
 
     const handleConfirm = async () => {
         if (isDisabled) return;
-        setConfirming(true);
-        try {
-            await onConfirm();
-        } finally {
-            setConfirming(false);
-        }
+        await onConfirm();
     };
 
     return (
@@ -60,8 +56,8 @@ export function ConfirmDialog({
             className="fixed inset-0 z-50 flex items-center justify-center"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="confirm-dialog-title"
-            aria-describedby="confirm-dialog-description"
+            aria-labelledby={titleId}
+            aria-describedby={descriptionId}
         >
             {/* Overlay */}
             <div className="absolute inset-0 backdrop-blur-sm" style={{ background: 'rgba(43,37,33,0.6)' }} />
@@ -76,7 +72,7 @@ export function ConfirmDialog({
                 }}
             >
                 <h2
-                    id="confirm-dialog-title"
+                    id={titleId}
                     className="font-serif text-2xl sm:text-3xl italic font-semibold text-center"
                     style={{ color: '#2C2C2C' }}
                 >
@@ -84,7 +80,7 @@ export function ConfirmDialog({
                 </h2>
 
                 <p
-                    id="confirm-dialog-description"
+                    id={descriptionId}
                     className="mt-4 text-center text-base leading-relaxed"
                     style={{ color: '#4A4A4A' }}
                 >
