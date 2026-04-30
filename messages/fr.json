@@ -18,7 +18,16 @@
     "perYear": "an",
     "sentAt": "Envoyé le ",
     "backToHome": "Retour à l'accueil",
-    "backToDashboard": "Retour au tableau de bord"
+    "backToDashboard": "Retour au tableau de bord",
+    "confirmDialog": {
+      "deleteMessage": {
+        "title": "Supprimer ce message ?",
+        "description": "Cette action est irréversible. Le message et toute sa configuration seront supprimés définitivement.",
+        "confirm": "Supprimer le message",
+        "cancel": "Annuler",
+        "deleting": "Suppression..."
+      }
+    }
   },
   "landing": {
     "nav": {

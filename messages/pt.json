@@ -18,7 +18,16 @@
     "perYear": "ano",
     "sentAt": "Enviado em ",
     "backToHome": "Voltar ao início",
-    "backToDashboard": "Voltar ao painel"
+    "backToDashboard": "Voltar ao painel",
+    "confirmDialog": {
+      "deleteMessage": {
+        "title": "Excluir esta mensagem?",
+        "description": "Esta ação não pode ser desfeita. A mensagem e toda a sua configuração serão excluídas permanentemente.",
+        "confirm": "Excluir mensagem",
+        "cancel": "Cancelar",
+        "deleting": "Excluindo..."
+      }
+    }
   },
   "landing": {
     "nav": {

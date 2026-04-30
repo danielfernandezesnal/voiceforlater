@@ -18,7 +18,16 @@
     "perYear": "year",
     "sentAt": "Sent on ",
     "backToHome": "Back to home",
-    "backToDashboard": "Back to dashboard"
+    "backToDashboard": "Back to dashboard",
+    "confirmDialog": {
+      "deleteMessage": {
+        "title": "Delete this message?",
+        "description": "This action cannot be undone. The message and all its settings will be permanently deleted.",
+        "confirm": "Delete message",
+        "cancel": "Cancel",
+        "deleting": "Deleting..."
+      }
+    }
   },
   "landing": {
     "nav": {
