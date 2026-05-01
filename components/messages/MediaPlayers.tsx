@@ -105,32 +105,27 @@ export function VideoPlayer({ src, overlayText }: { src: string, overlayText: st
     const [isPlaying, setIsPlaying] = useState(false);
     const videoRef = useRef<HTMLVideoElement | null>(null);
 
-    const togglePlay = () => {
+    const handlePlay = () => {
         if (!videoRef.current) return;
-        if (isPlaying) {
-            videoRef.current.pause();
-        } else {
-            videoRef.current.play();
-        }
-        setIsPlaying(!isPlaying);
+        videoRef.current.play().catch(err => console.error('Video play failed:', err));
     };
 
     return (
         <div
-            className="relative bg-black group cursor-pointer overflow-hidden rounded-t-3xl w-full"
+            className="relative bg-black overflow-hidden rounded-t-3xl w-full"
             style={{ aspectRatio: '9/16', maxHeight: '80vh' }}
-            onClick={togglePlay}
         >
             <video
                 ref={videoRef}
                 src={src}
                 className="w-full h-full object-contain"
                 playsInline
+                preload="metadata"
+                controls
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
                 onEnded={() => setIsPlaying(false)}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    togglePlay();
-                }}
+                onError={(e) => console.error('Video error:', e.currentTarget.error)}
             />
 
             {/* Watermark */}
@@ -163,10 +158,13 @@ export function VideoPlayer({ src, overlayText }: { src: string, overlayText: st
                 </span>
             </div>
 
-            {/* Custom Overlay */}
+            {/* Custom Overlay — shown before first play; click triggers native play */}
             {!isPlaying && (
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex flex-col items-center justify-center gap-4 transition-all duration-700 group-hover:bg-black/50">
-                    <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full border border-white/30 flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500">
+                <div
+                    className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex flex-col items-center justify-center gap-4 cursor-pointer"
+                    onClick={handlePlay}
+                >
+                    <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full border border-white/30 flex items-center justify-center transition-transform duration-200 hover:scale-105">
                         <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M8 5v14l11-7z" />
                         </svg>
