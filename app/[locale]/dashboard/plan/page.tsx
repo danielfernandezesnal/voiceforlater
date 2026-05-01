@@ -55,8 +55,10 @@ export default async function PlanPage({
 
             </div>
 
-            {/* C) Current Plan Card */}
-            <PlanCurrentCard planName={planName} status={status} />
+            {/* C) Current Plan Card — shown for Free users only; Pro users already see status in CTA */}
+            {planName.toLowerCase() !== 'pro' && (
+                <PlanCurrentCard planName={planName} status={status} />
+            )}
 
             {/* D) CTA */}
             <PlanCTA planName={planName} locale={locale} proPrice={dict.stripe?.proPrice} manageSub={dict.stripe?.manageSub} />
