@@ -619,6 +619,11 @@ html {
     .cmw-section-title {
       margin-bottom: 60px;
     }
+
+    .cmw-visual-question {
+      font-size: 1.2rem;
+      line-height: 1.45;
+    }
   }
 
   /* ── Terracota CTA buttons ── */
@@ -724,6 +729,11 @@ html {
       font-size: 10rem;
       bottom: -20px;
       right: -10px;
+    }
+
+    .cmw-featured-question {
+      font-size: 1.45rem;
+      line-height: 1.4;
     }
   }
 }
