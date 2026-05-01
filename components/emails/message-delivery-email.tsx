@@ -43,7 +43,7 @@ export async function MessageDeliveryEmail({
     .sealed-icon { font-size: 18px; color: #c4622a; opacity: 0.7; margin-bottom: 12px; }
     .sealed-text { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 16px; color: #6b5040; line-height: 1.65; }
     .btn-primary { background: #c4622a; color: #fff9f4 !important; border-radius: 2px; padding: 16px 44px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; display: inline-block; }
-    .cta-hint { font-size: 11px; color: #a08878; margin-top: 12px; font-weight: 300; }
+    .cta-hint { font-size: 10px; color: #b8a898; margin-top: 12px; font-weight: 300; }
     .link-fallback { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e8e0d0; }
     .link-fallback-label { font-size: 11px; color: #a08878; font-weight: 300; margin-bottom: 8px; }
     .link-fallback-url { font-size: 11px; color: #a08878; word-break: break-all; margin: 0; }
@@ -108,10 +108,18 @@ export async function MessageDeliveryEmail({
                 <div className="sealed-icon">✦</div>
                 <div className="sealed-text">{t.contentHidden}</div>
               </div>
-              <a href={magicLink} className="btn-primary">
-                {t.ctaButton}
-              </a>
-              <p className="cta-hint">{t.linkValid}</p>
+              <table cellPadding={0} cellSpacing={0} style={{ borderCollapse: 'collapse', margin: '0 auto' }}>
+                <tbody>
+                  <tr>
+                    <td align="center">
+                      <a href={magicLink} className="btn-primary">
+                        {t.ctaButton}
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p className="cta-hint" style={{ textAlign: 'center' }}>{t.linkValid}</p>
               <div className="link-fallback">
                 <p className="link-fallback-label">{t.linkFallback}</p>
                 <p className="link-fallback-url">
