@@ -24,6 +24,7 @@ export function SuccessBanner({ dictionary }: SuccessBannerProps) {
         if (searchParams.get('created') === 'true') {
             setIsFadingOut(false);
             setVisible(true);
+            window.scrollTo({ top: 0, behavior: 'instant' });
         }
     }, [searchParams]);
 
