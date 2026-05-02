@@ -62,34 +62,63 @@ export default async function LocaleHomePage({
                 </div>
             </nav>
 
-            {/* Hero Section — clean 2-column grid, self-contained */}
-            <section className="hero-grid">
-                {/* Left: text */}
-                <div className="flex flex-col justify-end px-[7%] pb-20 pt-16">
-                    <p className="animate-in fade-in slide-in-from-bottom-8 duration-1000 mb-5"
-                        style={{ fontSize: '0.78rem', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500, color: TC }}>
+            {/* Hero Section — Editorial Center */}
+            <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden py-24 md:py-0">
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
+                    <Image
+                        src="/assets/rebrand/hero-editorial.png"
+                        alt="Carry my Words - Editorial Hero"
+                        fill
+                        priority
+                        quality={95}
+                        className="object-cover"
+                        style={{
+                            objectPosition: 'center 30%',
+                            filter: 'sepia(18%) saturate(0.9) brightness(1.05)'
+                        }}
+                    />
+                </div>
+
+                {/* Overlay */}
+                <div 
+                    className="absolute inset-0 z-0 pointer-events-none"
+                    style={{
+                        background: 'radial-gradient(ellipse 120% 100% at 50% 50%, rgba(239, 233, 224, 0.45) 0%, rgba(239, 233, 224, 0.78) 70%, hsl(var(--cream)) 100%)'
+                    }}
+                />
+
+                {/* Content */}
+                <div className="relative z-10 max-w-[720px] w-[90%] flex flex-col items-center text-center mt-12 md:mt-0 animate-in fade-in duration-1000">
+                    <p className="mb-5"
+                        style={{ fontSize: '0.78rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, color: TC }}>
                         {dict.landing.hero.tag}
                     </p>
-                    <h1 className="font-serif font-light tracking-tight leading-[1.06] mb-6 animate-in fade-in slide-in-from-bottom-8 duration-1000"
-                        style={{ fontSize: 'clamp(3.4rem, 5.6vw, 5.6rem)', color: 'hsl(var(--ink))' }}>
+                    
+                    <h1 className="font-serif font-light tracking-tight leading-[1.06] mb-8"
+                        style={{ fontSize: 'clamp(3rem, 5vw, 5rem)', color: 'hsl(var(--ink))', letterSpacing: '-0.02em' }}>
                         {(dict.landing.hero as any).title_plain}
                         <em style={{ color: TC, fontStyle: 'italic' }}>{(dict.landing.hero as any).title_em}</em>
                     </h1>
-                    <p className="font-light leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200 mb-10"
-                        style={{ fontSize: 'clamp(1.1rem, 1.4vw, 1.35rem)', color: 'rgba(42, 37, 32, 0.65)', maxWidth: '500px' }}>
+
+                    {/* Divider */}
+                    <div className="w-[60px] h-[1px] mb-8" style={{ background: 'rgba(42, 37, 32, 0.15)' }} />
+
+                    <p className="font-light leading-relaxed mb-10 max-w-[500px]"
+                        style={{ fontSize: 'clamp(1.1rem, 1.4vw, 1.35rem)', color: 'rgba(42, 37, 32, 0.65)' }}>
                         {dict.landing.hero.subtitle}
                     </p>
-                    {/* Botón CTA Mobile */}
-                    <div className="block md:hidden animate-in fade-in duration-1000 delay-300 mt-2">
+
+                    {/* Hero CTA */}
+                    <div className="w-full sm:w-auto">
                         <Link
                             href={`/${locale}/auth/login`}
-                            className="flex justify-center items-center w-full"
+                            className="flex sm:inline-flex justify-center items-center text-center transition-opacity hover:opacity-90 w-full sm:w-auto px-8 py-4 sm:px-10 sm:py-4"
                             style={{
                                 background: TC,
                                 color: '#fff',
                                 borderRadius: '100px',
-                                padding: '16px 36px',
-                                fontSize: '1rem',
+                                fontSize: '1.05rem',
                                 fontWeight: 500,
                                 textDecoration: 'none',
                             }}
@@ -97,53 +126,6 @@ export default async function LocaleHomePage({
                             {ctaHero}
                         </Link>
                     </div>
-                    {/* Hero CTA */}
-                    <div className="hidden md:block animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
-                        <Link
-                            href={`/${locale}/auth/login`}
-                            className="inline-flex justify-center items-center text-center"
-                            style={{
-                                background: TC,
-                                color: '#fff',
-                                borderRadius: '100px',
-                                padding: '16px 36px',
-                                fontSize: '1rem',
-                                fontWeight: 500,
-                                textDecoration: 'none',
-                                transition: 'background 0.2s, transform 0.2s',
-                            }}
-                        >
-                            <span className="w-full text-center leading-snug">{ctaHero}</span>
-                        </Link>
-                    </div>
-                </div>
-
-                {/* Right: image */}
-                <div className="hero-img-col relative overflow-hidden">
-                    <Image
-                        src="/assets/rebrand/hero-editorial.png"
-                        alt="Carry my Words - Editorial Hero"
-                        fill
-                        priority
-                        quality={95}
-                        className="object-cover object-center md:object-center"
-                        style={{
-                            objectPosition: 'center 20%',
-                            filter: 'sepia(18%) saturate(0.9) brightness(1.05)'
-                        }}
-                    />
-                    {/* Desktop: Left + Bottom gradient blend */}
-                    <div className="absolute inset-0 pointer-events-none hidden md:block"
-                        style={{
-                            background: 'linear-gradient(to right, hsl(var(--cream)) 0%, transparent 30%), linear-gradient(to top, hsl(var(--cream)) 0%, transparent 20%)'
-                        }}
-                    />
-                    {/* Mobile: subtle bottom gradient only */}
-                    <div className="absolute inset-0 pointer-events-none md:hidden"
-                        style={{
-                            background: 'linear-gradient(to top, hsl(var(--cream)) 0%, transparent 40%)'
-                        }}
-                    />
                 </div>
             </section>
 
