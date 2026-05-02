@@ -84,7 +84,7 @@ export default async function LocaleHomePage({
                 <div 
                     className="absolute inset-0 z-0 pointer-events-none"
                     style={{
-                        background: 'radial-gradient(ellipse 120% 100% at 50% 50%, rgba(239, 233, 224, 0.45) 0%, rgba(239, 233, 224, 0.78) 70%, hsl(var(--cream)) 100%)'
+                        background: 'radial-gradient(ellipse 120% 100% at 50% 50%, rgba(239, 233, 224, 0.4) 0%, rgba(239, 233, 224, 0.7) 100%)'
                     }}
                 />
 
