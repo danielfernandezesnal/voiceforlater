@@ -106,7 +106,7 @@ export default async function LocaleHomePage({
 
                     <div className="relative mb-10 max-w-[500px]">
                         <div className="absolute inset-x-[-16px] inset-y-[-16px] rounded-[50%] bg-[rgba(239,233,224,0.85)] blur-xl md:hidden pointer-events-none" />
-                        <p className="relative z-10 font-light leading-relaxed text-[rgba(43,37,33,0.86)] md:text-[rgba(42,37,32,0.65)] [text-shadow:0_1px_2px_rgba(255,255,255,0.6)] md:[text-shadow:none]"
+                        <p className="relative z-10 font-normal md:font-light leading-relaxed text-[rgba(43,37,33,0.86)] md:text-[rgba(42,37,32,0.65)] [text-shadow:0_1px_2px_rgba(255,255,255,0.6)] md:[text-shadow:none]"
                             style={{ fontSize: 'clamp(1.1rem, 1.4vw, 1.35rem)' }}>
                             {dict.landing.hero.subtitle}
                         </p>
