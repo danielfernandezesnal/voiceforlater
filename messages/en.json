@@ -866,7 +866,9 @@
       "contentHidden": "This message traveled through time to reach you.",
       "linkValid": "Link valid for 15 days.",
       "footer": "This message was sent via Carry my Words.",
-      "linkFallback": "You can also copy and paste this link into your browser."
+      "linkFallback": "You can also copy and paste this link into your browser.",
+      "eyebrow": "You have a message",
+      "titleLine2": "left you something <em>special.</em>"
     },
     "checkinReminder1": {
       "subject": "Are you okay?",

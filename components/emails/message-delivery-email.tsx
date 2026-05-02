@@ -19,9 +19,7 @@ export async function MessageDeliveryEmail({
 }: MessageDeliveryEmailProps) {
   const dict = await getDictionary(locale);
   const t = dict.emails.messageDelivery;
-  const common = dict.emails.common;
   const subject = t.ctaSubject.replace('{senderName}', senderName);
-  const titleLine2 = locale === 'es' ? 'te dejó algo <em>especial.</em>' : 'left you something <em>special.</em>';
 
   const styles = checkinReminderStyles + `
     body { background-color: #f5f0e8; }
@@ -78,7 +76,7 @@ export async function MessageDeliveryEmail({
                 src="https://voiceforlater.vercel.app/assets/logo-email.png"
                 alt="Carry my Words"
                 width="420"
-                style={{ display: 'block', margin: '0 auto' }}
+                style={{ display: 'block', margin: '0 auto', maxWidth: '100%', width: '420px', height: 'auto' }}
               />
             </a>
           </div>
@@ -87,19 +85,31 @@ export async function MessageDeliveryEmail({
 
             {/* HERO */}
             <div className="hero">
-              <div className="eyebrow">{locale === 'es' ? 'Tienes un mensaje' : 'You have a message'}</div>
+              <div className="eyebrow">{(t as any).eyebrow}</div>
               <h1>
                 {senderName}<br />
-                <span dangerouslySetInnerHTML={{ __html: titleLine2 }} />
+                <span dangerouslySetInnerHTML={{ __html: (t as any).titleLine2 }} />
               </h1>
             </div>
 
             {/* SEPARADOR */}
-            <div className="ornament">
-              <div className="ornament-line" />
-              <span className="ornament-glyph">◆</span>
-              <div className="ornament-line" />
-            </div>
+            <table cellPadding={0} cellSpacing={0} style={{ borderCollapse: 'collapse', width: '100%' }}>
+              <tbody>
+                <tr>
+                  <td style={{ padding: '28px 48px' }}>
+                    <table cellPadding={0} cellSpacing={0} style={{ borderCollapse: 'collapse', width: '100%' }}>
+                      <tbody>
+                        <tr>
+                          <td style={{ borderTop: '1px solid #ddd0bc', fontSize: '0', lineHeight: '0' }}>&nbsp;</td>
+                          <td style={{ padding: '0 12px', fontFamily: "'Lora', serif", fontSize: '14px', color: '#c4622a', opacity: 0.55, whiteSpace: 'nowrap', textAlign: 'center', verticalAlign: 'middle' }}>◆</td>
+                          <td style={{ borderTop: '1px solid #ddd0bc', fontSize: '0', lineHeight: '0' }}>&nbsp;</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
             {/* BODY */}
             <div className="body">
@@ -112,7 +122,23 @@ export async function MessageDeliveryEmail({
                 <tbody>
                   <tr>
                     <td align="center">
-                      <a href={magicLink} className="btn-primary">
+                      <a
+                        href={magicLink}
+                        className="btn-primary"
+                        style={{
+                          background: '#c4622a',
+                          color: '#fff9f4',
+                          padding: '16px 44px',
+                          textDecoration: 'none',
+                          display: 'inline-block',
+                          borderRadius: '2px',
+                          fontWeight: 500,
+                          fontSize: '12px',
+                          letterSpacing: '0.08em',
+                          textTransform: 'uppercase' as const,
+                          lineHeight: '1.5',
+                        }}
+                      >
                         {t.ctaButton}
                       </a>
                     </td>
