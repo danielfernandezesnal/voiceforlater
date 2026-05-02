@@ -113,12 +113,11 @@ export default async function LocaleHomePage({
                     <div className="w-full sm:w-auto">
                         <Link
                             href={`/${locale}/auth/login`}
-                            className="flex sm:inline-flex justify-center items-center text-center transition-opacity hover:opacity-90 w-full sm:w-auto"
+                            className="flex sm:inline-flex justify-center items-center text-center transition-opacity hover:opacity-90 w-full sm:w-auto px-8 py-4 sm:px-10 sm:py-4"
                             style={{
                                 background: TC,
                                 color: '#fff',
                                 borderRadius: '100px',
-                                padding: '16px 44px',
                                 fontSize: '1.05rem',
                                 fontWeight: 500,
                                 textDecoration: 'none',
