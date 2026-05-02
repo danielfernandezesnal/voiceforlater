@@ -85,10 +85,10 @@ export async function MessageDeliveryEmail({
 
             {/* HERO */}
             <div className="hero">
-              <div className="eyebrow">{(t as any).eyebrow}</div>
+              <div className="eyebrow">{t.eyebrow}</div>
               <h1>
                 {senderName}<br />
-                <span dangerouslySetInnerHTML={{ __html: (t as any).titleLine2 }} />
+                <span dangerouslySetInnerHTML={{ __html: t.titleLine2 }} />
               </h1>
             </div>
 
