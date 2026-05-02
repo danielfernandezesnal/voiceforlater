@@ -104,8 +104,8 @@ export default async function LocaleHomePage({
                     {/* Divider */}
                     <div className="w-[60px] h-[1px] mb-8" style={{ background: 'rgba(42, 37, 32, 0.15)' }} />
 
-                    <p className="font-light leading-relaxed mb-10 max-w-[500px]"
-                        style={{ fontSize: 'clamp(1.1rem, 1.4vw, 1.35rem)', color: 'rgba(42, 37, 32, 0.65)' }}>
+                    <p className="font-light leading-relaxed mb-10 max-w-[500px] text-[rgba(43,37,33,0.86)] md:text-[rgba(42,37,32,0.65)] [text-shadow:0_1px_2px_rgba(255,255,255,0.6)] md:[text-shadow:none]"
+                        style={{ fontSize: 'clamp(1.1rem, 1.4vw, 1.35rem)' }}>
                         {dict.landing.hero.subtitle}
                     </p>
 
