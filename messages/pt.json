@@ -862,7 +862,9 @@
       "contentHidden": "Esta mensagem viajou no tempo para chegar até você.",
       "linkValid": "Link válido por 15 dias.",
       "footer": "Esta mensagem foi enviada através do Carry my Words.",
-      "linkFallback": "Você também pode copiar e colar este link no seu navegador."
+      "linkFallback": "Você também pode copiar e colar este link no seu navegador.",
+      "eyebrow": "Você tem uma mensagem",
+      "titleLine2": "deixou algo <em>especial</em> para você."
     },
     "checkinReminder1": {
       "subject": "Você está bem?",
