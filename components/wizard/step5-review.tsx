@@ -276,21 +276,21 @@ export function Step5Review({
 
     // ── Vista de revisión antes de guardar (modo normal) ────────────────────
     return (
-        <div className="space-y-6">
+        <div className="space-y-8">
             <div className="text-center">
-                <h2 className="text-2xl font-bold">{dictionary.title}</h2>
+                <h2 className="text-2xl font-bold tracking-tight">{dictionary.title}</h2>
                 <p className="text-muted-foreground mt-2">{dictionary.subtitle}</p>
             </div>
 
-            <div className="max-w-md mx-auto bg-card border border-border rounded-xl overflow-hidden">
+            <div className="max-w-md mx-auto bg-card border border-border rounded-xl overflow-hidden shadow-sm">
                 {reviewItems.map((item, index) => (
                     <div
                         key={item.label}
-                        className={`p-4 flex items-center justify-between group ${index !== reviewItems.length - 1 ? 'border-b border-border' : ''}`}
+                        className={`px-5 py-4 flex items-center justify-between group ${index !== reviewItems.length - 1 ? 'border-b border-border' : ''}`}
                     >
                         <div>
-                            <div className="text-sm text-muted-foreground">{item.label}</div>
-                            <div className="mt-1 font-medium">{item.value}</div>
+                            <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{item.label}</div>
+                            <div className="mt-1.5 font-medium text-sm">{item.value}</div>
                         </div>
                         <button
                             onClick={() => setStep(item.step)}
@@ -306,26 +306,30 @@ export function Step5Review({
             </div>
 
             {data.photos && data.photos.length > 0 && (
-                <div className="max-w-md mx-auto space-y-2 mt-6">
-                    <p className="text-sm text-muted-foreground font-medium">
-                        {locale === 'es' ? `Fotos adjuntas (${data.photos.length})` : `Attached photos (${data.photos.length})`}
-                    </p>
-                    <div className={`grid gap-4 ${data.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
-                        {data.photos.map((photo, i) => (
-                            <div key={i}>
-                                <div className="rounded-xl overflow-hidden aspect-[4/3] bg-muted">
-                                    <img src={photo.previewUrl} alt={photo.caption} className="w-full h-full object-cover" />
+                <div className="max-w-md mx-auto bg-card border border-border rounded-xl overflow-hidden shadow-sm">
+                    <div className="px-5 py-3 border-b border-border">
+                        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                            {locale === 'es' ? `Fotos adjuntas (${data.photos.length})` : `Attached photos (${data.photos.length})`}
+                        </span>
+                    </div>
+                    <div className="p-5">
+                        <div className={`grid gap-4 ${data.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                            {data.photos.map((photo, i) => (
+                                <div key={i}>
+                                    <div className="rounded-xl overflow-hidden aspect-[4/3] bg-muted">
+                                        <img src={photo.previewUrl} alt={photo.caption} className="w-full h-full object-cover" />
+                                    </div>
+                                    {photo.caption && (
+                                        <p className="text-xs text-muted-foreground mt-1 truncate">{photo.caption}</p>
+                                    )}
                                 </div>
-                                {photo.caption && (
-                                    <p className="text-xs text-muted-foreground mt-1 truncate">{photo.caption}</p>
-                                )}
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}
 
-            <div className="max-w-md mx-auto py-2">
+            <div className="max-w-md mx-auto border-t border-border pt-6">
                 <label className="flex items-center gap-3 cursor-pointer group">
                     <div className="relative flex items-center justify-center">
                         <input
