@@ -438,7 +438,7 @@ export function Step4Delivery({ dictionary, userPlan, locale, userEmail }: Step4
                                 </div>
                                 <div>
                                     <h3 className="font-semibold">{option.title}</h3>
-                                    <p className="text-sm text-muted-foreground">{option.description}</p>
+                                    <p className="text-sm text-muted-foreground min-h-[42px]">{option.description}</p>
                                 </div>
                             </div>
                         </button>
