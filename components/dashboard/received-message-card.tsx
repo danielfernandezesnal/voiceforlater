@@ -264,139 +264,153 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                 </div>
             </div>
 
-                        {/* Modal de Visualización */}
+                {/* Modal de Visualización */}
             {isOpen && mounted && (
-                <div className="fixed inset-0 z-[100] animate-in fade-in duration-300">
-                    
-                    {/* Interactive background to close the modal */}
-                    <div 
-                        className="absolute inset-0 overflow-y-auto custom-scrollbar bg-[#FDFCFB] md:bg-[#FAF7F2]"
+                <div className="fixed inset-0 z-[100]">
+                    {/* Backdrop */}
+                    <div
+                        className="absolute inset-0 bg-[#ccc7be]/70 backdrop-blur-sm"
                         onClick={() => setIsOpen(false)}
-                    >
-                        {/* Atmospheric background on desktop if image exists */}
-                        {mediaUrls?.photos && mediaUrls.photos.length > 0 && (
-                            <div className="hidden md:block fixed inset-0 z-0 pointer-events-none opacity-30 blur-[80px]"
-                                 style={{
-                                     backgroundImage: `url(${mediaUrls.photos[0]})`,
-                                     backgroundSize: 'cover',
-                                     backgroundPosition: 'center',
-                                 }}
-                            />
-                        )}
+                    />
 
-                        {/* Content wrapper with stopPropagation */}
-                        <div 
-                            className="relative z-10 flex flex-col min-h-screen pointer-events-auto w-full"
+                    {/* Scroll container */}
+                    <div className="absolute inset-0 overflow-y-auto modal-scrollbar flex items-start sm:items-center justify-center p-4 py-10">
+                        {/* Card */}
+                        <div
+                            className="relative w-full max-w-md bg-[#f5f0e8] rounded-3xl overflow-hidden shadow-2xl"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            {/* Header Area (Logo & Close Button) */}
-                            <div className="flex items-center justify-between px-6 py-6 md:px-12 md:py-8 w-full max-w-5xl mx-auto">
-                                <div className="font-playfair italic text-xl text-[#C4623A] tracking-tight">
+                            {/* Logo */}
+                            <div className="text-center pt-6 pb-5 px-6">
+                                <div className="font-playfair italic text-xl text-[#C4623A] leading-none">
                                     Carry my Words
                                 </div>
-                                <button
-                                    onClick={() => setIsOpen(false)}
-                                    className="w-10 h-10 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors"
-                                    style={{ color: '#9a8070' }}
-                                >
-                                    <CloseIcon size={20} />
-                                </button>
                             </div>
 
-                            {/* Main Content */}
-                            <div className="flex-1 flex flex-col items-center px-4 pt-4 pb-12 w-full max-w-2xl mx-auto mt-4 sm:mt-10">
-                                
-                                {/* Message Header */}
-                                <div className="text-center mb-10 space-y-3">
-                                    <p style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9a8070', fontWeight: 600 }}>
-                                        {t?.fromLabel || 'De'} {senderName}
-                                    </p>
-                                    {message.title && (
-                                        <h1 style={{ fontFamily: 'var(--font-playfair)', fontSize: '32px', color: '#2A2018', fontWeight: 500, fontStyle: 'italic', lineHeight: 1.2 }}>
-                                            {message.title}
-                                        </h1>
-                                    )}
-                                    <p style={{ fontSize: '12px', color: '#9a8070', opacity: 0.8, fontWeight: 400 }}>
-                                        {date}
-                                    </p>
+                            {/* Divider */}
+                            <div className="h-px bg-[#ddd5c8]" />
+
+                            {/* Header */}
+                            <div className="px-5 py-4">
+                                <div className="flex items-center gap-3">
+                                    {/* Avatar */}
+                                    <div
+                                        className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold shrink-0"
+                                        style={{ background: '#e8ddd0', color: '#9a7060' }}
+                                    >
+                                        {senderName.charAt(0).toUpperCase()}
+                                    </div>
+                                    {/* Sender info */}
+                                    <div className="flex-1 min-w-0">
+                                        <div
+                                            className="text-[9px] uppercase tracking-[0.15em] font-semibold"
+                                            style={{ color: '#C4623A' }}
+                                        >
+                                            {t?.fromLabel}
+                                        </div>
+                                        <div className="text-sm font-semibold text-[#2C2018] mt-0.5 leading-snug">
+                                            {senderName}
+                                        </div>
+                                    </div>
+                                    {/* Close */}
+                                    <button
+                                        onClick={() => setIsOpen(false)}
+                                        className="w-7 h-7 flex items-center justify-center rounded-lg border border-[#d9d0c4] text-[#9a8070] hover:bg-[#e8e0d0] transition-colors shrink-0"
+                                    >
+                                        <CloseIcon size={14} />
+                                    </button>
                                 </div>
 
+                                {/* Title + date row */}
+                                <div className="flex items-baseline justify-between mt-4 pt-3 border-t border-[#e4ddd4]">
+                                    {message.title && (
+                                        <span className="text-sm text-[#4a4040] flex-1 min-w-0 truncate pr-4">
+                                            {message.title}
+                                        </span>
+                                    )}
+                                    <span className={`text-sm text-[#9a8070] shrink-0 ${!message.title ? 'ml-auto' : ''}`}>
+                                        {date}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="px-5 pb-6 space-y-3">
                                 {loadingMedia ? (
-                                    <div className="flex flex-col items-center justify-center py-24 gap-4">
-                                        <div className="w-10 h-10 border-2 border-[#C4623A]/20 border-t-[#C4623A] rounded-full animate-spin" />
-                                        <p className="text-xs font-medium text-[#9a8070] uppercase tracking-widest">
-                                            {dict.common.loading || 'Cargando contenido...'}
-                                        </p>
+                                    <div className="flex items-center justify-center py-8">
+                                        <div className="w-6 h-6 border-2 border-[#C4623A]/20 border-t-[#C4623A] rounded-full animate-spin" />
                                     </div>
                                 ) : (
-                                    <div className="w-full space-y-6">
-                                        {/* Conditional Image Block */}
+                                    <>
+                                        {/* Photos — only rendered when present, no placeholder */}
                                         {mediaUrls?.photos && mediaUrls.photos.length > 0 && (
-                                            <div className={`grid gap-3 w-full ${mediaUrls.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                                            <div className={`grid gap-2 ${mediaUrls.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
                                                 {mediaUrls.photos.map((url: string, i: number) => (
-                                                    <div key={i} className={`w-full ${mediaUrls.photos.length === 1 ? 'h-32 sm:h-40' : 'aspect-square sm:aspect-video'} rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-sm border border-black/[0.04]`}>
-                                                        <img 
-                                                            src={url} 
-                                                            alt="" 
-                                                            className="w-full h-full object-cover" 
-                                                        />
+                                                    <div
+                                                        key={i}
+                                                        className="rounded-xl overflow-hidden w-full"
+                                                        style={{ height: '160px' }}
+                                                    >
+                                                        <img src={url} alt="" className="w-full h-full object-cover" />
                                                     </div>
                                                 ))}
                                             </div>
                                         )}
 
-                                        {/* Video Player */}
+                                        {/* Video */}
                                         {message.type === 'video' && mediaUrls?.audio && (
-                                            <div className="w-full rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-sm border border-black/[0.04] bg-black">
-                                                 <VideoPlayer src={mediaUrls.audio} overlayText={t?.videoOverlay || 'Toca para ver'} />
+                                            <div className="rounded-xl overflow-hidden border border-black/[0.06] bg-black">
+                                                <VideoPlayer src={mediaUrls.audio} overlayText={t?.videoOverlay || 'Toca para ver'} />
                                             </div>
                                         )}
 
-                                        {/* Audio Player Unit */}
+                                        {/* Audio */}
                                         {message.type === 'audio' && mediaUrls?.audio && (
-                                            <div className="bg-white rounded-2xl sm:rounded-[2rem] p-6 sm:p-8 shadow-sm border border-black/[0.04] space-y-5">
-                                                <p className="text-center text-[10px] tracking-[0.2em] text-[#C4623A]/80 font-bold uppercase">
+                                            <div
+                                                className="rounded-2xl border border-[#e4ddd4] p-4 space-y-3"
+                                                style={{ background: 'rgba(255,255,255,0.75)' }}
+                                            >
+                                                <div
+                                                    className="text-[9px] uppercase tracking-[0.18em] font-semibold"
+                                                    style={{ color: 'rgba(196,98,58,0.8)' }}
+                                                >
                                                     {t?.voiceLabel || 'Mensaje de voz'}
-                                                </p>
-                                                <div className="max-w-xs mx-auto w-full">
-                                                    <AudioPlayer src={mediaUrls.audio} />
                                                 </div>
+                                                <AudioPlayer src={mediaUrls.audio} />
                                             </div>
                                         )}
 
-                                        {/* Text Content */}
+                                        {/* Text */}
                                         {message.type === 'text' && (
-                                            <div className="bg-white rounded-2xl sm:rounded-[2rem] p-8 sm:p-12 shadow-sm border border-black/[0.04] relative mt-8">
-                                                <div className="text-[#C4623A]/10 text-6xl font-serif absolute top-4 left-1/2 -translate-x-1/2 leading-none select-none italic">“</div>
-                                                <p className="font-lora italic text-lg sm:text-xl text-[#2A2520] leading-[1.8] whitespace-pre-wrap text-center relative z-10 font-light">
+                                            <div
+                                                className="rounded-2xl border border-[#e4ddd4] p-5"
+                                                style={{ background: 'rgba(255,255,255,0.75)' }}
+                                            >
+                                                <p className="font-lora italic text-base text-[#2A2520] leading-[1.8] whitespace-pre-wrap font-light">
                                                     {message.text_content}
                                                 </p>
                                             </div>
                                         )}
 
-                                        {/* Footer Actions */}
-                                        <div className="pt-10 flex flex-col items-center gap-6 w-full">
-                                            {/* Separator and Meta Text matching original logic */}
-                                            <div className="flex flex-col items-center gap-3">
-                                                <div className="h-px w-6 bg-[#C4623A]/20"></div>
-                                                <div className="text-[10px] tracking-[0.2em] text-[#9a8070] uppercase font-bold text-center">
-                                                    {message.type === 'audio' 
+                                        {/* Footer */}
+                                        <div className="flex items-center justify-between pt-2">
+                                            <div className="flex items-center gap-2">
+                                                <div className="h-px w-4 bg-[#C4623A]/40" />
+                                                <span className="text-xs italic text-[#9a8070]">
+                                                    {message.type === 'audio'
                                                         ? (t?.metaSaved || 'Guardado para este momento')
                                                         : senderName
                                                     }
-                                                </div>
+                                                </span>
                                             </div>
-                                            
-                                            {/* Download button for all message types */}
-                                            <a 
+                                            <a
                                                 href={`/api/messages/download?token=${message.token}`}
-                                                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-[#C4623A]/30 text-[#C4623A] text-xs font-semibold uppercase tracking-wider hover:bg-[#C4623A]/5 transition-colors"
+                                                className="px-4 py-1.5 rounded-full border border-[#2C2018]/60 text-[#2C2018] text-xs font-medium hover:bg-[#2C2018]/5 transition-colors"
                                             >
-                                                <DownloadIcon size={14} />
                                                 {dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje'}
                                             </a>
                                         </div>
-                                    </div>
+                                    </>
                                 )}
                             </div>
                         </div>
@@ -405,19 +419,9 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
             )}
 
 <style jsx global>{`
-                .custom-scrollbar::-webkit-scrollbar {
-                    width: 6px;
-                }
-                .custom-scrollbar::-webkit-scrollbar-track {
-                    background: transparent;
-                }
-                .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background: rgba(0,0,0,0.05);
-                    border-radius: 10px;
-                }
-                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background: rgba(0,0,0,0.1);
-                }
+                .modal-scrollbar::-webkit-scrollbar { width: 6px; }
+                .modal-scrollbar::-webkit-scrollbar-track { background: transparent; }
+                .modal-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 10px; }
             `}</style>
         </>
     );
