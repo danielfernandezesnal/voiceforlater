@@ -264,147 +264,147 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                 </div>
             </div>
 
-            {/* Modal de Visualización */}
+                        {/* Modal de Visualización */}
             {isOpen && mounted && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300">
-                    <div 
-                        className="absolute inset-0 bg-black/60 backdrop-blur-md" 
-                        onClick={() => setIsOpen(false)}
-                    />
+                <div className="fixed inset-0 z-[100] animate-in fade-in duration-300">
                     
-                    <div className="relative w-full max-w-2xl bg-[#FAF7F2] rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-5 duration-500 max-h-[90vh] flex flex-col">
-                        
-                        {/* Header del Modal */}
-                        <div className="flex items-start justify-between px-6 py-5 border-b border-black/[0.05] sticky top-0 z-20"
-                             style={{ background: 'rgba(250,247,242,0.94)', backdropFilter: 'blur(12px)' }}>
-                            <div className="flex items-start gap-4 min-w-0">
-                                <div className="w-11 h-11 rounded-full flex items-center justify-center font-serif italic text-xl shrink-0"
-                                     style={{ background: 'rgba(196,98,58,0.1)', color: '#C4623A', border: '1px solid rgba(196,98,58,0.2)' }}>
-                                    {senderName.charAt(0).toUpperCase()}
+                    {/* Interactive background to close the modal */}
+                    <div 
+                        className="absolute inset-0 overflow-y-auto custom-scrollbar bg-[#FDFCFB] md:bg-[#FAF7F2]"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        {/* Atmospheric background on desktop if image exists */}
+                        {mediaUrls?.photos && mediaUrls.photos.length > 0 && (
+                            <div className="hidden md:block fixed inset-0 z-0 pointer-events-none opacity-30 blur-[80px]"
+                                 style={{
+                                     backgroundImage: `url(${mediaUrls.photos[0]})`,
+                                     backgroundSize: 'cover',
+                                     backgroundPosition: 'center',
+                                 }}
+                            />
+                        )}
+
+                        {/* Content wrapper with stopPropagation */}
+                        <div 
+                            className="relative z-10 flex flex-col min-h-screen pointer-events-auto w-full"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {/* Header Area (Logo & Close Button) */}
+                            <div className="flex items-center justify-between px-6 py-6 md:px-12 md:py-8 w-full max-w-5xl mx-auto">
+                                <div className="font-playfair italic text-xl text-[#C4623A] tracking-tight">
+                                    Carry my Words
                                 </div>
-                                <div className="min-w-0 pt-0.5">
-                                    <p style={{ fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9a8070', fontWeight: 500, lineHeight: 1, marginBottom: '5px' }}>
-                                        {t?.fromLabel || 'De'}
-                                    </p>
-                                    <p style={{ fontFamily: 'var(--font-serif)', fontSize: '15px', color: '#2A2018', fontWeight: 500, lineHeight: 1.3 }}>
-                                        {senderName}
-                                    </p>
-                                    {message.title && (
-                                        <p style={{ fontSize: '12px', color: '#6B5040', opacity: 0.7, marginTop: '3px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                            {message.title}
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="flex flex-col items-end gap-2 shrink-0 ml-4">
                                 <button
                                     onClick={() => setIsOpen(false)}
-                                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors"
+                                    className="w-10 h-10 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors"
                                     style={{ color: '#9a8070' }}
                                 >
-                                    <CloseIcon size={18} />
+                                    <CloseIcon size={20} />
                                 </button>
-                                <p style={{ fontSize: '10px', color: '#9a8070', opacity: 0.55, fontWeight: 400, whiteSpace: 'nowrap' }}>
-                                    {date}
-                                </p>
                             </div>
-                        </div>
 
-                        {/* Contenido del Modal */}
-                        <div className="flex-1 overflow-y-auto custom-scrollbar">
-                            {loadingMedia ? (
-                                <div className="flex flex-col items-center justify-center py-24 gap-4">
-                                    <div className="w-10 h-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
-                                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
-                                        {dict.common.loading || 'Cargando contenido...'}
+                            {/* Main Content */}
+                            <div className="flex-1 flex flex-col items-center px-4 pt-4 pb-12 w-full max-w-2xl mx-auto mt-4 sm:mt-10">
+                                
+                                {/* Message Header */}
+                                <div className="text-center mb-10 space-y-3">
+                                    <p style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9a8070', fontWeight: 600 }}>
+                                        {t?.fromLabel || 'De'} {senderName}
+                                    </p>
+                                    {message.title && (
+                                        <h1 style={{ fontFamily: 'var(--font-playfair)', fontSize: '32px', color: '#2A2018', fontWeight: 500, fontStyle: 'italic', lineHeight: 1.2 }}>
+                                            {message.title}
+                                        </h1>
+                                    )}
+                                    <p style={{ fontSize: '12px', color: '#9a8070', opacity: 0.8, fontWeight: 400 }}>
+                                        {date}
                                     </p>
                                 </div>
-                            ) : (
-                                <div className="p-0">
-                                    {/* Video Player (Full Width at Top) */}
-                                    {message.type === 'video' && mediaUrls?.audio && (
-                                        <div className="w-full">
-                                             <VideoPlayer src={mediaUrls.audio} overlayText={t?.videoOverlay || 'Toca para ver'} />
-                                        </div>
-                                    )}
 
-                                    <div className="p-8 sm:p-12 space-y-10">
-                                        {/* Photos Grid */}
+                                {loadingMedia ? (
+                                    <div className="flex flex-col items-center justify-center py-24 gap-4">
+                                        <div className="w-10 h-10 border-2 border-[#C4623A]/20 border-t-[#C4623A] rounded-full animate-spin" />
+                                        <p className="text-xs font-medium text-[#9a8070] uppercase tracking-widest">
+                                            {dict.common.loading || 'Cargando contenido...'}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="w-full space-y-6">
+                                        {/* Conditional Image Block */}
                                         {mediaUrls?.photos && mediaUrls.photos.length > 0 && (
-                                            <div className={`grid gap-4 ${mediaUrls.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                                            <div className={`grid gap-3 w-full ${mediaUrls.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
                                                 {mediaUrls.photos.map((url: string, i: number) => (
-                                                    <div key={i} className="aspect-square sm:aspect-video rounded-3xl overflow-hidden border border-black/[0.05] shadow-sm">
-                                                        <img src={url} alt="" className="w-full h-full object-cover" />
+                                                    <div key={i} className={`w-full ${mediaUrls.photos.length === 1 ? 'h-32 sm:h-40' : 'aspect-square sm:aspect-video'} rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-sm border border-black/[0.04]`}>
+                                                        <img 
+                                                            src={url} 
+                                                            alt="" 
+                                                            className="w-full h-full object-cover" 
+                                                        />
                                                     </div>
                                                 ))}
                                             </div>
                                         )}
 
-                                        {/* Text Content */}
-                                        {message.type === 'text' && (
-                                            <div className="space-y-8 text-center relative max-w-lg mx-auto pt-6">
-                                                <div className="text-primary/10 text-8xl font-serif absolute top-0 left-1/2 -translate-x-1/2 z-0 leading-none select-none italic">“</div>
-                                                <p className="font-lora italic text-lg sm:text-xl text-[#2A2520] leading-[1.8] whitespace-pre-wrap relative z-10 antialiased font-light">
-                                                    {message.text_content}
-                                                </p>
-                                                <div className="flex flex-col items-center gap-4 relative z-10 pt-4">
-                                                    <div className="h-px w-8 bg-primary/20"></div>
-                                                    <div className="text-[11px] tracking-[0.2em] text-[#9C9088] uppercase font-bold">
-                                                        {senderName}
-                                                    </div>
-                                                </div>
+                                        {/* Video Player */}
+                                        {message.type === 'video' && mediaUrls?.audio && (
+                                            <div className="w-full rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-sm border border-black/[0.04] bg-black">
+                                                 <VideoPlayer src={mediaUrls.audio} overlayText={t?.videoOverlay || 'Toca para ver'} />
                                             </div>
                                         )}
 
-                                        {/* Audio Content */}
+                                        {/* Audio Player Unit */}
                                         {message.type === 'audio' && mediaUrls?.audio && (
-                                            <div className="space-y-10 py-4 max-w-md mx-auto">
-                                                <p className="text-center text-[10px] tracking-[0.2em] text-primary/80 font-bold uppercase">
+                                            <div className="bg-white rounded-2xl sm:rounded-[2rem] p-6 sm:p-8 shadow-sm border border-black/[0.04] space-y-5">
+                                                <p className="text-center text-[10px] tracking-[0.2em] text-[#C4623A]/80 font-bold uppercase">
                                                     {t?.voiceLabel || 'Mensaje de voz'}
                                                 </p>
-                                                <div className="bg-white rounded-[2.5rem] p-8 border border-black/[0.03] shadow-[0_4px_20px_rgba(0,0,0,0.02)]">
+                                                <div className="max-w-xs mx-auto w-full">
                                                     <AudioPlayer src={mediaUrls.audio} />
                                                 </div>
-                                                <div className="flex flex-col items-center gap-4 pt-4">
-                                                    <div className="h-px w-8 bg-primary/20"></div>
-                                                    <div className="text-[11px] tracking-[0.2em] text-[#9C9088] uppercase font-bold text-center">
-                                                        {t?.metaSaved || 'Guardado para este momento'}
-                                                    </div>
-                                                </div>
                                             </div>
                                         )}
 
-                                        {/* Video Meta (only if video) */}
-                                        {message.type === 'video' && (
-                                            <div className="flex flex-col items-center gap-4 pt-4 text-center">
-                                                <div className="h-px w-8 bg-primary/20"></div>
-                                                <div className="text-[11px] tracking-[0.2em] text-[#9C9088] uppercase font-bold">
-                                                    {senderName}
-                                                </div>
+                                        {/* Text Content */}
+                                        {message.type === 'text' && (
+                                            <div className="bg-white rounded-2xl sm:rounded-[2rem] p-8 sm:p-12 shadow-sm border border-black/[0.04] relative mt-8">
+                                                <div className="text-[#C4623A]/10 text-6xl font-serif absolute top-4 left-1/2 -translate-x-1/2 leading-none select-none italic">“</div>
+                                                <p className="font-lora italic text-lg sm:text-xl text-[#2A2520] leading-[1.8] whitespace-pre-wrap text-center relative z-10 font-light">
+                                                    {message.text_content}
+                                                </p>
                                             </div>
                                         )}
+
+                                        {/* Footer Actions */}
+                                        <div className="pt-10 flex flex-col items-center gap-6 w-full">
+                                            {/* Separator and Meta Text matching original logic */}
+                                            <div className="flex flex-col items-center gap-3">
+                                                <div className="h-px w-6 bg-[#C4623A]/20"></div>
+                                                <div className="text-[10px] tracking-[0.2em] text-[#9a8070] uppercase font-bold text-center">
+                                                    {message.type === 'audio' 
+                                                        ? (t?.metaSaved || 'Guardado para este momento')
+                                                        : senderName
+                                                    }
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Download button for all message types */}
+                                            <a 
+                                                href={`/api/messages/download?token=${message.token}`}
+                                                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-[#C4623A]/30 text-[#C4623A] text-xs font-semibold uppercase tracking-wider hover:bg-[#C4623A]/5 transition-colors"
+                                            >
+                                                <DownloadIcon size={14} />
+                                                {dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje'}
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
-
-                        {/* Modal Footer / CTA */}
-                        {message.type === 'text' && (
-                             <div className="px-8 py-6 bg-white/40 border-t border-black/[0.05] text-center">
-                                <a 
-                                    href={`/api/messages/download?token=${message.token}`}
-                                    className="text-xs font-bold text-primary/80 hover:text-primary transition-colors tracking-widest uppercase flex items-center justify-center gap-2"
-                                >
-                                    <DownloadIcon size={14} />
-                                    {dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje'}
-                                </a>
-                             </div>
-                        )}
                     </div>
                 </div>
             )}
 
-            <style jsx global>{`
+<style jsx global>{`
                 .custom-scrollbar::-webkit-scrollbar {
                     width: 6px;
                 }
