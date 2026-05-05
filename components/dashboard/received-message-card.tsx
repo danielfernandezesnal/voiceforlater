@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { AudioPlayer, VideoPlayer } from "@/components/messages/MediaPlayers";
+import { useState, useEffect, useRef } from 'react';
+import { VideoPlayer } from "@/components/messages/MediaPlayers";
 import { getMessageAvailability } from "@/lib/message-availability";
 
 // Inline SVG Icons (Lucide-style)
@@ -58,6 +58,17 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
     const [isOpen, setIsOpen] = useState(false);
     const [mediaUrls, setMediaUrls] = useState<{ audio: string | null; photos: string[] } | null>(null);
     const [loadingMedia, setLoadingMedia] = useState(false);
+    const [audioPlaying, setAudioPlaying] = useState(false);
+    const [audioCurrent, setAudioCurrent] = useState(0);
+    const [audioDuration, setAudioDuration] = useState(0);
+    const audioPlayerRef = useRef<HTMLAudioElement | null>(null);
+
+    const toggleAudio = () => {
+        if (!audioPlayerRef.current) return;
+        if (audioPlaying) { audioPlayerRef.current.pause(); } else { audioPlayerRef.current.play(); }
+        setAudioPlaying(!audioPlaying);
+    };
+    const fmtTime = (s: number) => `${Math.floor(s / 60)}:${Math.floor(s % 60).toString().padStart(2, '0')}`;
 
     useEffect(() => {
         setMounted(true);
@@ -373,16 +384,41 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                         {/* Audio */}
                                         {message.type === 'audio' && mediaUrls?.audio && (
                                             <div
-                                                className="rounded-2xl border border-[#e4ddd4] p-4 space-y-3"
+                                                className="rounded-2xl border border-[#e4ddd4] p-3"
                                                 style={{ background: 'rgba(255,255,255,0.75)' }}
                                             >
-                                                <div
-                                                    className="text-[9px] uppercase tracking-[0.18em] font-semibold"
-                                                    style={{ color: 'rgba(196,98,58,0.8)' }}
-                                                >
-                                                    {t?.voiceLabel || 'Mensaje de voz'}
+                                                <audio
+                                                    ref={audioPlayerRef}
+                                                    src={mediaUrls.audio}
+                                                    onTimeUpdate={() => setAudioCurrent(audioPlayerRef.current?.currentTime || 0)}
+                                                    onLoadedMetadata={() => setAudioDuration(audioPlayerRef.current?.duration || 0)}
+                                                    onEnded={() => { setAudioPlaying(false); setAudioCurrent(0); }}
+                                                />
+                                                <div className="flex items-center gap-3">
+                                                    <button
+                                                        onClick={toggleAudio}
+                                                        className="w-12 h-12 rounded-xl border border-[#e4ddd4] bg-white flex items-center justify-center shrink-0 hover:bg-[#f5f0e8] transition-colors"
+                                                    >
+                                                        {audioPlaying ? (
+                                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" style={{ color: '#C4623A' }}><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                                                        ) : (
+                                                            <svg className="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24" style={{ color: '#C4623A' }}><path d="M8 5v14l11-7z" /></svg>
+                                                        )}
+                                                    </button>
+                                                    <div className="flex-1">
+                                                        <div className="text-[9px] uppercase tracking-[0.18em] font-semibold mb-2" style={{ color: 'rgba(196,98,58,0.8)' }}>
+                                                            {t?.voiceLabel || 'Mensaje de voz'}
+                                                        </div>
+                                                        <div className="relative h-px bg-[#e0d8cc] rounded-full mb-2">
+                                                            <div className="absolute inset-y-0 left-0 bg-[#C4623A] rounded-full" style={{ width: `${audioDuration > 0 ? (audioCurrent / audioDuration) * 100 : 0}%` }} />
+                                                            <div className="absolute w-2 h-2 bg-[#C4623A] rounded-full" style={{ left: `calc(${audioDuration > 0 ? (audioCurrent / audioDuration) * 100 : 0}% - 4px)`, top: '-3px' }} />
+                                                        </div>
+                                                        <div className="flex justify-between text-[10px]" style={{ color: '#9a8070' }}>
+                                                            <span>{fmtTime(audioCurrent)}</span>
+                                                            <span>{fmtTime(audioDuration)}</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <AudioPlayer src={mediaUrls.audio} />
                                             </div>
                                         )}
 
