@@ -285,12 +285,6 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                 <div className="font-playfair italic text-xl text-[#C4623A] leading-none">
                                     Carry my Words
                                 </div>
-                                <div
-                                    className="mt-1 text-[9px] uppercase tracking-[0.18em] font-medium"
-                                    style={{ color: 'rgba(196,98,58,0.6)' }}
-                                >
-                                    Mensajes que viajan en el tiempo
-                                </div>
                             </div>
 
                             {/* Divider */}
@@ -312,7 +306,7 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                             className="text-[9px] uppercase tracking-[0.15em] font-semibold"
                                             style={{ color: '#C4623A' }}
                                         >
-                                            {t?.fromLabel || 'De parte de'}
+                                            {t?.fromLabel}
                                         </div>
                                         <div className="text-sm font-semibold text-[#2C2018] mt-0.5 leading-snug">
                                             {senderName}
@@ -322,7 +316,6 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                     <button
                                         onClick={() => setIsOpen(false)}
                                         className="w-7 h-7 flex items-center justify-center rounded-lg border border-[#d9d0c4] text-[#9a8070] hover:bg-[#e8e0d0] transition-colors shrink-0"
-                                        aria-label="Close"
                                     >
                                         <CloseIcon size={14} />
                                     </button>
@@ -331,10 +324,10 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                 {/* Title + date row */}
                                 <div className="flex items-baseline justify-between mt-4 pt-3 border-t border-[#e4ddd4]">
                                     <span className="text-sm text-[#4a4040] flex-1 min-w-0 truncate pr-4">
-                                        {message.title || '—'}
+                                        {message.title}
                                     </span>
                                     <span className="text-sm text-[#9a8070] shrink-0">
-                                        {mounted ? date : '···'}
+                                        {date}
                                     </span>
                                 </div>
                             </div>
@@ -412,7 +405,7 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                                 href={`/api/messages/download?token=${message.token}`}
                                                 className="px-4 py-1.5 rounded-full border border-[#2C2018]/60 text-[#2C2018] text-xs font-medium hover:bg-[#2C2018]/5 transition-colors"
                                             >
-                                                {dict.dashboard.receivedMessages?.downloadButton || 'Descargar'}
+                                                {dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje'}
                                             </a>
                                         </div>
                                     </>
