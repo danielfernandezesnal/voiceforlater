@@ -323,10 +323,12 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
 
                                 {/* Title + date row */}
                                 <div className="flex items-baseline justify-between mt-4 pt-3 border-t border-[#e4ddd4]">
-                                    <span className="text-sm text-[#4a4040] flex-1 min-w-0 truncate pr-4">
-                                        {message.title}
-                                    </span>
-                                    <span className="text-sm text-[#9a8070] shrink-0">
+                                    {message.title && (
+                                        <span className="text-sm text-[#4a4040] flex-1 min-w-0 truncate pr-4">
+                                            {message.title}
+                                        </span>
+                                    )}
+                                    <span className={`text-sm text-[#9a8070] shrink-0 ${!message.title ? 'ml-auto' : ''}`}>
                                         {date}
                                     </span>
                                 </div>
