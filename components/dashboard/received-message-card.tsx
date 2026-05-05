@@ -332,12 +332,16 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                     <div className="w-full space-y-6">
                                         {/* Conditional Image Block */}
                                         {mediaUrls?.photos && mediaUrls.photos.length > 0 && (
-                                            <div className="w-full h-32 sm:h-40 rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-sm border border-black/[0.04]">
-                                                <img 
-                                                    src={mediaUrls.photos[0]} 
-                                                    alt="" 
-                                                    className="w-full h-full object-cover" 
-                                                />
+                                            <div className={`grid gap-3 w-full ${mediaUrls.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                                                {mediaUrls.photos.map((url: string, i: number) => (
+                                                    <div key={i} className={`w-full ${mediaUrls.photos.length === 1 ? 'h-32 sm:h-40' : 'aspect-square sm:aspect-video'} rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-sm border border-black/[0.04]`}>
+                                                        <img 
+                                                            src={url} 
+                                                            alt="" 
+                                                            className="w-full h-full object-cover" 
+                                                        />
+                                                    </div>
+                                                ))}
                                             </div>
                                         )}
 
@@ -383,16 +387,14 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                                 </div>
                                             </div>
                                             
-                                            {/* Download only for text message as it was originally */}
-                                            {message.type === 'text' && (
-                                                <a 
-                                                    href={`/api/messages/download?token=${message.token}`}
-                                                    className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-[#C4623A]/30 text-[#C4623A] text-xs font-semibold uppercase tracking-wider hover:bg-[#C4623A]/5 transition-colors"
-                                                >
-                                                    <DownloadIcon size={14} />
-                                                    {dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje'}
-                                                </a>
-                                            )}
+                                            {/* Download button for all message types */}
+                                            <a 
+                                                href={`/api/messages/download?token=${message.token}`}
+                                                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-[#C4623A]/30 text-[#C4623A] text-xs font-semibold uppercase tracking-wider hover:bg-[#C4623A]/5 transition-colors"
+                                            >
+                                                <DownloadIcon size={14} />
+                                                {dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje'}
+                                            </a>
                                         </div>
                                     </div>
                                 )}
