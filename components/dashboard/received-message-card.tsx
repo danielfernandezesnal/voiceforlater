@@ -281,9 +281,15 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Logo */}
-                            <div className="text-center pt-6 pb-5 px-6">
+                            <div className="text-center pt-5 pb-4 px-6">
                                 <div className="font-playfair italic text-xl text-[#C4623A] leading-none">
                                     Carry my Words
+                                </div>
+                                <div
+                                    className="mt-1 text-[9px] uppercase tracking-[0.18em] font-semibold"
+                                    style={{ color: 'rgba(196,98,58,0.65)' }}
+                                >
+                                    {t?.cta?.subtext?.split(' — ')[1] || 'Mensajes que viajan en el tiempo'}
                                 </div>
                             </div>
 
