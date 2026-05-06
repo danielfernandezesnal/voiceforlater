@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, useRef, use } from 'react';
 import { createClient } from "@/lib/supabase/client";
 import { getDictionary, type Locale, isValidLocale, defaultLocale } from "@/lib/i18n";
 import { ReceivedMessageList } from "@/components/dashboard/received-message-list";
@@ -20,6 +20,9 @@ export default function ReceivedMessagesPage({ params, searchParams }: PageProps
     const [dict, setDict] = useState<any>(null);
     const [receivedMessages, setReceivedMessages] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    // When arriving via a message link (?open=token), show an overlay until the modal is ready
+    const [showOpenOverlay, setShowOpenOverlay] = useState(!!openToken);
+    const overlayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -81,6 +84,13 @@ export default function ReceivedMessagesPage({ params, searchParams }: PageProps
         fetchData();
     }, [locale]);
 
+    // Dismiss the overlay once data is ready — small delay lets the modal render first
+    useEffect(() => {
+        if (!openToken || !mounted || loading || !dict) return;
+        overlayTimer.current = setTimeout(() => setShowOpenOverlay(false), 350);
+        return () => { if (overlayTimer.current) clearTimeout(overlayTimer.current); };
+    }, [openToken, mounted, loading, dict]);
+
     // Render minimal skeleton during hydration or data loading (no bands)
     if (!mounted || loading || !dict) {
         return (
@@ -96,6 +106,22 @@ export default function ReceivedMessagesPage({ params, searchParams }: PageProps
 
     return (
         <div className="animate-in fade-in duration-500 slide-in-from-bottom-2">
+            {/* Full-screen overlay while auto-opening a specific message — hides header/sidebar flash */}
+            {showOpenOverlay && (
+                <div style={{
+                    position: 'fixed', inset: 0, zIndex: 9999,
+                    background: 'hsl(var(--background))',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                    <div style={{
+                        width: '32px', height: '32px', borderRadius: '50%',
+                        border: '2px solid rgba(196,98,58,0.15)',
+                        borderTopColor: '#C4623A',
+                        animation: 'spin 0.8s linear infinite',
+                    }} />
+                    <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+                </div>
+            )}
             <div className="mb-8">
                 <h1 className="font-serif font-semibold text-[1.9rem] leading-tight text-foreground">
                     {title}
