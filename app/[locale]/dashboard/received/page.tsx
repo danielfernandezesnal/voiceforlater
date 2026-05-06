@@ -81,21 +81,12 @@ export default function ReceivedMessagesPage({ params, searchParams }: PageProps
         fetchData();
     }, [locale]);
 
-    // Render skeleton during hydration or data loading
+    // Render minimal skeleton during hydration or data loading (no bands)
     if (!mounted || loading || !dict) {
         return (
-            <div className="max-w-5xl mx-auto py-8">
-                <div className="animate-pulse space-y-8">
-                    <div>
-                        <div className="h-10 w-64 bg-muted/60 rounded-xl mb-3" />
-                        <div className="h-4 w-32 bg-muted/40 rounded-lg" />
-                    </div>
-                    <div className="space-y-4">
-                        {[1, 2, 3].map(i => (
-                            <div key={i} className="h-24 bg-card border border-border/40 rounded-2xl" />
-                        ))}
-                    </div>
-                </div>
+            <div className="max-w-5xl mx-auto py-8 animate-pulse space-y-3">
+                <div className="h-10 w-64 bg-muted/60 rounded-xl" />
+                <div className="h-4 w-32 bg-muted/40 rounded-lg" />
             </div>
         );
     }
