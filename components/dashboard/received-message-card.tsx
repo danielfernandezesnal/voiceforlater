@@ -493,6 +493,9 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
         border-radius: 20px;
         border: 0.5px solid rgba(43,37,33,0.09);
         padding: 2.25rem 2rem;
+        min-height: calc(100vh - 8rem);
+        display: flex;
+        flex-direction: column;
     }
     @media (max-width: 767px) {
         .ag-msg-card {
