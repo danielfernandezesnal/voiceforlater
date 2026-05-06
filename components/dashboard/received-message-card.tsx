@@ -282,7 +282,8 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
 
                         {/* Content */}
                         <div
-                            className="relative z-10 w-full ag-msg-card"
+                            className="relative z-10 ag-msg-card"
+                            style={{ maxWidth: '1000px', width: '90%' }}
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Logo */}
@@ -488,14 +489,12 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
     .ag-scrollbar::-webkit-scrollbar-thumb { background: rgba(43,37,33,0.10); border-radius: 10px; }
 
     .ag-msg-card {
-        max-width: 1000px;
-        width: 90%;
         padding: 3.5rem 3rem;
     }
     @media (max-width: 767px) {
         .ag-msg-card {
-            max-width: 100%;
-            width: 100%;
+            max-width: 100% !important;
+            width: 100% !important;
             background: #F9F5F0;
             border: none;
             border-radius: 0;
