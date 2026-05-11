@@ -150,6 +150,9 @@ export function DashboardMessageList({ initialMessages, userPlan, locale, dict }
                             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed font-light">
                                 {dict.dashboard.empty.description}
                             </p>
+                            <p className="text-xs text-muted-foreground mt-2 max-w-xs font-light" style={{ opacity: 0.7 }}>
+                                {dict.dashboard.empty.selfHint}
+                            </p>
                         </div>
                     </div>
                 ) : (

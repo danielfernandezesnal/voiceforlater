@@ -194,7 +194,7 @@ export async function sendMessageDeliveryEmail(
 
   try {
     const { data, error } = await resend.emails.send({
-      from: `${senderFirstName} via Carry my Words <no-reply@voiceforlater.com>`,
+      from: `${senderName} via Carry my Words <no-reply@voiceforlater.com>`,
       to: toEmail,
       subject,
       html: await render(await MessageDeliveryEmail({ magicLink, senderName, senderFirstName, locale })),
