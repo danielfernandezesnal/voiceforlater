@@ -1,5 +1,6 @@
 
 import { createClient } from "@supabase/supabase-js";
+import * as Sentry from "@sentry/nextjs";
 import crypto from 'crypto';
 import { isValidLocale, Locale, defaultLocale } from '@/lib/i18n';
 import { sendMessageDeliveryEmail } from '@/components/emails/message-delivery-email';
@@ -248,6 +249,7 @@ export async function releaseCheckinMessages(userId: string) {
 
     } catch (e) {
         console.error("Release logic error:", e);
+        Sentry.captureException(e, { tags: { flow: "checkin", cron_name: "releaseCheckinMessages" } });
         throw e;
     }
 }
