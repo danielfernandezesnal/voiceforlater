@@ -176,7 +176,15 @@ export function LoginForm({ dictionary, locale, next }: LoginFormProps) {
                     <button
                         onClick={async () => {
                             try {
-                                const redirectTarget = next ? next : `/${locale}/dashboard`;
+                                // If next is a /recibir/[token] URL, skip that intermediate page
+                                // and go directly to /dashboard/received?open=token after OAuth
+                                let redirectTarget = next ?? `/${locale}/dashboard`;
+                                if (next) {
+                                    const recibirMatch = next.match(/^\/([a-z]{2})\/recibir\/([^/?#]+)/);
+                                    if (recibirMatch) {
+                                        redirectTarget = `/${recibirMatch[1]}/dashboard/received?open=${recibirMatch[2]}`;
+                                    }
+                                }
                                 const { error } = await supabase.auth.signInWithOAuth({
                                     provider: 'google',
                                     options: {

@@ -88,46 +88,49 @@ export default async function DashboardPage({
     const messageCount = messages.length;
     const maxTrustedContacts = userPlan === 'free' ? 1 : 3;
 
-    // Next delivery calculation
+    // Next delivery calculation — only consider non-delivered messages
     let nextDeliveryDateStr = '—';
     let nextDeliveryRecipient = '';
 
     if (messageCount > 0) {
-        // Collect specific delivery dates
-        const dateMessages = messages.filter(msg => {
-            if (Array.isArray(msg.delivery_rules)) return false; 
-            return msg.delivery_rules && msg.delivery_rules.mode === 'date' && msg.delivery_rules.deliver_at;
-        });
+        const pendingMessages = messages.filter(msg => msg.status !== 'delivered');
 
-        if (dateMessages.length > 0) {
-            // Sort by nearest date
-            dateMessages.sort((a, b) => {
-                const dateA = new Date((a.delivery_rules as any).deliver_at).getTime();
-                const dateB = new Date((b.delivery_rules as any).deliver_at).getTime();
-                return dateA - dateB;
+        if (pendingMessages.length === 0) {
+            nextDeliveryDateStr = dict.dashboard.stats.allDelivered;
+        } else {
+            const dateMessages = pendingMessages.filter(msg => {
+                if (Array.isArray(msg.delivery_rules)) return false;
+                return msg.delivery_rules && msg.delivery_rules.mode === 'date' && msg.delivery_rules.deliver_at;
             });
 
-            const nextMsg = dateMessages[0];
-            const deliverAt = (nextMsg.delivery_rules as any).deliver_at;
+            if (dateMessages.length > 0) {
+                dateMessages.sort((a, b) => {
+                    const dateA = new Date((a.delivery_rules as any).deliver_at).getTime();
+                    const dateB = new Date((b.delivery_rules as any).deliver_at).getTime();
+                    return dateA - dateB;
+                });
 
-            const date = new Date(deliverAt);
-            const formatter = new Intl.DateTimeFormat(locale, {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            });
+                const nextMsg = dateMessages[0];
+                const deliverAt = (nextMsg.delivery_rules as any).deliver_at;
 
-            nextDeliveryDateStr = formatter.format(date).toLowerCase();
-            if (locale === 'en') {
-                nextDeliveryDateStr = formatter.format(date)
+                const date = new Date(deliverAt);
+                const formatter = new Intl.DateTimeFormat(locale, {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+
+                nextDeliveryDateStr = formatter.format(date).toLowerCase();
+                if (locale === 'en') {
+                    nextDeliveryDateStr = formatter.format(date);
+                }
+
+                if (nextMsg.recipients && nextMsg.recipients[0]) {
+                    nextDeliveryRecipient = `${dict.dashboard.messageCard.labels.to} ${nextMsg.recipients[0].name.split(' ')[0]}`;
+                }
+            } else if (hasCheckinMessages) {
+                nextDeliveryDateStr = (dict.dashboard.messageCard as any).deliveryType?.checkin || 'When no longer present';
             }
-
-            if (nextMsg.recipients && nextMsg.recipients[0]) {
-                nextDeliveryRecipient = `${dict.dashboard.messageCard.labels.to} ${nextMsg.recipients[0].name.split(' ')[0]}`
-            }
-
-        } else if (hasCheckinMessages) {
-            nextDeliveryDateStr = (dict.dashboard.messageCard as any).deliveryType?.checkin || 'When no longer present';
         }
     }
 

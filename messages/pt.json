@@ -345,6 +345,7 @@
       "ofOne": "de 1 no seu plano",
       "ofUnlimited": "de ilimitadas no seu plano",
       "nextDelivery": "Próxima entrega",
+      "allDelivered": "Todos entregues",
       "trustedContacts": "Contatos de confiança",
       "ofMax": "de {max} possíveis no seu plano"
     },
@@ -354,6 +355,7 @@
     "empty": {
       "title": "Você ainda não tem mensagens salvas",
       "description": "Grave sua primeira mensagem e escolha quando e para quem ela chegará.",
+      "selfHint": "Você também pode escrever uma mensagem para o seu eu do futuro.",
       "cta": "Criar Sua Primeira Mensagem"
     },
     "createMessage": "Nova mensagem",

@@ -47,10 +47,9 @@ export default async function DashboardLayout({
 
     const profile = profileResult.data;
 
-    // Check if user authenticated via OAuth (Google)
-    const { data: { user: userWithProviders } } = await supabase.auth.getUser();
-    const isOAuthUser = userWithProviders?.app_metadata?.provider === 'google' || 
-                        userWithProviders?.app_metadata?.providers?.includes('google');
+    // Check if user authenticated via OAuth (Google) — use the user already fetched above
+    const isOAuthUser = user.app_metadata?.provider === 'google' ||
+                        user.app_metadata?.providers?.includes('google');
 
     // Only redirect to set password if user is NOT OAuth and hasn't set a password
     if (profile && profile.auth_password_set === false && !isOAuthUser) {

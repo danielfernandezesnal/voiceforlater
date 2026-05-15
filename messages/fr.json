@@ -345,6 +345,7 @@
       "ofOne": "sur 1 dans votre plan",
       "ofUnlimited": "illimités dans votre plan",
       "nextDelivery": "Prochaine livraison",
+      "allDelivered": "Tous livrés",
       "trustedContacts": "Contacts de confiance",
       "ofMax": "sur {max} possibles dans votre plan"
     },
@@ -354,6 +355,7 @@
     "empty": {
       "title": "Vous n'avez pas encore de messages enregistrés",
       "description": "Enregistrez votre premier message et choisissez quand et à qui il parviendra.",
+      "selfHint": "Vous pouvez aussi vous écrire un message à votre futur vous-même.",
       "cta": "Créer votre premier message"
     },
     "createMessage": "Nouveau message",
