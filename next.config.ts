@@ -98,5 +98,4 @@ export default withSentryConfig(nextConfig, {
   authToken: process.env.SENTRY_AUTH_TOKEN,
   widenClientFileUpload: true,
   sourcemaps: { disable: true },
-  disableLogger: true,
 });
