@@ -345,6 +345,7 @@
       "ofOne": "de 1 en tu plan",
       "ofUnlimited": "de ilimitados en tu plan",
       "nextDelivery": "Próxima entrega",
+      "allDelivered": "Todos entregados",
       "trustedContacts": "Contactos de confianza",
       "ofMax": "de {max} posibles en tu plan"
     },
@@ -354,6 +355,7 @@
     "empty": {
       "title": "Todavía no tienes mensajes guardados",
       "description": "Graba tu primer mensaje y elige cuándo y a quién llegará.",
+      "selfHint": "También puedes escribirte un mensaje a ti mismo en el futuro.",
       "cta": "Crear Tu Primer Mensaje"
     },
     "createMessage": "Nuevo mensaje",
@@ -535,7 +537,7 @@
       },
       "checkin": {
         "title": "Cuando ya no estés presente",
-        "description": "Tus palabras llegarán igual a la persona que tú elegiste, respetando tu voluntad.",
+        "description": "Tus palabras llegarán a la persona que tú elegiste, respetando tu voluntad.",
         "interval": "Intervalo de confirmación",
         "intervalHelp": "Cada cierto tiempo te pediremos que confirmes que estás activo. Si no respondes, contactaremos a tu contacto de confianza para confirmar tu ausencia antes de comenzar el proceso de entrega del mensaje.",
         "days7": "Cada 7 días",
@@ -856,7 +858,7 @@
     },
     "messageDelivery": {
       "subject": "Tienes un mensaje via Carry my Words",
-      "ctaSubject": "{senderName} te dejó un mensaje",
+      "ctaSubject": "{senderName} te envió un mensaje",
       "ctaIntro": "Alguien pensó en ti. Guardó algo para este momento exacto.",
       "ctaButton": "Ver mi mensaje",
       "contentHidden": "Este mensaje viajó en el tiempo para llegar hasta ti.",
@@ -864,7 +866,7 @@
       "footer": "Este mensaje fue enviado a través de Carry my Words.",
       "linkFallback": "También puedes copiar y pegar este enlace en tu navegador:",
       "eyebrow": "Tienes un mensaje",
-      "titleLine2": "te dejó algo <em>especial.</em>"
+      "titleLine2": "te envió algo <em>especial.</em>"
     },
     "checkinReminder1": {
       "subject": "¿Estás bien?",

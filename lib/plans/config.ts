@@ -48,7 +48,7 @@ export const PLAN_LIMITS: Record<Plan, PlanLimits> = {
         maxTrustedContacts: 1,
         checkinHistoryEnabled: false,
         maxAudioSeconds: 15,
-        maxTextChars: 1000,
+        maxTextChars: 5000,
     },
     pro: {
         maxActiveMessages: Infinity,

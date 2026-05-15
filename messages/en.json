@@ -349,6 +349,7 @@
       "ofOne": "of 1 in your plan",
       "ofUnlimited": "unlimited in your plan",
       "nextDelivery": "Next delivery",
+      "allDelivered": "All delivered",
       "trustedContacts": "Trusted contacts",
       "ofMax": "of {max} possible in your plan"
     },
@@ -358,6 +359,7 @@
     "empty": {
       "title": "You don't have any saved messages yet",
       "description": "Record your first message and choose when and to whom it will arrive.",
+      "selfHint": "You can also write a message to your future self.",
       "cta": "Create Your First Message"
     },
     "limitReached": {
@@ -860,7 +862,7 @@
     },
     "messageDelivery": {
       "subject": "You have a message via Carry my Words",
-      "ctaSubject": "{senderName} left you a message",
+      "ctaSubject": "{senderName} sent you a message",
       "ctaIntro": "Someone thought of you. They saved something for this exact moment.",
       "ctaButton": "See my message",
       "contentHidden": "This message traveled through time to reach you.",
@@ -868,7 +870,7 @@
       "footer": "This message was sent via Carry my Words.",
       "linkFallback": "You can also copy and paste this link into your browser.",
       "eyebrow": "You have a message",
-      "titleLine2": "left you something <em>special.</em>"
+      "titleLine2": "sent you something <em>special.</em>"
     },
     "checkinReminder1": {
       "subject": "Are you okay?",

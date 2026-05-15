@@ -80,7 +80,7 @@ function WizardContent({ locale, dictionary, userPlan, initialData, messageId, u
     ]
 
     // Plan limits
-    const maxTextChars = userPlan === 'pro' ? 5000 : 1000
+    const maxTextChars = 5000
     const maxAudioSeconds = userPlan === 'pro' ? 120 : 15
 
     const handleNext = () => {

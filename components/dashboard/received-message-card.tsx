@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { AudioPlayer, VideoPlayer } from "@/components/messages/MediaPlayers";
+import { useState, useEffect, useRef } from 'react';
+import { VideoPlayer } from "@/components/messages/MediaPlayers";
 import { getMessageAvailability } from "@/lib/message-availability";
 
-// Inline SVG Icons (Lucide-style)
 const FileTextIcon = ({ size = 16, className = "" }: { size?: number, className?: string }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
@@ -58,10 +57,31 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
     const [isOpen, setIsOpen] = useState(false);
     const [mediaUrls, setMediaUrls] = useState<{ audio: string | null; photos: string[] } | null>(null);
     const [loadingMedia, setLoadingMedia] = useState(false);
+    const [audioPlaying, setAudioPlaying] = useState(false);
+    const [audioCurrent, setAudioCurrent] = useState(0);
+    const [audioDuration, setAudioDuration] = useState(0);
+    const audioPlayerRef = useRef<HTMLAudioElement | null>(null);
+
+    const toggleAudio = () => {
+        if (!audioPlayerRef.current) return;
+        if (audioPlaying) { audioPlayerRef.current.pause(); } else { audioPlayerRef.current.play(); }
+        setAudioPlaying(!audioPlaying);
+    };
+
+    const fmtTime = (s: number) => `${Math.floor(s / 60)}:${Math.floor(s % 60).toString().padStart(2, '0')}`;
+
+    useEffect(() => { setMounted(true); }, []);
 
     useEffect(() => {
-        setMounted(true);
-    }, []);
+        if (!isOpen) {
+            if (audioPlayerRef.current) {
+                audioPlayerRef.current.pause();
+                audioPlayerRef.current.currentTime = 0;
+            }
+            setAudioPlaying(false);
+            setAudioCurrent(0);
+        }
+    }, [isOpen]);
 
     const date = new Date(message.delivered_at || message.created_at).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', {
         day: 'numeric',
@@ -71,10 +91,8 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
 
     const senderName = message.sender_name || (dict.dashboard as any).receivedMessages?.someoneSpecial || 'Someone special';
 
-    // Availability logic
     const { status, daysRemaining } = getMessageAvailability(message.delivered_at || message.created_at);
 
-    // Determine button text and icon based on message type
     let buttonText = message.type === 'audio'
         ? dict.dashboard.receivedMessages?.viewAudio || 'Escuchar mensaje'
         : message.type === 'video'
@@ -92,10 +110,9 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
 
     const handleOpen = async () => {
         if (status === 'download_only') {
-             window.location.href = `/api/messages/download?token=${message.token}`;
-             return;
+            window.location.href = `/api/messages/download?token=${message.token}`;
+            return;
         }
-
         setIsOpen(true);
         if (message.type !== 'text' || (message.photo_paths && message.photo_paths.length > 0)) {
             if (!mediaUrls) {
@@ -128,31 +145,22 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
         ? (status === 'available' ? '#34d399' : status === 'download_only' ? '#f59e0b' : '#9ca3af')
         : '#e8e0d0';
 
+    const audioProgress = audioDuration > 0 ? (audioCurrent / audioDuration) * 100 : 0;
+
     return (
         <>
+            {/* ── List card ────────────────────────────────────────────────── */}
             <div
                 className="received-message-card relative w-full rounded-xl overflow-hidden transition-all duration-[250ms] ease-out hover:-translate-y-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_1px_2px_rgba(196,98,58,0.04),0_4px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_2px_4px_rgba(196,98,58,0.08),0_8px_20px_rgba(0,0,0,0.10)]"
                 style={{ background: '#FDFCFB', border: '1px solid #E8DDD0' }}
             >
-                {/* Left accent bar (availability status color) */}
                 <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: borderColor }} />
-
-                {/* Content */}
                 <div className="pl-4 pr-5 py-5 md:pr-6 md:py-6">
                     <div className="flex flex-col md:flex-row md:items-stretch gap-4 md:gap-6">
-
-                        {/* Left column */}
                         <div className="flex-1 min-w-0 flex flex-col gap-2">
-
-                            {/* Sender */}
-                            <span
-                                className="font-serif text-lg font-semibold leading-snug"
-                                style={{ color: '#2C2C2C' }}
-                            >
+                            <span className="font-serif text-lg font-semibold leading-snug" style={{ color: '#2C2C2C' }}>
                                 {senderName}
                             </span>
-
-                            {/* Type badge */}
                             <div>
                                 <span
                                     className="inline-flex items-center rounded-lg px-2.5 py-1 text-sm font-medium w-fit"
@@ -161,8 +169,6 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                     {typeLabel}
                                 </span>
                             </div>
-
-                            {/* Title if present */}
                             {message.title && (
                                 <p
                                     className="font-serif text-base italic font-normal leading-snug"
@@ -171,50 +177,32 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                     {message.title}
                                 </p>
                             )}
-
-                            {/* Metadata */}
                             <div className="flex flex-col gap-1.5 mt-0.5">
                                 <span className="text-sm" style={{ color: '#6B6B6B' }}>
                                     {(dict.dashboard as any).receivedMessages?.delivered || 'Delivered on'}:{' '}
-                                    <span style={{ color: '#4A4A4A', fontWeight: 500 }}>
-                                        {mounted ? date : '···'}
-                                    </span>
+                                    <span style={{ color: '#4A4A4A', fontWeight: 500 }}>{mounted ? date : '···'}</span>
                                 </span>
-                                {/* Availability badge */}
                                 {mounted && (
                                     <div>
                                         {status === 'available' ? (
-                                            <span
-                                                className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-sm font-medium"
-                                                style={{ background: 'rgba(52,211,153,0.12)', color: '#059669' }}
-                                            >
+                                            <span className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-sm font-medium" style={{ background: 'rgba(52,211,153,0.12)', color: '#059669' }}>
                                                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                                                 {(dict.dashboard as any).receivedMessages?.badgeAvailable}
                                             </span>
                                         ) : status === 'download_only' ? (
-                                            <span
-                                                className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-sm font-medium"
-                                                style={{ background: 'rgba(245,158,11,0.12)', color: '#b45309' }}
-                                            >
+                                            <span className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-sm font-medium" style={{ background: 'rgba(245,158,11,0.12)', color: '#b45309' }}>
                                                 <DownloadIcon size={10} />
                                                 {(dict.dashboard as any).receivedMessages?.badgeDownloadOnly}
                                             </span>
                                         ) : (
-                                            <span
-                                                className="inline-flex items-center rounded-lg px-2.5 py-1 text-sm font-medium"
-                                                style={{ background: '#f0ece4', color: '#9a8070' }}
-                                            >
+                                            <span className="inline-flex items-center rounded-lg px-2.5 py-1 text-sm font-medium" style={{ background: '#f0ece4', color: '#9a8070' }}>
                                                 {(dict.dashboard as any).receivedMessages?.badgeExpired}
                                             </span>
                                         )}
                                     </div>
                                 )}
-                                {/* Days remaining */}
                                 {mounted && daysRemaining > 0 && (
-                                    <span
-                                        className="text-sm"
-                                        style={{ color: status === 'download_only' ? '#b45309' : '#9a8070' }}
-                                    >
+                                    <span className="text-sm" style={{ color: status === 'download_only' ? '#b45309' : '#9a8070' }}>
                                         {status === 'available'
                                             ? (dict.dashboard as any).receivedMessages?.availableDays?.replace('{days}', daysRemaining.toString())
                                             : (dict.dashboard as any).receivedMessages?.downloadOnly?.replace('{days}', daysRemaining.toString())
@@ -222,8 +210,6 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                     </span>
                                 )}
                             </div>
-
-                            {/* CTA — mobile */}
                             <div className="md:hidden pt-1">
                                 {mounted ? (
                                     status !== 'expired' && (
@@ -241,8 +227,6 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                 )}
                             </div>
                         </div>
-
-                        {/* Right column — desktop CTA */}
                         <div className="hidden md:flex flex-col justify-end shrink-0">
                             {mounted ? (
                                 status !== 'expired' && (
@@ -259,170 +243,272 @@ export function ReceivedMessageCard({ message, locale, dict, autoOpen }: Receive
                                 <div className="h-10 w-32 rounded-lg bg-[#f0ece4] animate-pulse" />
                             )}
                         </div>
-
                     </div>
                 </div>
             </div>
 
-                {/* Modal de Visualización */}
+            {/* ── Modal ────────────────────────────────────────────────────── */}
             {isOpen && mounted && (
                 <div className="fixed inset-0 z-[100]">
-                    {/* Backdrop */}
+
+                    {/* Desktop background: blurred photo or flat cream */}
+                    <div className="absolute inset-0 hidden md:block" onClick={() => setIsOpen(false)}>
+                        {mediaUrls?.photos?.[0] ? (
+                            <>
+                                <div style={{
+                                    position: 'absolute', inset: 0,
+                                    backgroundImage: `url(${mediaUrls.photos[0]})`,
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center',
+                                    filter: 'blur(14px)',
+                                    transform: 'scale(1.05)',
+                                }} />
+                                <div style={{ position: 'absolute', inset: 0, background: 'rgba(249,245,240,0.80)' }} />
+                            </>
+                        ) : (
+                            <div style={{ position: 'absolute', inset: 0, background: '#EFE9E0' }} />
+                        )}
+                    </div>
+
+                    {/* Mobile backdrop */}
                     <div
-                        className="absolute inset-0 bg-[#ccc7be]/70 backdrop-blur-sm"
+                        className="absolute inset-0 md:hidden"
+                        style={{ background: 'rgba(43,37,33,0.40)' }}
                         onClick={() => setIsOpen(false)}
                     />
 
-                    {/* Scroll container */}
-                    <div className="absolute inset-0 overflow-y-auto modal-scrollbar flex items-start sm:items-center justify-center p-4 py-10">
-                        {/* Card */}
+                    {/* Scroll + center */}
+                    <div className="absolute inset-0 overflow-y-auto ag-scrollbar flex items-start md:items-center justify-center md:p-5 md:py-16">
+
+                        {/* Content */}
                         <div
-                            className="relative w-full max-w-md bg-[#f5f0e8] rounded-3xl overflow-hidden shadow-2xl"
+                            className="relative z-10 ag-msg-card"
+                            style={{ maxWidth: '780px', width: '90%' }}
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Logo */}
-                            <div className="text-center pt-6 pb-5 px-6">
-                                <div className="font-playfair italic text-xl text-[#C4623A] leading-none">
+                            <div style={{ textAlign: 'center', marginBottom: '14px' }}>
+                                <div style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontSize: '15px', color: '#C4623A' }}>
                                     Carry my Words
+                                </div>
+                                <div style={{ fontSize: '9px', fontWeight: 500, letterSpacing: '0.13em', textTransform: 'uppercase', color: 'rgba(196,98,58,0.6)', marginTop: '4px' }}>
+                                    {t?.cta?.subtext?.split(' — ')[1] || 'Mensajes que viajan en el tiempo'}
                                 </div>
                             </div>
 
                             {/* Divider */}
-                            <div className="h-px bg-[#ddd5c8]" />
+                            <div style={{ height: '0.5px', background: 'rgba(43,37,33,0.09)', marginBottom: '14px' }} />
 
-                            {/* Header */}
-                            <div className="px-5 py-4">
-                                <div className="flex items-center gap-3">
-                                    {/* Avatar */}
-                                    <div
-                                        className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold shrink-0"
-                                        style={{ background: '#e8ddd0', color: '#9a7060' }}
-                                    >
-                                        {senderName.charAt(0).toUpperCase()}
-                                    </div>
-                                    {/* Sender info */}
-                                    <div className="flex-1 min-w-0">
-                                        <div
-                                            className="text-[9px] uppercase tracking-[0.15em] font-semibold"
-                                            style={{ color: '#C4623A' }}
-                                        >
-                                            {t?.fromLabel}
-                                        </div>
-                                        <div className="text-sm font-semibold text-[#2C2018] mt-0.5 leading-snug">
-                                            {senderName}
-                                        </div>
-                                    </div>
-                                    {/* Close */}
-                                    <button
-                                        onClick={() => setIsOpen(false)}
-                                        className="w-7 h-7 flex items-center justify-center rounded-lg border border-[#d9d0c4] text-[#9a8070] hover:bg-[#e8e0d0] transition-colors shrink-0"
-                                    >
-                                        <CloseIcon size={14} />
-                                    </button>
+                            {/* Header remitente */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                                <div style={{
+                                    width: '35px', height: '35px', borderRadius: '50%',
+                                    background: 'rgba(196,98,58,0.10)', border: '0.5px solid rgba(196,98,58,0.22)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    fontSize: '13px', color: '#C4623A', fontWeight: 500, flexShrink: 0,
+                                }}>
+                                    {senderName.charAt(0).toUpperCase()}
                                 </div>
-
-                                {/* Title + date row */}
-                                <div className="flex items-baseline justify-between mt-4 pt-3 border-t border-[#e4ddd4]">
-                                    {message.title && (
-                                        <span className="text-sm text-[#4a4040] flex-1 min-w-0 truncate pr-4">
-                                            {message.title}
-                                        </span>
-                                    )}
-                                    <span className={`text-sm text-[#9a8070] shrink-0 ${!message.title ? 'ml-auto' : ''}`}>
-                                        {date}
-                                    </span>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                    <div style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.10em', color: '#9A9088' }}>
+                                        {t?.fromLabel}
+                                    </div>
+                                    <div style={{ fontSize: '15px', fontWeight: 500, color: '#2B2521', marginTop: '2px' }}>
+                                        {senderName}
+                                    </div>
                                 </div>
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#9A9088', opacity: 0.5, flexShrink: 0 }}
+                                >
+                                    <CloseIcon size={18} />
+                                </button>
                             </div>
 
-                            {/* Content */}
-                            <div className="px-5 pb-6 space-y-3">
-                                {loadingMedia ? (
-                                    <div className="flex items-center justify-center py-8">
-                                        <div className="w-6 h-6 border-2 border-[#C4623A]/20 border-t-[#C4623A] rounded-full animate-spin" />
-                                    </div>
-                                ) : (
-                                    <>
-                                        {/* Photos — only rendered when present, no placeholder */}
-                                        {mediaUrls?.photos && mediaUrls.photos.length > 0 && (
-                                            <div className={`grid gap-2 ${mediaUrls.photos.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
-                                                {mediaUrls.photos.map((url: string, i: number) => (
-                                                    <div
-                                                        key={i}
-                                                        className="rounded-xl overflow-hidden w-full"
-                                                        style={{ height: '160px' }}
-                                                    >
-                                                        <img src={url} alt="" className="w-full h-full object-cover" />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
+                            {/* Meta line: subject + date */}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                                <span style={{ fontSize: '11px', color: '#9A9088', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                                    {message.title}
+                                </span>
+                                <span style={{ fontSize: '11px', color: '#9A9088', flexShrink: 0, marginLeft: '8px' }}>
+                                    {date}
+                                </span>
+                            </div>
 
-                                        {/* Video */}
-                                        {message.type === 'video' && mediaUrls?.audio && (
-                                            <div className="rounded-xl overflow-hidden border border-black/[0.06] bg-black">
-                                                <VideoPlayer src={mediaUrls.audio} overlayText={t?.videoOverlay || 'Toca para ver'} />
-                                            </div>
-                                        )}
+                            {/* Divider */}
+                            <div style={{ height: '0.5px', background: 'rgba(43,37,33,0.09)', marginBottom: '14px' }} />
 
-                                        {/* Audio */}
-                                        {message.type === 'audio' && mediaUrls?.audio && (
-                                            <div
-                                                className="rounded-2xl border border-[#e4ddd4] p-4 space-y-3"
-                                                style={{ background: 'rgba(255,255,255,0.75)' }}
+                            {/* Loading */}
+                            {loadingMedia && (
+                                <div style={{ display: 'flex', justifyContent: 'center', padding: '28px 0' }}>
+                                    <div className="w-6 h-6 border-2 border-[#C4623A]/20 border-t-[#C4623A] rounded-full animate-spin" />
+                                </div>
+                            )}
+
+                            {!loadingMedia && (
+                                <>
+                                    {/* Image block — only when photos exist, no placeholder */}
+                                    {mediaUrls?.photos && mediaUrls.photos.length > 0 && (
+                                        <div style={{ marginBottom: '10px' }}>
+                                            {mediaUrls.photos.length === 1 ? (
+                                                <div style={{ height: '130px', borderRadius: '10px', overflow: 'hidden', width: '100%' }}>
+                                                    <img src={mediaUrls.photos[0]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                </div>
+                                            ) : (
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
+                                                    {mediaUrls.photos.map((url: string, i: number) => (
+                                                        <div key={i} style={{ height: '130px', borderRadius: '10px', overflow: 'hidden' }}>
+                                                            <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {/* Video */}
+                                    {message.type === 'video' && mediaUrls?.audio && (
+                                        <div style={{ borderRadius: '10px', overflow: 'hidden', marginBottom: '10px' }}>
+                                            <VideoPlayer src={mediaUrls.audio} overlayText={t?.videoOverlay || 'Toca para ver'} />
+                                        </div>
+                                    )}
+
+                                    {/* Audio player */}
+                                    {message.type === 'audio' && mediaUrls?.audio && (
+                                        <div style={{
+                                            background: 'rgba(249,245,240,0.72)',
+                                            border: '0.5px solid rgba(43,37,33,0.10)',
+                                            borderRadius: '14px',
+                                            padding: '0.9rem 1.1rem',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '12px',
+                                            marginBottom: '10px',
+                                        }}>
+                                            <audio
+                                                ref={audioPlayerRef}
+                                                src={mediaUrls.audio}
+                                                onTimeUpdate={() => setAudioCurrent(audioPlayerRef.current?.currentTime || 0)}
+                                                onLoadedMetadata={() => setAudioDuration(audioPlayerRef.current?.duration || 0)}
+                                                onEnded={() => { setAudioPlaying(false); setAudioCurrent(0); }}
+                                            />
+                                            {/* Play button — circle */}
+                                            <button
+                                                onClick={toggleAudio}
+                                                style={{
+                                                    width: '44px', height: '44px', borderRadius: '50%',
+                                                    background: '#C4623A', border: 'none', cursor: 'pointer',
+                                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                    flexShrink: 0,
+                                                }}
                                             >
-                                                <div
-                                                    className="text-[9px] uppercase tracking-[0.18em] font-semibold"
-                                                    style={{ color: 'rgba(196,98,58,0.8)' }}
-                                                >
+                                                {audioPlaying ? (
+                                                    <svg width="16" height="16" fill="#F9F5F0" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                                                ) : (
+                                                    <svg width="16" height="16" fill="#F9F5F0" viewBox="0 0 24 24" style={{ marginLeft: '2px' }}><path d="M8 5v14l11-7z" /></svg>
+                                                )}
+                                            </button>
+
+                                            {/* Track */}
+                                            <div style={{ flex: 1, minWidth: 0 }}>
+                                                <div style={{ fontSize: '9px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.09em', color: '#C4623A', marginBottom: '8px' }}>
                                                     {t?.voiceLabel || 'Mensaje de voz'}
                                                 </div>
-                                                <AudioPlayer src={mediaUrls.audio} />
+                                                <div style={{ position: 'relative', height: '3px', background: 'rgba(43,37,33,0.15)', borderRadius: '2px', marginBottom: '6px' }}>
+                                                    <div style={{
+                                                        position: 'absolute', top: 0, left: 0, bottom: 0,
+                                                        background: '#C4623A', borderRadius: '2px',
+                                                        width: audioProgress + '%',
+                                                    }} />
+                                                    <div style={{
+                                                        position: 'absolute', top: '50%',
+                                                        width: '11px', height: '11px', borderRadius: '50%',
+                                                        background: '#C4623A', border: '2px solid #F9F5F0',
+                                                        left: audioProgress + '%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                    }} />
+                                                </div>
+                                                <div className="tabular-nums flex justify-between" style={{ fontSize: '10px', color: '#9A9088' }}>
+                                                    <span>{fmtTime(audioCurrent)}</span>
+                                                    <span>{fmtTime(audioDuration)}</span>
+                                                </div>
                                             </div>
-                                        )}
-
-                                        {/* Text */}
-                                        {message.type === 'text' && (
-                                            <div
-                                                className="rounded-2xl border border-[#e4ddd4] p-5"
-                                                style={{ background: 'rgba(255,255,255,0.75)' }}
-                                            >
-                                                <p className="font-lora italic text-base text-[#2A2520] leading-[1.8] whitespace-pre-wrap font-light">
-                                                    {message.text_content}
-                                                </p>
-                                            </div>
-                                        )}
-
-                                        {/* Footer */}
-                                        <div className="flex items-center justify-between pt-2">
-                                            <div className="flex items-center gap-2">
-                                                <div className="h-px w-4 bg-[#C4623A]/40" />
-                                                <span className="text-xs italic text-[#9a8070]">
-                                                    {message.type === 'audio'
-                                                        ? (t?.metaSaved || 'Guardado para este momento')
-                                                        : senderName
-                                                    }
-                                                </span>
-                                            </div>
-                                            <a
-                                                href={`/api/messages/download?token=${message.token}`}
-                                                className="px-4 py-1.5 rounded-full border border-[#2C2018]/60 text-[#2C2018] text-xs font-medium hover:bg-[#2C2018]/5 transition-colors"
-                                            >
-                                                {dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje'}
-                                            </a>
                                         </div>
-                                    </>
-                                )}
-                            </div>
+                                    )}
+
+                                    {/* Text */}
+                                    {message.type === 'text' && (
+                                        <div style={{
+                                            background: 'rgba(249,245,240,0.72)',
+                                            border: '0.5px solid rgba(43,37,33,0.10)',
+                                            borderRadius: '14px',
+                                            padding: '1.1rem',
+                                            marginBottom: '10px',
+                                        }}>
+                                            <p style={{ fontSize: '15px', color: '#2B2521', lineHeight: 1.75, whiteSpace: 'pre-wrap', margin: 0, fontStyle: 'italic' }}>
+                                                {message.text_content}
+                                            </p>
+                                        </div>
+                                    )}
+
+                                    {/* Footer */}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '4px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <div style={{ width: '18px', height: '0.5px', background: 'rgba(196,98,58,0.4)', flexShrink: 0 }} />
+                                            <span style={{ fontSize: '11px', fontStyle: 'italic', color: '#9A9088' }}>
+                                                {message.type === 'audio' ? (t?.metaSaved || 'Guardado para este momento') : senderName}
+                                            </span>
+                                        </div>
+                                        <a
+                                            href={`/api/messages/download?token=${message.token}`}
+                                            style={{
+                                                borderRadius: '20px',
+                                                border: '0.5px solid rgba(43,37,33,0.18)',
+                                                background: 'rgba(249,245,240,0.6)',
+                                                color: '#4A4643',
+                                                fontSize: '11px',
+                                                padding: '5px 14px',
+                                                textDecoration: 'none',
+                                                flexShrink: 0,
+                                                marginLeft: '8px',
+                                            }}
+                                        >
+                                            {dict.dashboard.receivedMessages?.downloadButton || 'Descargar mensaje'}
+                                        </a>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
             )}
 
 <style jsx global>{`
-                .modal-scrollbar::-webkit-scrollbar { width: 6px; }
-                .modal-scrollbar::-webkit-scrollbar-track { background: transparent; }
-                .modal-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 10px; }
-            `}</style>
+    .ag-scrollbar::-webkit-scrollbar { width: 5px; }
+    .ag-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .ag-scrollbar::-webkit-scrollbar-thumb { background: rgba(43,37,33,0.10); border-radius: 10px; }
+
+    .ag-msg-card {
+        background: rgba(249,245,240,0.95);
+        border-radius: 20px;
+        border: 0.5px solid rgba(43,37,33,0.09);
+        padding: 2.25rem 2rem;
+        min-height: calc(100vh - 8rem);
+        display: flex;
+        flex-direction: column;
+    }
+    @media (max-width: 767px) {
+        .ag-msg-card {
+            max-width: 100% !important;
+            width: 100% !important;
+            background: #F9F5F0;
+            border: none;
+            border-radius: 0;
+            padding: 1.5rem 1.25rem;
+            min-height: 100vh;
+        }
+    }
+`}</style>
         </>
     );
 }

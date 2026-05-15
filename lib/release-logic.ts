@@ -1,6 +1,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import * as Sentry from "@sentry/nextjs";
+import crypto from 'crypto';
 import { isValidLocale, Locale, defaultLocale } from '@/lib/i18n';
 import { sendMessageDeliveryEmail } from '@/components/emails/message-delivery-email';
 import { logDeliveryEvent } from "@/lib/delivery-telemetry";
@@ -150,11 +151,13 @@ export async function releaseCheckinMessages(userId: string) {
 
                 // Generate 15-day, multi-use delivery token (aligned with date delivery)
                 const appUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '');
+                const tokenString = crypto.randomBytes(32).toString('hex');
                 const { data: deliveryToken, error: tokenError } = await supabase
                     .from('delivery_tokens')
                     .insert({
                         message_id: message.id,
-                        recipient_email: recipient.email,
+                        recipient_id: recipient.id,
+                        token: tokenString,
                         expires_at: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString()
                     })
                     .select('token')
