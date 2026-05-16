@@ -72,6 +72,7 @@ export async function GET(request: NextRequest) {
         }
 
         if (!expiredTokens || expiredTokens.length === 0) {
+            await sendHeartbeat("process-expired-tokens", process.env.BETTER_STACK_EXPIRED_TOKENS_HEARTBEAT_URL);
             return NextResponse.json({ success: true, message: "No expired tokens found", results });
         }
 

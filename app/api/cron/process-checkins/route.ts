@@ -80,6 +80,7 @@ export async function GET(request: NextRequest) {
         }
 
         if (!overdueCheckins || overdueCheckins.length === 0) {
+            await sendHeartbeat("process-checkins", process.env.BETTER_STACK_CHECKINS_HEARTBEAT_URL);
             return NextResponse.json({ message: "No overdue checkins", results });
         }
 

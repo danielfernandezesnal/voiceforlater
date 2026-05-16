@@ -74,6 +74,7 @@ export async function GET(request: NextRequest) {
         }
 
         if (!messages || messages.length === 0) {
+            await sendHeartbeat("process-messages", process.env.BETTER_STACK_MESSAGES_HEARTBEAT_URL);
             return NextResponse.json({ message: "No messages to process", results });
         }
 
