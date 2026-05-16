@@ -5,6 +5,7 @@ import { isValidLocale, Locale, defaultLocale } from '@/lib/i18n';
 import { sendMessageDeliveryEmail } from '@/components/emails/message-delivery-email';
 import { logDeliveryEvent } from "@/lib/delivery-telemetry";
 import crypto from 'crypto';
+import { sendHeartbeat } from "@/lib/monitoring/heartbeat";
 
 // Use service role for admin operations (bypass RLS)
 function getAdminClient() {
@@ -73,6 +74,7 @@ export async function GET(request: NextRequest) {
         }
 
         if (!messages || messages.length === 0) {
+            await sendHeartbeat("process-messages", process.env.BETTER_STACK_MESSAGES_HEARTBEAT_URL);
             return NextResponse.json({ message: "No messages to process", results });
         }
 
@@ -257,6 +259,12 @@ export async function GET(request: NextRequest) {
                     .eq("status", "scheduled")
                     .eq("delivery_claimed_at", claimStamp);
             }
+        }
+
+        if (results.errors.length === 0) {
+            await sendHeartbeat("process-messages", process.env.BETTER_STACK_MESSAGES_HEARTBEAT_URL);
+        } else {
+            console.error("cron_internal_errors", "process-messages", results.errors.length);
         }
 
         return NextResponse.json({ success: true, results });

@@ -10,6 +10,7 @@ import { sendCheckinReminder1Email } from '@/components/emails/checkin-reminder-
 import { sendCheckinReminder2Email } from '@/components/emails/checkin-reminder-2-email';
 import { sendCheckinReminder3Email } from '@/components/emails/checkin-reminder-3-email';
 import { sendTrustedContactNotificationEmail } from '@/components/emails/trusted-contact-notification-email';
+import { sendHeartbeat } from "@/lib/monitoring/heartbeat";
 
 // Timing constants (in days)
 const REMINDER_SPACING_DAYS = 4;        // Day 0 → Day 4 → Day 8
@@ -79,6 +80,7 @@ export async function GET(request: NextRequest) {
         }
 
         if (!overdueCheckins || overdueCheckins.length === 0) {
+            await sendHeartbeat("process-checkins", process.env.BETTER_STACK_CHECKINS_HEARTBEAT_URL);
             return NextResponse.json({ message: "No overdue checkins", results });
         }
 
@@ -441,6 +443,12 @@ export async function GET(request: NextRequest) {
                 console.error(`Error processing user ${userId}:`, userError);
                 results.errors.push(`User ${userId}: ${String(userError)}`);
             }
+        }
+
+        if (results.errors.length === 0) {
+            await sendHeartbeat("process-checkins", process.env.BETTER_STACK_CHECKINS_HEARTBEAT_URL);
+        } else {
+            console.error("cron_internal_errors", "process-checkins", results.errors.length);
         }
 
         return NextResponse.json({ success: true, results });
