@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isAuthorized } from "@/lib/cron-auth";
 import { createClient } from "@supabase/supabase-js";
 import { releaseCheckinMessages } from "@/lib/release-logic";
+import { sendHeartbeat } from "@/lib/monitoring/heartbeat";
 
 export const dynamic = "force-dynamic";
 export const runtime = 'nodejs';
@@ -114,6 +115,12 @@ export async function GET(request: NextRequest) {
                 console.error(`Error processing expired token ${token.id}:`, err);
                 results.errors.push(`Token ${token.id}: ${String(err)}`);
             }
+        }
+
+        if (results.errors.length === 0) {
+            await sendHeartbeat("process-expired-tokens", process.env.BETTER_STACK_EXPIRED_TOKENS_HEARTBEAT_URL);
+        } else {
+            console.error("cron_internal_errors", "process-expired-tokens", results.errors.length);
         }
 
         return NextResponse.json({ success: true, results });
