@@ -6,6 +6,7 @@ Before deploying admin dashboard updates:
 - [ ] **Data Migrations**: Verify that `public.admin_audit_log` exists.
 - [ ] **Analytics Table**: Verify that `public.product_events` exists (see section 5 below).
 - [ ] **Environment**: Ensure `SUPABASE_SERVICE_ROLE_KEY` is set in production.
+- [ ] **Monitoring**: Ensure `SENTRY_SMOKE_SECRET` is set before using the manual Sentry smoke route.
 - [ ] **Role**: Ensure your user has `admin` or `owner` role in `public.user_roles` (add manually if needed via SQL).
 - [ ] **i18n**: Check `messages/en.json` and `es.json` for new keys.
 - [ ] **Build**: Run local build (`npm run build`) to catch type errors.
