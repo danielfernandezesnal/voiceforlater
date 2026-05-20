@@ -368,9 +368,10 @@
       "subtitle": "For only USD 10 per year you'll be able to:",
       "features": [
         "Send unlimited messages",
-        "Send text, audio and also Video messages!",
+        "Send text, audio, and video messages",
         "Designate up to 3 trusted contacts for your messages",
-        "Send the same message to multiple recipients"
+        "Send the same message to multiple recipients",
+        "Upload external videos"
       ],
       "upgrade": "See Pro plan",
       "cancel": "Cancel"
