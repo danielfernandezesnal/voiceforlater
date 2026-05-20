@@ -20,12 +20,6 @@ export async function MagicLinkEmail({
   const common = dict.emails.common;
   const introParagraphs = t.intro.split('\n\n').filter(Boolean);
   const titleLines = t.title.split('\n');
-  const fallbackLinkText = {
-    es: 'Abrir enlace seguro de acceso',
-    en: 'Open secure sign-in link',
-    pt: 'Abrir link seguro de acesso',
-    fr: 'Ouvrir le lien de connexion sécurisé',
-  }[locale];
 
   const styles = checkinReminderStyles + `
     body { background-color: #f5f0e8; }
@@ -46,17 +40,20 @@ export async function MagicLinkEmail({
     .body p { font-size: 14px; line-height: 1.78; color: #4a3728; font-weight: 300; margin-bottom: 28px; }
     .btn-primary { background: #c4622a; color: #fff9f4 !important; border-radius: 2px; padding: 16px 44px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; display: inline-block; }
     .cta-hint { font-size: 11px; color: #a08878; margin-top: 12px; font-weight: 300; }
-    .footer { background: #f5efe3; border-top: 1px solid #ecdfd0; padding: 24px 48px; text-align: left; display: block; }
-    .footer p { display: block; width: 100%; font-size: 11px; color: #9a8070; line-height: 1.65; font-weight: 300; margin: 0 0 14px; }
-    .footer a { color: #c4622a; word-break: break-all; text-decoration: none; }
-    .footer-tagline { display: block; width: 100%; font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 12px; color: #b09070; letter-spacing: 0.04em; margin: 0 0 10px; }
-    .footer-ignore { font-size: 11px; color: #b8a898; margin: 0; font-weight: 300; }
+    .footer-technical { background: #f5efe3; border-top: 1px solid #ecdfd0; padding: 24px 48px 18px; text-align: left; display: block; }
+    .fallback-block { display: block; width: 100%; margin: 0 0 14px; font-size: 11px; color: #9a8070; line-height: 1.65; font-weight: 300; }
+    .fallback-link { display: block; width: 100%; color: #c4622a; text-decoration: none; word-break: break-all; overflow-wrap: anywhere; }
+    .footer-ignore { display: block; width: 100%; font-size: 11px; color: #b8a898; line-height: 1.65; margin: 0; font-weight: 300; }
+    .footer-branding { background: #f5efe3; padding: 0 48px 24px; text-align: center; display: block; }
+    .footer-brand-name { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 18px; color: #c4623a; margin: 0 0 4px; }
+    .footer-tagline { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 12px; color: #b09070; letter-spacing: 0.04em; margin: 0; }
     @media only screen and (max-width: 600px) {
       .hero { padding: 36px 28px 0 !important; }
       .hero h1 { font-size: 28px !important; }
       .ornament { padding: 20px 28px !important; }
       .body { padding: 0 28px 28px !important; }
-      .footer { padding: 20px 28px !important; }
+      .footer-technical { padding: 20px 28px 16px !important; }
+      .footer-branding { padding: 0 28px 20px !important; }
     }
   `;
 
@@ -120,13 +117,18 @@ export async function MagicLinkEmail({
           </div>
 
           {/* FOOTER */}
-          <div className="footer">
-            <p>
+          <div className="footer-technical">
+            <p className="fallback-block">
               {t.linkFallback}<br />
-              <a href={magicLink}>{fallbackLinkText}</a>
+              <a href={magicLink} className="fallback-link" style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}>
+                {magicLink}
+              </a>
             </p>
-            <div className="footer-tagline">{common.tagline}</div>
             <p className="footer-ignore">{t.ignore}</p>
+          </div>
+          <div className="footer-branding">
+            <div className="footer-brand-name">Carry my Words</div>
+            <div className="footer-tagline">{common.tagline}</div>
           </div>
 
         </div>
