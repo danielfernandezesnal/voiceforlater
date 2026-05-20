@@ -46,11 +46,11 @@ export async function MagicLinkEmail({
     .body p { font-size: 14px; line-height: 1.78; color: #4a3728; font-weight: 300; margin-bottom: 28px; }
     .btn-primary { background: #c4622a; color: #fff9f4 !important; border-radius: 2px; padding: 16px 44px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; display: inline-block; }
     .cta-hint { font-size: 11px; color: #a08878; margin-top: 12px; font-weight: 300; }
-    .footer { background: #f5efe3; border-top: 1px solid #ecdfd0; padding: 24px 48px; text-align: left; }
-    .footer p { font-size: 11px; color: #9a8070; line-height: 1.65; font-weight: 300; margin-bottom: 14px; }
+    .footer { background: #f5efe3; border-top: 1px solid #ecdfd0; padding: 24px 48px; text-align: left; display: block; }
+    .footer p { display: block; width: 100%; font-size: 11px; color: #9a8070; line-height: 1.65; font-weight: 300; margin: 0 0 14px; }
     .footer a { color: #c4622a; word-break: break-all; text-decoration: none; }
-    .footer-tagline { font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 12px; color: #b09070; letter-spacing: 0.04em; }
-    .footer-ignore { font-size: 11px; color: #b8a898; margin-top: 10px; font-weight: 300; }
+    .footer-tagline { display: block; width: 100%; font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 12px; color: #b09070; letter-spacing: 0.04em; margin: 0 0 10px; }
+    .footer-ignore { font-size: 11px; color: #b8a898; margin: 0; font-weight: 300; }
     @media only screen and (max-width: 600px) {
       .hero { padding: 36px 28px 0 !important; }
       .hero h1 { font-size: 28px !important; }
