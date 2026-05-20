@@ -20,6 +20,12 @@ export async function MagicLinkEmail({
   const common = dict.emails.common;
   const introParagraphs = t.intro.split('\n\n').filter(Boolean);
   const titleLines = t.title.split('\n');
+  const fallbackLinkText = {
+    es: 'Abrir enlace seguro de acceso',
+    en: 'Open secure sign-in link',
+    pt: 'Abrir link seguro de acesso',
+    fr: 'Ouvrir le lien de connexion sécurisé',
+  }[locale];
 
   const styles = checkinReminderStyles + `
     body { background-color: #f5f0e8; }
@@ -117,7 +123,7 @@ export async function MagicLinkEmail({
           <div className="footer">
             <p>
               {t.linkFallback}<br />
-              <a href={magicLink}>{magicLink}</a>
+              <a href={magicLink}>{fallbackLinkText}</a>
             </p>
             <div className="footer-tagline">{common.tagline}</div>
             <p className="footer-ignore">{t.ignore}</p>
