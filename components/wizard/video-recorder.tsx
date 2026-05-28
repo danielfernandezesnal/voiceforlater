@@ -50,6 +50,7 @@ export function VideoRecorder({
     const [uploadError, setUploadError] = useState<string | null>(null)
     const [isUploading, setIsUploading] = useState(false)
     const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null)
+    const [uploadedPreviewUrl, setUploadedPreviewUrl] = useState<string | null>(null)
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
     const chunksRef = useRef<Blob[]>([])
@@ -69,7 +70,22 @@ export function VideoRecorder({
         }
     }, [videoBlob])
 
+    useEffect(() => {
+        return () => {
+            if (uploadedPreviewUrl) {
+                URL.revokeObjectURL(uploadedPreviewUrl)
+            }
+        }
+    }, [uploadedPreviewUrl])
+
     const [isInitializing, setIsInitializing] = useState(false)
+
+    const clearUploadedPreview = useCallback(() => {
+        setUploadedFile(null)
+        setThumbnailUrl(null)
+        setUploadError(null)
+        setUploadedPreviewUrl(null)
+    }, [])
 
     // Memoize initCamera so it can be called safely from effects and buttons
     const initCamera = useCallback(async () => {
@@ -80,7 +96,7 @@ export function VideoRecorder({
         setError(null)
         try {
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                throw new Error("navigator.mediaDevices no está disponible. ¿Estás usando HTTP sin localhost?")
+                throw new Error("navigator.mediaDevices no estÃ¡ disponible. Â¿EstÃ¡s usando HTTP sin localhost?")
             }
 
             // Stop any existing tracks first
@@ -225,7 +241,7 @@ export function VideoRecorder({
         } catch (err) {
             console.error('Error starting recording:', err)
             const msg = err instanceof Error ? err.message : String(err)
-            setError(`Error iniciando grabación: ${msg}`)
+            setError(`Error iniciando grabaciÃ³n: ${msg}`)
             setIsRecording(false)
         }
     }
@@ -259,11 +275,11 @@ export function VideoRecorder({
             ACCEPTED_VIDEO_EXTENSIONS.split(',').some(ext => file.name.toLowerCase().endsWith(ext.replace('.', '')))
         
         if (!isValidFormat) {
-            setUploadError(locale === 'es' ? 'Formato no válido. Usa MP4, MOV o WEBM.' : 'Invalid format. Use MP4, MOV or WEBM.')
+            setUploadError(locale === 'es' ? 'Formato no vÃ¡lido. Usa MP4, MOV o WEBM.' : 'Invalid format. Use MP4, MOV or WEBM.')
             return
         }
         if (file.size > MAX_VIDEO_BYTES) {
-            setUploadError(locale === 'es' ? `El archivo supera el límite de ${MAX_VIDEO_MB}MB.` : `File exceeds the ${MAX_VIDEO_MB}MB limit.`)
+            setUploadError(locale === 'es' ? `El archivo supera el lÃ­mite de ${MAX_VIDEO_MB}MB.` : `File exceeds the ${MAX_VIDEO_MB}MB limit.`)
             return
         }
 
@@ -288,6 +304,7 @@ export function VideoRecorder({
 
             if (error) throw error
 
+            setUploadedPreviewUrl(URL.createObjectURL(file))
             setUploadedFile(file)
             const thumb = await generateThumbnail(file)
             setThumbnailUrl(thumb)
@@ -301,30 +318,39 @@ export function VideoRecorder({
     }
 
     // Has existing recording
-    const finalVideoUrl = videoUrl || existingVideoUrl
+    const finalVideoUrl = videoUrl || uploadedPreviewUrl || existingVideoUrl
 
     if (finalVideoUrl) {
         return (
             <div className="p-6 bg-card border border-border rounded-xl space-y-4">
                 <div className="aspect-video bg-black rounded-lg overflow-hidden">
-                    <video src={finalVideoUrl} controls className="w-full h-full" />
+                    <video
+                        src={finalVideoUrl}
+                        controls
+                        className="w-full h-full"
+                        onError={() => setUploadError(locale === 'es' ? 'No se pudo previsualizar el video.' : 'Could not preview this video.')}
+                    />
                 </div>
 
                 <div className="flex gap-3 justify-center">
                     <button
-                        onClick={onDelete}
+                        onClick={() => {
+                            clearUploadedPreview()
+                            onDelete()
+                        }}
                         className="px-4 py-2 text-sm text-error hover:bg-error/10 rounded-lg transition-colors"
                     >
                         {dictionary.delete}
                     </button>
                 </div>
+                {uploadError && <p className="text-sm text-destructive text-center">{uploadError}</p>}
             </div>
         )
     }
 
     return (
         <div className="space-y-4">
-            {/* Selector de modo — solo se muestra si no eligió nada todavía */}
+            {/* Selector de modo â€” solo se muestra si no eligiÃ³ nada todavÃ­a */}
             {mode === null && (
                 <div className="flex flex-col gap-3">
                     {/* Card: Grabar */}
@@ -343,7 +369,7 @@ export function VideoRecorder({
                                 {locale === 'es' ? 'Grabar desde la plataforma' : 'Record from the platform'}
                             </p>
                             <p className="text-xs text-muted-foreground mt-0.5 font-light">
-                                {locale === 'es' ? 'Usa tu cámara para grabar un video directamente desde el navegador' : 'Use your camera to record a video directly from the browser'}
+                                {locale === 'es' ? 'Usa tu cÃ¡mara para grabar un video directamente desde el navegador' : 'Use your camera to record a video directly from the browser'}
                             </p>
                         </div>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0"><path d="M9 18l6-6-6-6" /></svg>
@@ -376,7 +402,7 @@ export function VideoRecorder({
                                 {locale === 'es' ? 'Subir un video desde tu dispositivo' : 'Upload a video from your device'}
                             </p>
                             <p className="text-xs text-muted-foreground mt-0.5 font-light">
-                                {locale === 'es' ? `MP4, MOV, WEBM · Máx. ${MAX_VIDEO_MB}MB` : `MP4, MOV, WEBM · Max. ${MAX_VIDEO_MB}MB`}
+                                {locale === 'es' ? `MP4, MOV, WEBM Â· MÃ¡x. ${MAX_VIDEO_MB}MB` : `MP4, MOV, WEBM Â· Max. ${MAX_VIDEO_MB}MB`}
                             </p>
                         </div>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0"><path d="M9 18l6-6-6-6" /></svg>
@@ -384,7 +410,7 @@ export function VideoRecorder({
                 </div>
             )}
 
-            {/* Botón volver — aparece cuando ya eligió un modo */}
+            {/* BotÃ³n volver â€” aparece cuando ya eligiÃ³ un modo */}
             {mode !== null && (
                 <button
                     type="button"
@@ -399,7 +425,7 @@ export function VideoRecorder({
                     className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
                 >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
-                    {locale === 'es' ? 'Cambiar método' : 'Change method'}
+                    {locale === 'es' ? 'Cambiar mÃ©todo' : 'Change method'}
                 </button>
             )}
 
@@ -410,7 +436,7 @@ export function VideoRecorder({
                         <div className="p-4 bg-error/10 border border-error/20 rounded-lg text-error text-sm text-center space-y-3 flex flex-col items-center">
                             <p className="font-medium break-words max-w-full">{error}</p>
                             <p className="text-xs opacity-90 max-w-[280px]">
-                                Si bloqueaste el acceso antes, habilitalo desde el ícono del candado 🔒 en la barra de direcciones y recargá la página.
+                                Si bloqueaste el acceso antes, habilitalo desde el Ã­cono del candado ðŸ”’ en la barra de direcciones y recargÃ¡ la pÃ¡gina.
                             </p>
                             <button
                                 type="button"
@@ -513,7 +539,7 @@ export function VideoRecorder({
                                     {locale === 'es' ? 'Seleccionar video' : 'Select video'}
                                 </p>
                                 <p className="text-xs text-muted-foreground mt-1">
-                                    {locale === 'es' ? `MP4, MOV, WEBM · Máx. ${MAX_VIDEO_MB}MB` : `MP4, MOV, WEBM · Max. ${MAX_VIDEO_MB}MB`}
+                                    {locale === 'es' ? `MP4, MOV, WEBM Â· MÃ¡x. ${MAX_VIDEO_MB}MB` : `MP4, MOV, WEBM Â· Max. ${MAX_VIDEO_MB}MB`}
                                 </p>
                             </div>
                             <input
@@ -557,7 +583,7 @@ export function VideoRecorder({
                                     {(uploadedFile.size / (1024 * 1024)).toFixed(1)}MB
                                 </span>
                                 <button
-                                    onClick={() => { setUploadedFile(null); setThumbnailUrl(null); onDelete() }}
+                                    onClick={() => { clearUploadedPreview(); onDelete() }}
                                     className="text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
                                 >
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
