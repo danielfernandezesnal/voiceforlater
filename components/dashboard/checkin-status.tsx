@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import type { CheckinData } from '@/lib/checkins/dashboard-auto-confirm'
 
 interface CheckinStatusProps {
     dictionary: {
@@ -13,27 +14,28 @@ interface CheckinStatusProps {
         confirmed: string
     }
     locale: string
+    /**
+     * Server-resolved checkin state. When provided, the widget uses this for
+     * the first render and skips the mount-time GET fetch, preventing stale
+     * expired state from flashing before the POST completes.
+     */
+    initialCheckin?: CheckinData | null
 }
 
-interface CheckinData {
-    hasCheckin: boolean
-    status: string
-    nextDueAt: string
-    daysRemaining: number
-    isOverdue: boolean
-}
-
-export function CheckinStatusWidget({ dictionary, locale }: CheckinStatusProps) {
-    const [checkin, setCheckin] = useState<CheckinData | null>(null)
-    const [isLoading, setIsLoading] = useState(true)
+export function CheckinStatusWidget({ dictionary, locale, initialCheckin }: CheckinStatusProps) {
+    const [checkin, setCheckin] = useState<CheckinData | null>(initialCheckin ?? null)
+    const [isLoading, setIsLoading] = useState(!initialCheckin)
 
     useEffect(() => {
+        // If the server already provided fresh state, skip the mount-time fetch.
+        if (initialCheckin) return
+
         fetch('/api/checkin/confirm')
             .then(res => res.json())
             .then(data => setCheckin(data))
             .catch(err => console.error('Error fetching checkin status:', err))
             .finally(() => setIsLoading(false))
-    }, [])
+    }, [initialCheckin])
 
     if (isLoading) {
         return (

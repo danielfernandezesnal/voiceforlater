@@ -5,7 +5,7 @@ import { CheckinStatusWidget } from "@/components/dashboard/checkin-status";
 import { CreateMessageButton } from "@/components/dashboard/create-message-button";
 import { DashboardMessageList, type MessageWithRecipient } from "@/components/dashboard/dashboard-message-list";
 
-import { AutoCheckin } from "@/components/dashboard/auto-checkin";
+import { dashboardAutoConfirm, type CheckinData } from "@/lib/checkins/dashboard-auto-confirm";
 import { UpgradeSuccessModal } from "@/components/dashboard/upgrade-success-modal";
 import { SuccessBanner } from "@/components/dashboard/success-banner";
 import { getEffectivePlan } from "@/lib/plan-resolver";
@@ -32,6 +32,7 @@ export default async function DashboardPage({
     let hasCheckinMessages = false;
     let userPlan: Plan = 'free';
     let userFirstName = '';
+    let initialCheckin: CheckinData | null = null;
 
     if (user) {
         // Parallel fetch for profile and plan
@@ -81,6 +82,13 @@ export default async function DashboardPage({
             .eq('mode', 'checkin');
 
         hasCheckinMessages = (count || 0) > 0;
+
+        // Auto-confirm on dashboard access for safe states (active | pending)
+        // when next_due_at is expired. Runs server-side before first render so
+        // CheckinStatusWidget never flashes stale overdue state.
+        if (hasCheckinMessages && userPlan === 'pro') {
+            initialCheckin = await dashboardAutoConfirm(user.id);
+        }
     }
 
     const isLimitReached = userPlan === 'free' && messages.length >= 1;
@@ -214,7 +222,7 @@ export default async function DashboardPage({
             {/* Check-in status widget (only show if user has check-in messages AND is Pro) */}
             {hasCheckinMessages && userPlan === 'pro' && (
                 <div className="mb-8">
-                    <CheckinStatusWidget dictionary={dict.checkin} locale={locale} />
+                    <CheckinStatusWidget dictionary={dict.checkin} locale={locale} initialCheckin={initialCheckin} />
                 </div>
             )}
 
@@ -225,7 +233,7 @@ export default async function DashboardPage({
                 locale={locale}
                 dict={dict}
             />
-            {user && <AutoCheckin />}
+
         </div>
     );
 }
