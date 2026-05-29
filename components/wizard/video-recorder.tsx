@@ -50,6 +50,7 @@ export function VideoRecorder({
     const [uploadError, setUploadError] = useState<string | null>(null)
     const [isUploading, setIsUploading] = useState(false)
     const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null)
+    const [uploadedPreviewUrl, setUploadedPreviewUrl] = useState<string | null>(null)
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
     const chunksRef = useRef<Blob[]>([])
@@ -69,7 +70,22 @@ export function VideoRecorder({
         }
     }, [videoBlob])
 
+    useEffect(() => {
+        return () => {
+            if (uploadedPreviewUrl) {
+                URL.revokeObjectURL(uploadedPreviewUrl)
+            }
+        }
+    }, [uploadedPreviewUrl])
+
     const [isInitializing, setIsInitializing] = useState(false)
+
+    const clearUploadedPreview = useCallback(() => {
+        setUploadedFile(null)
+        setThumbnailUrl(null)
+        setUploadError(null)
+        setUploadedPreviewUrl(null)
+    }, [])
 
     // Memoize initCamera so it can be called safely from effects and buttons
     const initCamera = useCallback(async () => {
@@ -288,6 +304,8 @@ export function VideoRecorder({
 
             if (error) throw error
 
+            if (uploadedPreviewUrl) URL.revokeObjectURL(uploadedPreviewUrl)
+            setUploadedPreviewUrl(URL.createObjectURL(file))
             setUploadedFile(file)
             const thumb = await generateThumbnail(file)
             setThumbnailUrl(thumb)
@@ -301,23 +319,32 @@ export function VideoRecorder({
     }
 
     // Has existing recording
-    const finalVideoUrl = videoUrl || existingVideoUrl
+    const finalVideoUrl = videoUrl || uploadedPreviewUrl || existingVideoUrl
 
     if (finalVideoUrl) {
         return (
             <div className="p-6 bg-card border border-border rounded-xl space-y-4">
                 <div className="aspect-video bg-black rounded-lg overflow-hidden">
-                    <video src={finalVideoUrl} controls className="w-full h-full" />
+                    <video
+                        src={finalVideoUrl}
+                        controls
+                        className="w-full h-full"
+                        onError={() => setUploadError(locale === 'es' ? 'No se pudo previsualizar el video.' : 'Could not preview this video.')}
+                    />
                 </div>
 
                 <div className="flex gap-3 justify-center">
                     <button
-                        onClick={onDelete}
+                        onClick={() => {
+                            clearUploadedPreview()
+                            onDelete()
+                        }}
                         className="px-4 py-2 text-sm text-error hover:bg-error/10 rounded-lg transition-colors"
                     >
                         {dictionary.delete}
                     </button>
                 </div>
+                {uploadError && <p className="text-sm text-destructive text-center">{uploadError}</p>}
             </div>
         )
     }
@@ -557,7 +584,7 @@ export function VideoRecorder({
                                     {(uploadedFile.size / (1024 * 1024)).toFixed(1)}MB
                                 </span>
                                 <button
-                                    onClick={() => { setUploadedFile(null); setThumbnailUrl(null); onDelete() }}
+                                    onClick={() => { clearUploadedPreview(); onDelete() }}
                                     className="text-muted-foreground hover:text-destructive transition-colors flex-shrink-0"
                                 >
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
