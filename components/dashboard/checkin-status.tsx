@@ -50,6 +50,13 @@ export function CheckinStatusWidget({ dictionary, locale, initialCheckin }: Chec
         return null
     }
 
+    // Hide for normal active state — nothing needs the user's attention.
+    // All other states (pending, overdue, awaiting_verification, confirmed_absent)
+    // still render the widget.
+    if (checkin.status === 'active' && !checkin.isOverdue) {
+        return null
+    }
+
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', {
             month: 'short',
