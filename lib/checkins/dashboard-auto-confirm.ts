@@ -15,6 +15,12 @@ function isSafeStatus(status: string): status is SafeStatus {
 /** Default interval when no delivery rule is found for the user. */
 const DEFAULT_INTERVAL_DAYS = 30;
 
+/**
+ * How long a confirmed-active session stays fresh before dashboard access
+ * triggers a new refresh. Pending always refreshes immediately regardless.
+ */
+const ACTIVITY_REFRESH_THRESHOLD_HOURS = 24;
+
 export interface CheckinData {
     hasCheckin: boolean;
     status: string;
@@ -23,17 +29,26 @@ export interface CheckinData {
     isOverdue: boolean;
 }
 
+type RefreshReason =
+    | 'pending_dashboard_access'
+    | 'missing_last_confirmed_at'
+    | 'stale_dashboard_access';
+
 /**
  * dashboardAutoConfirm
  *
- * Runs server-side before the dashboard renders. If the authenticated user
- * has a checkin row in a safe state (active | pending) AND next_due_at is
- * in the past, it resets the checkin to active and returns the fresh state.
+ * Runs server-side before the dashboard renders. Refreshes the check-in timer
+ * when the authenticated user is in a safe state and activity is stale.
  *
- * Guards:
+ * Eligibility (application-level, mirrored in DB predicates):
+ *   - status = 'pending'                               → always refresh
+ *   - status = 'active', last_confirmed_at IS NULL     → refresh
+ *   - status = 'active', last_confirmed_at > 24h ago   → refresh
+ *   - status = 'active', last_confirmed_at within 24h  → no write
+ *
+ * Hard guards (never relaxed):
  *   - awaiting_verification → never touched
  *   - confirmed_absent      → never touched
- *   - future next_due_at    → no write, current state returned
  *
  * Uses the admin/service-role client for the write so it is not constrained
  * by RLS. The caller is responsible for verifying user identity before calling.
@@ -58,15 +73,41 @@ export async function dashboardAutoConfirm(userId: string): Promise<CheckinData 
 
     const now = new Date();
     const nextDue = new Date(checkin.next_due_at);
-    const isExpired = now >= nextDue;
 
-    // 2. Only proceed if status is safe AND the checkin is overdue.
-    if (!isSafeStatus(checkin.status) || !isExpired) {
-        // Return current state as-is — no write performed.
+    // 2. Status guard — awaiting_verification and confirmed_absent exit here.
+    if (!isSafeStatus(checkin.status)) {
         return buildCheckinData(checkin.status, checkin.next_due_at, now, nextDue);
     }
 
-    // 3. Derive interval from the user's own delivery rule.
+    // 3. Activity-freshness eligibility check (application-level).
+    //    Mirrors the OR predicate used in the UPDATE below.
+    const thresholdMs = ACTIVITY_REFRESH_THRESHOLD_HOURS * 60 * 60 * 1000;
+    const thresholdDate = new Date(now.getTime() - thresholdMs);
+    const thresholdIso = thresholdDate.toISOString();
+
+    const lastConfirmed = checkin.last_confirmed_at
+        ? new Date(checkin.last_confirmed_at)
+        : null;
+
+    const isPending = checkin.status === 'pending';
+    const isMissingLastConfirmed = lastConfirmed === null;
+    const isStaleActivity = lastConfirmed !== null && lastConfirmed <= thresholdDate;
+
+    const isEligible = isPending || isMissingLastConfirmed || isStaleActivity;
+
+    if (!isEligible) {
+        // Active with a recent confirmation — no write needed.
+        return buildCheckinData(checkin.status, checkin.next_due_at, now, nextDue);
+    }
+
+    // Determine the reason that will be attached to the audit event.
+    const refreshReason: RefreshReason = isPending
+        ? 'pending_dashboard_access'
+        : isMissingLastConfirmed
+        ? 'missing_last_confirmed_at'
+        : 'stale_dashboard_access';
+
+    // 4. Derive interval from the user's own delivery rule.
     //    Scoped through messages so we never pick up another user's rule.
     const { data: ruleRow } = await admin
         .from('delivery_rules')
@@ -78,19 +119,20 @@ export async function dashboardAutoConfirm(userId: string): Promise<CheckinData 
 
     const intervalDays: number = ruleRow?.checkin_interval_days ?? DEFAULT_INTERVAL_DAYS;
 
-    // 4. Calculate new next_due_at.
+    // 5. Calculate new next_due_at.
     const newNextDue = new Date(now.getTime() + intervalDays * 24 * 60 * 60 * 1000);
 
-    // 5. Capture previous state for audit before writing.
+    // 6. Capture previous state for audit before writing.
     const previousStatus = checkin.status;
     const previousNextDueAt = checkin.next_due_at;
     const previousAttempts = checkin.attempts;
 
-    // 6. Write the reset — admin client bypasses RLS.
+    // 7. Write the reset — admin client bypasses RLS.
     //    Three DB-level predicates guard the update atomically:
-    //      a) user_id            — scopes to this user only
-    //      b) status IN (...)    — blocks awaiting_verification / confirmed_absent
-    //      c) next_due_at <= now — blocks if row became non-overdue between read and write
+    //      a) user_id                       — scopes to this user only
+    //      b) status IN ('active','pending') — blocks awaiting_verification / confirmed_absent
+    //      c) freshness OR predicate        — mirrors the eligibility check above;
+    //         prevents a spurious write if the row was already refreshed between read and write
     const { data: updated, error: updateError } = await admin
         .from('checkins')
         .update({
@@ -101,7 +143,7 @@ export async function dashboardAutoConfirm(userId: string): Promise<CheckinData 
         })
         .eq('user_id', userId)
         .in('status', SAFE_STATUSES)
-        .lte('next_due_at', now.toISOString())
+        .or(`status.eq.pending,last_confirmed_at.is.null,last_confirmed_at.lte.${thresholdIso}`)
         .select('id');
 
     if (updateError) {
@@ -111,12 +153,12 @@ export async function dashboardAutoConfirm(userId: string): Promise<CheckinData 
     }
 
     if (!updated || updated.length === 0) {
-        // Row was no longer overdue (or status changed) at write time — no update applied.
-        // Return the fetched state without logging a success event.
+        // Row no longer matched the freshness predicates at write time (e.g. another
+        // concurrent request already refreshed it). Return fetched state; do not log.
         return buildCheckinData(checkin.status, checkin.next_due_at, now, nextDue);
     }
 
-    // 7. Insert audit event. Failure must not break the dashboard.
+    // 8. Insert audit event. Failure must not break the dashboard.
     try {
         await admin.from('events').insert({
             type: 'checkin_auto_confirmed_dashboard_access',
@@ -128,13 +170,15 @@ export async function dashboardAutoConfirm(userId: string): Promise<CheckinData 
                 new_next_due_at: newNextDue.toISOString(),
                 interval_days: intervalDays,
                 method: 'dashboard_access',
+                refresh_reason: refreshReason,
+                activity_refresh_threshold_hours: ACTIVITY_REFRESH_THRESHOLD_HOURS,
             },
         });
     } catch (eventErr) {
         console.error('[dashboardAutoConfirm] Event logging failed (non-fatal):', eventErr);
     }
 
-    // 8. Return fresh state.
+    // 9. Return fresh state.
     return buildCheckinData('active', newNextDue.toISOString(), now, newNextDue);
 }
 
